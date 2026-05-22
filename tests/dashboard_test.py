@@ -42,11 +42,22 @@ def main():
             assert dados["resumo"]["volume_total"] == 2460.0
             assert dados["resumo"]["ultimo_volume"] == 1860.0
             assert dados["resumo"]["variacao_ultima"] == 1260.0
+            assert dados["resumo"]["series_total"] == 9
+            assert dados["resumo"]["repeticoes_total"] == 54
+            assert dados["comparacao_ultima"][0]["delta_carga"] == 4.0
+            assert dados["volume_semanal"]
+            assert dados["volume_mensal"]
+            assert dados["grupos_musculares"]
+            assert dados["prs"]
 
             caminho = dashboard.salvar_dashboard(output)
             html = caminho.read_text(encoding="utf-8")
             assert "Dashboard de treino" in html
             assert "Volume por sessao" in html
+            assert "Carga e RPE por exercicio" in html
+            assert "Ultima vs anterior" in html
+            assert "Recordes pessoais" in html
+            assert "Alertas" in html
             assert "Supino reto (barra)" in html
             assert "2.460 kg" in html
 

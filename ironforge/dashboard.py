@@ -6,12 +6,28 @@ import html
 import json
 import sqlite3
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 from ironforge import db_ops
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
+
+GRUPOS_MUSCULARES = {
+    "Agachamento": "Pernas",
+    "Zercher": "Pernas",
+    "Terra Romeno": "Posterior",
+    "Supino": "Peito",
+    "Remada": "Costas",
+    "Pullover": "Costas",
+    "Desenvolvimento": "Ombros",
+    "Remada alta": "Ombros",
+    "Rosca": "Bracos",
+    "Triceps": "Bracos",
+    "Tríceps": "Bracos",
+    "Encolhimento": "Trapézio",
+}
 
 
 def _connect():
@@ -48,6 +64,7 @@ def carregar_dados():
 
     sessoes = {}
     exercicios = defaultdict(list)
+    grupos = defaultdict(lambda: {"grupo": "", "volume": 0.0, "series": 0})
 
     for row in rows:
         volume = float(row["sets"]) * float(row["reps"]) * float(row["weight"])
@@ -68,7 +85,22 @@ def carregar_dados():
         sessao["series"] += int(row["sets"])
         sessao["repeticoes"] += int(row["sets"]) * int(row["reps"])
         sessao["exercicios"] += 1
+        sessao.setdefault("rpes", [])
+        sessao.setdefault("logs", [])
+        if row["rpe"] is not None:
+            sessao["rpes"].append(float(row["rpe"]))
 
+        log = {
+            "nome": row["exercise_name"],
+            "data": row["date"],
+            "session_id": session_id,
+            "volume": volume,
+            "carga": float(row["weight"]),
+            "series": int(row["sets"]),
+            "reps": int(row["reps"]),
+            "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
+        }
+        sessao["logs"].append(log)
         exercicios[row["exercise_name"]].append(
             {
                 "data": row["date"],
@@ -80,12 +112,22 @@ def carregar_dados():
                 "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
             }
         )
+        grupo = _grupo_muscular(row["exercise_name"])
+        grupos[grupo]["grupo"] = grupo
+        grupos[grupo]["volume"] += volume
+        grupos[grupo]["series"] += int(row["sets"])
 
     volume_por_sessao = list(sessoes.values())
+    for sessao in volume_por_sessao:
+        rpes = sessao.get("rpes", [])
+        sessao["rpe_medio"] = sum(rpes) / len(rpes) if rpes else None
+
     volume_por_exercicio = []
     for nome, pontos in exercicios.items():
         primeiro = pontos[0]["volume"]
         ultimo = pontos[-1]["volume"]
+        cargas = [p["carga"] for p in pontos]
+        rpes = [p["rpe"] for p in pontos if p["rpe"] is not None]
         volume_por_exercicio.append(
             {
                 "nome": nome,
@@ -93,6 +135,11 @@ def carregar_dados():
                 "volume_total": sum(p["volume"] for p in pontos),
                 "ultimo_volume": ultimo,
                 "variacao": ultimo - primeiro if len(pontos) > 1 else 0.0,
+                "primeira_carga": cargas[0],
+                "ultima_carga": cargas[-1],
+                "melhor_carga": max(cargas),
+                "variacao_carga": cargas[-1] - cargas[0] if len(cargas) > 1 else 0.0,
+                "rpe_medio": sum(rpes) / len(rpes) if rpes else None,
             }
         )
 
@@ -110,10 +157,139 @@ def carregar_dados():
                 ultima["volume"] - anterior["volume"] if ultima and anterior else 0.0
             ),
             "ultima_data": ultima["data"] if ultima else "-",
+            "series_total": sum(s["series"] for s in volume_por_sessao),
+            "repeticoes_total": sum(s["repeticoes"] for s in volume_por_sessao),
+            "exercicios_total": sum(s["exercicios"] for s in volume_por_sessao),
+            "volume_medio_exercicio": (
+                total / sum(s["exercicios"] for s in volume_por_sessao)
+                if volume_por_sessao else 0.0
+            ),
+            "rpe_medio": _media(
+                rpe for sessao in volume_por_sessao for rpe in sessao.get("rpes", [])
+            ),
         },
         "volume_por_sessao": volume_por_sessao,
         "volume_por_exercicio": volume_por_exercicio,
+        "comparacao_ultima": _comparar_ultimas_sessoes(volume_por_sessao),
+        "volume_semanal": _agrupar_periodo(volume_por_sessao, "semana"),
+        "volume_mensal": _agrupar_periodo(volume_por_sessao, "mes"),
+        "grupos_musculares": sorted(
+            grupos.values(), key=lambda item: item["volume"], reverse=True
+        ),
+        "prs": _calcular_prs(volume_por_exercicio),
+        "alertas": _calcular_alertas(volume_por_sessao, volume_por_exercicio),
+        "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
     }
+
+
+def _media(valores):
+    lista = [v for v in valores if v is not None]
+    return sum(lista) / len(lista) if lista else None
+
+
+def _grupo_muscular(nome):
+    for trecho, grupo in GRUPOS_MUSCULARES.items():
+        if trecho.lower() in nome.lower():
+            return grupo
+    return "Outros"
+
+
+def _parse_data(data_iso):
+    return date.fromisoformat(data_iso)
+
+
+def _agrupar_periodo(sessoes, periodo):
+    agrupado = {}
+    for sessao in sessoes:
+        data_sessao = _parse_data(sessao["data"])
+        if periodo == "semana":
+            ano, semana, _ = data_sessao.isocalendar()
+            chave = f"{ano}-S{semana:02d}"
+        else:
+            chave = data_sessao.strftime("%Y-%m")
+        item = agrupado.setdefault(
+            chave,
+            {"periodo": chave, "volume": 0.0, "series": 0, "sessoes": 0},
+        )
+        item["volume"] += sessao["volume"]
+        item["series"] += sessao["series"]
+        item["sessoes"] += 1
+    return list(agrupado.values())
+
+
+def _comparar_ultimas_sessoes(sessoes):
+    if len(sessoes) < 2:
+        return []
+    anterior = {log["nome"]: log for log in sessoes[-2]["logs"]}
+    atual = {log["nome"]: log for log in sessoes[-1]["logs"]}
+    linhas = []
+    for nome, log_atual in atual.items():
+        log_anterior = anterior.get(nome)
+        if not log_anterior:
+            continue
+        linhas.append(
+            {
+                "nome": nome,
+                "carga_anterior": log_anterior["carga"],
+                "carga_atual": log_atual["carga"],
+                "delta_carga": log_atual["carga"] - log_anterior["carga"],
+                "volume_anterior": log_anterior["volume"],
+                "volume_atual": log_atual["volume"],
+                "delta_volume": log_atual["volume"] - log_anterior["volume"],
+                "rpe_anterior": log_anterior["rpe"],
+                "rpe_atual": log_atual["rpe"],
+            }
+        )
+    return linhas
+
+
+def _calcular_prs(exercicios):
+    prs = []
+    for item in exercicios:
+        melhor_carga = max(item["pontos"], key=lambda p: p["carga"])
+        melhor_volume = max(item["pontos"], key=lambda p: p["volume"])
+        prs.append(
+            {
+                "nome": item["nome"],
+                "melhor_carga": melhor_carga["carga"],
+                "data_carga": melhor_carga["data"],
+                "melhor_volume": melhor_volume["volume"],
+                "data_volume": melhor_volume["data"],
+            }
+        )
+    return sorted(prs, key=lambda item: item["melhor_volume"], reverse=True)
+
+
+def _calcular_top_evolucoes(exercicios):
+    por_carga = sorted(exercicios, key=lambda item: item["variacao_carga"], reverse=True)
+    por_volume = sorted(exercicios, key=lambda item: item["variacao"], reverse=True)
+    quedas = sorted(exercicios, key=lambda item: item["variacao"])
+    return {
+        "carga": por_carga[:5],
+        "volume": por_volume[:5],
+        "quedas": [item for item in quedas if item["variacao"] < 0][:5],
+    }
+
+
+def _calcular_alertas(sessoes, exercicios):
+    alertas = []
+    if len(sessoes) >= 2:
+        anterior = sessoes[-2]["volume"]
+        atual = sessoes[-1]["volume"]
+        if anterior and (atual - anterior) / anterior > 0.2:
+            alertas.append("Volume da ultima sessao subiu mais de 20% vs. sessao anterior.")
+    ultimos_rpes = [
+        sessao["rpe_medio"] for sessao in sessoes[-3:] if sessao.get("rpe_medio") is not None
+    ]
+    if len(ultimos_rpes) >= 3 and all(rpe >= 9 for rpe in ultimos_rpes):
+        alertas.append("RPE medio ficou alto nas ultimas 3 sessoes.")
+    for item in exercicios:
+        pontos = item["pontos"][-3:]
+        if len(pontos) == 3 and pontos[-1]["carga"] <= pontos[0]["carga"]:
+            alertas.append(f"{item['nome']} sem aumento de carga nas ultimas 3 entradas.")
+            if len(alertas) >= 5:
+                break
+    return alertas
 
 
 def _fmt_numero(valor):
@@ -123,6 +299,12 @@ def _fmt_numero(valor):
 def _fmt_delta(valor):
     sinal = "+" if valor > 0 else ""
     return f"{sinal}{_fmt_numero(valor)} kg"
+
+
+def _fmt_decimal(valor, casas=1):
+    if valor is None:
+        return "-"
+    return f"{valor:.{casas}f}".replace(".", ",")
 
 
 def _json(data):
@@ -198,6 +380,45 @@ def _barras_sessoes(sessoes):
     return "\n".join(itens)
 
 
+def _classe_delta(valor):
+    return "positivo" if valor >= 0 else "negativo"
+
+
+def _linhas_tabela(linhas, colunas, vazio="Sem dados suficientes."):
+    if not linhas:
+        return f"<tr><td colspan=\"{len(colunas)}\">{vazio}</td></tr>"
+    html_linhas = []
+    for linha in linhas:
+        celulas = []
+        for coluna in colunas:
+            valor = coluna["valor"](linha)
+            classe = coluna.get("classe", lambda _linha: "")(linha)
+            class_attr = f" class=\"{classe}\"" if classe else ""
+            celulas.append(f"<td{class_attr}>{valor}</td>")
+        html_linhas.append(f"<tr>{''.join(celulas)}</tr>")
+    return "\n".join(html_linhas)
+
+
+def _render_periodos(periodos):
+    return _linhas_tabela(
+        periodos[-8:],
+        [
+            {"valor": lambda item: html.escape(item["periodo"])},
+            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
+            {"valor": lambda item: str(item["sessoes"])},
+            {"valor": lambda item: str(item["series"])},
+        ],
+    )
+
+
+def _render_lista_simples(itens):
+    if not itens:
+        return "<p class=\"vazio\">Sem alertas relevantes agora.</p>"
+    return "<ul class=\"lista\">" + "".join(
+        f"<li>{html.escape(item)}</li>" for item in itens
+    ) + "</ul>"
+
+
 def gerar_html(dados):
     resumo = dados["resumo"]
     sessoes = dados["volume_por_sessao"]
@@ -223,6 +444,113 @@ def gerar_html(dados):
 
     tabela = "\n".join(linhas_exercicios) or (
         "<tr><td colspan=\"4\">Ainda nao ha dados de treino registrados.</td></tr>"
+    )
+    tabela_cargas = _linhas_tabela(
+        exercicios[:12],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{_fmt_decimal(item['ultima_carga'])} kg"},
+            {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg"},
+            {
+                "valor": lambda item: _fmt_delta(item["variacao_carga"]),
+                "classe": lambda item: _classe_delta(item["variacao_carga"]),
+            },
+            {"valor": lambda item: _fmt_decimal(item["rpe_medio"])},
+        ],
+    )
+    tabela_comparacao = _linhas_tabela(
+        dados["comparacao_ultima"],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: (
+                    f"{_fmt_decimal(item['carga_anterior'])} -> "
+                    f"{_fmt_decimal(item['carga_atual'])} kg"
+                )
+            },
+            {
+                "valor": lambda item: _fmt_delta(item["delta_carga"]),
+                "classe": lambda item: _classe_delta(item["delta_carga"]),
+            },
+            {
+                "valor": lambda item: _fmt_delta(item["delta_volume"]),
+                "classe": lambda item: _classe_delta(item["delta_volume"]),
+            },
+            {
+                "valor": lambda item: (
+                    f"{_fmt_decimal(item['rpe_anterior'])} -> "
+                    f"{_fmt_decimal(item['rpe_atual'])}"
+                )
+            },
+        ],
+    )
+    tabela_grupos = _linhas_tabela(
+        dados["grupos_musculares"],
+        [
+            {"valor": lambda item: html.escape(item["grupo"])},
+            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
+            {"valor": lambda item: str(item["series"])},
+        ],
+    )
+    tabela_prs = _linhas_tabela(
+        dados["prs"][:10],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: (
+                    f"{_fmt_decimal(item['melhor_carga'])} kg em "
+                    f"{html.escape(item['data_carga'])}"
+                )
+            },
+            {
+                "valor": lambda item: (
+                    f"{_fmt_numero(item['melhor_volume'])} kg em "
+                    f"{html.escape(item['data_volume'])}"
+                )
+            },
+        ],
+    )
+    top_carga = _linhas_tabela(
+        dados["top_evolucoes"]["carga"],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: _fmt_delta(item["variacao_carga"]),
+                "classe": lambda item: _classe_delta(item["variacao_carga"]),
+            },
+        ],
+    )
+    top_volume = _linhas_tabela(
+        dados["top_evolucoes"]["volume"],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: _fmt_delta(item["variacao"]),
+                "classe": lambda item: _classe_delta(item["variacao"]),
+            },
+        ],
+    )
+    quedas = _linhas_tabela(
+        dados["top_evolucoes"]["quedas"],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: _fmt_delta(item["variacao"]),
+                "classe": lambda item: _classe_delta(item["variacao"]),
+            },
+        ],
+    )
+    evolucao_exercicios = _linhas_tabela(
+        exercicios[:8],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {
+                "valor": lambda item: " -> ".join(
+                    _fmt_numero(ponto["volume"]) for ponto in item["pontos"][-4:]
+                )
+            },
+            {"valor": lambda item: _fmt_delta(item["variacao"])},
+        ],
     )
 
     return f"""<!doctype html>
@@ -295,6 +623,12 @@ def gerar_html(dados):
       display: grid;
       grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
       gap: 16px;
+    }}
+    .duas-colunas {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 16px;
     }}
     .painel {{ padding: 18px; }}
     .linha-topo {{
@@ -375,8 +709,10 @@ def gerar_html(dados):
     }}
     th {{ color: var(--muted); font-weight: 600; }}
     .vazio {{ color: var(--muted); }}
+    .lista {{ margin: 0; padding-left: 18px; color: var(--texto); }}
+    .lista li {{ margin: 8px 0; }}
     @media (max-width: 860px) {{
-      header, .layout {{ display: block; }}
+      header, .layout, .duas-colunas {{ display: block; }}
       header > div:last-child {{ margin-top: 12px; }}
       .grade-resumo {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .painel {{ margin-bottom: 16px; }}
@@ -416,6 +752,22 @@ def gerar_html(dados):
       <div class="indicador">
         <span class="rotulo">Variacao recente</span>
         <span class="valor valor-menor {'positivo' if resumo["variacao_ultima"] >= 0 else 'negativo'}">{_fmt_delta(resumo["variacao_ultima"])}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Series totais</span>
+        <span class="valor">{resumo["series_total"]}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Repeticoes totais</span>
+        <span class="valor">{resumo["repeticoes_total"]}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Media por exercicio</span>
+        <span class="valor valor-menor">{_fmt_numero(resumo["volume_medio_exercicio"])} kg</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">RPE medio</span>
+        <span class="valor">{_fmt_decimal(resumo["rpe_medio"])}</span>
       </div>
     </section>
 
@@ -460,6 +812,108 @@ def gerar_html(dados):
           {tabela}
         </tbody>
       </table>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Carga e RPE por exercicio</h2>
+          <span>top 12</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Ultima</th><th>Melhor</th><th>Variacao</th><th>RPE</th></tr></thead>
+          <tbody>{tabela_cargas}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Ultima vs anterior</h2>
+          <span>mesmos exercicios</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Carga</th><th>Delta carga</th><th>Delta volume</th><th>RPE</th></tr></thead>
+          <tbody>{tabela_comparacao}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Evolucao por exercicio</h2>
+          <span>ultimos 4 volumes</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Sequencia</th><th>Variacao</th></tr></thead>
+          <tbody>{evolucao_exercicios}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Grupos musculares</h2>
+          <span>volume e series</span>
+        </div>
+        <table>
+          <thead><tr><th>Grupo</th><th>Volume</th><th>Series</th></tr></thead>
+          <tbody>{tabela_grupos}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume semanal</h2>
+          <span>ultimas 8 semanas</span>
+        </div>
+        <table>
+          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
+          <tbody>{_render_periodos(dados["volume_semanal"])}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume mensal</h2>
+          <span>ultimos 8 meses</span>
+        </div>
+        <table>
+          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
+          <tbody>{_render_periodos(dados["volume_mensal"])}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Maiores evolucoes</h2>
+          <span>carga e volume</span>
+        </div>
+        <h3>Carga</h3>
+        <table><tbody>{top_carga}</tbody></table>
+        <h3>Volume</h3>
+        <table><tbody>{top_volume}</tbody></table>
+        <h3>Quedas</h3>
+        <table><tbody>{quedas}</tbody></table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Recordes pessoais</h2>
+          <span>carga e volume</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Maior carga</th><th>Maior volume</th></tr></thead>
+          <tbody>{tabela_prs}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="painel" style="margin-top: 16px;">
+      <div class="linha-topo">
+        <h2>Alertas</h2>
+        <span>regras simples</span>
+      </div>
+      {_render_lista_simples(dados["alertas"])}
     </section>
   </main>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>

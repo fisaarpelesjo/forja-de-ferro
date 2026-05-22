@@ -83,8 +83,15 @@ python gerar_dashboard.py
 ```
 
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
-para ver volume total, volume da ultima sessao, variacao recente, grafico por
-sessao e exercicios com maior volume acumulado.
+para ver:
+
+- volume por sessao, semana e mes
+- evolucao por exercicio
+- carga atual, melhor carga, variacao e RPE medio
+- series, repeticoes e media de volume por exercicio
+- comparacao da ultima sessao com a anterior
+- grupos musculares por volume e series
+- maiores evolucoes, quedas, recordes pessoais e alertas simples
 
 ## Progressao De Carga Por RPE
 

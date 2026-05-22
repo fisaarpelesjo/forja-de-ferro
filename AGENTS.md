@@ -128,6 +128,8 @@ Dashboard local de volume de treino.
 - `carregar_dados()` le `training_sessions` e `training_logs` no SQLite.
 - O volume de cada linha e calculado como `sets x reps x weight`.
 - Apenas logs com carga preenchida (`weight IS NOT NULL` e maior que zero) entram no dashboard.
+- O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
+  alem de carga, RPE, comparacao recente, PRs, maiores evolucoes e alertas.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
 

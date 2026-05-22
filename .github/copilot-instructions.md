@@ -128,6 +128,8 @@ Dashboard local de volume:
 - `carregar_dados()` le `training_sessions` e `training_logs`.
 - Volume de cada log: `sets x reps x weight`.
 - Entram apenas logs com `weight IS NOT NULL` e carga maior que zero.
+- O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
+  carga, RPE, comparacao recente, PRs, maiores evolucoes e alertas.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 
 ## Estado Local E Segredos

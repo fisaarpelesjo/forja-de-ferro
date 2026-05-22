@@ -71,8 +71,10 @@ volume de treino de cada linha assim:
 volume = sets x reps x weight
 ```
 
-`python gerar_dashboard.py` consolida esse volume por sessao e por exercicio e
-escreve `temp/dashboard-treino.html`.
+`python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana,
+mes e grupo muscular. O HTML tambem mostra carga, RPE, series, repeticoes,
+comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes
+e alertas simples.
 
 ### Dieta
 
