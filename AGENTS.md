@@ -7,6 +7,7 @@ Este projeto e um diario de treino com bot do Telegram e banco SQLite versionado
 Banco principal: `data/ironforge.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
+Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 
 ## Padrao De Idioma
 
@@ -120,6 +121,16 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
+### `ironforge/dashboard.py`
+
+Dashboard local de volume de treino.
+
+- `carregar_dados()` le `training_sessions` e `training_logs` no SQLite.
+- O volume de cada linha e calculado como `sets x reps x weight`.
+- Apenas logs com carga preenchida (`weight IS NOT NULL` e maior que zero) entram no dashboard.
+- `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
+- `gerar_dashboard.py` e o launcher de uso local.
+
 ## Estado Local
 
 Arquivos locais e secretos nao sao versionados:
@@ -131,6 +142,7 @@ Arquivos auxiliares SQLite nao sao versionados:
 
 - `data/*.db-shm`
 - `data/*.db-wal`
+- `temp/dashboard-treino.html`
 
 Nao versionar segredos. Antes de alterar arquivos de estado local, verificar se a mudanca e necessaria.
 

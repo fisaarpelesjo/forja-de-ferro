@@ -13,7 +13,7 @@ na documentacao do software.
 - [Arquitetura](arquitetura.md): layout do pacote, fronteiras de modulos,
   launchers, estado local e direcao de dependencias.
 - [Banco de dados](banco-de-dados.md): SQLite, tabelas, relacoes, fonte da verdade e
-  comandos seguros de inspecao.
+  comandos seguros de inspecao, incluindo o dashboard local de volume.
 - [Bot Telegram](bot-telegram.md): comandos, parsing de entrada, fluxo de
   mensagens, polling e falhas comuns.
 - [Testes](testes.md): smoke test, teste ponta a ponta, o que cada um garante e

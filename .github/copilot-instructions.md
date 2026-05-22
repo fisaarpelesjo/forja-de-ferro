@@ -7,6 +7,7 @@ IronForge e um diario de treino e dieta com bot do Telegram e banco SQLite local
 Banco principal: `data/ironforge.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
+Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
@@ -46,6 +47,11 @@ Launcher principal para iniciar o bot.
 ### `start_bot.bat`
 
 Wrapper Windows para iniciar o bot com duplo clique ou pelo terminal.
+
+### `gerar_dashboard.py`
+
+Launcher local que gera o dashboard HTML de volume de treino em
+`temp/dashboard-treino.html`.
 
 ### `ironforge/telegram_poller.py`
 
@@ -115,6 +121,15 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 - Mudancas que devem valer no banco atual precisam atualizar `data/ironforge.db`.
 
+### `ironforge/dashboard.py`
+
+Dashboard local de volume:
+
+- `carregar_dados()` le `training_sessions` e `training_logs`.
+- Volume de cada log: `sets x reps x weight`.
+- Entram apenas logs com `weight IS NOT NULL` e carga maior que zero.
+- `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
+
 ## Estado Local E Segredos
 
 Nao versionar:
@@ -124,6 +139,7 @@ Nao versionar:
 - `data/*.db-shm`
 - `data/*.db-wal`
 - arquivos temporarios em `temp/`
+- dashboard gerado em `temp/dashboard-treino.html`
 
 Antes de alterar arquivos de estado local, verifique se a mudanca e realmente
 necessaria.
@@ -181,7 +197,9 @@ Comandos uteis:
 ```bash
 pip install -r requirements.txt
 python tests/smoke_test.py
+python tests/dashboard_test.py
 python tests/e2e_training_flow_test.py
+python gerar_dashboard.py
 python start_bot.py
 ```
 

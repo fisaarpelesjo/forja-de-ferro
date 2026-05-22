@@ -64,6 +64,16 @@ sort_order     INTEGER NOT NULL DEFAULT 0
 `weight` e `rpe` comecam como `NULL`. A entrada `80 8` preenche a proxima linha
 pendente da sessao ativa.
 
+O dashboard local considera apenas linhas com `weight IS NOT NULL` e calcula o
+volume de treino de cada linha assim:
+
+```text
+volume = sets x reps x weight
+```
+
+`python gerar_dashboard.py` consolida esse volume por sessao e por exercicio e
+escreve `temp/dashboard-treino.html`.
+
 ### Dieta
 
 Tambem existem:
@@ -151,6 +161,7 @@ filled = 11 -> treino completo
 sqlite3 data/ironforge.db ".tables"
 sqlite3 data/ironforge.db ".schema exercises"
 sqlite3 data/ironforge.db "SELECT name, sets, reps FROM exercises ORDER BY sort_order;"
+python gerar_dashboard.py
 ```
 
 ## Nao Versionar

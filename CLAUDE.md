@@ -2,6 +2,9 @@
 
 IronForge e um diario de treino com bot do Telegram e armazenamento SQLite.
 
+Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
+evolucao do volume de treino.
+
 ## Padrao De Idioma
 
 O projeto deve ser o mais PT-BR possivel. Use portugues brasileiro como padrao
@@ -88,12 +91,23 @@ Operacoes SQLite:
 - `get_last_weights()`
 - `count_filled()`
 
+### `ironforge/dashboard.py`
+
+Dashboard local de volume:
+
+- `carregar_dados()` le sessoes e logs do SQLite.
+- Volume de cada registro: `sets x reps x weight`.
+- Entram apenas logs com `weight IS NOT NULL` e carga maior que zero.
+- `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
+- Launcher local: `python gerar_dashboard.py`.
+
 ## Dados E Estado
 
 - Banco versionado: `data/ironforge.db`.
 - Estado local: `session.json`, nao versionado.
 - Configuracao secreta: `.env`, nao versionada.
 - Sidecars SQLite (`*.db-shm`, `*.db-wal`) nao sao versionados.
+- Dashboard gerado em `temp/dashboard-treino.html` nao e versionado.
 
 SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de volta para ODS.
 Mudancas de catalogo devem sincronizar `data/ironforge.db` e `ironforge/db_ops.py`

@@ -13,6 +13,7 @@ REQUIRED_MODULES = [
     "rich",
     "ironforge.db_ops",
     "ironforge.ods_ops",
+    "ironforge.dashboard",
     "ironforge.telegram_poller",
     "ironforge.banner",
     "start_bot",

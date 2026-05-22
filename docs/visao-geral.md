@@ -7,6 +7,7 @@ Responsabilidades principais:
 1. manter o SQLite versionado em `data/ironforge.db`
 2. rodar um bot Telegram com long polling
 3. guardar a sessao ativa em `session.json`
+4. gerar um dashboard HTML local com a evolucao do volume de treino
 
 ## Fluxo Principal
 
@@ -30,12 +31,18 @@ Usuario envia 80 ou 80 8
 Usuario envia /desfazer
   -> bot encontra o ultimo log preenchido
   -> bot limpa carga e RPE
+
+Usuario roda python gerar_dashboard.py
+  -> dashboard le training_sessions e training_logs
+  -> calcula volume = series x repeticoes x carga
+  -> escreve temp/dashboard-treino.html
 ```
 
 ## Entry Points
 
 ```bash
 python start_bot.py
+python gerar_dashboard.py
 ```
 
 No Windows:
@@ -48,11 +55,15 @@ start_bot.bat
 
 `start_bot.py`: launcher multiplataforma.
 
+`gerar_dashboard.py`: gera `temp/dashboard-treino.html`.
+
 `ironforge/banner.py`: banner colorido do terminal.
 
 `ironforge/telegram_poller.py`: comandos, polling e mensagens Telegram.
 
 `ironforge/ods_ops.py`: gera sessoes e escreve `session.json`.
+
+`ironforge/dashboard.py`: consolida logs de treino e renderiza HTML local.
 
 `ironforge/db_ops.py`: acesso SQLite.
 

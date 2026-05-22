@@ -13,6 +13,8 @@ O IronForge permite controlar uma sessao de treino pelo Telegram:
 - Enviar `80 8` registra 80 kg com RPE 8.
 - `/status` mostra o progresso da sessao ativa.
 - `/desfazer` apaga o ultimo exercicio registrado.
+- `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
+  volume de treino.
 
 O banco principal e `data/ironforge.db`. A sessao ativa fica em `session.json`,
 que e estado local e nao deve ser versionado.
@@ -23,10 +25,12 @@ que e estado local e nao deve ser versionado.
 ironforge/
 ├── start_bot.py             # launcher multiplataforma
 ├── start_bot.bat            # wrapper Windows
+├── gerar_dashboard.py       # gera temp/dashboard-treino.html
 ├── ironforge/
 │   ├── banner.py            # banner do terminal
 │   ├── telegram_poller.py   # bot Telegram com long polling
 │   ├── ods_ops.py           # operacoes de sessao de treino
+│   ├── dashboard.py         # dashboard HTML de volume de treino
 │   └── db_ops.py            # operacoes SQLite
 ├── tests/
 │   ├── smoke_test.py        # checagem basica do ambiente
@@ -63,6 +67,24 @@ Aliases antigos em ingles ainda podem funcionar por compatibilidade:
 80 8      Registra 80 kg e RPE 8
 80,5 8    Virgula decimal e aceita e salva como 80.5 kg
 ```
+
+## Dashboard De Treino
+
+O dashboard local mostra a evolucao do volume usando:
+
+```text
+volume = series x repeticoes x carga
+```
+
+Para gerar:
+
+```bash
+python gerar_dashboard.py
+```
+
+O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
+para ver volume total, volume da ultima sessao, variacao recente, grafico por
+sessao e exercicios com maior volume acumulado.
 
 ## Progressao De Carga Por RPE
 
@@ -172,10 +194,17 @@ python tests/smoke_test.py
 5. Rode o teste ponta a ponta local:
 
 ```bash
+python tests/dashboard_test.py
 python tests/e2e_training_flow_test.py
 ```
 
-6. Inicie o bot:
+6. Gere o dashboard local:
+
+```bash
+python gerar_dashboard.py
+```
+
+7. Inicie o bot:
 
 ```bash
 python start_bot.py
@@ -217,6 +246,9 @@ ods_ops.get_rest_interval(exercise_name)
 ods_ops.write_session(exercises, session_id)
 ods_ops.read_exercises()
 ods_ops.read_previous_weights()
+
+dashboard.carregar_dados()
+dashboard.salvar_dashboard()
 ```
 
 `ironforge.ods_ops.gerar_treino()` existe como alias de compatibilidade.
