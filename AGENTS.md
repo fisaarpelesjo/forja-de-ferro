@@ -130,7 +130,8 @@ Dashboard local de volume de treino.
 - Apenas logs com carga preenchida (`weight IS NOT NULL` e maior que zero) entram no dashboard.
 - O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
   alem de carga, RPE, 1RM estimado, media movel, consistencia semanal,
-  comparacao recente, PRs, maiores evolucoes, filtros rapidos e alertas.
+  comparacao recente, PRs, maiores evolucoes, abas de navegacao, filtros
+  rapidos e alertas.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
 

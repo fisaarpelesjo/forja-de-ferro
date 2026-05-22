@@ -36,7 +36,7 @@ Usuario roda python gerar_dashboard.py
   -> dashboard le training_sessions e training_logs
   -> calcula volume = series x repeticoes x carga
   -> consolida carga, RPE, 1RM estimado, PRs, grupos musculares e periodos
-  -> adiciona filtros rapidos no HTML gerado
+  -> organiza as secoes em abas e adiciona filtros rapidos no HTML gerado
   -> escreve temp/dashboard-treino.html
 ```
 

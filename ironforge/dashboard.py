@@ -719,17 +719,36 @@ def gerar_html(dados):
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
     .layout {{
-      display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
-      gap: 16px;
+      display: block;
     }}
     .duas-colunas {{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-top: 16px;
+      display: block;
     }}
-    .painel {{ padding: 18px; }}
+    .painel {{ padding: 18px; margin-top: 16px; }}
+    .abas {{
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0 14px;
+      margin-bottom: 2px;
+    }}
+    .aba-botao {{
+      border: 1px solid var(--linha);
+      border-radius: 6px;
+      background: var(--painel);
+      color: var(--texto);
+      cursor: pointer;
+      font: inherit;
+      padding: 10px 14px;
+      white-space: nowrap;
+    }}
+    .aba-botao.ativa {{
+      background: var(--azul);
+      border-color: var(--azul);
+      color: #fff;
+    }}
+    .aba-conteudo {{ display: none; }}
+    .aba-conteudo.ativa {{ display: block; }}
     .filtros {{
       display: grid;
       grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -864,6 +883,15 @@ def gerar_html(dados):
       <div class="subtitulo">Ultima sessao: {html.escape(str(resumo["ultima_data"]))}</div>
     </header>
 
+    <nav class="abas" aria-label="Abas do dashboard">
+      <button class="aba-botao ativa" type="button" data-aba="geral">Geral</button>
+      <button class="aba-botao" type="button" data-aba="exercicios">Exercicios</button>
+      <button class="aba-botao" type="button" data-aba="periodos">Periodos</button>
+      <button class="aba-botao" type="button" data-aba="recordes">Recordes</button>
+      <button class="aba-botao" type="button" data-aba="filtros">Filtros</button>
+    </nav>
+
+    <section class="aba-conteudo ativa" data-painel-aba="geral">
     <section class="grade-resumo" aria-label="Resumo">
       <div class="indicador">
         <span class="rotulo">Sessoes</span>
@@ -941,7 +969,9 @@ def gerar_html(dados):
         </tbody>
       </table>
     </section>
+    </section>
 
+    <section class="aba-conteudo" data-painel-aba="exercicios">
     <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
@@ -1001,6 +1031,92 @@ def gerar_html(dados):
           <div class="indicador"><span class="rotulo">Dias desde ultimo</span><span class="valor">{consistencia["dias_desde_ultimo"] if consistencia["dias_desde_ultimo"] is not None else "-"}</span></div>
         </div>
       </article>
+    </section>
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Evolucao por exercicio</h2>
+          <span>ultimos 4 volumes</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Sequencia</th><th>Variacao</th></tr></thead>
+          <tbody>{evolucao_exercicios}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Grupos musculares</h2>
+          <span>volume e series</span>
+        </div>
+        <table>
+          <thead><tr><th>Grupo</th><th>Volume</th><th>Series</th></tr></thead>
+          <tbody>{tabela_grupos}</tbody>
+        </table>
+      </article>
+    </section>
+    </section>
+
+    <section class="aba-conteudo" data-painel-aba="periodos">
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume semanal</h2>
+          <span>ultimas 8 semanas</span>
+        </div>
+        <table>
+          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
+          <tbody>{_render_periodos(dados["volume_semanal"])}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume mensal</h2>
+          <span>ultimos 8 meses</span>
+        </div>
+        <table>
+          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
+          <tbody>{_render_periodos(dados["volume_mensal"])}</tbody>
+        </table>
+      </article>
+    </section>
+    </section>
+
+    <section class="aba-conteudo" data-painel-aba="recordes">
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Maiores evolucoes</h2>
+          <span>carga e volume</span>
+        </div>
+        <h3>Carga</h3>
+        <table><tbody>{top_carga}</tbody></table>
+        <h3>Volume</h3>
+        <table><tbody>{top_volume}</tbody></table>
+        <h3>Quedas</h3>
+        <table><tbody>{quedas}</tbody></table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Recordes pessoais</h2>
+          <span>carga e volume</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Maior carga</th><th>Maior volume</th></tr></thead>
+          <tbody>{tabela_prs}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="painel" style="margin-top: 16px;">
+      <div class="linha-topo">
+        <h2>Alertas</h2>
+        <span>regras simples</span>
+      </div>
+      {_render_lista_simples(dados["alertas"])}
+    </section>
+    </section>
+
+    <section class="aba-conteudo" data-painel-aba="filtros">
       <article class="painel">
         <div class="linha-topo">
           <h2>Filtros rapidos</h2>
@@ -1034,85 +1150,6 @@ def gerar_html(dados):
         </table>
       </article>
     </section>
-
-    <section class="duas-colunas">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Evolucao por exercicio</h2>
-          <span>ultimos 4 volumes</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>Sequencia</th><th>Variacao</th></tr></thead>
-          <tbody>{evolucao_exercicios}</tbody>
-        </table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Grupos musculares</h2>
-          <span>volume e series</span>
-        </div>
-        <table>
-          <thead><tr><th>Grupo</th><th>Volume</th><th>Series</th></tr></thead>
-          <tbody>{tabela_grupos}</tbody>
-        </table>
-      </article>
-    </section>
-
-    <section class="duas-colunas">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume semanal</h2>
-          <span>ultimas 8 semanas</span>
-        </div>
-        <table>
-          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
-          <tbody>{_render_periodos(dados["volume_semanal"])}</tbody>
-        </table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume mensal</h2>
-          <span>ultimos 8 meses</span>
-        </div>
-        <table>
-          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
-          <tbody>{_render_periodos(dados["volume_mensal"])}</tbody>
-        </table>
-      </article>
-    </section>
-
-    <section class="duas-colunas">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Maiores evolucoes</h2>
-          <span>carga e volume</span>
-        </div>
-        <h3>Carga</h3>
-        <table><tbody>{top_carga}</tbody></table>
-        <h3>Volume</h3>
-        <table><tbody>{top_volume}</tbody></table>
-        <h3>Quedas</h3>
-        <table><tbody>{quedas}</tbody></table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Recordes pessoais</h2>
-          <span>carga e volume</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>Maior carga</th><th>Maior volume</th></tr></thead>
-          <tbody>{tabela_prs}</tbody>
-        </table>
-      </article>
-    </section>
-
-    <section class="painel" style="margin-top: 16px;">
-      <div class="linha-topo">
-        <h2>Alertas</h2>
-        <span>regras simples</span>
-      </div>
-      {_render_lista_simples(dados["alertas"])}
-    </section>
   </main>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>
   <script>
@@ -1126,6 +1163,18 @@ def gerar_html(dados):
     const filtroExercicio = document.getElementById("filtro-exercicio");
     const filtroOrdem = document.getElementById("filtro-ordem");
     const tabelaFiltrada = document.getElementById("tabela-filtrada");
+    const botoesAbas = document.querySelectorAll(".aba-botao");
+    const paineisAbas = document.querySelectorAll(".aba-conteudo");
+
+    botoesAbas.forEach((botao) => {{
+      botao.addEventListener("click", () => {{
+        const aba = botao.dataset.aba;
+        botoesAbas.forEach((item) => item.classList.toggle("ativa", item === botao));
+        paineisAbas.forEach((painel) =>
+          painel.classList.toggle("ativa", painel.dataset.painelAba === aba)
+        );
+      }});
+    }});
 
     function renderFiltrada() {{
       const dias = filtroPeriodo.value;

@@ -74,8 +74,8 @@ volume = sets x reps x weight
 `python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana,
 mes e grupo muscular. O HTML tambem mostra carga, RPE, series, repeticoes,
 comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes,
-1RM estimado, media movel, consistencia semanal, filtros rapidos e alertas
-simples.
+1RM estimado, media movel, consistencia semanal, abas de navegacao, filtros
+rapidos e alertas simples.
 
 ### Dieta
 

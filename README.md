@@ -83,7 +83,7 @@ python gerar_dashboard.py
 ```
 
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
-para ver:
+para navegar por abas e ver:
 
 - volume por sessao, semana e mes
 - evolucao por exercicio

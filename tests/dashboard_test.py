@@ -65,6 +65,8 @@ def main():
             assert "Media movel de volume" in html
             assert "Consistencia" in html
             assert "Filtros rapidos" in html
+            assert "data-aba=\"geral\"" in html
+            assert "data-painel-aba=\"filtros\"" in html
             assert "Supino reto (barra)" in html
             assert "2.460 kg" in html
 
