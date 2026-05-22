@@ -132,6 +132,7 @@ Dashboard local de volume de treino.
   alem de carga, RPE, 1RM estimado, media movel, consistencia semanal,
   comparacao recente, PRs, maiores evolucoes, abas de navegacao, filtros
   rapidos e alertas.
+- O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
 

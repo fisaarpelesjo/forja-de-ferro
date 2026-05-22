@@ -660,16 +660,16 @@ def gerar_html(dados):
   <title>Dashboard de treino - IronForge</title>
   <style>
     :root {{
-      color-scheme: light;
-      --fundo: #f6f5f2;
-      --texto: #1e2528;
-      --muted: #697579;
-      --linha: #d9dedb;
-      --painel: #ffffff;
-      --verde: #2f8f72;
-      --azul: #3269a8;
-      --vermelho: #a84c4c;
-      --sombra: 0 14px 36px rgba(31, 42, 46, 0.10);
+      color-scheme: dark;
+      --fundo: #090909;
+      --texto: #e7e7e7;
+      --muted: #8d8d8d;
+      --linha: #2a2a2a;
+      --painel: #111111;
+      --painel-2: #161616;
+      --verde: #62c370;
+      --azul: #d8d8d8;
+      --vermelho: #e05d5d;
     }}
     * {{ box-sizing: border-box; }}
     body {{
@@ -681,41 +681,42 @@ def gerar_html(dados):
     main {{
       width: min(1180px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 32px 0 48px;
+      padding: 24px 0 44px;
     }}
     header {{
       display: flex;
       align-items: end;
       justify-content: space-between;
       gap: 24px;
-      margin-bottom: 24px;
+      border-bottom: 1px solid var(--linha);
+      margin-bottom: 16px;
+      padding-bottom: 16px;
     }}
     h1, h2 {{ margin: 0; letter-spacing: 0; }}
-    h1 {{ font-size: 34px; line-height: 1.08; }}
-    h2 {{ font-size: 18px; }}
+    h1 {{ font-size: 30px; line-height: 1.08; }}
+    h2 {{ font-size: 17px; }}
     .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
     .grade-resumo {{
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 12px;
     }}
     .indicador, .painel {{
       background: var(--painel);
       border: 1px solid var(--linha);
-      border-radius: 8px;
-      box-shadow: var(--sombra);
+      border-radius: 2px;
     }}
-    .indicador {{ padding: 16px; min-height: 102px; }}
+    .indicador {{ padding: 14px; min-height: 96px; }}
     .rotulo {{
       display: block;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }}
-    .valor {{ font-size: 27px; font-weight: 700; }}
-    .valor-menor {{ font-size: 20px; }}
+    .valor {{ font-size: 25px; font-weight: 700; }}
+    .valor-menor {{ font-size: 19px; }}
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
     .layout {{
@@ -724,52 +725,53 @@ def gerar_html(dados):
     .duas-colunas {{
       display: block;
     }}
-    .painel {{ padding: 18px; margin-top: 16px; }}
+    .painel {{ padding: 16px; margin-top: 12px; }}
     .abas {{
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
-      padding: 4px 0 14px;
+      border-bottom: 1px solid var(--linha);
+      padding: 0 0 12px;
       margin-bottom: 2px;
     }}
     .aba-botao {{
       border: 1px solid var(--linha);
-      border-radius: 6px;
-      background: var(--painel);
+      border-radius: 2px;
+      background: transparent;
       color: var(--texto);
       cursor: pointer;
       font: inherit;
-      padding: 10px 14px;
+      padding: 9px 12px;
       white-space: nowrap;
     }}
     .aba-botao.ativa {{
-      background: var(--azul);
-      border-color: var(--azul);
-      color: #fff;
+      background: var(--texto);
+      border-color: var(--texto);
+      color: #080808;
     }}
     .aba-conteudo {{ display: none; }}
     .aba-conteudo.ativa {{ display: block; }}
     .filtros {{
       display: grid;
       grid-template-columns: repeat(3, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 14px;
     }}
     label {{
       display: grid;
       gap: 6px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
     }}
     select {{
       width: 100%;
       border: 1px solid var(--linha);
-      border-radius: 6px;
-      background: #fff;
+      border-radius: 2px;
+      background: var(--painel-2);
       color: var(--texto);
       font: inherit;
-      padding: 9px 10px;
+      padding: 8px 10px;
       text-transform: none;
     }}
     .linha-topo {{
@@ -777,15 +779,17 @@ def gerar_html(dados):
       align-items: baseline;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 14px;
+      border-bottom: 1px solid var(--linha);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
     }}
     .linha-topo span {{ color: var(--muted); font-size: 13px; }}
     svg {{ width: 100%; height: auto; display: block; }}
     .eixo {{ stroke: var(--linha); stroke-width: 1; }}
-    .linha-volume {{ fill: none; stroke: var(--azul); stroke-width: 4; }}
-    .ponto-volume {{ fill: var(--painel); stroke: var(--azul); stroke-width: 3; }}
+    .linha-volume {{ fill: none; stroke: var(--azul); stroke-width: 3; }}
+    .ponto-volume {{ fill: var(--fundo); stroke: var(--azul); stroke-width: 2; }}
     .rotulo-volume {{
-      fill: var(--azul);
+      fill: var(--texto);
       font-size: 14px;
       font-weight: 700;
     }}
@@ -797,7 +801,7 @@ def gerar_html(dados):
       height: 238px;
       display: grid;
       grid-template-columns: repeat(12, minmax(18px, 1fr));
-      gap: 8px;
+      gap: 6px;
       align-items: end;
       padding-top: 12px;
     }}
@@ -807,7 +811,7 @@ def gerar_html(dados):
       display: flex;
       flex-direction: column;
       justify-content: end;
-      gap: 8px;
+      gap: 7px;
       text-align: center;
       color: var(--muted);
       font-size: 11px;
@@ -831,15 +835,15 @@ def gerar_html(dados):
     .barra {{
       min-height: 8px;
       border-radius: 5px 5px 2px 2px;
-      background: var(--verde);
+      background: var(--texto);
     }}
     table {{
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13px;
     }}
     th, td {{
-      padding: 12px 8px;
+      padding: 10px 8px;
       border-bottom: 1px solid var(--linha);
       text-align: right;
       white-space: nowrap;
@@ -848,14 +852,14 @@ def gerar_html(dados):
       text-align: left;
       white-space: normal;
     }}
-    th {{ color: var(--muted); font-weight: 600; }}
+    th {{ color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 11px; }}
     .vazio {{ color: var(--muted); }}
     .lista {{ margin: 0; padding-left: 18px; color: var(--texto); }}
     .lista li {{ margin: 8px 0; }}
     .mini-grade {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      gap: 10px;
     }}
     @media (max-width: 860px) {{
       header, .layout, .duas-colunas {{ display: block; }}

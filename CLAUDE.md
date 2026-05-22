@@ -101,6 +101,7 @@ Dashboard local de volume:
 - O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
   carga, RPE, 1RM estimado, media movel, consistencia semanal, comparacao
   recente, PRs, maiores evolucoes, abas de navegacao, filtros rapidos e alertas.
+- O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - Launcher local: `python gerar_dashboard.py`.
 
