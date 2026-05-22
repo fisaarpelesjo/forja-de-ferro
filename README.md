@@ -92,6 +92,10 @@ para ver:
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
 - maiores evolucoes, quedas, recordes pessoais e alertas simples
+- 1RM estimado por exercicio usando a formula de Epley
+- media movel de volume em janela de 3 sessoes
+- consistencia semanal e dias desde o ultimo treino
+- filtros rapidos por periodo, exercicio e ordenacao
 
 ## Progressao De Carga Por RPE
 

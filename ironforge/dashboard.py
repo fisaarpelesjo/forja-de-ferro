@@ -98,6 +98,8 @@ def carregar_dados():
             "carga": float(row["weight"]),
             "series": int(row["sets"]),
             "reps": int(row["reps"]),
+            "repeticoes": int(row["sets"]) * int(row["reps"]),
+            "um_rm": _estimar_1rm(float(row["weight"]), int(row["reps"])),
             "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
         }
         sessao["logs"].append(log)
@@ -109,6 +111,8 @@ def carregar_dados():
                 "carga": float(row["weight"]),
                 "series": int(row["sets"]),
                 "reps": int(row["reps"]),
+                "repeticoes": int(row["sets"]) * int(row["reps"]),
+                "um_rm": _estimar_1rm(float(row["weight"]), int(row["reps"])),
                 "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
             }
         )
@@ -128,6 +132,7 @@ def carregar_dados():
         ultimo = pontos[-1]["volume"]
         cargas = [p["carga"] for p in pontos]
         rpes = [p["rpe"] for p in pontos if p["rpe"] is not None]
+        melhores_1rm = max(pontos, key=lambda p: p["um_rm"])
         volume_por_exercicio.append(
             {
                 "nome": nome,
@@ -140,6 +145,8 @@ def carregar_dados():
                 "melhor_carga": max(cargas),
                 "variacao_carga": cargas[-1] - cargas[0] if len(cargas) > 1 else 0.0,
                 "rpe_medio": sum(rpes) / len(rpes) if rpes else None,
+                "melhor_1rm": melhores_1rm["um_rm"],
+                "data_melhor_1rm": melhores_1rm["data"],
             }
         )
 
@@ -179,7 +186,13 @@ def carregar_dados():
         "prs": _calcular_prs(volume_por_exercicio),
         "alertas": _calcular_alertas(volume_por_sessao, volume_por_exercicio),
         "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
+        "media_movel": _calcular_media_movel(volume_por_sessao),
+        "consistencia": _calcular_consistencia(volume_por_sessao),
     }
+
+
+def _estimar_1rm(carga, reps):
+    return carga * (1 + reps / 30)
 
 
 def _media(valores):
@@ -215,6 +228,63 @@ def _agrupar_periodo(sessoes, periodo):
         item["series"] += sessao["series"]
         item["sessoes"] += 1
     return list(agrupado.values())
+
+
+def _calcular_media_movel(sessoes, janela=3):
+    medias = []
+    for idx, sessao in enumerate(sessoes):
+        inicio = max(0, idx - janela + 1)
+        trecho = sessoes[inicio : idx + 1]
+        medias.append(
+            {
+                "data": sessao["data"],
+                "volume": sessao["volume"],
+                "media": sum(item["volume"] for item in trecho) / len(trecho),
+                "janela": len(trecho),
+            }
+        )
+    return medias
+
+
+def _calcular_consistencia(sessoes):
+    if not sessoes:
+        return {
+            "semanas_com_treino": 0,
+            "melhor_sequencia": 0,
+            "sequencia_atual": 0,
+            "dias_desde_ultimo": None,
+            "media_sessoes_semana": 0.0,
+        }
+
+    semanas = sorted({_parse_data(sessao["data"]).isocalendar()[:2] for sessao in sessoes})
+    semanas_inicio = [date.fromisocalendar(ano, semana, 1) for ano, semana in semanas]
+    melhor = 1
+    atual = 1
+    for anterior, corrente in zip(semanas_inicio, semanas_inicio[1:]):
+        if (corrente - anterior).days == 7:
+            atual += 1
+        else:
+            melhor = max(melhor, atual)
+            atual = 1
+    melhor = max(melhor, atual)
+
+    sequencia_atual = 1
+    for anterior, corrente in zip(reversed(semanas_inicio[:-1]), reversed(semanas_inicio[1:])):
+        if (corrente - anterior).days == 7:
+            sequencia_atual += 1
+        else:
+            break
+
+    primeira = _parse_data(sessoes[0]["data"])
+    ultima = _parse_data(sessoes[-1]["data"])
+    semanas_intervalo = max(((ultima - primeira).days // 7) + 1, 1)
+    return {
+        "semanas_com_treino": len(semanas_inicio),
+        "melhor_sequencia": melhor,
+        "sequencia_atual": sequencia_atual,
+        "dias_desde_ultimo": (date.today() - ultima).days,
+        "media_sessoes_semana": len(sessoes) / semanas_intervalo,
+    }
 
 
 def _comparar_ultimas_sessoes(sessoes):
@@ -419,6 +489,15 @@ def _render_lista_simples(itens):
     ) + "</ul>"
 
 
+def _opcoes_exercicios(exercicios):
+    opcoes = ['<option value="">Todos</option>']
+    for item in sorted(exercicios, key=lambda ex: ex["nome"]):
+        nome = html.escape(item["nome"])
+        valor = html.escape(item["nome"], quote=True)
+        opcoes.append(f'<option value="{valor}">{nome}</option>')
+    return "\n".join(opcoes)
+
+
 def gerar_html(dados):
     resumo = dados["resumo"]
     sessoes = dados["volume_por_sessao"]
@@ -552,6 +631,26 @@ def gerar_html(dados):
             {"valor": lambda item: _fmt_delta(item["variacao"])},
         ],
     )
+    tabela_1rm = _linhas_tabela(
+        sorted(exercicios, key=lambda item: item["melhor_1rm"], reverse=True)[:12],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{_fmt_decimal(item['melhor_1rm'])} kg"},
+            {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg"},
+            {"valor": lambda item: html.escape(item["data_melhor_1rm"])},
+        ],
+    )
+    tabela_media_movel = _linhas_tabela(
+        dados["media_movel"][-10:],
+        [
+            {"valor": lambda item: html.escape(item["data"])},
+            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
+            {"valor": lambda item: f"{_fmt_numero(item['media'])} kg"},
+            {"valor": lambda item: f"{item['janela']} sessoes"},
+        ],
+    )
+    consistencia = dados["consistencia"]
+    opcoes_exercicios = _opcoes_exercicios(exercicios)
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -631,6 +730,29 @@ def gerar_html(dados):
       margin-top: 16px;
     }}
     .painel {{ padding: 18px; }}
+    .filtros {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }}
+    label {{
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }}
+    select {{
+      width: 100%;
+      border: 1px solid var(--linha);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--texto);
+      font: inherit;
+      padding: 9px 10px;
+      text-transform: none;
+    }}
     .linha-topo {{
       display: flex;
       align-items: baseline;
@@ -711,6 +833,11 @@ def gerar_html(dados):
     .vazio {{ color: var(--muted); }}
     .lista {{ margin: 0; padding-left: 18px; color: var(--texto); }}
     .lista li {{ margin: 8px 0; }}
+    .mini-grade {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }}
     @media (max-width: 860px) {{
       header, .layout, .duas-colunas {{ display: block; }}
       header > div:last-child {{ margin-top: 12px; }}
@@ -723,6 +850,7 @@ def gerar_html(dados):
       .grade-resumo {{ grid-template-columns: 1fr; }}
       .valor {{ font-size: 24px; }}
       th, td {{ font-size: 13px; padding: 10px 4px; }}
+      .filtros, .mini-grade {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
@@ -840,6 +968,76 @@ def gerar_html(dados):
     <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
+          <h2>1RM estimado</h2>
+          <span>formula de Epley</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>1RM est.</th><th>Melhor carga</th><th>Data</th></tr></thead>
+          <tbody>{tabela_1rm}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Media movel de volume</h2>
+          <span>janela de 3 sessoes</span>
+        </div>
+        <table>
+          <thead><tr><th>Data</th><th>Volume</th><th>Media</th><th>Janela</th></tr></thead>
+          <tbody>{tabela_media_movel}</tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Consistencia</h2>
+          <span>semanas com treino</span>
+        </div>
+        <div class="mini-grade">
+          <div class="indicador"><span class="rotulo">Semanas ativas</span><span class="valor">{consistencia["semanas_com_treino"]}</span></div>
+          <div class="indicador"><span class="rotulo">Melhor sequencia</span><span class="valor">{consistencia["melhor_sequencia"]}</span></div>
+          <div class="indicador"><span class="rotulo">Sequencia atual</span><span class="valor">{consistencia["sequencia_atual"]}</span></div>
+          <div class="indicador"><span class="rotulo">Dias desde ultimo</span><span class="valor">{consistencia["dias_desde_ultimo"] if consistencia["dias_desde_ultimo"] is not None else "-"}</span></div>
+        </div>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Filtros rapidos</h2>
+          <span>periodo e exercicio</span>
+        </div>
+        <div class="filtros">
+          <label>Periodo
+            <select id="filtro-periodo">
+              <option value="todos">Tudo</option>
+              <option value="7">7 dias</option>
+              <option value="30">30 dias</option>
+              <option value="90">90 dias</option>
+            </select>
+          </label>
+          <label>Exercicio
+            <select id="filtro-exercicio">
+              {opcoes_exercicios}
+            </select>
+          </label>
+          <label>Ordenar
+            <select id="filtro-ordem">
+              <option value="data">Data</option>
+              <option value="volume">Volume</option>
+              <option value="carga">Carga</option>
+            </select>
+          </label>
+        </div>
+        <table>
+          <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
+          <tbody id="tabela-filtrada"></tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
           <h2>Evolucao por exercicio</h2>
           <span>ultimos 4 volumes</span>
         </div>
@@ -917,6 +1115,51 @@ def gerar_html(dados):
     </section>
   </main>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>
+  <script>
+    const dados = JSON.parse(document.getElementById("dados-dashboard").textContent);
+    const linhas = dados.volume_por_sessao.flatMap((sessao) =>
+      sessao.logs.map((log) => ({{ ...log, data: sessao.data }}))
+    );
+    const fmtInteiro = (valor) => Math.round(valor).toLocaleString("pt-BR");
+    const fmtDecimal = (valor) => valor == null ? "-" : Number(valor).toLocaleString("pt-BR", {{ maximumFractionDigits: 1 }});
+    const filtroPeriodo = document.getElementById("filtro-periodo");
+    const filtroExercicio = document.getElementById("filtro-exercicio");
+    const filtroOrdem = document.getElementById("filtro-ordem");
+    const tabelaFiltrada = document.getElementById("tabela-filtrada");
+
+    function renderFiltrada() {{
+      const dias = filtroPeriodo.value;
+      const exercicio = filtroExercicio.value;
+      const ordem = filtroOrdem.value;
+      const datas = linhas.map((linha) => new Date(linha.data + "T00:00:00"));
+      const dataMax = datas.length ? new Date(Math.max(...datas)) : null;
+      let filtradas = linhas.filter((linha) => {{
+        const noPeriodo = dias === "todos" || !dataMax ||
+          ((dataMax - new Date(linha.data + "T00:00:00")) / 86400000) <= Number(dias);
+        const noExercicio = !exercicio || linha.nome === exercicio;
+        return noPeriodo && noExercicio;
+      }});
+      filtradas.sort((a, b) => {{
+        if (ordem === "volume") return b.volume - a.volume;
+        if (ordem === "carga") return b.carga - a.carga;
+        return a.data.localeCompare(b.data);
+      }});
+      tabelaFiltrada.innerHTML = filtradas.slice(-40).map((linha) => `
+        <tr>
+          <td>${{linha.data}}</td>
+          <td>${{linha.nome}}</td>
+          <td>${{fmtDecimal(linha.carga)}} kg</td>
+          <td>${{fmtInteiro(linha.volume)}} kg</td>
+          <td>${{fmtDecimal(linha.um_rm)}} kg</td>
+          <td>${{fmtDecimal(linha.rpe)}}</td>
+        </tr>
+      `).join("") || "<tr><td colspan=\\"6\\">Sem registros nesse filtro.</td></tr>";
+    }}
+    [filtroPeriodo, filtroExercicio, filtroOrdem].forEach((controle) =>
+      controle.addEventListener("change", renderFiltrada)
+    );
+    renderFiltrada();
+  </script>
 </body>
 </html>
 """
