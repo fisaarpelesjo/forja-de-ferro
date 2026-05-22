@@ -95,6 +95,7 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - 1RM estimado por exercicio usando a formula de Epley
 - media movel de volume em janela de 3 sessoes
 - consistencia semanal e dias desde o ultimo treino
+- analises cruzadas de volume x RPE, carga x RPE, RPE por faixa, grupos por semana e ultima sessao vs media das 3 anteriores
 - filtros rapidos por periodo, exercicio e ordenacao
 
 ## Progressao De Carga Por RPE

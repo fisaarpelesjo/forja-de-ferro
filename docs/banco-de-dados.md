@@ -75,7 +75,7 @@ volume = sets x reps x weight
 mes e grupo muscular. O HTML tambem mostra carga, RPE, series, repeticoes,
 comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes,
 1RM estimado, media movel, consistencia semanal, abas de navegacao, filtros
-rapidos e alertas simples.
+rapidos, analises cruzadas de volume/RPE/carga e alertas simples.
 
 ### Dieta
 

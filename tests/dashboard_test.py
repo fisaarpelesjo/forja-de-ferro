@@ -52,6 +52,9 @@ def main():
             assert dados["media_movel"]
             assert dados["consistencia"]["semanas_com_treino"] == 2
             assert dados["volume_por_exercicio"][0]["melhor_1rm"] > 0
+            assert dados["analises"]["volume_rpe_sessao"]
+            assert dados["analises"]["rpe_distribuicao"]
+            assert dados["analises"]["carga_rpe_exercicio"]
 
             caminho = dashboard.salvar_dashboard(output)
             html = caminho.read_text(encoding="utf-8")
@@ -67,6 +70,9 @@ def main():
             assert "Filtros rapidos" in html
             assert "data-aba=\"geral\"" in html
             assert "data-painel-aba=\"filtros\"" in html
+            assert "data-aba=\"analises\"" in html
+            assert "Volume x RPE medio" in html
+            assert "Distribuicao de RPE" in html
             assert "Supino reto (barra)" in html
             assert "2.460 kg" in html
 

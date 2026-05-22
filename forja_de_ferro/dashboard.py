@@ -188,6 +188,7 @@ def carregar_dados():
         "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
         "media_movel": _calcular_media_movel(volume_por_sessao),
         "consistencia": _calcular_consistencia(volume_por_sessao),
+        "analises": _calcular_analises(volume_por_sessao, volume_por_exercicio),
     }
 
 
@@ -362,6 +363,83 @@ def _calcular_alertas(sessoes, exercicios):
     return alertas
 
 
+def _calcular_analises(sessoes, exercicios):
+    rpe_distribuicao = defaultdict(int)
+    volume_grupo_semana = defaultdict(lambda: {"periodo": "", "grupo": "", "volume": 0.0})
+    carga_rpe = []
+
+    for sessao in sessoes:
+        data_sessao = _parse_data(sessao["data"])
+        ano, semana, _ = data_sessao.isocalendar()
+        periodo = f"{ano}-S{semana:02d}"
+        for log in sessao["logs"]:
+            if log["rpe"] is not None:
+                rpe_distribuicao[str(int(round(log["rpe"])))] += 1
+            grupo = _grupo_muscular(log["nome"])
+            chave = (periodo, grupo)
+            volume_grupo_semana[chave]["periodo"] = periodo
+            volume_grupo_semana[chave]["grupo"] = grupo
+            volume_grupo_semana[chave]["volume"] += log["volume"]
+
+    for item in exercicios:
+        ultimo = item["pontos"][-1]
+        carga_rpe.append(
+            {
+                "nome": item["nome"],
+                "carga": ultimo["carga"],
+                "rpe": ultimo["rpe"],
+                "volume": ultimo["volume"],
+                "um_rm": ultimo["um_rm"],
+            }
+        )
+
+    comparacao_media3 = []
+    if sessoes:
+        ultima = sessoes[-1]
+        historico = sessoes[-4:-1]
+        medias = defaultdict(list)
+        for sessao in historico:
+            for log in sessao["logs"]:
+                medias[log["nome"]].append(log)
+        for log in ultima["logs"]:
+            anteriores = medias.get(log["nome"], [])
+            if not anteriores:
+                continue
+            media_volume = sum(item["volume"] for item in anteriores) / len(anteriores)
+            media_carga = sum(item["carga"] for item in anteriores) / len(anteriores)
+            comparacao_media3.append(
+                {
+                    "nome": log["nome"],
+                    "volume_atual": log["volume"],
+                    "media_volume": media_volume,
+                    "delta_volume": log["volume"] - media_volume,
+                    "carga_atual": log["carga"],
+                    "media_carga": media_carga,
+                    "delta_carga": log["carga"] - media_carga,
+                    "rpe": log["rpe"],
+                }
+            )
+
+    return {
+        "volume_rpe_sessao": [
+            {
+                "data": sessao["data"],
+                "volume": sessao["volume"],
+                "rpe_medio": sessao["rpe_medio"],
+            }
+            for sessao in sessoes
+            if sessao["rpe_medio"] is not None
+        ],
+        "carga_rpe_exercicio": sorted(carga_rpe, key=lambda item: item["volume"], reverse=True),
+        "volume_grupo_semana": sorted(volume_grupo_semana.values(), key=lambda item: (item["periodo"], item["grupo"])),
+        "rpe_distribuicao": [
+            {"rpe": rpe, "quantidade": rpe_distribuicao[rpe]}
+            for rpe in sorted(rpe_distribuicao, key=lambda valor: int(valor))
+        ],
+        "ultima_vs_media3": comparacao_media3,
+    }
+
+
 def _fmt_numero(valor):
     return f"{valor:,.0f}".replace(",", ".")
 
@@ -496,6 +574,56 @@ def _opcoes_exercicios(exercicios):
         valor = html.escape(item["nome"], quote=True)
         opcoes.append(f'<option value="{valor}">{nome}</option>')
     return "\n".join(opcoes)
+
+
+def _render_barras_simples(itens, chave_rotulo, chave_valor, unidade=""):
+    if not itens:
+        return "<p class=\"vazio\">Sem dados suficientes.</p>"
+    maximo = max(item[chave_valor] for item in itens) or 1
+    barras = []
+    for item in itens:
+        largura = max((item[chave_valor] / maximo) * 100, 2)
+        barras.append(
+            f"""
+            <div class="barra-horizontal">
+              <span>{html.escape(str(item[chave_rotulo]))}</span>
+              <div><i style="width: {largura:.1f}%"></i></div>
+              <strong>{_fmt_numero(item[chave_valor])}{unidade}</strong>
+            </div>
+            """
+        )
+    return "\n".join(barras)
+
+
+def _render_dispersao_volume_rpe(pontos):
+    if not pontos:
+        return "<p class=\"vazio\">Sem RPE registrado para cruzar com volume.</p>"
+    width, height, padding = 760, 300, 36
+    volumes = [p["volume"] for p in pontos]
+    rpes = [p["rpe_medio"] for p in pontos]
+    min_volume, max_volume = min(volumes), max(volumes)
+    min_rpe, max_rpe = min(rpes), max(rpes)
+    span_volume = max(max_volume - min_volume, 1)
+    span_rpe = max(max_rpe - min_rpe, 1)
+    circulos = []
+    for ponto in pontos:
+        x = padding + ((ponto["volume"] - min_volume) / span_volume) * (width - padding * 2)
+        y = height - padding - ((ponto["rpe_medio"] - min_rpe) / span_rpe) * (height - padding * 2)
+        circulos.append(
+            f"""
+            <circle class="ponto-analise" cx="{x:.1f}" cy="{y:.1f}" r="5"></circle>
+            <text class="rotulo-data" x="{x:.1f}" y="{y + 18:.1f}" text-anchor="middle">{html.escape(ponto["data"][5:])}</text>
+            """
+        )
+    return f"""
+    <svg viewBox="0 0 {width} {height}" role="img" aria-label="Dispersao de volume por RPE medio">
+      <line class="eixo" x1="{padding}" y1="{height - padding}" x2="{width - padding}" y2="{height - padding}"></line>
+      <line class="eixo" x1="{padding}" y1="{padding}" x2="{padding}" y2="{height - padding}"></line>
+      <text class="rotulo-data" x="{width - padding}" y="{height - 8}" text-anchor="end">volume</text>
+      <text class="rotulo-data" x="{padding}" y="18" text-anchor="start">RPE</text>
+      {''.join(circulos)}
+    </svg>
+    """
 
 
 def gerar_html(dados):
@@ -651,6 +779,39 @@ def gerar_html(dados):
     )
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
+    analises = dados["analises"]
+    grafico_volume_rpe = _render_dispersao_volume_rpe(analises["volume_rpe_sessao"])
+    grafico_rpe = _render_barras_simples(analises["rpe_distribuicao"], "rpe", "quantidade")
+    grafico_grupos_semana = _render_barras_simples(
+        analises["volume_grupo_semana"][-12:], "grupo", "volume", " kg"
+    )
+    tabela_carga_rpe_analise = _linhas_tabela(
+        analises["carga_rpe_exercicio"][:12],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{_fmt_decimal(item['carga'])} kg"},
+            {"valor": lambda item: _fmt_decimal(item["rpe"])},
+            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
+            {"valor": lambda item: f"{_fmt_decimal(item['um_rm'])} kg"},
+        ],
+    )
+    tabela_media3 = _linhas_tabela(
+        analises["ultima_vs_media3"],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{_fmt_numero(item['volume_atual'])} kg"},
+            {"valor": lambda item: f"{_fmt_numero(item['media_volume'])} kg"},
+            {
+                "valor": lambda item: _fmt_delta(item["delta_volume"]),
+                "classe": lambda item: _classe_delta(item["delta_volume"]),
+            },
+            {
+                "valor": lambda item: _fmt_delta(item["delta_carga"]),
+                "classe": lambda item: _classe_delta(item["delta_carga"]),
+            },
+            {"valor": lambda item: _fmt_decimal(item["rpe"])},
+        ],
+    )
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -788,6 +949,7 @@ def gerar_html(dados):
     .eixo {{ stroke: var(--linha); stroke-width: 1; }}
     .linha-volume {{ fill: none; stroke: var(--azul); stroke-width: 3; }}
     .ponto-volume {{ fill: var(--fundo); stroke: var(--azul); stroke-width: 2; }}
+    .ponto-analise {{ fill: var(--texto); stroke: var(--fundo); stroke-width: 2; }}
     .rotulo-volume {{
       fill: var(--texto);
       font-size: 14px;
@@ -836,6 +998,31 @@ def gerar_html(dados):
       min-height: 8px;
       border-radius: 5px 5px 2px 2px;
       background: var(--texto);
+    }}
+    .barra-horizontal {{
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr) 90px;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid var(--linha);
+      padding: 9px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }}
+    .barra-horizontal div {{
+      height: 10px;
+      background: var(--painel-2);
+      border: 1px solid var(--linha);
+    }}
+    .barra-horizontal i {{
+      display: block;
+      height: 100%;
+      background: var(--texto);
+    }}
+    .barra-horizontal strong {{
+      color: var(--texto);
+      font-weight: 700;
+      text-align: right;
     }}
     table {{
       width: 100%;
@@ -891,6 +1078,7 @@ def gerar_html(dados):
       <button class="aba-botao ativa" type="button" data-aba="geral">Geral</button>
       <button class="aba-botao" type="button" data-aba="exercicios">Exercicios</button>
       <button class="aba-botao" type="button" data-aba="periodos">Periodos</button>
+      <button class="aba-botao" type="button" data-aba="analises">Analises</button>
       <button class="aba-botao" type="button" data-aba="recordes">Recordes</button>
       <button class="aba-botao" type="button" data-aba="filtros">Filtros</button>
     </nav>
@@ -1083,6 +1271,54 @@ def gerar_html(dados):
         </table>
       </article>
     </section>
+    </section>
+
+    <section class="aba-conteudo" data-painel-aba="analises">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume x RPE medio</h2>
+          <span>por sessao</span>
+        </div>
+        {grafico_volume_rpe}
+      </article>
+
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Carga x RPE por exercicio</h2>
+          <span>ultimo registro</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Carga</th><th>RPE</th><th>Volume</th><th>1RM</th></tr></thead>
+          <tbody>{tabela_carga_rpe_analise}</tbody>
+        </table>
+      </article>
+
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Volume semanal por grupo</h2>
+          <span>ultimos grupos registrados</span>
+        </div>
+        {grafico_grupos_semana}
+      </article>
+
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Distribuicao de RPE</h2>
+          <span>todos os registros</span>
+        </div>
+        {grafico_rpe}
+      </article>
+
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Ultima sessao vs media das 3 anteriores</h2>
+          <span>por exercicio</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Volume atual</th><th>Media 3</th><th>Delta volume</th><th>Delta carga</th><th>RPE</th></tr></thead>
+          <tbody>{tabela_media3}</tbody>
+        </table>
+      </article>
     </section>
 
     <section class="aba-conteudo" data-painel-aba="recordes">
