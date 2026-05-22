@@ -15,7 +15,7 @@ BANNER = [
     ("          (    )(   FOGO NA FORJA   )", "bright_yellow"),
     (r"           \__/  \__/ \__/ \__/ \__/", "red"),
     ("       .=================================.", "bright_black"),
-    ("      /  DIARIO DE TREINO IRONFORGE      \\", "bright_white"),
+    ("      /  DIARIO DE TREINO FORJA DE FERRO     \\", "bright_white"),
     ("     /_____________________________________\\ ", "bright_black"),
     (r"      \   _   _   _   _   _   _   _   _  /", "white"),
     (r"       \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/ \_/", "bright_black"),
@@ -24,7 +24,7 @@ BANNER = [
     ("              .- ) _ ( -.", "bright_black"),
     ("             :  '-' '-'  ;", "white"),
     (r"            /'-.._____.-' \ ", "bright_white"),
-    (r"            \__  STEEL  __/", "bright_black"),
+    (r"            \__   ACO   __/", "bright_black"),
     ("               '-._____.-'", "white"),
 ]
 

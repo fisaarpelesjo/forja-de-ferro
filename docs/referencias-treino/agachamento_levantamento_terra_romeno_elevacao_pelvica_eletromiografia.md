@@ -23,7 +23,7 @@ O resultado principal foi que o RDL teve ativacao de gluteo semelhante ao hip th
 
 ---
 
-## Por Que Importa Para O IronForge
+## Por Que Importa Para A Forja de Ferro
 
 O treino atual inclui:
 
@@ -102,13 +102,13 @@ A carga fixa de 60 kg representou uma porcentagem menor do 1RM no RDL e no hip t
 
 O RDL aparece como uma boa escolha para enfatizar extensores de quadril, especialmente quando o objetivo e trabalhar posterior/gluteo sem transformar o treino em um movimento dominante de joelho.
 
-O agachamento continua sendo mais completo quando o objetivo e treinar simultaneamente extensao de joelho e quadril. Por isso, no IronForge, faz sentido manter o agachamento e o RDL como exercicios complementares, nao concorrentes.
+O agachamento continua sendo mais completo quando o objetivo e treinar simultaneamente extensao de joelho e quadril. Por isso, na Forja de Ferro, faz sentido manter o agachamento e o RDL como exercicios complementares, nao concorrentes.
 
 ---
 
 ## Aplicacao No Treino
 
-Para o IronForge:
+Para a Forja de Ferro:
 
 ```text
 Agachamento Zercher = padrao principal de pernas, quadriceps, gluteos e core

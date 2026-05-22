@@ -1,6 +1,6 @@
 # Operacao
 
-Este documento explica como rodar, manter e depurar o IronForge.
+Este documento explica como rodar, manter e depurar a Forja de Ferro.
 
 ## Uso Diario
 
@@ -123,7 +123,7 @@ Bracos: 2 min
 Principal:
 
 ```text
-data/ironforge.db
+data/forja_de_ferro.db
 ```
 
 Estado local opcional:
@@ -162,14 +162,14 @@ O catalogo de exercicios fica no SQLite.
 Codigo:
 
 ```text
-ironforge/db_ops.py
+forja_de_ferro/db_ops.py
   -> tabela exercises
 ```
 
 Use os helpers quando possivel:
 
 ```python
-from ironforge import db_ops
+from forja_de_ferro import db_ops
 
 db_ops.list_exercises()
 db_ops.replace_exercises([...])
@@ -182,7 +182,7 @@ Catalogo atual:
 - `Agachamento Zercher` e o primeiro exercicio e esta como `3x5`.
 - Ele substitui o agachamento com barra em sessoes futuras por falta de rack.
 - Historico antigo pode continuar com nomes antigos.
-- Se o catalogo mudar de novo, atualizar `data/ironforge.db` e `ironforge/db_ops.py`.
+- Se o catalogo mudar de novo, atualizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`.
 
 ## Problemas Comuns
 
@@ -219,7 +219,7 @@ python tests/e2e_training_flow_test.py
 Checagem de sintaxe:
 
 ```bash
-python -m py_compile start_bot.py ironforge/*.py tests/*.py
+python -m py_compile start_bot.py forja_de_ferro/*.py tests/*.py
 ```
 
 Antes de commitar:

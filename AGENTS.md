@@ -4,7 +4,7 @@
 
 Este projeto e um diario de treino com bot do Telegram e banco SQLite versionado.
 
-Banco principal: `data/ironforge.db`.
+Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
@@ -51,10 +51,10 @@ ou outros documentos em `docs/` tambem precisam ser atualizados.
 
 ## Modulos Principais
 
-Os modulos de runtime ficam no pacote `ironforge/`. Importe codigo de aplicacao
-a partir desse pacote, por exemplo `from ironforge import db_ops`.
+Os modulos de runtime ficam no pacote `forja_de_ferro/`. Importe codigo de aplicacao
+a partir desse pacote, por exemplo `from forja_de_ferro import db_ops`.
 
-### `ironforge/telegram_poller.py`
+### `forja_de_ferro/telegram_poller.py`
 
 Bot Telegram usado para controlar o treino pelo celular.
 
@@ -86,7 +86,7 @@ Fluxo:
 4. Entrada de carga e escrita diretamente no SQLite.
 5. `/desfazer` limpa o ultimo exercicio registrado.
 
-### `ironforge/ods_ops.py`
+### `forja_de_ferro/ods_ops.py`
 
 Camada auxiliar de sessao de treino.
 
@@ -112,16 +112,16 @@ Regras importantes:
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
 - Logs historicos de `Agachamento (barra)` ou `Zercher squat` podem permanecer como historico.
 
-### `ironforge/db_ops.py`
+### `forja_de_ferro/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
-- Banco versionado: `data/ironforge.db`.
+- Banco versionado: `data/forja_de_ferro.db`.
 - Tabela principal de exercicios: `exercises` (`name`, `sets`, `reps`, `sort_order`, `active`).
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
-### `ironforge/dashboard.py`
+### `forja_de_ferro/dashboard.py`
 
 Dashboard local de volume de treino.
 

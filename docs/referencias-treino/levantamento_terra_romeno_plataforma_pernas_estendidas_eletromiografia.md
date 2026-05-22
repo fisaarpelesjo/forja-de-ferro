@@ -26,7 +26,7 @@ O principal achado foi que o RDL em step aumentou a excitacao geral da cadeia po
 
 ---
 
-## Por Que Importa Para O IronForge
+## Por Que Importa Para A Forja de Ferro
 
 Este artigo e diretamente relevante para a troca de nome de `Stiff com barra` para:
 
@@ -118,7 +118,7 @@ Entre RDL e stiff-leg, a diferenca nao e apenas nome:
 
 ## Aplicacao No Treino
 
-Para o IronForge, a escolha mais conservadora e:
+Para a Forja de Ferro, a escolha mais conservadora e:
 
 ```text
 Levantamento Terra Romeno
@@ -146,7 +146,7 @@ Nao usar step por padrao. A variacao em step pode ser considerada futura progres
 ## Takeaway
 
 ```text
-RDL e stiff-leg sao proximos, mas nao identicos. Para o IronForge, o nome
+RDL e stiff-leg sao proximos, mas nao identicos. Para a Forja de Ferro, o nome
 Levantamento Terra Romeno descreve melhor a execucao desejada e preserva melhor
 a comparacao de progresso.
 ```

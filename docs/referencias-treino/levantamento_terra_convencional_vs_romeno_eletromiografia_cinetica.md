@@ -22,7 +22,7 @@ O resultado favoreceu o deadlift convencional para reto femoral e gluteo maximo,
 
 ---
 
-## Por Que Importa Para O IronForge
+## Por Que Importa Para A Forja de Ferro
 
 Esse artigo ajuda a nao confundir:
 
@@ -30,7 +30,7 @@ Esse artigo ajuda a nao confundir:
 Deadlift convencional != Levantamento Terra Romeno
 ```
 
-O RDL do IronForge nao precisa tentar substituir o deadlift convencional. Ele cumpre uma funcao mais especifica: cadeia posterior com menor flexao de joelho e maior controle da fase de descida.
+O RDL da Forja de Ferro nao precisa tentar substituir o deadlift convencional. Ele cumpre uma funcao mais especifica: cadeia posterior com menor flexao de joelho e maior controle da fase de descida.
 
 ---
 
@@ -88,7 +88,7 @@ Isso nao torna o RDL inferior. Torna o objetivo diferente.
 
 ## Aplicacao No Treino
 
-Para o IronForge:
+Para a Forja de Ferro:
 
 ```text
 Levantamento Terra Romeno = posterior e hinge controlado
@@ -113,6 +113,6 @@ Como o treino atual nao depende do deadlift convencional, o RDL pode continuar s
 
 ```text
 O deadlift convencional e mais completo em demanda articular, mas o RDL e mais
-especifico para dobradica de quadril e cadeia posterior. No IronForge, os dois
+especifico para dobradica de quadril e cadeia posterior. Na Forja de Ferro, os dois
 devem ter historicos separados se ambos forem usados no futuro.
 ```

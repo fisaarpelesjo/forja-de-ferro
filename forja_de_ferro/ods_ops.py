@@ -1,4 +1,4 @@
-"""Operacoes de treino do IronForge."""
+"""Operacoes de treino da Forja de Ferro."""
 
 import json
 from datetime import date

@@ -1,10 +1,10 @@
 # Visao Geral Do Sistema
 
-IronForge e um diario de treino controlado pelo Telegram.
+A Forja de Ferro e um diario de treino controlado pelo Telegram.
 
 Responsabilidades principais:
 
-1. manter o SQLite versionado em `data/ironforge.db`
+1. manter o SQLite versionado em `data/forja_de_ferro.db`
 2. rodar um bot Telegram com long polling
 3. guardar a sessao ativa em `session.json`
 4. gerar um dashboard HTML local com a evolucao do volume de treino
@@ -59,15 +59,15 @@ start_bot.bat
 
 `gerar_dashboard.py`: gera `temp/dashboard-treino.html`.
 
-`ironforge/banner.py`: banner colorido do terminal.
+`forja_de_ferro/banner.py`: banner colorido do terminal.
 
-`ironforge/telegram_poller.py`: comandos, polling e mensagens Telegram.
+`forja_de_ferro/telegram_poller.py`: comandos, polling e mensagens Telegram.
 
-`ironforge/ods_ops.py`: gera sessoes e escreve `session.json`.
+`forja_de_ferro/ods_ops.py`: gera sessoes e escreve `session.json`.
 
-`ironforge/dashboard.py`: consolida logs de treino e renderiza HTML local.
+`forja_de_ferro/dashboard.py`: consolida logs de treino e renderiza HTML local.
 
-`ironforge/db_ops.py`: acesso SQLite.
+`forja_de_ferro/db_ops.py`: acesso SQLite.
 
 `tests/`: testes locais.
 

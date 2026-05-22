@@ -1,11 +1,11 @@
-"""Operacoes SQLite para os dados do IronForge."""
+"""Operacoes SQLite para os dados da Forja de Ferro."""
 
 import sqlite3
 from itertools import groupby
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-DB_PATH = DATA_DIR / "ironforge.db"
+DB_PATH = DATA_DIR / "forja_de_ferro.db"
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},

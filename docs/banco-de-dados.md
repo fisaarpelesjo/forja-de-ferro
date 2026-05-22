@@ -1,11 +1,11 @@
 # Banco De Dados
 
-IronForge usa SQLite.
+A Forja de Ferro usa SQLite.
 
 Arquivo principal:
 
 ```text
-data/ironforge.db
+data/forja_de_ferro.db
 ```
 
 Esse banco e versionado e e a fonte da verdade para exercicios, sessoes, logs e
@@ -16,10 +16,10 @@ dados de dieta.
 Todo acesso direto ao banco fica em:
 
 ```text
-ironforge/db_ops.py
+forja_de_ferro/db_ops.py
 ```
 
-`DB_PATH` aponta para `data/ironforge.db` na raiz do repositorio.
+`DB_PATH` aponta para `data/forja_de_ferro.db` na raiz do repositorio.
 
 ## Tabelas
 
@@ -103,8 +103,8 @@ Historico antigo deve permanecer como historico salvo no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
-- `data/ironforge.db`
-- `ironforge/db_ops.py`, em `DEFAULT_EXERCISES`
+- `data/forja_de_ferro.db`
+- `forja_de_ferro/db_ops.py`, em `DEFAULT_EXERCISES`
 
 ## Criacao De Sessao
 
@@ -161,9 +161,9 @@ filled = 11 -> treino completo
 ## Inspecao Segura
 
 ```bash
-sqlite3 data/ironforge.db ".tables"
-sqlite3 data/ironforge.db ".schema exercises"
-sqlite3 data/ironforge.db "SELECT name, sets, reps FROM exercises ORDER BY sort_order;"
+sqlite3 data/forja_de_ferro.db ".tables"
+sqlite3 data/forja_de_ferro.db ".schema exercises"
+sqlite3 data/forja_de_ferro.db "SELECT name, sets, reps FROM exercises ORDER BY sort_order;"
 python gerar_dashboard.py
 ```
 

@@ -1,6 +1,6 @@
 # Arquitetura
 
-O IronForge e um pacote Python pequeno com entry points de script. A ideia e
+A Forja de Ferro e um pacote Python pequeno com entry points de script. A ideia e
 manter tudo simples: Python, SQLite e API HTTP do Telegram.
 
 ## Estrutura
@@ -10,9 +10,9 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 ├── start_bot.py
 ├── start_bot.bat
 ├── data/
-│   └── ironforge.db
+│   └── forja_de_ferro.db
 ├── docs/
-├── ironforge/
+├── forja_de_ferro/
 │   ├── __init__.py
 │   ├── banner.py
 │   ├── db_ops.py
@@ -28,10 +28,10 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 Codigo de aplicacao deve ser importado pelo pacote:
 
 ```python
-from ironforge import db_ops
-from ironforge import ods_ops
-from ironforge import telegram_poller
-from ironforge import banner
+from forja_de_ferro import db_ops
+from forja_de_ferro import ods_ops
+from forja_de_ferro import telegram_poller
+from forja_de_ferro import banner
 ```
 
 Evite novos modulos de aplicacao na raiz. A raiz deve ficar para launchers,
@@ -41,12 +41,12 @@ configuracao, docs e testes.
 
 ```text
 start_bot.py
-  -> ironforge.banner
-  -> ironforge.telegram_poller
-       -> ironforge.ods_ops
-       -> ironforge.db_ops
-  -> ironforge.ods_ops
-       -> ironforge.db_ops
+  -> forja_de_ferro.banner
+  -> forja_de_ferro.telegram_poller
+       -> forja_de_ferro.ods_ops
+       -> forja_de_ferro.db_ops
+  -> forja_de_ferro.ods_ops
+       -> forja_de_ferro.db_ops
 ```
 
 `db_ops.py` fica na base e nao deve importar a camada do bot.
@@ -78,7 +78,7 @@ Versionado:
 - docs
 - testes
 - `requirements.txt`
-- `data/ironforge.db`
+- `data/forja_de_ferro.db`
 
 Nao versionado:
 
@@ -95,10 +95,10 @@ Nao versionado:
 O banco guarda o historico duravel. `session.json` so aponta qual sessao esta
 ativa e quais `log_id` devem receber as proximas cargas.
 
-## Por Que O Pacote Chama `ironforge`
+## Por Que O Pacote Chama `forja_de_ferro`
 
-O app se chama IronForge no README, no banner e no banco `ironforge.db`.
-`ironforge` tambem e um nome valido e limpo para pacote Python.
+O app se chama Forja de Ferro no README, no banner e no banco `forja_de_ferro.db`.
+`forja_de_ferro` tambem e um nome valido e limpo para pacote Python.
 
 ## O Que Evitar
 

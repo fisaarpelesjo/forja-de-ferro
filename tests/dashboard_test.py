@@ -9,17 +9,17 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from ironforge import dashboard
-from ironforge import db_ops
+from forja_de_ferro import dashboard
+from forja_de_ferro import db_ops
 
 
 def main():
     original_db_path = db_ops.DB_PATH
     original_data_dir = db_ops.DATA_DIR
 
-    with tempfile.TemporaryDirectory(prefix="ironforge-dashboard-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="forja-de-ferro-dashboard-") as temp_dir:
         temp_path = Path(temp_dir)
-        test_db = temp_path / "ironforge.db"
+        test_db = temp_path / "forja_de_ferro.db"
         output = temp_path / "dashboard.html"
 
         try:

@@ -10,7 +10,7 @@
 
 **DOI:** https://doi.org/10.1007/978-3-030-35249-3_114
 
-## Por Que Importa Para O IronForge
+## Por Que Importa Para A Forja de Ferro
 
 O treino atual usa:
 
@@ -84,7 +84,7 @@ Valores medios em %MVIC:
 
 ## Aplicacao No Treino
 
-Para o IronForge, o artigo apoia uma abordagem conservadora:
+Para a Forja de Ferro, o artigo apoia uma abordagem conservadora:
 
 ```text
 Agachamento Zercher

@@ -195,7 +195,7 @@ def main():
         return
 
     offset = 0
-    print("Bot IronForge em polling... (Ctrl+C para parar)")
+    print("Bot Forja de Ferro em polling... (Ctrl+C para parar)")
 
     try:
         while True:
@@ -213,7 +213,7 @@ def main():
 
                 if lower in ("/ajuda", "ajuda", "/help", "help"):
                     send(
-                        "<b>IronForge — Comandos</b>\n\n"
+                        "<b>Forja de Ferro — Comandos</b>\n\n"
                         "/gerar — cria uma sessao de treino\n"
                         "/prever — mostra uma previa sem salvar\n"
                         "/exercicios — lista os exercicios atuais\n"

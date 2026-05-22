@@ -1,7 +1,7 @@
 import sys
 
-from ironforge import banner
-from ironforge import telegram_poller
+from forja_de_ferro import banner
+from forja_de_ferro import telegram_poller
 
 
 def main():

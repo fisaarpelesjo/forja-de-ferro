@@ -1,6 +1,6 @@
 # Notas Do Repositorio
 
-IronForge e um diario de treino com bot do Telegram e armazenamento SQLite.
+A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLite.
 
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
 evolucao do volume de treino.
@@ -33,10 +33,10 @@ ou outros documentos em `docs/` tambem precisam ser atualizados.
 
 ## Modulos Principais
 
-Os modulos de runtime ficam no pacote `ironforge/`. Importe codigo de aplicacao
-com `from ironforge import db_ops`, `ods_ops` ou `telegram_poller`.
+Os modulos de runtime ficam no pacote `forja_de_ferro/`. Importe codigo de aplicacao
+com `from forja_de_ferro import db_ops`, `ods_ops` ou `telegram_poller`.
 
-### `ironforge/telegram_poller.py`
+### `forja_de_ferro/telegram_poller.py`
 
 Bot Telegram com long polling.
 
@@ -55,7 +55,7 @@ Comandos principais em PT-BR:
 
 Aliases antigos em ingles podem permanecer para compatibilidade.
 
-### `ironforge/ods_ops.py`
+### `forja_de_ferro/ods_ops.py`
 
 Helpers de operacao de treino:
 
@@ -79,7 +79,7 @@ Catalogo atual:
 - Substitui o agachamento com barra para sessoes futuras por falta de rack adequado.
 - Logs historicos podem permanecer com nomes antigos.
 
-### `ironforge/db_ops.py`
+### `forja_de_ferro/db_ops.py`
 
 Operacoes SQLite:
 
@@ -91,7 +91,7 @@ Operacoes SQLite:
 - `get_last_weights()`
 - `count_filled()`
 
-### `ironforge/dashboard.py`
+### `forja_de_ferro/dashboard.py`
 
 Dashboard local de volume:
 
@@ -107,14 +107,14 @@ Dashboard local de volume:
 
 ## Dados E Estado
 
-- Banco versionado: `data/ironforge.db`.
+- Banco versionado: `data/forja_de_ferro.db`.
 - Estado local: `session.json`, nao versionado.
 - Configuracao secreta: `.env`, nao versionada.
 - Sidecars SQLite (`*.db-shm`, `*.db-wal`) nao sao versionados.
 - Dashboard gerado em `temp/dashboard-treino.html` nao e versionado.
 
 SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de volta para ODS.
-Mudancas de catalogo devem sincronizar `data/ironforge.db` e `ironforge/db_ops.py`
+Mudancas de catalogo devem sincronizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`
 quando tambem precisarem valer para bancos novos.
 
 ## Estilo De Commit

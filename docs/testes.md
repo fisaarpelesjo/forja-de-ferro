@@ -21,7 +21,7 @@ Objetivo:
 - validar Python 3.10+
 - validar imports de dependencias
 - validar imports dos modulos principais
-- validar existencia de `data/ironforge.db`
+- validar existencia de `data/forja_de_ferro.db`
 
 Saida esperada:
 
@@ -71,7 +71,7 @@ Preferir testes que:
 
 - usem banco temporario
 - nao chamem Telegram real
-- nao mexam em `data/ironforge.db`
+- nao mexam em `data/forja_de_ferro.db`
 - nao alterem `session.json` real
 - testem comportamento pelo estado do banco
 

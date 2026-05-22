@@ -1,1 +1,0 @@
-"""IronForge application package."""

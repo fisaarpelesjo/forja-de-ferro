@@ -9,7 +9,7 @@ from collections import defaultdict
 from datetime import date
 from pathlib import Path
 
-from ironforge import db_ops
+from forja_de_ferro import db_ops
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
@@ -657,7 +657,7 @@ def gerar_html(dados):
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard de treino - IronForge</title>
+  <title>Dashboard de treino - Forja de Ferro</title>
   <style>
     :root {{
       color-scheme: dark;

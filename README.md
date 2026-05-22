@@ -1,10 +1,10 @@
-# IronForge
+# Forja de Ferro
 
 Diario de treino e dieta com bot do Telegram e banco SQLite local.
 
 ## Visao Geral
 
-O IronForge permite controlar uma sessao de treino pelo Telegram:
+A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 
 - `/gerar` cria uma nova sessao de treino no SQLite.
 - `/prever` mostra o treino no mesmo formato, mas sem salvar sessao ou logs.
@@ -16,17 +16,17 @@ O IronForge permite controlar uma sessao de treino pelo Telegram:
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
   volume de treino.
 
-O banco principal e `data/ironforge.db`. A sessao ativa fica em `session.json`,
+O banco principal e `data/forja_de_ferro.db`. A sessao ativa fica em `session.json`,
 que e estado local e nao deve ser versionado.
 
 ## Estrutura
 
 ```text
-ironforge/
+forja_de_ferro/
 ├── start_bot.py             # launcher multiplataforma
 ├── start_bot.bat            # wrapper Windows
 ├── gerar_dashboard.py       # gera temp/dashboard-treino.html
-├── ironforge/
+├── forja_de_ferro/
 │   ├── banner.py            # banner do terminal
 │   ├── telegram_poller.py   # bot Telegram com long polling
 │   ├── ods_ops.py           # operacoes de sessao de treino
@@ -41,7 +41,7 @@ ironforge/
 ├── .env.example             # modelo de ambiente
 ├── .env                     # TELEGRAM_TOKEN=..., nao versionado
 └── data/
-    └── ironforge.db         # banco SQLite versionado
+    └── forja_de_ferro.db         # banco SQLite versionado
 ```
 
 ## Comandos Do Telegram
@@ -240,7 +240,7 @@ O catalogo de exercicios fica no SQLite. Nao substituir por ODS.
 ## API Interna
 
 ```python
-from ironforge import db_ops, ods_ops
+from forja_de_ferro import db_ops, ods_ops
 
 db_ops.get_or_seed_exercises()
 db_ops.create_session(date_iso, training_type="TREINO")
@@ -262,7 +262,7 @@ dashboard.carregar_dados()
 dashboard.salvar_dashboard()
 ```
 
-`ironforge.ods_ops.gerar_treino()` existe como alias de compatibilidade.
+`forja_de_ferro.ods_ops.gerar_treino()` existe como alias de compatibilidade.
 
 ## Documentacao Detalhada
 

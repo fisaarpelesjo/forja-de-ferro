@@ -3,7 +3,7 @@
 O bot Telegram fica em:
 
 ```text
-ironforge/telegram_poller.py
+forja_de_ferro/telegram_poller.py
 ```
 
 Ele usa long polling pela API HTTP do Telegram. Nao ha webhook nem servidor web.

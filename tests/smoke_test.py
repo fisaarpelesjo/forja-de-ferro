@@ -11,11 +11,11 @@ if str(ROOT_DIR) not in sys.path:
 REQUIRED_MODULES = [
     "requests",
     "rich",
-    "ironforge.db_ops",
-    "ironforge.ods_ops",
-    "ironforge.dashboard",
-    "ironforge.telegram_poller",
-    "ironforge.banner",
+    "forja_de_ferro.db_ops",
+    "forja_de_ferro.ods_ops",
+    "forja_de_ferro.dashboard",
+    "forja_de_ferro.telegram_poller",
+    "forja_de_ferro.banner",
     "start_bot",
 ]
 
@@ -27,7 +27,7 @@ def main():
     for module_name in REQUIRED_MODULES:
         importlib.import_module(module_name)
 
-    db_path = ROOT_DIR / "data" / "ironforge.db"
+    db_path = ROOT_DIR / "data" / "forja_de_ferro.db"
     if not db_path.exists():
         raise FileNotFoundError(f"Missing database: {db_path}")
 

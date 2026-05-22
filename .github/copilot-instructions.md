@@ -2,9 +2,9 @@
 
 ## Contexto Do Projeto
 
-IronForge e um diario de treino e dieta com bot do Telegram e banco SQLite local.
+A Forja de Ferro e um diario de treino e dieta com bot do Telegram e banco SQLite local.
 
-Banco principal: `data/ironforge.db`.
+Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
@@ -53,7 +53,7 @@ Wrapper Windows para iniciar o bot com duplo clique ou pelo terminal.
 Launcher local que gera o dashboard HTML de volume de treino em
 `temp/dashboard-treino.html`.
 
-### `ironforge/telegram_poller.py`
+### `forja_de_ferro/telegram_poller.py`
 
 Bot Telegram com long polling.
 
@@ -83,10 +83,10 @@ Fluxo principal:
 2. `ods_ops.write_session(...)` grava o estado ativo em `session.json`.
 3. O texto de treino mostra `alvo`, calculado pela ultima carga registrada e pelo RPE, e `descanso`.
 4. `/prever` mostra o mesmo formato sem criar sessao, logs ou `session.json`.
-5. Entrada de carga atualiza diretamente o log correspondente em `data/ironforge.db`.
+5. Entrada de carga atualiza diretamente o log correspondente em `data/forja_de_ferro.db`.
 6. `/desfazer` limpa o ultimo registro preenchido.
 
-### `ironforge/ods_ops.py`
+### `forja_de_ferro/ods_ops.py`
 
 Camada auxiliar de sessao de treino. O nome e historico, mas o fluxo atual usa
 SQLite e `session.json`.
@@ -112,16 +112,16 @@ Regras importantes:
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
 
-### `ironforge/db_ops.py`
+### `forja_de_ferro/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
-- Banco versionado: `data/ironforge.db`.
+- Banco versionado: `data/forja_de_ferro.db`.
 - Tabela principal de exercicios: `exercises` (`name`, `sets`, `reps`, `sort_order`, `active`).
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
-- Mudancas que devem valer no banco atual precisam atualizar `data/ironforge.db`.
+- Mudancas que devem valer no banco atual precisam atualizar `data/forja_de_ferro.db`.
 
-### `ironforge/dashboard.py`
+### `forja_de_ferro/dashboard.py`
 
 Dashboard local de volume:
 
@@ -150,7 +150,7 @@ necessaria.
 
 ## Catalogo Ativo
 
-Fonte unica: tabela `exercises` em `data/ironforge.db`.
+Fonte unica: tabela `exercises` em `data/forja_de_ferro.db`.
 
 Ordem ativa atual:
 
