@@ -100,6 +100,7 @@ Funcoes importantes:
 - `read_previous_performance()` retorna carga e RPE mais recentes por exercicio.
 - `suggest_next_weight(previous_weight, previous_rpe=None)` calcula o alvo pela regra de RPE.
 - `get_rest_interval(exercise_name)` retorna o descanso sugerido entre series.
+- `format_loading_note(exercise_name, target_weight)` retorna observacao de montagem da carga quando houver equipamento fixo.
 - `write_session()` escreve `session.json`.
 
 Regras importantes:
@@ -108,6 +109,8 @@ Regras importantes:
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
+- `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
+- `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao deve mostrar carga total como `barra W 6kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
 - Logs historicos de `Agachamento (barra)` ou `Zercher squat` podem permanecer como historico.

@@ -70,6 +70,20 @@ def _format_target_suffix(ex):
     return f" - alvo {_format_weight(target_weight)}kg"
 
 
+def _format_current_exercise(ex):
+    msg = (
+        f"▶ <b>{ex['name']}</b> ({ex['sets']}x{ex['reps']})"
+        f"{_format_target_suffix(ex)} - descanso {ex.get('rest_interval', '2 min')}"
+    )
+    loading_note = ex.get("loading_note") or ods_ops.format_loading_note(
+        ex["name"],
+        ex.get("target_weight"),
+    )
+    if loading_note:
+        msg += f"\n   {loading_note}"
+    return msg
+
+
 def _format_exercise_line(idx, ex):
     target = _format_weight(ex.get("target_weight"))
     rest = ex.get("rest_interval", "2 min")
@@ -142,10 +156,7 @@ def handle(text, session):
             msg = f"Treino — {filled}/{total}\n"
             if done:
                 msg += done + "\n"
-            msg += (
-                f"▶ <b>{ex['name']}</b> ({ex['sets']}x{ex['reps']})"
-                f"{_format_target_suffix(ex)} - descanso {ex.get('rest_interval', '2 min')}"
-            )
+            msg += _format_current_exercise(ex)
             send(msg)
         return
 
@@ -184,8 +195,7 @@ def handle(text, session):
         nxt = exercises[new_filled]
         send(
             f"<b>{ex['name']}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n"
-            f"▶ {nxt['name']} ({nxt['sets']}x{nxt['reps']})"
-            f"{_format_target_suffix(nxt)} - descanso {nxt.get('rest_interval', '2 min')}"
+            f"{_format_current_exercise(nxt)}"
         )
 
 

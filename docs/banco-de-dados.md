@@ -120,7 +120,9 @@ ods_ops.generate_training()
 `session.json` guarda `session_id` e `log_id` para o bot saber qual linha
 atualizar quando o usuario envia carga. Ele tambem guarda `target_weight`, que
 e a carga alvo calculada para a sessao atual, e `rest_interval`, que e o
-descanso sugerido entre series.
+descanso sugerido entre series. Quando o exercicio usa equipamento de peso fixo,
+tambem pode guardar `loading_note`, uma observacao de montagem da carga para o
+bot mostrar no exercicio atual/proximo.
 
 ## Progressao De Carga
 
@@ -141,6 +143,10 @@ a tabela do bot mostra `-`.
 
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
+
+Para `Tríceps testa` e `Pullover (barra)`, `ods_ops.format_loading_note()` usa
+barra W de 6 kg e calcula as anilhas como `target_weight - 6`. Exemplo:
+`target_weight = 18` gera `barra W 6kg + 12kg de anilhas`.
 
 ## Descanso Entre Series
 

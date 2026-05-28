@@ -33,6 +33,12 @@ REST_INTERVALS = {
     "Triceps testa": "2 min",
 }
 
+LOAD_EQUIPMENT = {
+    "Pullover (barra)": {"name": "barra W", "weight": 6.0},
+    "Tríceps testa": {"name": "barra W", "weight": 6.0},
+    "Triceps testa": {"name": "barra W", "weight": 6.0},
+}
+
 MUSCLE_MAP = {
     "Agachamento (barra)":             ["Quadriceps", "Gluteos"],
     "Agachamento Zercher":             ["Quadriceps", "Gluteos", "Core"],
@@ -87,6 +93,23 @@ def get_rest_interval(exercise_name):
     return REST_INTERVALS.get(exercise_name, "2 min")
 
 
+def format_weight(weight):
+    return str(int(weight) if weight == int(weight) else weight)
+
+
+def format_loading_note(exercise_name, target_weight):
+    equipment = LOAD_EQUIPMENT.get(exercise_name)
+    if not equipment or target_weight is None:
+        return None
+
+    bar_weight = equipment["weight"]
+    plates_weight = max(float(target_weight) - bar_weight, 0.0)
+    return (
+        f"{equipment['name']} {format_weight(bar_weight)}kg"
+        f" + {format_weight(plates_weight)}kg de anilhas"
+    )
+
+
 def build_training_plan(persist=True):
     """
     Monta o treino atual com carga alvo e descanso.
@@ -107,13 +130,17 @@ def build_training_plan(persist=True):
         if persist:
             log_id = db_ops.log_exercise(session_id, ex["name"], ex["sets"], ex["reps"], idx)
         previous = previous_performance.get(ex["name"], {})
+        target_weight = suggest_next_weight(previous.get("weight"), previous.get("rpe"))
         item = {
             "name": ex["name"],
             "sets": ex["sets"],
             "reps": ex["reps"],
-            "target_weight": suggest_next_weight(previous.get("weight"), previous.get("rpe")),
+            "target_weight": target_weight,
             "rest_interval": get_rest_interval(ex["name"]),
         }
+        loading_note = format_loading_note(ex["name"], target_weight)
+        if loading_note:
+            item["loading_note"] = loading_note
         if log_id is not None:
             item["log_id"] = log_id
         session_exercises.append(item)

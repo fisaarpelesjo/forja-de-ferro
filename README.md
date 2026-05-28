@@ -9,6 +9,8 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - `/gerar` cria uma nova sessao de treino no SQLite.
 - `/prever` mostra o treino no mesmo formato, mas sem salvar sessao ou logs.
 - O treino gerado lista carga alvo e descanso sugerido por exercicio.
+- Quando o exercicio atual usa equipamento de peso fixo, o bot mostra como
+  montar a carga, por exemplo `barra W 6kg + 12kg de anilhas`.
 - Enviar `80` registra 80 kg no proximo exercicio pendente.
 - Enviar `80 8` registra 80 kg com RPE 8.
 - `/status` mostra o progresso da sessao ativa.
@@ -122,6 +124,11 @@ Se o exercicio ainda nao tiver historico de carga, o alvo aparece como `-`.
 A carga alvo fica em `session.json`; o banco continua guardando apenas a carga
 real registrada pelo usuario.
 
+Para exercicios com barra W de 6 kg, como `Tríceps testa` e `Pullover (barra)`,
+o bot tambem guarda uma observacao de montagem em `session.json`. Essa observacao
+aparece no `/status` e na indicacao do proximo exercicio, mas nao na lista
+`/exercicios`.
+
 ## Descanso Entre Series
 
 O `/gerar` tambem mostra o descanso sugerido por exercicio:
@@ -145,6 +152,7 @@ confiavel para calcular a proxima carga.
   -> db_ops.create_session(date)
   -> db_ops.log_exercise(...) para cada exercicio ativo, com alvo calculado por carga + RPE
   -> adiciona descanso sugerido por exercicio
+  -> adiciona observacao de montagem quando houver equipamento fixo
   -> ods_ops.write_session(...) escreve session.json
 
 /prever

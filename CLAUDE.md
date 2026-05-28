@@ -67,6 +67,7 @@ Helpers de operacao de treino:
 - `read_previous_performance()` retorna carga e RPE recentes do SQLite.
 - `suggest_next_weight(previous_weight, previous_rpe=None)` calcula a carga alvo pela regra de RPE.
 - `get_rest_interval(exercise_name)` retorna o descanso sugerido entre series.
+- `format_loading_note(exercise_name, target_weight)` retorna observacao de montagem da carga quando houver equipamento fixo.
 - `write_session()` escreve estado ativo em `session.json`.
 
 Catalogo atual:
@@ -75,6 +76,8 @@ Catalogo atual:
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
+- `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
+- `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - Primeiro exercicio ativo: `Agachamento Zercher` (`3x5`).
 - Substitui o agachamento com barra para sessoes futuras por falta de rack adequado.
 - Logs historicos podem permanecer com nomes antigos.

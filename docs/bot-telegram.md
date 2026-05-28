@@ -113,6 +113,16 @@ Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
+Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
+o bot tambem mostra a montagem da carga. Para `Tríceps testa` e
+`Pullover (barra)`, a barra W pesa 6 kg, entao um alvo de 18 kg aparece como:
+
+```text
+barra W 6kg + 12kg de anilhas
+```
+
+Essa observacao nao aparece na lista `/exercicios`.
+
 ## `/prever`
 
 Mostra o treino no mesmo formato de `/gerar`, com alvo e descanso, mas nao
@@ -218,11 +228,12 @@ Formato: 80 8 (carga + RPE) ou 80 (somente carga)
   "exercises": [
     {
       "log_id": 1,
-      "name": "Agachamento Zercher",
+      "name": "Tríceps testa",
       "sets": 3,
-      "reps": 5,
-      "target_weight": 42.0,
-      "rest_interval": "4 min"
+      "reps": 8,
+      "target_weight": 18.0,
+      "rest_interval": "2 min",
+      "loading_note": "barra W 6kg + 12kg de anilhas"
     }
   ]
 }
