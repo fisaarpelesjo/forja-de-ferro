@@ -124,10 +124,14 @@ Se o exercicio ainda nao tiver historico de carga, o alvo aparece como `-`.
 A carga alvo fica em `session.json`; o banco continua guardando apenas a carga
 real registrada pelo usuario.
 
-Para exercicios com barra W de 6 kg, como `Tríceps testa` e `Pullover (barra)`,
-o bot tambem guarda uma observacao de montagem em `session.json`. Essa observacao
-aparece no `/status` e na indicacao do proximo exercicio, mas nao na lista
-`/exercicios`.
+Excecao atual: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg quando
+ainda nao houver historico proprio. Depois do primeiro registro, ela segue a
+progressao normal por RPE.
+
+Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
+de montagem em `session.json`. `Tríceps testa` e `Pullover (barra)` usam barra W
+de 6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg. Essa observacao aparece
+no `/status` e na indicacao do proximo exercicio, mas nao na lista `/exercicios`.
 
 ## Descanso Entre Series
 
@@ -137,7 +141,7 @@ O `/gerar` tambem mostra o descanso sugerido por exercicio:
 Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
 Remada curvada, Desenvolvimento: 3 min
 Acessorios e supino reto back-off: 2 min
-Rosca direta, Triceps testa: 2 min
+Rosca martelo (barra H), Triceps testa: 2 min
 ```
 
 Esses tempos fixos ajudam a manter a qualidade das series e deixam o RPE mais
@@ -178,6 +182,7 @@ O catalogo ativo comeca com:
 ```text
 Agachamento Zercher    3x5
 Supino reto back-off   2x8
+Rosca martelo (barra H) 3x8
 ```
 
 Ele substituiu o agachamento com barra para sessoes futuras porque o setup atual

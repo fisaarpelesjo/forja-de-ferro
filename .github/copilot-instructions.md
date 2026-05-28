@@ -108,10 +108,12 @@ Regras importantes:
 
 - Indices ativos: `TRAINING_EXERCISES = range(0, 11)`.
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
+- `Rosca martelo (barra H)` tem alvo inicial de 16 kg quando ainda nao houver historico proprio; depois disso usa a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
+- `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
 
@@ -167,7 +169,7 @@ Ordem ativa atual:
 7. Pullover (barra) - 3x10
 8. Remada alta (barra) - 3x10
 9. Remada curvada alta no peito (barra) - 3x10
-10. Rosca direta - 3x8
+10. Rosca martelo (barra H) - 3x8
 11. Triceps testa - 3x8
 
 ## Documentacao

@@ -17,6 +17,10 @@ RPE_PROGRESSION_KG = {
     10: -2.0,
 }
 
+INITIAL_TARGET_WEIGHTS = {
+    "Rosca martelo (barra H)": 16.0,
+}
+
 REST_INTERVALS = {
     "Agachamento Zercher": "4 min",
     "Supino reto (barra)": "4 min",
@@ -29,12 +33,14 @@ REST_INTERVALS = {
     "Remada alta (barra)": "2 min",
     "Remada curvada alta no peito (barra)": "2 min",
     "Rosca direta": "2 min",
+    "Rosca martelo (barra H)": "2 min",
     "Tríceps testa": "2 min",
     "Triceps testa": "2 min",
 }
 
 LOAD_EQUIPMENT = {
     "Pullover (barra)": {"name": "barra W", "weight": 6.0},
+    "Rosca martelo (barra H)": {"name": "barra H", "weight": 9.0},
     "Tríceps testa": {"name": "barra W", "weight": 6.0},
     "Triceps testa": {"name": "barra W", "weight": 6.0},
 }
@@ -56,6 +62,7 @@ MUSCLE_MAP = {
     "Remada curvada alta no peito (barra)": ["Deltoide posterior", "Trapezio"],
     "Crucifixo invertido":             ["Deltoide posterior"],
     "Rosca direta":                    ["Biceps"],
+    "Rosca martelo (barra H)":         ["Biceps", "Antebraco"],
     "Tríceps testa":                   ["Triceps"],
     "Triceps testa":                   ["Triceps"],
 }
@@ -87,6 +94,10 @@ def suggest_next_weight(previous_weight, previous_rpe=None):
     else:
         delta = RPE_PROGRESSION_KG.get(rpe, 0.0)
     return float(previous_weight) + delta
+
+
+def get_initial_target_weight(exercise_name):
+    return INITIAL_TARGET_WEIGHTS.get(exercise_name)
 
 
 def get_rest_interval(exercise_name):
@@ -131,6 +142,8 @@ def build_training_plan(persist=True):
             log_id = db_ops.log_exercise(session_id, ex["name"], ex["sets"], ex["reps"], idx)
         previous = previous_performance.get(ex["name"], {})
         target_weight = suggest_next_weight(previous.get("weight"), previous.get("rpe"))
+        if target_weight is None:
+            target_weight = get_initial_target_weight(ex["name"])
         item = {
             "name": ex["name"],
             "sets": ex["sets"],

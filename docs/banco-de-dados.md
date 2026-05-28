@@ -101,6 +101,10 @@ reps       5
 Ele substituiu o agachamento com barra para sessoes futuras por falta de rack.
 Historico antigo deve permanecer como historico salvo no SQLite.
 
+O decimo exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo
+`Rosca direta` para sessoes futuras. Historico antigo de `Rosca direta`
+permanece como historico salvo no SQLite.
+
 Ao mudar o catalogo para frente, atualize:
 
 - `data/forja_de_ferro.db`
@@ -141,12 +145,20 @@ Sem RPE         -> ultima carga
 Se nao houver historico de carga para o exercicio, `target_weight` fica `None` e
 a tabela do bot mostra `-`.
 
+Excecao atual: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg quando
+ainda nao houver historico proprio. Depois do primeiro registro real, a funcao
+usa o historico e a progressao por RPE.
+
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
 
 Para `Tríceps testa` e `Pullover (barra)`, `ods_ops.format_loading_note()` usa
 barra W de 6 kg e calcula as anilhas como `target_weight - 6`. Exemplo:
 `target_weight = 18` gera `barra W 6kg + 12kg de anilhas`.
+
+Para `Rosca martelo (barra H)`, a funcao usa barra H de 9 kg e calcula as
+anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera
+`barra H 9kg + 9kg de anilhas`.
 
 ## Descanso Entre Series
 

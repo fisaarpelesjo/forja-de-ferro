@@ -110,6 +110,10 @@ Sem RPE         -> manter
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
+`Rosca martelo (barra H)` tem alvo inicial de 16 kg quando ainda nao houver
+historico proprio. Depois do primeiro registro, ela segue a progressao normal
+por RPE.
+
 O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
@@ -122,6 +126,13 @@ barra W 6kg + 12kg de anilhas
 ```
 
 Essa observacao nao aparece na lista `/exercicios`.
+
+Para `Rosca martelo (barra H)`, a barra H pesa 9 kg. Um alvo de 18 kg aparece
+como:
+
+```text
+barra H 9kg + 9kg de anilhas
+```
 
 ## `/prever`
 
@@ -148,7 +159,7 @@ Intervalos atuais:
 Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
 Remada curvada, Desenvolvimento: 3 min
 Acessorios de tronco/ombro e supino reto back-off: 2 min
-Rosca direta, Triceps testa: 2 min
+Rosca martelo (barra H), Triceps testa: 2 min
 ```
 
 ## `/exercicios`
