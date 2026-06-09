@@ -135,6 +135,27 @@ Principal:
 data/forja_de_ferro.db
 ```
 
+Criar backup consistente:
+
+```bash
+python gerenciar_dados.py backup
+```
+
+Exportar o conteudo para JSON:
+
+```bash
+python gerenciar_dados.py exportar
+```
+
+Restaurar um backup:
+
+```bash
+python gerenciar_dados.py restaurar backups/arquivo.db --confirmar
+```
+
+Pare o bot antes de restaurar. A operacao valida o backup e cria uma copia de
+seguranca do banco atual.
+
 Estado local opcional:
 
 ```text
@@ -162,6 +183,8 @@ Nao commitar:
 session.json
 pending_log.csv
 temp/
+backups/
+exportacoes/
 data/*.db-shm
 data/*.db-wal
 __pycache__/

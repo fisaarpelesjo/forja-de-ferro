@@ -8,6 +8,8 @@ Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
+Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
+backups validados.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
 
@@ -165,6 +167,13 @@ Dashboard local de volume:
 - O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 
+### `forja_de_ferro/backup_ops.py`
+
+- `criar_backup()` usa a API de backup do SQLite.
+- `exportar_dados()` gera JSON com versao de esquema e tabelas do projeto.
+- `restaurar_backup()` valida integridade, cria backup de seguranca quando o
+  destino existe e substitui o banco somente depois de concluir a copia.
+
 ## Estado Local E Segredos
 
 Nao versionar:
@@ -175,6 +184,8 @@ Nao versionar:
 - `data/*.db-wal`
 - arquivos temporarios em `temp/`
 - dashboard gerado em `temp/dashboard-treino.html`
+- `backups/`
+- `exportacoes/`
 
 Antes de alterar arquivos de estado local, verifique se a mudanca e realmente
 necessaria.
@@ -235,6 +246,7 @@ pip install -r requirements.txt
 python tests/smoke_test.py
 python tests/regras_treino_test.py
 python tests/dashboard_test.py
+python tests/backup_export_test.py
 python tests/e2e_training_flow_test.py
 python gerar_dashboard.py
 python start_bot.py

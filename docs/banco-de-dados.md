@@ -31,6 +31,29 @@ tabelas, mas ainda nao tenham `schema_migrations`.
 Antes de criar uma nova migracao, fazer backup do banco e adicionar um teste que
 parta da versao anterior.
 
+## Backup, Exportacao E Restauracao
+
+O launcher local usa a API de backup do SQLite, sem copiar o arquivo enquanto
+uma transacao pode estar incompleta:
+
+```bash
+python gerenciar_dados.py backup
+python gerenciar_dados.py exportar
+```
+
+O backup gera um arquivo `.db` validado em `backups/`. A exportacao gera JSON em
+`exportacoes/` com a versao do esquema e o conteudo das tabelas conhecidas.
+
+Para restaurar:
+
+```bash
+python gerenciar_dados.py restaurar backups/arquivo.db --confirmar
+```
+
+Pare o bot antes da restauracao. O arquivo de origem passa por
+`PRAGMA integrity_check`; se o banco atual existir, um backup de seguranca e
+criado antes da substituicao.
+
 ## Modulo SQLite
 
 Todo acesso direto ao banco fica em:

@@ -10,6 +10,8 @@ __pycache__/
 session.json
 pending_log.csv
 temp/
+backups/
+exportacoes/
 data/*.db-shm
 data/*.db-wal
 temp

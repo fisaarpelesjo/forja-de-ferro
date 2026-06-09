@@ -4,6 +4,8 @@ A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLit
 
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
 evolucao do volume de treino.
+Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
+backups validados.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
 
@@ -134,6 +136,13 @@ Dashboard local de volume:
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - Launcher local: `python gerar_dashboard.py`.
 
+### `forja_de_ferro/backup_ops.py`
+
+- `criar_backup()` usa a API de backup do SQLite.
+- `exportar_dados()` gera JSON com a versao do esquema e as tabelas do projeto.
+- `restaurar_backup()` valida integridade, cria backup de seguranca quando o
+  destino existe e substitui o banco somente depois da copia.
+
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
@@ -144,6 +153,7 @@ Dashboard local de volume:
 - Configuracao secreta: `.env`, nao versionada.
 - Sidecars SQLite (`*.db-shm`, `*.db-wal`) nao sao versionados.
 - Dashboard gerado em `temp/dashboard-treino.html` nao e versionado.
+- `backups/` e `exportacoes/` nao sao versionados.
 
 SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de volta para ODS.
 Mudancas de catalogo devem sincronizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`

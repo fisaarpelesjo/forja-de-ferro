@@ -17,6 +17,8 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - `/desfazer` apaga o ultimo exercicio registrado.
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
   volume de treino.
+- `python gerenciar_dados.py backup` cria uma copia consistente do SQLite.
+- `python gerenciar_dados.py exportar` exporta os dados para JSON.
 
 O banco principal e `data/forja_de_ferro.db`. A sessao ativa fica em `session.json`,
 que e estado local e nao deve ser versionado.
@@ -35,8 +37,10 @@ forja_de_ferro/
 ├── start_bot.py             # launcher multiplataforma
 ├── start_bot.bat            # wrapper Windows
 ├── gerar_dashboard.py       # gera temp/dashboard-treino.html
+├── gerenciar_dados.py       # backup, exportacao e restauracao
 ├── forja_de_ferro/
 │   ├── banner.py            # banner do terminal
+│   ├── backup_ops.py        # gestao segura dos dados SQLite
 │   ├── telegram_poller.py   # bot Telegram com long polling
 │   ├── ods_ops.py           # operacoes de sessao de treino
 │   ├── dashboard.py         # dashboard HTML de volume de treino
@@ -45,6 +49,7 @@ forja_de_ferro/
 │   ├── smoke_test.py        # checagem basica do ambiente
 │   ├── regras_treino_test.py # regras de progressao e comandos
 │   ├── dashboard_test.py    # calculos e HTML do dashboard
+│   ├── backup_export_test.py # backup, exportacao e restauracao
 │   └── e2e_training_flow_test.py # teste ponta a ponta local
 ├── docs/
 │   └── index.md             # indice da documentacao detalhada
@@ -271,6 +276,18 @@ Tabelas principais:
 - `diet_entries`
 
 O catalogo de exercicios fica no SQLite. Nao substituir por ODS.
+
+Operacoes locais:
+
+```bash
+python gerenciar_dados.py backup
+python gerenciar_dados.py exportar
+python gerenciar_dados.py restaurar backups/arquivo.db --confirmar
+```
+
+Backups ficam em `backups/` e exportacoes em `exportacoes/`. Ambos sao locais e
+nao versionados. A restauracao valida a integridade do arquivo e cria um backup
+de seguranca do banco atual antes da substituicao. Pare o bot antes de restaurar.
 
 ## API Interna
 

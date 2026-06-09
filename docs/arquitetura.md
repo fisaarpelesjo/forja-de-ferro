@@ -9,17 +9,20 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 .
 ├── start_bot.py
 ├── start_bot.bat
+├── gerenciar_dados.py
 ├── data/
 │   └── forja_de_ferro.db
 ├── docs/
 ├── forja_de_ferro/
 │   ├── __init__.py
 │   ├── banner.py
+│   ├── backup_ops.py
 │   ├── dashboard.py
 │   ├── db_ops.py
 │   ├── ods_ops.py
 │   └── telegram_poller.py
 └── tests/
+    ├── backup_export_test.py
     ├── dashboard_test.py
     ├── regras_treino_test.py
     ├── smoke_test.py
@@ -53,6 +56,10 @@ start_bot.py
 
 gerar_dashboard.py
   -> forja_de_ferro.dashboard
+       -> SQLite
+
+gerenciar_dados.py
+  -> forja_de_ferro.backup_ops
        -> SQLite
 ```
 
@@ -97,6 +104,8 @@ Nao versionado:
 - `session.json`
 - `pending_log.csv`
 - `temp/`
+- `backups/`
+- `exportacoes/`
 - `data/*.db-shm`
 - `data/*.db-wal`
 - `__pycache__/`

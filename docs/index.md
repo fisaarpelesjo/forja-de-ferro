@@ -53,6 +53,7 @@ python tests/smoke_test.py
 python tests/regras_treino_test.py
 python tests/e2e_training_flow_test.py
 python tests/dashboard_test.py
+python tests/backup_export_test.py
 python start_bot.py
 ```
 
@@ -63,5 +64,6 @@ python3 tests/smoke_test.py
 python3 tests/regras_treino_test.py
 python3 tests/e2e_training_flow_test.py
 python3 tests/dashboard_test.py
+python3 tests/backup_export_test.py
 python3 start_bot.py
 ```

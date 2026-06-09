@@ -82,6 +82,15 @@ python tests/dashboard_test.py
 Valida os calculos, alertas, analises e a geracao do HTML usando SQLite
 temporario.
 
+## Teste De Backup E Exportacao
+
+```bash
+python tests/backup_export_test.py
+```
+
+Cria banco, backup, exportacao JSON e restauracao em diretorio temporario. O
+teste valida integridade, versao do esquema e preservacao dos dados.
+
 ## Ordem Recomendada
 
 ```bash
@@ -90,6 +99,7 @@ python tests/smoke_test.py
 python tests/regras_treino_test.py
 python tests/e2e_training_flow_test.py
 python tests/dashboard_test.py
+python tests/backup_export_test.py
 ```
 
 Se o teste de fumaca falhar, corrija ambiente primeiro. Se ele passar e o E2E
@@ -109,7 +119,6 @@ Bons proximos testes:
 
 - funcoes de dieta
 - falhas temporarias da API do Telegram
-- backup, exportacao e restauracao
 
 O teste de regras tambem cria um banco legado sem `schema_migrations`, executa
 as migracoes e confirma que os dados anteriores permanecem intactos.

@@ -100,6 +100,8 @@ Criterio de conclusao:
 
 ### Automatizar Backup E Exportacao
 
+Entregue em 2026-06-09.
+
 Criar comandos locais para copiar o banco com seguranca e exportar o historico
 para CSV ou JSON facilitaria recuperacao e analises externas.
 

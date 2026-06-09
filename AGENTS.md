@@ -8,6 +8,8 @@ Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
+Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
+backups validados.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
 
@@ -167,6 +169,13 @@ Dashboard local de volume de treino.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
 
+### `forja_de_ferro/backup_ops.py`
+
+- `criar_backup()` usa a API de backup do SQLite.
+- `exportar_dados()` gera JSON com versao de esquema e tabelas do projeto.
+- `restaurar_backup()` valida integridade, cria backup de seguranca quando o
+  destino existe e substitui o banco somente depois de concluir a copia.
+
 ## Estado Local
 
 Arquivos locais e secretos nao sao versionados:
@@ -179,6 +188,8 @@ Arquivos auxiliares SQLite nao sao versionados:
 - `data/*.db-shm`
 - `data/*.db-wal`
 - `temp/dashboard-treino.html`
+- `backups/`
+- `exportacoes/`
 
 Nao versionar segredos. Antes de alterar arquivos de estado local, verificar se a mudanca e necessaria.
 
