@@ -73,7 +73,7 @@ def main():
 
             session = json.loads(test_session.read_text(encoding="utf-8"))
             exercises = session["exercises"]
-            total_exercises = len(list(ods_ops.TRAINING_EXERCISES))
+            total_exercises = len(db_ops.get_active_training_plan()["exercises"])
             assert len(exercises) == total_exercises
             assert exercises[0]["target_weight"] is None
             assert exercises[0]["rest_interval"] == "4 min"

@@ -132,6 +132,8 @@ def _command_name(text):
         "ajuda",
         "exercicios",
         "volume",
+        "planos",
+        "plano",
         "aquecimento",
         "gerar",
         "prever",
@@ -304,6 +306,33 @@ def handle_volume():
         send("Erro ao calcular volume. Consulte o terminal.")
 
 
+def handle_plans():
+    plans = db_ops.list_training_plans()
+    if not plans:
+        send("Nenhum plano de treino cadastrado.")
+        return
+    lines = ["<b>Planos de treino</b>"]
+    for plan in plans:
+        marker = " ✓ ativo" if plan["active"] else ""
+        lines.append(
+            f"{plan['name']}: {plan['exercise_count']} exercicios{marker}"
+        )
+    lines.append("\nUse <code>/plano NOME</code> para selecionar.")
+    send("\n".join(lines))
+
+
+def handle_select_plan(text):
+    parts = text.strip().split(maxsplit=1)
+    if len(parts) < 2:
+        handle_plans()
+        return
+    name = parts[1].strip()
+    if db_ops.set_active_training_plan(name):
+        send(f"Plano ativo: <b>{name}</b>.")
+    else:
+        send(f"Plano nao encontrado ou vazio: <b>{name}</b>.")
+
+
 def handle(text, session):
     text = text.strip()
     exercises = session.get("exercises", [])
@@ -426,6 +455,8 @@ def main():
                         "/exercicios — lista os exercicios atuais\n"
                         "/aquecimento — mostra o aquecimento\n"
                         "/volume — volume por grupo muscular\n"
+                        "/planos — lista planos de treino\n"
+                        "/plano NOME — seleciona o plano ativo\n"
                         "/status — exercicio atual e progresso\n"
                         "/desfazer — apaga o ultimo registro\n"
                         "/ajuda — esta mensagem\n\n"
@@ -441,6 +472,16 @@ def main():
 
                 if lower in ("/volume", "volume"):
                     handle_volume()
+                    continue
+
+                if lower in ("/planos", "planos"):
+                    handle_plans()
+                    continue
+
+                if lower == "/plano" or lower == "plano" or lower.startswith(
+                    ("/plano ", "plano ")
+                ):
+                    handle_select_plan(text)
                     continue
 
                 if lower in ("/aquecimento", "aquecimento", "/warmup", "warmup"):

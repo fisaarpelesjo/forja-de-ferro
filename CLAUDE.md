@@ -59,6 +59,8 @@ Comandos principais em PT-BR:
 - `/exercicios` lista exercicios atuais.
 - `/aquecimento` mostra o aquecimento.
 - `/volume` mostra series por grupo muscular.
+- `/planos` lista planos cadastrados.
+- `/plano NOME` seleciona o plano ativo.
 - `/status` mostra progresso da sessao ativa.
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
@@ -70,6 +72,7 @@ Comandos principais em PT-BR:
 - O ultimo registro da sessao gera resumo automatico com volume, RPE medio,
   comparacao compativel, mudancas de carga, consolidacoes, cargas mantidas em
   RPE 9 e recordes.
+- `/gerar`, `/prever`, `/exercicios` e `/volume` usam o plano ativo no SQLite.
 
 Aliases antigos em ingles podem permanecer para compatibilidade.
 
@@ -92,7 +95,8 @@ Helpers de operacao de treino:
 
 Catalogo atual:
 
-- Indices ativos: `TRAINING_EXERCISES = range(0, 11)`.
+- A sequencia ativa vem de `training_plan_exercises`; `TRAINING_EXERCISES` e
+  `TREINO_EXERCISES` permanecem apenas como aliases legados.
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
 - RPE 9 nao representa estagnacao automaticamente. Manter a carga nesse nivel
   faz parte do metodo para consolidar tecnica, amplitude, controle e qualidade
@@ -153,7 +157,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 3`.
+- Versao atual do esquema: `SCHEMA_VERSION = 4`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume
@@ -167,6 +171,8 @@ Dashboard local de volume:
 SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de volta para ODS.
 `exercise_muscle_groups` e a fonte da classificacao muscular usada pelo bot e
 pelo dashboard.
+`training_plans` e `training_plan_exercises` armazenam modelos A/B; apenas um
+plano nao vazio fica ativo por vez.
 Mudancas de catalogo devem sincronizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`
 quando tambem precisarem valer para bancos novos.
 

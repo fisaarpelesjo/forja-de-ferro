@@ -76,6 +76,8 @@ Comandos principais:
 - `/exercicios`
 - `/aquecimento`
 - `/volume`
+- `/planos`
+- `/plano NOME`
 - `/status`
 - `/desfazer`
 - `/ajuda`
@@ -103,6 +105,8 @@ Fluxo principal:
 8. Ao registrar o ultimo exercicio, o bot envia resumo com volume, RPE medio,
    comparacao com sessao compativel, mudancas de carga, consolidacoes, cargas
    mantidas em RPE 9 e recordes.
+9. `/planos` lista modelos cadastrados e `/plano NOME` seleciona o plano usado
+   por `/gerar`, `/prever`, `/exercicios` e `/volume`.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -126,7 +130,8 @@ Funcoes importantes:
 
 Regras importantes:
 
-- Indices ativos: `TRAINING_EXERCISES = range(0, 11)`.
+- A sequencia ativa vem de `training_plan_exercises`; `TRAINING_EXERCISES` e
+  `TREINO_EXERCISES` permanecem apenas como aliases legados.
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
 - RPE 9 nao representa estagnacao automaticamente. Manter a carga nesse nivel
   faz parte do metodo para consolidar tecnica, amplitude, controle e qualidade
@@ -150,7 +155,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 3`.
+- Versao atual do esquema: `SCHEMA_VERSION = 4`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -158,6 +163,8 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
 - Tabela principal de exercicios: `exercises` (`name`, `sets`, `reps`, `sort_order`, `active`).
 - `exercise_muscle_groups` relaciona exercicios a grupos principais e
   secundarios. `/volume` e dashboard usam essa tabela como fonte unica.
+- `training_plans` e `training_plan_exercises` armazenam modelos A/B ou outros
+  ciclos. Apenas um plano com exercicios fica ativo por vez.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 - Mudancas que devem valer no banco atual precisam atualizar `data/forja_de_ferro.db`.
 

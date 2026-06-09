@@ -91,10 +91,10 @@ def main():
                 }
             finally:
                 conn.close()
-            assert versions == [1, 2, 3]
+            assert versions == [1, 2, 3, 4]
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
-            active_exercises = db_ops.list_exercises()
+            active_exercises = db_ops.get_or_seed_exercises()
             muscle_groups = db_ops.list_muscle_groups()
             assert all(ex["name"] in muscle_groups for ex in active_exercises)
             zercher_groups = db_ops.get_muscle_groups("Agachamento Zercher")
@@ -106,6 +106,27 @@ def main():
                 group["role"] == "secundario" for group in zercher_groups
             )
             assert db_ops.get_muscle_groups("Exercicio desconhecido") == []
+            plan_a = db_ops.get_active_training_plan()
+            assert plan_a["name"] == "A"
+            assert len(plan_a["exercises"]) == len(active_exercises)
+
+            db_ops.replace_training_plan(
+                "B",
+                [
+                    {"name": "Supino reto (barra)", "sets": 3, "reps": 5},
+                    {"name": "Remada curvada (barra)", "sets": 3, "reps": 8},
+                ],
+                active=True,
+            )
+            plan_b = db_ops.get_active_training_plan()
+            assert plan_b["name"] == "B"
+            assert len(plan_b["exercises"]) == 2
+
+            telegram_poller.handle_plans()
+            assert "B: 2 exercicios ✓ ativo" in mensagens[-1]
+            telegram_poller.handle_select_plan("/plano A")
+            assert "Plano ativo: <b>A</b>" in mensagens[-1]
+            assert db_ops.get_active_training_plan()["name"] == "A"
 
             legacy_db = temp_path / "legado.db"
             conn = sqlite3.connect(legacy_db)

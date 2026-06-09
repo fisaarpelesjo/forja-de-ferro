@@ -46,6 +46,8 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /exercicios     lista exercicios atuais
 /aquecimento    mostra o aquecimento
 /volume         mostra volume por musculo
+/planos         lista planos de treino
+/plano NOME     seleciona o plano ativo
 /status         mostra progresso
 /desfazer       apaga o ultimo registro
 /ajuda          mostra ajuda
@@ -208,6 +210,21 @@ Mostra um aquecimento curto, sem cargas prescritas, usando nomes em PT-BR:
 Le exercicios ativos e consulta `exercise_muscle_groups` no SQLite para calcular
 series por grupo principal e secundario. A estimativa semanal usa
 aproximadamente `3.5x` sessoes por semana. Bot e dashboard usam essa mesma fonte.
+
+## `/planos` E `/plano NOME`
+
+`/planos` lista os modelos cadastrados, quantidade de exercicios e qual esta
+ativo. `/plano NOME` troca o plano ativo.
+
+O plano selecionado passa a ser usado por:
+
+- `/gerar`
+- `/prever`
+- `/exercicios`
+- `/volume`
+
+A troca nao altera sessoes antigas nem uma sessao ja gerada. Novos planos sao
+cadastrados por `db_ops.replace_training_plan()`.
 
 ## `/status`
 

@@ -6,7 +6,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -183,10 +183,37 @@ SCHEMA_V3_STATEMENTS = (
     """,
 )
 
+SCHEMA_V4_STATEMENTS = (
+    """
+    CREATE TABLE IF NOT EXISTS training_plans (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL UNIQUE,
+        active INTEGER NOT NULL DEFAULT 0,
+        sort_order INTEGER NOT NULL DEFAULT 0
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS training_plan_exercises (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        plan_id INTEGER NOT NULL REFERENCES training_plans(id) ON DELETE CASCADE,
+        exercise_name TEXT NOT NULL,
+        sets INTEGER NOT NULL,
+        reps INTEGER NOT NULL,
+        sort_order INTEGER NOT NULL,
+        UNIQUE (plan_id, sort_order)
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_training_plan_exercises_plan
+    ON training_plan_exercises (plan_id, sort_order)
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
     3: SCHEMA_V3_STATEMENTS,
+    4: SCHEMA_V4_STATEMENTS,
 }
 
 
@@ -231,6 +258,7 @@ def init_db():
                 (version,),
             )
         _seed_default_muscle_groups(conn)
+        _seed_default_training_plan(conn)
 
 
 def _seed_default_muscle_groups(conn):
@@ -248,6 +276,61 @@ def _seed_default_muscle_groups(conn):
             )
 
 
+def _seed_default_training_plan(conn):
+    if get_schema_version(conn) < 4:
+        return
+    plan = conn.execute(
+        "SELECT id FROM training_plans WHERE name = 'A'"
+    ).fetchone()
+    if plan is None:
+        cur = conn.execute(
+            """
+            INSERT INTO training_plans (name, active, sort_order)
+            VALUES ('A', 1, 0)
+            """
+        )
+        plan_id = cur.lastrowid
+    else:
+        plan_id = plan["id"]
+
+    active_plan = conn.execute(
+        "SELECT id FROM training_plans WHERE active = 1 LIMIT 1"
+    ).fetchone()
+    if active_plan is None:
+        conn.execute("UPDATE training_plans SET active = 1 WHERE id = ?", (plan_id,))
+
+    count = conn.execute(
+        "SELECT COUNT(*) FROM training_plan_exercises WHERE plan_id = ?",
+        (plan_id,),
+    ).fetchone()[0]
+    if count:
+        return
+
+    exercises = conn.execute(
+        """
+        SELECT name, sets, reps
+        FROM exercises
+        WHERE active = 1
+        ORDER BY sort_order
+        """
+    ).fetchall()
+    for sort_order, exercise in enumerate(exercises):
+        conn.execute(
+            """
+            INSERT INTO training_plan_exercises
+                (plan_id, exercise_name, sets, reps, sort_order)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                plan_id,
+                exercise["name"],
+                exercise["sets"],
+                exercise["reps"],
+                sort_order,
+            ),
+        )
+
+
 # --- exercises ---
 
 def _insert_exercises(conn, exercises):
@@ -260,6 +343,7 @@ def _insert_exercises(conn, exercises):
             """,
             (ex["name"], int(ex["sets"]), int(ex["reps"]), idx),
         )
+    _seed_default_training_plan(conn)
 
 
 def list_exercises():
@@ -330,6 +414,146 @@ def list_muscle_groups():
             }
         )
     return grouped
+
+
+def list_training_plans():
+    get_or_seed_exercises()
+    init_db()
+    with _connect() as conn:
+        rows = conn.execute(
+            """
+            SELECT p.id, p.name, p.active, p.sort_order, COUNT(e.id) AS exercise_count
+            FROM training_plans p
+            LEFT JOIN training_plan_exercises e ON e.plan_id = p.id
+            GROUP BY p.id
+            ORDER BY p.sort_order, p.id
+            """
+        ).fetchall()
+        return [
+            {
+                "id": row["id"],
+                "name": row["name"],
+                "active": bool(row["active"]),
+                "exercise_count": row["exercise_count"],
+            }
+            for row in rows
+        ]
+
+
+def get_active_training_plan():
+    get_or_seed_exercises()
+    init_db()
+    with _connect() as conn:
+        plan = conn.execute(
+            """
+            SELECT id, name
+            FROM training_plans
+            WHERE active = 1
+            ORDER BY sort_order, id
+            LIMIT 1
+            """
+        ).fetchone()
+        if plan is None:
+            return None
+        exercises = conn.execute(
+            """
+            SELECT exercise_name AS name, sets, reps
+            FROM training_plan_exercises
+            WHERE plan_id = ?
+            ORDER BY sort_order, id
+            """,
+            (plan["id"],),
+        ).fetchall()
+        return {
+            "id": plan["id"],
+            "name": plan["name"],
+            "exercises": [dict(row) for row in exercises],
+        }
+
+
+def replace_training_plan(name, exercises, active=False):
+    get_or_seed_exercises()
+    init_db()
+    normalized_name = name.strip()
+    if not normalized_name:
+        raise ValueError("Nome do plano nao pode ficar vazio.")
+    if not exercises:
+        raise ValueError("Plano precisa ter pelo menos um exercicio.")
+
+    with _connect() as conn:
+        plan = conn.execute(
+            "SELECT id FROM training_plans WHERE name = ?",
+            (normalized_name,),
+        ).fetchone()
+        if plan is None:
+            next_order = conn.execute(
+                "SELECT COALESCE(MAX(sort_order), -1) + 1 FROM training_plans"
+            ).fetchone()[0]
+            cur = conn.execute(
+                """
+                INSERT INTO training_plans (name, active, sort_order)
+                VALUES (?, 0, ?)
+                """,
+                (normalized_name, next_order),
+            )
+            plan_id = cur.lastrowid
+        else:
+            plan_id = plan["id"]
+            conn.execute(
+                "DELETE FROM training_plan_exercises WHERE plan_id = ?",
+                (plan_id,),
+            )
+
+        for sort_order, exercise in enumerate(exercises):
+            conn.execute(
+                """
+                INSERT INTO training_plan_exercises
+                    (plan_id, exercise_name, sets, reps, sort_order)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (
+                    plan_id,
+                    exercise["name"],
+                    int(exercise["sets"]),
+                    int(exercise["reps"]),
+                    sort_order,
+                ),
+            )
+        if active:
+            conn.execute("UPDATE training_plans SET active = 0")
+            conn.execute(
+                "UPDATE training_plans SET active = 1 WHERE id = ?",
+                (plan_id,),
+            )
+        return plan_id
+
+
+def set_active_training_plan(name):
+    get_or_seed_exercises()
+    init_db()
+    with _connect() as conn:
+        plan = conn.execute(
+            """
+            SELECT id
+            FROM training_plans
+            WHERE lower(name) = lower(?)
+            """,
+            (name.strip(),),
+        ).fetchone()
+        if plan is None:
+            return False
+        count = conn.execute(
+            "SELECT COUNT(*) FROM training_plan_exercises WHERE plan_id = ?",
+            (plan["id"],),
+        ).fetchone()[0]
+        if count == 0:
+            return False
+        conn.execute("UPDATE training_plans SET active = 0")
+        conn.execute(
+            "UPDATE training_plans SET active = 1 WHERE id = ?",
+            (plan["id"],),
+        )
+        return True
 
 
 # --- training sessions ---

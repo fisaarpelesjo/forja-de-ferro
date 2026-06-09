@@ -85,6 +85,18 @@ sessao real.
 Ao registrar o ultimo exercicio, o bot envia automaticamente o resumo da sessao.
 Nao e necessario executar outro comando.
 
+Para trabalhar com modelos A/B:
+
+```text
+/planos
+/plano A
+/plano B
+```
+
+O repositorio migra o treino atual como plano `A`. Um plano `B` so aparece
+depois de ser cadastrado no SQLite; nenhum treino alternativo e inventado
+automaticamente.
+
 ## Progressao De Carga Por RPE
 
 Ao gerar treino, o bot sugere a proxima carga usando a ultima carga registrada

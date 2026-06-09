@@ -34,6 +34,7 @@ def main():
         try:
             db_ops.DATA_DIR = temp_path
             db_ops.DB_PATH = source_db
+            db_ops.get_or_seed_exercises()
             session_id = db_ops.create_session("2026-06-09")
             log_id = db_ops.log_exercise(
                 session_id,
@@ -60,6 +61,8 @@ def main():
             assert len(payload["tables"]["training_sessions"]) == 1
             assert payload["tables"]["training_logs"][0]["weight"] == 48
             assert payload["tables"]["exercise_muscle_groups"]
+            assert payload["tables"]["training_plans"]
+            assert payload["tables"]["training_plan_exercises"]
 
             restored, safety = backup_ops.restaurar_backup(
                 backup,

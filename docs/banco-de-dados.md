@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 3`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 4`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -25,7 +25,7 @@ uma linha por versao aplicada, com data e hora.
 
 A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localizar
 logs pendentes por sessao e historico por exercicio. A versao 3 cria
-`exercise_muscle_groups`. As migracoes usam
+`exercise_muscle_groups`. A versao 4 cria planos de treino. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -95,6 +95,34 @@ sort_order     INTEGER NOT NULL
 Os grupos dos exercicios atuais e aliases historicos sao inseridos de forma
 idempotente por `init_db()`. Exercicios sem classificacao aparecem como
 `Outros`, mas nenhum exercicio ativo deve permanecer nesse estado.
+
+### `training_plans`
+
+Modelos de treino cadastrados. Apenas um plano fica ativo por vez.
+
+```text
+id          INTEGER PRIMARY KEY AUTOINCREMENT
+name        TEXT NOT NULL UNIQUE
+active      INTEGER NOT NULL
+sort_order  INTEGER NOT NULL
+```
+
+### `training_plan_exercises`
+
+Sequencia, series e repeticoes de cada plano.
+
+```text
+id             INTEGER PRIMARY KEY AUTOINCREMENT
+plan_id        INTEGER NOT NULL
+exercise_name  TEXT NOT NULL
+sets           INTEGER NOT NULL
+reps           INTEGER NOT NULL
+sort_order     INTEGER NOT NULL
+```
+
+O plano `A` e criado a partir do catalogo ativo existente. Outros planos podem
+ser cadastrados com `db_ops.replace_training_plan()`. O bot seleciona com
+`/plano NOME`.
 
 ### `training_sessions`
 
@@ -180,7 +208,7 @@ Ao mudar o catalogo para frente, atualize:
 ods_ops.generate_training()
   -> ods_ops.read_exercises()
      -> db_ops.get_or_seed_exercises()
-  -> seleciona TRAINING_EXERCISES = range(0, 11)
+  -> le a sequencia do plano ativo em training_plan_exercises
   -> db_ops.create_session(today)
   -> db_ops.log_exercise(...) para cada exercicio
 ```

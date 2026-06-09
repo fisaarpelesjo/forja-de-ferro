@@ -192,6 +192,8 @@ Criterio de conclusao:
 
 ### Permitir Ciclos E Variacoes De Treino
 
+Entregue em 2026-06-09.
+
 O catalogo atual e fixo para todas as sessoes. No futuro, o sistema pode suportar
 modelos A/B ou ciclos, desde que os nomes dos exercicios e o historico continuem
 comparaveis.

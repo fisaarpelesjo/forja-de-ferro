@@ -15,6 +15,7 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - Enviar `80 8` registra 80 kg com RPE 8.
 - `/status` mostra o progresso da sessao ativa.
 - `/desfazer` apaga o ultimo exercicio registrado.
+- `/planos` lista os modelos cadastrados e `/plano NOME` seleciona o ativo.
 - Ao concluir o ultimo exercicio, o bot envia resumo da sessao com volume, RPE,
   comparacao, mudancas de carga, consolidacoes e recordes.
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
@@ -74,6 +75,8 @@ forja_de_ferro/
 /exercicios     Lista exercicios atuais, series e repeticoes
 /aquecimento    Mostra o aquecimento
 /volume         Mostra series por grupo muscular e estimativa semanal
+/planos         Lista planos de treino cadastrados
+/plano NOME     Seleciona o plano ativo
 /status         Mostra exercicio atual e progresso da sessao
 /desfazer       Limpa o ultimo registro de carga
 /ajuda          Mostra ajuda
@@ -288,6 +291,8 @@ Tabelas principais:
 - `diet_targets`
 - `diet_entries`
 - `exercise_muscle_groups`
+- `training_plans`
+- `training_plan_exercises`
 
 O catalogo de exercicios fica no SQLite. Nao substituir por ODS.
 

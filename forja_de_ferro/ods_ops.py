@@ -46,7 +46,9 @@ LOAD_EQUIPMENT = {
 }
 
 def read_exercises():
-    return db_ops.get_or_seed_exercises()
+    db_ops.get_or_seed_exercises()
+    plan = db_ops.get_active_training_plan()
+    return plan["exercises"] if plan else []
 
 
 def read_previous_weights():
@@ -107,14 +109,17 @@ def build_training_plan(persist=True):
     Monta o treino atual com carga alvo e descanso.
     Se persist=True, cria sessao e logs no SQLite.
     """
-    all_ex = read_exercises()
-    exercises = [all_ex[i] for i in TRAINING_EXERCISES if i < len(all_ex)]
+    db_ops.get_or_seed_exercises()
+    plan = db_ops.get_active_training_plan()
+    if plan is None or not plan["exercises"]:
+        raise RuntimeError("Nenhum plano de treino ativo com exercicios.")
+    exercises = plan["exercises"]
     previous_performance = read_previous_performance()
 
     session_id = None
     if persist:
         today = date.today().strftime("%Y-%m-%d")
-        session_id = db_ops.create_session(today)
+        session_id = db_ops.create_session(today, plan["name"])
 
     session_exercises = []
     for idx, ex in enumerate(exercises):
