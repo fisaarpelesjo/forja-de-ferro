@@ -142,6 +142,16 @@ RPE 10 ou maior -> ultima carga - 2 kg
 Sem RPE         -> ultima carga
 ```
 
+RPE 9 mantem `target_weight` de forma intencional. Essa fase permite consolidar
+tecnica, amplitude, controle e qualidade das repeticoes com a carga atual; ela
+nao deve ser classificada automaticamente como estagnacao. Quando a mesma carga
+for registrada como RPE 8 ou menor, `suggest_next_weight()` aplica o aumento
+correspondente.
+
+Analises derivadas do banco devem interpretar uma sequencia de RPE 9 junto com
+a qualidade da execucao. Sem dados de tecnica, repeticoes incompletas ou
+amplitude, o valor isolado nao comprova falta de evolucao.
+
 Se nao houver historico de carga para o exercicio, `target_weight` fica `None` e
 a tabela do bot mostra `-`.
 

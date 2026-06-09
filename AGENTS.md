@@ -107,6 +107,14 @@ Regras importantes:
 
 - Indices ativos: `TRAINING_EXERCISES = range(0, 11)`.
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
+- RPE 9 nao representa estagnacao automaticamente. Nesse nivel, manter a carga
+  faz parte do metodo para consolidar tecnica, amplitude, controle e qualidade
+  das repeticoes. Quando a mesma carga passar a ser registrada como RPE 8 ou
+  menor, o sistema aumenta o alvo conforme a regra de progressao.
+- Avaliacoes do historico e alertas do dashboard nao devem tratar uma sequencia
+  de RPE 9 como problema isolado. Ela so exige atencao quando vier acompanhada
+  de perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
+  prolongada de qualquer melhora na execucao.
 - `Rosca martelo (barra H)` tem alvo inicial de 16 kg quando ainda nao houver historico proprio; depois disso usa a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.

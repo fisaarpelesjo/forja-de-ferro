@@ -113,6 +113,15 @@ RPE 10 ou maior -> -2 kg
 Sem RPE         -> manter
 ```
 
+Neste metodo, repetir a mesma carga em RPE 9 nao significa automaticamente
+estagnacao. A manutencao da carga serve para consolidar tecnica, amplitude,
+controle e qualidade das repeticoes. Quando essa mesma carga passar a ser
+percebida como RPE 8 ou menor, o bot sugere o aumento correspondente.
+
+Uma sequencia de RPE 9 deve ser interpretada junto com a execucao. Ela merece
+atencao quando houver perda tecnica, repeticoes incompletas, piora de amplitude
+ou ausencia prolongada de melhora, e nao apenas porque a carga permaneceu igual.
+
 Exemplo:
 
 ```text

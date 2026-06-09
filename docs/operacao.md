@@ -95,6 +95,15 @@ RPE 10 ou maior -> -2 kg
 Sem RPE         -> manter
 ```
 
+RPE 9 e uma etapa de consolidacao, nao uma indicacao automatica de estagnacao.
+Enquanto a carga ainda estiver em RPE 9, mantenha-a para melhorar tecnica,
+amplitude, controle e qualidade das repeticoes. Quando a mesma carga passar a
+RPE 8 ou menor, o proximo treino recebe o aumento previsto pela regra.
+
+Considere uma sequencia de RPE 9 um ponto de atencao apenas se ela vier
+acompanhada de perda tecnica, repeticoes incompletas, piora de amplitude ou
+ausencia prolongada de melhora na execucao.
+
 ```text
 Hoje: 40 8
 Proximo /gerar: alvo 42 kg

@@ -107,6 +107,15 @@ RPE 10 ou maior -> -2 kg
 Sem RPE         -> manter
 ```
 
+No metodo adotado pelo projeto, RPE 9 mantem a carga para consolidar tecnica,
+amplitude, controle e qualidade das repeticoes. Isso nao caracteriza estagnacao
+por si so. Quando a mesma carga passar a RPE 8 ou menor, o bot sugere o aumento
+correspondente no proximo treino.
+
+Uma sequencia de RPE 9 so deve ser tratada como sinal de atencao quando houver
+perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia prolongada
+de melhora na execucao.
+
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
