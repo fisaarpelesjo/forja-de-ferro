@@ -141,6 +141,10 @@ Estado local opcional:
 session.json
 ```
 
+Se `session.json` for apagado ou corrompido durante um treino, envie `/status`
+ou a proxima carga normalmente. O bot tenta reconstruir a sessao mais recente
+que ainda possui logs pendentes no SQLite.
+
 Segredo local:
 
 ```text

@@ -261,6 +261,95 @@ def count_filled(log_ids):
         return row[0]
 
 
+def get_latest_incomplete_session():
+    """Retorna a sessao mais recente que possui logs pendentes."""
+    init_db()
+    with _connect() as conn:
+        session = conn.execute(
+            """
+            SELECT s.id, s.date, s.training_type
+            FROM training_sessions s
+            WHERE EXISTS (
+                SELECT 1 FROM training_logs l WHERE l.session_id = s.id
+            )
+              AND EXISTS (
+                SELECT 1
+                FROM training_logs l
+                WHERE l.session_id = s.id AND l.weight IS NULL
+            )
+            ORDER BY s.id DESC
+            LIMIT 1
+            """
+        ).fetchone()
+        if session is None:
+            return None
+
+        logs = conn.execute(
+            """
+            SELECT id, exercise_name, sets, reps, weight, rpe, sort_order
+            FROM training_logs
+            WHERE session_id = ?
+            ORDER BY sort_order, id
+            """,
+            (session["id"],),
+        ).fetchall()
+
+        exercises = []
+        for log in logs:
+            previous = conn.execute(
+                """
+                SELECT weight, rpe
+                FROM training_logs
+                WHERE exercise_name = ?
+                  AND id < ?
+                  AND weight IS NOT NULL
+                  AND weight > 0
+                ORDER BY id DESC
+                LIMIT 1
+                """,
+                (log["exercise_name"], log["id"]),
+            ).fetchone()
+            exercises.append(
+                {
+                    "log_id": log["id"],
+                    "name": log["exercise_name"],
+                    "sets": log["sets"],
+                    "reps": log["reps"],
+                    "weight": log["weight"],
+                    "rpe": log["rpe"],
+                    "sort_order": log["sort_order"],
+                    "previous_weight": previous["weight"] if previous else None,
+                    "previous_rpe": previous["rpe"] if previous else None,
+                }
+            )
+
+        return {
+            "session_id": session["id"],
+            "date": session["date"],
+            "training_type": session["training_type"],
+            "exercises": exercises,
+        }
+
+
+def is_session_incomplete(session_id, log_ids):
+    """Valida se os logs pertencem a uma sessao existente e ainda incompleta."""
+    if session_id is None or not log_ids:
+        return False
+    placeholders = ",".join("?" * len(log_ids))
+    with _connect() as conn:
+        row = conn.execute(
+            f"""
+            SELECT
+                COUNT(*) AS total,
+                SUM(CASE WHEN weight IS NULL THEN 1 ELSE 0 END) AS pending
+            FROM training_logs
+            WHERE session_id = ? AND id IN ({placeholders})
+            """,
+            [session_id, *log_ids],
+        ).fetchone()
+        return row["total"] == len(log_ids) and row["pending"] > 0
+
+
 def import_log_rows(rows):
     """
     Bulk-import historical diary rows. Groups by (date, training_type) into sessions.

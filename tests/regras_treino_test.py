@@ -118,6 +118,11 @@ def main():
             assert "Desfeito" in mensagens[-1]
             assert db_ops.count_filled([log_id]) == 0
 
+            telegram_poller.handle("40 9", session)
+            test_session.unlink()
+            assert telegram_poller.load_session() is None
+            assert not test_session.exists()
+
             print("Teste das regras de treino passou.")
         finally:
             db_ops.DB_PATH = original_db_path

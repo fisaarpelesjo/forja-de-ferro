@@ -60,6 +60,8 @@ Criterio de conclusao:
 
 ### Recuperar A Sessao Ativa Pelo SQLite
 
+Entregue em 2026-06-09.
+
 `session.json` e apenas contexto local, mas sua perda interrompe o fluxo mesmo
 quando a sessao e os logs continuam no banco.
 

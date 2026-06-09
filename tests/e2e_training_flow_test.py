@@ -93,6 +93,16 @@ def main():
             assert first_log["rpe"] == 8.0
             assert "80.0kg RPE 8" in sent_messages[-1]
 
+            test_session.unlink()
+            recovered_session = telegram_poller.load_session()
+            assert recovered_session["session_id"] == session["session_id"]
+            assert recovered_session["exercises"][0]["log_id"] == first_log_id
+            assert test_session.exists()
+
+            test_session.write_text("{arquivo corrompido", encoding="utf-8")
+            recovered_corrupt = telegram_poller.load_session()
+            assert recovered_corrupt["session_id"] == session["session_id"]
+
             telegram_poller.handle_generate()
             progressed_session = json.loads(test_session.read_text(encoding="utf-8"))
             progressed_first = progressed_session["exercises"][0]

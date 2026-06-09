@@ -39,10 +39,24 @@ def send(text):
 
 
 def load_session():
-    if not SESSION_FILE.exists():
-        return None
-    with open(SESSION_FILE, encoding="utf-8") as f:
-        return json.load(f)
+    session = None
+    if SESSION_FILE.exists():
+        try:
+            with open(SESSION_FILE, encoding="utf-8") as f:
+                session = json.load(f)
+        except (OSError, json.JSONDecodeError):
+            session = None
+
+    if session:
+        exercises = session.get("exercises", [])
+        log_ids = [ex.get("log_id") for ex in exercises]
+        if all(log_ids) and db_ops.is_session_incomplete(
+            session.get("session_id"),
+            log_ids,
+        ):
+            return session
+
+    return ods_ops.recover_active_session()
 
 
 def get_updates(offset=0):

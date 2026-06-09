@@ -102,6 +102,11 @@ Nao versionado:
 O banco guarda o historico duravel. `session.json` so aponta qual sessao esta
 ativa e quais `log_id` devem receber as proximas cargas.
 
+O arquivo funciona como cache recuperavel. O carregamento valida `session_id` e
+`log_id` no SQLite; quando o cache esta ausente, corrompido ou antigo,
+`ods_ops.recover_active_session()` reconstrui a sessao mais recente com logs
+pendentes. Sessoes completas nao sao reabertas.
+
 ## Por Que O Pacote Chama `forja_de_ferro`
 
 O app se chama Forja de Ferro no README, no banner e no banco `forja_de_ferro.db`.

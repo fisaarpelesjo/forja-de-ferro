@@ -91,6 +91,9 @@ Fluxo:
 3. `/prever` mostra o mesmo formato sem criar sessao, logs ou `session.json`.
 4. Entrada de carga e escrita diretamente no SQLite.
 5. `/desfazer` limpa o ultimo exercicio registrado.
+6. `session.json` e validado contra o SQLite ao ser carregado. Se estiver
+   ausente, corrompido ou antigo, o bot reconstrui a sessao mais recente com
+   logs pendentes; sessoes completas nao sao reabertas.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -108,6 +111,8 @@ Funcoes importantes:
 - `get_rest_interval(exercise_name)` retorna o descanso sugerido entre series.
 - `format_loading_note(exercise_name, target_weight)` retorna observacao de montagem da carga quando houver equipamento fixo.
 - `write_session()` escreve `session.json`.
+- `recover_active_session()` reconstrui `session.json` a partir da sessao
+  SQLite mais recente que ainda possui logs pendentes.
 
 Regras importantes:
 

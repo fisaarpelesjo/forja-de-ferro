@@ -187,3 +187,40 @@ def write_session(exercises, session_id=None):
         data["session_id"] = session_id
     with open(SESSION_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def recover_active_session():
+    """Reconstrui o cache da sessao ativa a partir do SQLite."""
+    stored = db_ops.get_latest_incomplete_session()
+    if stored is None:
+        return None
+
+    exercises = []
+    for row in stored["exercises"]:
+        target_weight = suggest_next_weight(
+            row["previous_weight"],
+            row["previous_rpe"],
+        )
+        if target_weight is None:
+            target_weight = get_initial_target_weight(row["name"])
+        item = {
+            "log_id": row["log_id"],
+            "name": row["name"],
+            "sets": row["sets"],
+            "reps": row["reps"],
+            "target_weight": target_weight,
+            "rest_interval": get_rest_interval(row["name"]),
+        }
+        loading_note = format_loading_note(row["name"], target_weight)
+        if loading_note:
+            item["loading_note"] = loading_note
+        exercises.append(item)
+
+    data = {
+        "date": stored["date"],
+        "session_id": stored["session_id"],
+        "exercises": exercises,
+    }
+    with open(SESSION_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    return data

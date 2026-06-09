@@ -58,6 +58,9 @@ Comandos principais em PT-BR:
 - `/ajuda` lista comandos.
 - `80` ou `80 8` registra carga e RPE opcional.
 - O texto de `/gerar` mostra `alvo`, calculado pela ultima carga do exercicio e pelo RPE, e `descanso`.
+- Ao carregar, `session.json` e validado contra o SQLite. Arquivo ausente,
+  corrompido ou antigo e reconstruido pela sessao mais recente com logs
+  pendentes; sessoes completas nao sao reabertas.
 
 Aliases antigos em ingles podem permanecer para compatibilidade.
 
@@ -75,6 +78,8 @@ Helpers de operacao de treino:
 - `get_rest_interval(exercise_name)` retorna o descanso sugerido entre series.
 - `format_loading_note(exercise_name, target_weight)` retorna observacao de montagem da carga quando houver equipamento fixo.
 - `write_session()` escreve estado ativo em `session.json`.
+- `recover_active_session()` reconstrui o cache local pela sessao SQLite mais
+  recente que ainda possui logs pendentes.
 
 Catalogo atual:
 

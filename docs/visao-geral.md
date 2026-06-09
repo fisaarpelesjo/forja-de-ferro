@@ -77,6 +77,9 @@ start_bot.bat
 SQLite e a fonte da verdade para exercicios e logs.
 
 `session.json` nao e fonte da verdade; ele so guarda o contexto da sessao ativa.
+Ao carregar o estado, o bot valida os IDs contra o SQLite. Se o arquivo estiver
+ausente, corrompido ou antigo, ele reconstrui a sessao mais recente com logs
+pendentes. Uma sessao completa nao e recuperada como ativa.
 
 ## Catalogo Atual
 

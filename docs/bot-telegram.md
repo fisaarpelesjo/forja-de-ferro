@@ -259,7 +259,13 @@ Formato: 80 8 (carga + RPE) ou 80 (somente carga)
 }
 ```
 
-Se a sessao estiver ausente, o bot pede `/gerar`.
+Ao carregar o arquivo, o bot confirma que todos os logs pertencem a
+`session_id` e que ainda existe pelo menos um exercicio pendente. Se o arquivo
+nao existir, estiver corrompido ou apontar para uma sessao antiga, o bot
+reconstroi o cache pela sessao SQLite mais recente com `weight IS NULL`.
+Sessoes completas nao sao reabertas.
+
+Se nao existir nenhuma sessao incompleta no SQLite, o bot pede `/gerar`.
 
 ## Falhas Comuns
 
@@ -277,7 +283,8 @@ Chat ID errado:
 
 `session.json` ausente:
 
-- entrada de carga responde `Nenhuma sessao ativa. Use /gerar.`
+- o bot recupera a sessao SQLite mais recente com logs pendentes
+- sem sessao incompleta, responde `Nenhuma sessao ativa. Use /gerar.`
 
 SQLite travado:
 

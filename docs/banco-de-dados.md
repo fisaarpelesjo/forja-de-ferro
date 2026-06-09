@@ -132,6 +132,11 @@ descanso sugerido entre series. Quando o exercicio usa equipamento de peso fixo,
 tambem pode guardar `loading_note`, uma observacao de montagem da carga para o
 bot mostrar no exercicio atual/proximo.
 
+O SQLite tambem permite recuperar esse contexto. A consulta procura a sessao
+mais recente que possui logs e pelo menos um `weight IS NULL`, preserva a ordem
+por `sort_order` e reconstrui os alvos usando o desempenho anterior a cada log.
+Sessoes sem pendencias nao sao consideradas ativas.
+
 ## Progressao De Carga
 
 `db_ops.get_last_performance()` busca a ultima carga valida e o RPE mais recente

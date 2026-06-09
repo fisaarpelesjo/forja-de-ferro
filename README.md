@@ -21,6 +21,10 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 O banco principal e `data/forja_de_ferro.db`. A sessao ativa fica em `session.json`,
 que e estado local e nao deve ser versionado.
 
+`session.json` funciona como cache. Se for apagado, corrompido ou apontar para
+uma sessao antiga, o bot tenta reconstruir a sessao SQLite mais recente que
+ainda possui exercicios pendentes. Sessoes completas nao sao reabertas.
+
 ## Estrutura
 
 ```text
