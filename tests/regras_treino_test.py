@@ -42,6 +42,10 @@ def _assert_equipamento_e_descanso():
         == "barra W 6kg + 10kg de anilhas"
     )
     assert (
+        ods_ops.format_loading_note("Remada alta (barra)", 18)
+        == "barra W 6kg + 12kg de anilhas"
+    )
+    assert (
         ods_ops.format_loading_note("Rosca martelo (barra H)", 18)
         == "barra H 9kg + 9kg de anilhas"
     )

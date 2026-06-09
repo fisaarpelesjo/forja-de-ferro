@@ -40,6 +40,7 @@ REST_INTERVALS = {
 
 LOAD_EQUIPMENT = {
     "Pullover (barra)": {"name": "barra W", "weight": 6.0},
+    "Remada alta (barra)": {"name": "barra W", "weight": 6.0},
     "Rosca martelo (barra H)": {"name": "barra H", "weight": 9.0},
     "Tríceps testa": {"name": "barra W", "weight": 6.0},
     "Triceps testa": {"name": "barra W", "weight": 6.0},

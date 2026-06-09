@@ -174,9 +174,10 @@ ainda nao houver historico proprio. Depois do primeiro registro, ela segue a
 progressao normal por RPE.
 
 Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. `Tríceps testa` e `Pullover (barra)` usam barra W
-de 6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg. Essa observacao aparece
-no `/status` e na indicacao do proximo exercicio, mas nao na lista `/exercicios`.
+de montagem em `session.json`. `Tríceps testa`, `Pullover (barra)` e `Remada alta
+(barra)` usam barra W de 6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg.
+Essa observacao aparece no `/status` e na indicacao do proximo exercicio, mas
+nao na lista `/exercicios`.
 
 ## Descanso Entre Series
 
@@ -184,7 +185,7 @@ O `/gerar` tambem mostra o descanso sugerido por exercicio:
 
 ```text
 Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
-Remada curvada, Desenvolvimento: 3 min
+Remada curvada, Desenvolvimento, Remada alta: 3 min
 Acessorios e supino reto back-off: 2 min
 Rosca martelo (barra H), Triceps testa: 2 min
 ```

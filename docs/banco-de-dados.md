@@ -266,9 +266,10 @@ carga, consolidacoes e recordes. Para comparar volume, procura a sessao anterior
 com a mesma sequencia de exercicios preenchidos. Isso evita comparar diretamente
 modelos de treino diferentes.
 
-Para `Tríceps testa` e `Pullover (barra)`, `ods_ops.format_loading_note()` usa
-barra W de 6 kg e calcula as anilhas como `target_weight - 6`. Exemplo:
-`target_weight = 18` gera `barra W 6kg + 12kg de anilhas`.
+Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`,
+`ods_ops.format_loading_note()` usa barra W de 6 kg e calcula as anilhas como
+`target_weight - 6`. Exemplo: `target_weight = 18` gera
+`barra W 6kg + 12kg de anilhas`.
 
 Para `Rosca martelo (barra H)`, a funcao usa barra H de 9 kg e calcula as
 anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera

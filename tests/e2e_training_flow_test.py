@@ -131,6 +131,7 @@ def main():
             assert maintained_first["target_weight"] == 80.5
             assert ods_ops.format_loading_note("Tríceps testa", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Pullover (barra)", 16.0) == "barra W 6kg + 10kg de anilhas"
+            assert ods_ops.format_loading_note("Remada alta (barra)", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Rosca martelo (barra H)", 18.0) == "barra H 9kg + 9kg de anilhas"
             triceps = {"name": "Tríceps testa", "sets": 3, "reps": 8, "target_weight": 18.0}
             assert "barra W 6kg + 12kg de anilhas" in telegram_poller._format_current_exercise(triceps)

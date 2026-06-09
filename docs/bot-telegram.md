@@ -144,8 +144,8 @@ O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
-o bot tambem mostra a montagem da carga. Para `Tríceps testa` e
-`Pullover (barra)`, a barra W pesa 6 kg, entao um alvo de 18 kg aparece como:
+o bot tambem mostra a montagem da carga. Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`, a barra W
+pesa 6 kg, entao um alvo de 18 kg aparece como:
 
 ```text
 barra W 6kg + 12kg de anilhas
