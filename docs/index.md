@@ -22,6 +22,8 @@ na documentacao do software.
   terminal, Python e problemas comuns de ambiente.
 - [Operacao](operacao.md): uso diario, setup limpo, backup, troubleshooting e
   checklist de manutencao.
+- [Melhorias futuras](melhorias-futuras.md): roadmap tecnico priorizado, riscos,
+  criterios de conclusao e itens que nao sao prioridade.
 
 ## Referencias De Treino
 

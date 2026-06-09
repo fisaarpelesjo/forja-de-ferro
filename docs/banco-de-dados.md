@@ -77,6 +77,10 @@ comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes
 1RM estimado, media movel, consistencia semanal, abas de navegacao, filtros
 rapidos, analises cruzadas de volume/RPE/carga e alertas simples.
 
+Os alertas consideram RPE 9 uma fase valida de consolidacao. O dashboard destaca
+queda de RPE com a mesma carga como evolucao, acompanha RPE 10 persistente e
+explica reducoes de carga feitas depois de RPE 10.
+
 ### Dieta
 
 Tambem existem:

@@ -94,6 +94,8 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
 - maiores evolucoes, quedas, recordes pessoais e alertas simples
+- sinais de consolidacao quando o RPE cai com a mesma carga, sem classificar
+  RPE 9 repetido como estagnacao
 - 1RM estimado por exercicio usando a formula de Epley
 - media movel de volume em janela de 3 sessoes
 - consistencia semanal e dias desde o ultimo treino
@@ -297,3 +299,4 @@ A documentacao detalhada fica em [`docs/index.md`](docs/index.md):
 - testes smoke e ponta a ponta
 - portabilidade entre Windows, Linux, macOS e maquinas fracas
 - operacao e troubleshooting
+- roadmap priorizado de melhorias futuras

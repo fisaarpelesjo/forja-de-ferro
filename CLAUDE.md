@@ -31,6 +31,10 @@ Nao atualizar apenas um arquivo de agente quando a informacao tambem se aplicar
 aos outros. Antes de finalizar uma mudanca, verificar se README, `docs/index.md`
 ou outros documentos em `docs/` tambem precisam ser atualizados.
 
+O roadmap tecnico fica em `docs/melhorias-futuras.md`. Consultar esse documento
+antes de iniciar melhorias amplas e atualiza-lo quando um item for entregue,
+descartado ou repriorizado.
+
 ## Modulos Principais
 
 Os modulos de runtime ficam no pacote `forja_de_ferro/`. Importe codigo de aplicacao
@@ -116,6 +120,9 @@ Dashboard local de volume:
   carga, RPE, 1RM estimado, media movel, consistencia semanal, comparacao
   recente, PRs, maiores evolucoes, abas de navegacao, filtros rapidos, analises
   cruzadas de volume/RPE/carga e alertas.
+- Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
+  Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
+  e reducao de carga apos RPE 10 aparecem como sinais de acompanhamento.
 - O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - Launcher local: `python gerar_dashboard.py`.

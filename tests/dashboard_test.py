@@ -56,6 +56,53 @@ def main():
             assert dados["analises"]["rpe_distribuicao"]
             assert dados["analises"]["carga_rpe_exercicio"]
 
+            alertas_rpe_9 = dashboard._calcular_alertas(
+                [
+                    {"volume": 1000, "rpe_medio": 9},
+                    {"volume": 1000, "rpe_medio": 9},
+                    {"volume": 1000, "rpe_medio": 9},
+                ],
+                [
+                    {
+                        "nome": "Supino reto (barra)",
+                        "pontos": [
+                            {"carga": 42, "rpe": 9},
+                            {"carga": 42, "rpe": 9},
+                            {"carga": 42, "rpe": 9},
+                        ],
+                    }
+                ],
+            )
+            assert alertas_rpe_9 == []
+
+            alertas_consolidacao = dashboard._calcular_alertas(
+                [],
+                [
+                    {
+                        "nome": "Supino reto (barra)",
+                        "pontos": [
+                            {"carga": 42, "rpe": 9},
+                            {"carga": 42, "rpe": 8},
+                        ],
+                    }
+                ],
+            )
+            assert "consolidou 42 kg" in alertas_consolidacao[0]
+
+            alertas_reducao = dashboard._calcular_alertas(
+                [],
+                [
+                    {
+                        "nome": "Remada curvada (barra)",
+                        "pontos": [
+                            {"carga": 48, "rpe": 10},
+                            {"carga": 46, "rpe": 9},
+                        ],
+                    }
+                ],
+            )
+            assert "reducao de carga apos RPE 10" in alertas_reducao[0]
+
             caminho = dashboard.salvar_dashboard(output)
             html = caminho.read_text(encoding="utf-8")
             assert "Dashboard de treino" in html

@@ -352,14 +352,45 @@ def _calcular_alertas(sessoes, exercicios):
     ultimos_rpes = [
         sessao["rpe_medio"] for sessao in sessoes[-3:] if sessao.get("rpe_medio") is not None
     ]
-    if len(ultimos_rpes) >= 3 and all(rpe >= 9 for rpe in ultimos_rpes):
-        alertas.append("RPE medio ficou alto nas ultimas 3 sessoes.")
+    if len(ultimos_rpes) >= 3 and all(rpe >= 10 for rpe in ultimos_rpes):
+        alertas.append("RPE medio chegou a 10 nas ultimas 3 sessoes; acompanhe a recuperacao.")
     for item in exercicios:
         pontos = item["pontos"][-3:]
-        if len(pontos) == 3 and pontos[-1]["carga"] <= pontos[0]["carga"]:
-            alertas.append(f"{item['nome']} sem aumento de carga nas ultimas 3 entradas.")
-            if len(alertas) >= 5:
-                break
+        if len(pontos) < 2:
+            continue
+
+        anterior, atual = pontos[-2:]
+        if (
+            atual["carga"] == anterior["carga"]
+            and anterior["rpe"] is not None
+            and atual["rpe"] is not None
+            and anterior["rpe"] >= 9
+            and atual["rpe"] <= 8
+        ):
+            alertas.append(
+                f"{item['nome']} consolidou {atual['carga']:g} kg: "
+                f"RPE {anterior['rpe']:g} -> {atual['rpe']:g}."
+            )
+        elif (
+            atual["carga"] < anterior["carga"]
+            and anterior["rpe"] is not None
+            and anterior["rpe"] >= 10
+        ):
+            alertas.append(
+                f"{item['nome']} teve reducao de carga apos RPE "
+                f"{anterior['rpe']:g}, conforme a regra de progressao."
+            )
+        elif (
+            len(pontos) == 3
+            and all(ponto["rpe"] is not None and ponto["rpe"] >= 10 for ponto in pontos)
+        ):
+            alertas.append(
+                f"{item['nome']} ficou em RPE 10 nas ultimas 3 entradas; "
+                "acompanhe tecnica e recuperacao."
+            )
+
+        if len(alertas) >= 5:
+            break
     return alertas
 
 

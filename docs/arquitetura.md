@@ -15,10 +15,12 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 ├── forja_de_ferro/
 │   ├── __init__.py
 │   ├── banner.py
+│   ├── dashboard.py
 │   ├── db_ops.py
 │   ├── ods_ops.py
 │   └── telegram_poller.py
 └── tests/
+    ├── dashboard_test.py
     ├── smoke_test.py
     └── e2e_training_flow_test.py
 ```
@@ -47,6 +49,10 @@ start_bot.py
        -> forja_de_ferro.db_ops
   -> forja_de_ferro.ods_ops
        -> forja_de_ferro.db_ops
+
+gerar_dashboard.py
+  -> forja_de_ferro.dashboard
+       -> SQLite
 ```
 
 `db_ops.py` fica na base e nao deve importar a camada do bot.
