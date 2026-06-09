@@ -284,9 +284,11 @@ def handle_exercises():
 def handle_volume():
     try:
         exercises = ods_ops.read_exercises()
+        muscle_groups = ods_ops.read_muscle_groups()
         muscle_sets = {}
         for ex in exercises:
-            muscles = ods_ops.MUSCLE_MAP.get(ex["name"], ["Other"])
+            groups = muscle_groups.get(ex["name"], [])
+            muscles = [group["muscle_group"] for group in groups] or ["Outros"]
             for muscle in muscles:
                 muscle_sets[muscle] = muscle_sets.get(muscle, 0) + ex["sets"]
         lines = [

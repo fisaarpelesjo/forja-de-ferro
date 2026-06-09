@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 2`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 3`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -24,7 +24,8 @@ uma linha por versao aplicada, com data e hora.
 4. registra a versao somente depois de concluir suas operacoes
 
 A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localizar
-logs pendentes por sessao e historico por exercicio. As migracoes usam
+logs pendentes por sessao e historico por exercicio. A versao 3 cria
+`exercise_muscle_groups`. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -78,6 +79,22 @@ reps        INTEGER NOT NULL
 sort_order  INTEGER NOT NULL UNIQUE
 active      INTEGER NOT NULL DEFAULT 1
 ```
+
+### `exercise_muscle_groups`
+
+Classificacao muscular compartilhada pelo bot e dashboard.
+
+```text
+id             INTEGER PRIMARY KEY AUTOINCREMENT
+exercise_name  TEXT NOT NULL
+muscle_group   TEXT NOT NULL
+role           TEXT NOT NULL (`principal` ou `secundario`)
+sort_order     INTEGER NOT NULL
+```
+
+Os grupos dos exercicios atuais e aliases historicos sao inseridos de forma
+idempotente por `init_db()`. Exercicios sem classificacao aparecem como
+`Outros`, mas nenhum exercicio ativo deve permanecer nesse estado.
 
 ### `training_sessions`
 

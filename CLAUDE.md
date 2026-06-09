@@ -153,7 +153,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 2`.
+- Versao atual do esquema: `SCHEMA_VERSION = 3`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume
@@ -165,6 +165,8 @@ Dashboard local de volume:
 - `backups/` e `exportacoes/` nao sao versionados.
 
 SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de volta para ODS.
+`exercise_muscle_groups` e a fonte da classificacao muscular usada pelo bot e
+pelo dashboard.
 Mudancas de catalogo devem sincronizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`
 quando tambem precisarem valer para bancos novos.
 

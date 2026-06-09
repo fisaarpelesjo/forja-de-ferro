@@ -14,22 +14,6 @@ from forja_de_ferro import db_ops
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
 
-GRUPOS_MUSCULARES = {
-    "Agachamento": "Pernas",
-    "Zercher": "Pernas",
-    "Terra Romeno": "Posterior",
-    "Supino": "Peito",
-    "Remada": "Costas",
-    "Pullover": "Costas",
-    "Desenvolvimento": "Ombros",
-    "Remada alta": "Ombros",
-    "Rosca": "Bracos",
-    "Triceps": "Bracos",
-    "Tríceps": "Bracos",
-    "Encolhimento": "Trapézio",
-}
-
-
 def _connect():
     db_ops.init_db()
     conn = sqlite3.connect(db_ops.DB_PATH)
@@ -65,6 +49,7 @@ def carregar_dados():
     sessoes = {}
     exercicios = defaultdict(list)
     grupos = defaultdict(lambda: {"grupo": "", "volume": 0.0, "series": 0})
+    muscle_groups = db_ops.list_muscle_groups()
 
     for row in rows:
         volume = float(row["sets"]) * float(row["reps"]) * float(row["weight"])
@@ -116,10 +101,12 @@ def carregar_dados():
                 "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
             }
         )
-        grupo = _grupo_muscular(row["exercise_name"])
-        grupos[grupo]["grupo"] = grupo
-        grupos[grupo]["volume"] += volume
-        grupos[grupo]["series"] += int(row["sets"])
+        exercise_groups = muscle_groups.get(row["exercise_name"], [])
+        group_names = [item["muscle_group"] for item in exercise_groups] or ["Outros"]
+        for grupo in group_names:
+            grupos[grupo]["grupo"] = grupo
+            grupos[grupo]["volume"] += volume
+            grupos[grupo]["series"] += int(row["sets"])
 
     volume_por_sessao = list(sessoes.values())
     for sessao in volume_por_sessao:
@@ -202,10 +189,8 @@ def _media(valores):
 
 
 def _grupo_muscular(nome):
-    for trecho, grupo in GRUPOS_MUSCULARES.items():
-        if trecho.lower() in nome.lower():
-            return grupo
-    return "Outros"
+    groups = db_ops.get_muscle_groups(nome)
+    return groups[0]["muscle_group"] if groups else "Outros"
 
 
 def _parse_data(data_iso):
@@ -399,6 +384,7 @@ def _calcular_analises(sessoes, exercicios):
     volume_grupo_semana = defaultdict(lambda: {"periodo": "", "grupo": "", "volume": 0.0})
     carga_rpe = []
 
+    muscle_groups = db_ops.list_muscle_groups()
     for sessao in sessoes:
         data_sessao = _parse_data(sessao["data"])
         ano, semana, _ = data_sessao.isocalendar()
@@ -406,11 +392,13 @@ def _calcular_analises(sessoes, exercicios):
         for log in sessao["logs"]:
             if log["rpe"] is not None:
                 rpe_distribuicao[str(int(round(log["rpe"])))] += 1
-            grupo = _grupo_muscular(log["nome"])
-            chave = (periodo, grupo)
-            volume_grupo_semana[chave]["periodo"] = periodo
-            volume_grupo_semana[chave]["grupo"] = grupo
-            volume_grupo_semana[chave]["volume"] += log["volume"]
+            groups = muscle_groups.get(log["nome"], [])
+            group_names = [item["muscle_group"] for item in groups] or ["Outros"]
+            for grupo in group_names:
+                chave = (periodo, grupo)
+                volume_grupo_semana[chave]["periodo"] = periodo
+                volume_grupo_semana[chave]["grupo"] = grupo
+                volume_grupo_semana[chave]["volume"] += log["volume"]
 
     for item in exercicios:
         ultimo = item["pontos"][-1]

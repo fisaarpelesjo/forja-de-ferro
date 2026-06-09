@@ -45,29 +45,6 @@ LOAD_EQUIPMENT = {
     "Triceps testa": {"name": "barra W", "weight": 6.0},
 }
 
-MUSCLE_MAP = {
-    "Agachamento (barra)":             ["Quadriceps", "Gluteos"],
-    "Agachamento Zercher":             ["Quadriceps", "Gluteos", "Core"],
-    "Zercher squat":                   ["Quadriceps", "Gluteos", "Core"],
-    "Levantamento Terra Romeno":       ["Posteriores", "Gluteos"],
-    "Supino reto (barra)":             ["Peitoral"],
-    "Supino reto back-off":            ["Peitoral"],
-    "Remada curvada (barra)":          ["Dorsais"],
-    "Pullover (barra)":                ["Dorsais"],
-    "Desenvolvimento (barra em pé)":   ["Deltoide anterior"],
-    "Desenvolvimento (barra em pe)":   ["Deltoide anterior"],
-    "Remada alta (barra)":             ["Deltoide lateral", "Trapezio"],
-    "Elevação lateral":                ["Deltoide lateral"],
-    "Elevacao lateral":                ["Deltoide lateral"],
-    "Remada curvada alta no peito (barra)": ["Deltoide posterior", "Trapezio"],
-    "Crucifixo invertido":             ["Deltoide posterior"],
-    "Rosca direta":                    ["Biceps"],
-    "Rosca martelo (barra H)":         ["Biceps", "Antebraco"],
-    "Tríceps testa":                   ["Triceps"],
-    "Triceps testa":                   ["Triceps"],
-}
-
-
 def read_exercises():
     return db_ops.get_or_seed_exercises()
 
@@ -78,6 +55,10 @@ def read_previous_weights():
 
 def read_previous_performance():
     return db_ops.get_last_performance()
+
+
+def read_muscle_groups():
+    return db_ops.list_muscle_groups()
 
 
 def suggest_next_weight(previous_weight, previous_rpe=None):

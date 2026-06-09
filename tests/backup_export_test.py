@@ -59,6 +59,7 @@ def main():
             assert payload["schema_version"] == db_ops.SCHEMA_VERSION
             assert len(payload["tables"]["training_sessions"]) == 1
             assert payload["tables"]["training_logs"][0]["weight"] == 48
+            assert payload["tables"]["exercise_muscle_groups"]
 
             restored, safety = backup_ops.restaurar_backup(
                 backup,

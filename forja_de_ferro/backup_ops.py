@@ -16,6 +16,7 @@ DEFAULT_EXPORT_DIR = ROOT_DIR / "exportacoes"
 
 EXPORT_TABLES = (
     "exercises",
+    "exercise_muscle_groups",
     "training_sessions",
     "training_logs",
     "foods",

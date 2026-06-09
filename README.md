@@ -32,6 +32,9 @@ ainda possui exercicios pendentes. Sessoes completas nao sao reabertas.
 O esquema SQLite possui versao propria em `schema_migrations`. Ao iniciar, o
 projeto aplica migracoes pendentes em ordem e preserva os dados existentes.
 
+Os grupos musculares ficam em `exercise_muscle_groups`, com classificacao
+principal ou secundaria. `/volume` e dashboard consultam a mesma tabela.
+
 ## Estrutura
 
 ```text
@@ -284,6 +287,7 @@ Tabelas principais:
 - `foods`
 - `diet_targets`
 - `diet_entries`
+- `exercise_muscle_groups`
 
 O catalogo de exercicios fica no SQLite. Nao substituir por ODS.
 

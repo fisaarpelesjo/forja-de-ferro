@@ -108,6 +108,8 @@ Criterio de conclusao:
 
 ### Armazenar Grupos Musculares No SQLite
 
+Entregue em 2026-06-09.
+
 Hoje os grupos musculares ficam definidos em mapas no codigo. Isso exige
 alterar Python quando um exercicio novo entra no catalogo e pode fazer
 exercicios desconhecidos aparecerem como `Outros`.

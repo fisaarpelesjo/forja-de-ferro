@@ -205,8 +205,9 @@ Mostra um aquecimento curto, sem cargas prescritas, usando nomes em PT-BR:
 
 ## `/volume`
 
-Le exercicios ativos, usa `ods_ops.MUSCLE_MAP` e calcula series por grupo
-muscular. A estimativa semanal usa aproximadamente `3.5x` sessoes por semana.
+Le exercicios ativos e consulta `exercise_muscle_groups` no SQLite para calcular
+series por grupo principal e secundario. A estimativa semanal usa
+aproximadamente `3.5x` sessoes por semana. Bot e dashboard usam essa mesma fonte.
 
 ## `/status`
 

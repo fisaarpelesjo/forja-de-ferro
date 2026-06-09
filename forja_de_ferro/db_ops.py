@@ -6,7 +6,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -21,6 +21,56 @@ DEFAULT_EXERCISES = [
     {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
     {"name": "Tríceps testa", "sets": 3, "reps": 8},
 ]
+
+DEFAULT_MUSCLE_GROUPS = {
+    "Agachamento (barra)": [
+        ("Quadriceps", "principal"),
+        ("Gluteos", "secundario"),
+    ],
+    "Agachamento Zercher": [
+        ("Quadriceps", "principal"),
+        ("Gluteos", "secundario"),
+        ("Core", "secundario"),
+    ],
+    "Zercher squat": [
+        ("Quadriceps", "principal"),
+        ("Gluteos", "secundario"),
+        ("Core", "secundario"),
+    ],
+    "Supino reto (barra)": [("Peitoral", "principal")],
+    "Supino reto back-off": [("Peitoral", "principal")],
+    "Remada curvada (barra)": [("Dorsais", "principal")],
+    "Desenvolvimento (barra em pé)": [("Deltoide anterior", "principal")],
+    "Desenvolvimento (barra em pe)": [("Deltoide anterior", "principal")],
+    "Levantamento Terra Romeno": [
+        ("Posteriores", "principal"),
+        ("Gluteos", "secundario"),
+    ],
+    "Pullover (barra)": [("Dorsais", "principal")],
+    "Remada alta (barra)": [
+        ("Deltoide lateral", "principal"),
+        ("Trapezio", "secundario"),
+    ],
+    "Remada curvada alta no peito (barra)": [
+        ("Deltoide posterior", "principal"),
+        ("Trapezio", "secundario"),
+    ],
+    "Elevação lateral": [("Deltoide lateral", "principal")],
+    "Elevacao lateral": [("Deltoide lateral", "principal")],
+    "Crucifixo invertido": [("Deltoide posterior", "principal")],
+    "Encolhimento com barra": [("Trapezio", "principal")],
+    "Rosca direta": [("Biceps", "principal")],
+    "Rosca martelo (barra H)": [
+        ("Biceps", "principal"),
+        ("Antebraco", "secundario"),
+    ],
+    "Rosca de punho (barra)": [("Antebraco", "principal")],
+    "Rosca de punho reversa (barra)": [("Antebraco", "principal")],
+    "Wrist curl (barra)": [("Antebraco", "principal")],
+    "Reverse wrist curl (barra)": [("Antebraco", "principal")],
+    "Tríceps testa": [("Triceps", "principal")],
+    "Triceps testa": [("Triceps", "principal")],
+}
 
 
 def _connect():
@@ -116,9 +166,27 @@ SCHEMA_V2_STATEMENTS = (
     """,
 )
 
+SCHEMA_V3_STATEMENTS = (
+    """
+    CREATE TABLE IF NOT EXISTS exercise_muscle_groups (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        exercise_name TEXT NOT NULL,
+        muscle_group TEXT NOT NULL,
+        role TEXT NOT NULL CHECK (role IN ('principal', 'secundario')),
+        sort_order INTEGER NOT NULL DEFAULT 0,
+        UNIQUE (exercise_name, muscle_group)
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_exercise_muscle_groups_exercise
+    ON exercise_muscle_groups (exercise_name, sort_order)
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
+    3: SCHEMA_V3_STATEMENTS,
 }
 
 
@@ -161,6 +229,22 @@ def init_db():
             conn.execute(
                 "INSERT INTO schema_migrations (version) VALUES (?)",
                 (version,),
+            )
+        _seed_default_muscle_groups(conn)
+
+
+def _seed_default_muscle_groups(conn):
+    if get_schema_version(conn) < 3:
+        return
+    for exercise_name, groups in DEFAULT_MUSCLE_GROUPS.items():
+        for sort_order, (muscle_group, role) in enumerate(groups):
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO exercise_muscle_groups
+                    (exercise_name, muscle_group, role, sort_order)
+                VALUES (?, ?, ?, ?)
+                """,
+                (exercise_name, muscle_group, role, sort_order),
             )
 
 
@@ -210,6 +294,42 @@ def replace_exercises(exercises):
     with _connect() as conn:
         _insert_exercises(conn, exercises)
         conn.commit()
+
+
+def get_muscle_groups(exercise_name):
+    init_db()
+    with _connect() as conn:
+        rows = conn.execute(
+            """
+            SELECT muscle_group, role
+            FROM exercise_muscle_groups
+            WHERE exercise_name = ?
+            ORDER BY sort_order, id
+            """,
+            (exercise_name,),
+        ).fetchall()
+        return [dict(row) for row in rows]
+
+
+def list_muscle_groups():
+    init_db()
+    with _connect() as conn:
+        rows = conn.execute(
+            """
+            SELECT exercise_name, muscle_group, role
+            FROM exercise_muscle_groups
+            ORDER BY exercise_name, sort_order, id
+            """
+        ).fetchall()
+    grouped = {}
+    for row in rows:
+        grouped.setdefault(row["exercise_name"], []).append(
+            {
+                "muscle_group": row["muscle_group"],
+                "role": row["role"],
+            }
+        )
+    return grouped
 
 
 # --- training sessions ---

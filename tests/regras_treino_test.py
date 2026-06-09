@@ -91,9 +91,21 @@ def main():
                 }
             finally:
                 conn.close()
-            assert versions == [1, 2]
+            assert versions == [1, 2, 3]
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
+            active_exercises = db_ops.list_exercises()
+            muscle_groups = db_ops.list_muscle_groups()
+            assert all(ex["name"] in muscle_groups for ex in active_exercises)
+            zercher_groups = db_ops.get_muscle_groups("Agachamento Zercher")
+            assert zercher_groups[0] == {
+                "muscle_group": "Quadriceps",
+                "role": "principal",
+            }
+            assert any(
+                group["role"] == "secundario" for group in zercher_groups
+            )
+            assert db_ops.get_muscle_groups("Exercicio desconhecido") == []
 
             legacy_db = temp_path / "legado.db"
             conn = sqlite3.connect(legacy_db)

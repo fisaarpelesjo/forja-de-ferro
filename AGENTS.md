@@ -151,12 +151,14 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 2`.
+- Versao atual do esquema: `SCHEMA_VERSION = 3`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
   anterior com a mesma sequencia de exercicios para comparar volume.
 - Tabela principal de exercicios: `exercises` (`name`, `sets`, `reps`, `sort_order`, `active`).
+- `exercise_muscle_groups` relaciona exercicios a grupos principais e
+  secundarios. `/volume` e dashboard usam essa tabela como fonte unica.
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
