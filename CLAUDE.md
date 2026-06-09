@@ -59,6 +59,7 @@ Comandos principais em PT-BR:
 - `/exercicios` lista exercicios atuais.
 - `/aquecimento` mostra o aquecimento.
 - `/volume` mostra series por grupo muscular.
+- `/dashboard` atualiza o dashboard local e envia resumo curto.
 - `/planos` lista planos cadastrados.
 - `/plano NOME` seleciona o plano ativo.
 - `/status` mostra progresso da sessao ativa.
@@ -73,6 +74,8 @@ Comandos principais em PT-BR:
   comparacao compativel, mudancas de carga, consolidacoes, cargas mantidas em
   RPE 9 e recordes.
 - `/gerar`, `/prever`, `/exercicios` e `/volume` usam o plano ativo no SQLite.
+- `/dashboard` reutiliza `dashboard.salvar_dashboard()`, nao altera sessoes e
+  nao expoe caminho local.
 
 Aliases antigos em ingles podem permanecer para compatibilidade.
 
@@ -146,6 +149,7 @@ Dashboard local de volume:
 - O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - Launcher local: `python gerar_dashboard.py`.
+- O bot usa a mesma funcao no comando `/dashboard`.
 
 ### `forja_de_ferro/backup_ops.py`
 

@@ -16,6 +16,7 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - `/status` mostra o progresso da sessao ativa.
 - `/desfazer` apaga o ultimo exercicio registrado.
 - `/planos` lista os modelos cadastrados e `/plano NOME` seleciona o ativo.
+- `/dashboard` atualiza o HTML local e responde com um resumo curto.
 - Ao concluir o ultimo exercicio, o bot envia resumo da sessao com volume, RPE,
   comparacao, mudancas de carga, consolidacoes e recordes.
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
@@ -75,6 +76,7 @@ forja_de_ferro/
 /exercicios     Lista exercicios atuais, series e repeticoes
 /aquecimento    Mostra o aquecimento
 /volume         Mostra series por grupo muscular e estimativa semanal
+/dashboard      Atualiza o dashboard local e mostra um resumo
 /planos         Lista planos de treino cadastrados
 /plano NOME     Seleciona o plano ativo
 /status         Mostra exercicio atual e progresso da sessao
@@ -111,6 +113,10 @@ Para gerar:
 ```bash
 python gerar_dashboard.py
 ```
+
+Pelo Telegram, `/dashboard` executa a mesma geracao e responde com horario,
+ultima sessao, volume e RPE medio geral. O arquivo permanece local e nenhum
+caminho do computador e enviado.
 
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
 para navegar por abas em um layout escuro, cru e compacto, e ver:

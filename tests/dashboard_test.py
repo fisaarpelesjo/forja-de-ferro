@@ -11,20 +11,27 @@ if str(ROOT_DIR) not in sys.path:
 
 from forja_de_ferro import dashboard
 from forja_de_ferro import db_ops
+from forja_de_ferro import telegram_poller
 
 
 def main():
     original_db_path = db_ops.DB_PATH
     original_data_dir = db_ops.DATA_DIR
+    original_output = telegram_poller.DASHBOARD_OUTPUT
+    original_send = telegram_poller.send
 
     with tempfile.TemporaryDirectory(prefix="forja-de-ferro-dashboard-") as temp_dir:
         temp_path = Path(temp_dir)
         test_db = temp_path / "forja_de_ferro.db"
         output = temp_path / "dashboard.html"
+        bot_output = temp_path / "dashboard-bot.html"
+        sent_messages = []
 
         try:
             db_ops.DATA_DIR = temp_path
             db_ops.DB_PATH = test_db
+            telegram_poller.DASHBOARD_OUTPUT = bot_output
+            telegram_poller.send = sent_messages.append
             db_ops.init_db()
 
             sessao_1 = db_ops.create_session("2026-05-01")
@@ -129,10 +136,25 @@ def main():
             finally:
                 conn.close()
 
+            telegram_poller.handle_dashboard()
+            assert bot_output.is_file()
+            assert "Dashboard atualizado em" in sent_messages[-1]
+            assert "Volume: <b>1.860 kg</b>" in sent_messages[-1]
+            assert str(bot_output) not in sent_messages[-1]
+            conn = sqlite3.connect(test_db)
+            try:
+                assert conn.execute(
+                    "SELECT COUNT(*) FROM training_sessions"
+                ).fetchone()[0] == 2
+            finally:
+                conn.close()
+
             print("Teste do dashboard passou.")
         finally:
             db_ops.DB_PATH = original_db_path
             db_ops.DATA_DIR = original_data_dir
+            telegram_poller.DASHBOARD_OUTPUT = original_output
+            telegram_poller.send = original_send
             gc.collect()
 
 

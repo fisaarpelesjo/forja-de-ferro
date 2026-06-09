@@ -5,6 +5,10 @@ uma lista de tarefas obrigatorias nem substitui uma decisao de implementacao.
 Cada item deve ser reavaliado antes de virar codigo, considerando utilidade,
 risco para o historico e simplicidade operacional.
 
+Estado atual: todos os itens tecnicos priorizados neste documento foram
+entregues. Novas propostas devem ser adicionadas somente quando resolverem uma
+necessidade real observada no uso.
+
 ## Principios
 
 - preservar o SQLite como fonte da verdade
@@ -205,6 +209,8 @@ Antes de implementar:
 - evitar misturar variacoes diferentes no mesmo historico
 
 ### Gerar O Dashboard Por Comando Do Bot
+
+Entregue em 2026-06-09.
 
 Adicionar um comando oficial, como `/dashboard`, para atualizar o dashboard sem
 precisar acessar o terminal.

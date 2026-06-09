@@ -79,8 +79,8 @@ Todo o estado fica em diretorio temporario.
 python tests/dashboard_test.py
 ```
 
-Valida os calculos, alertas, analises e a geracao do HTML usando SQLite
-temporario.
+Valida os calculos, alertas, analises, a geracao do HTML e o comando
+`/dashboard` usando SQLite e saida temporarios.
 
 ## Teste De Backup E Exportacao
 

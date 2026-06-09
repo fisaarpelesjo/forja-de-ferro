@@ -97,6 +97,14 @@ O repositorio migra o treino atual como plano `A`. Um plano `B` so aparece
 depois de ser cadastrado no SQLite; nenhum treino alternativo e inventado
 automaticamente.
 
+Para atualizar o dashboard pelo celular:
+
+```text
+/dashboard
+```
+
+O HTML continua salvo localmente em `temp/dashboard-treino.html`.
+
 ## Progressao De Carga Por RPE
 
 Ao gerar treino, o bot sugere a proxima carga usando a ultima carga registrada

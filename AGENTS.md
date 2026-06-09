@@ -77,6 +77,7 @@ Comandos principais:
 - `/exercicios`
 - `/aquecimento`
 - `/volume`
+- `/dashboard`
 - `/planos`
 - `/plano NOME`
 - `/status`
@@ -107,6 +108,8 @@ Fluxo:
    mantidas em RPE 9 e recordes.
 8. `/planos` lista modelos cadastrados e `/plano NOME` seleciona o plano usado
    por `/gerar`, `/prever`, `/exercicios` e `/volume`.
+9. `/dashboard` atualiza `temp/dashboard-treino.html` e responde com horario,
+   ultima sessao, volume e RPE medio geral, sem expor caminho local.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -186,6 +189,8 @@ Dashboard local de volume de treino.
 - O layout do dashboard deve permanecer escuro, cru e compacto.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
+- O bot chama a mesma funcao em `/dashboard`; o comando nao cria ou altera
+  sessoes e nao envia o arquivo HTML.
 
 ### `forja_de_ferro/backup_ops.py`
 

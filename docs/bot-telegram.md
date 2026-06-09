@@ -46,6 +46,7 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /exercicios     lista exercicios atuais
 /aquecimento    mostra o aquecimento
 /volume         mostra volume por musculo
+/dashboard      atualiza o dashboard local
 /planos         lista planos de treino
 /plano NOME     seleciona o plano ativo
 /status         mostra progresso
@@ -225,6 +226,19 @@ O plano selecionado passa a ser usado por:
 
 A troca nao altera sessoes antigas nem uma sessao ja gerada. Novos planos sao
 cadastrados por `db_ops.replace_training_plan()`.
+
+## `/dashboard`
+
+Executa `dashboard.salvar_dashboard()` e atualiza
+`temp/dashboard-treino.html`. A resposta informa horario, ultima sessao, volume
+e RPE medio geral.
+
+O comando:
+
+- nao cria ou altera sessoes e logs
+- nao envia o caminho local do arquivo
+- nao envia o HTML completo
+- registra falhas no terminal e responde de forma curta no Telegram
 
 ## `/status`
 

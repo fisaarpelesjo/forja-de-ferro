@@ -2,14 +2,17 @@ import requests
 import json
 import logging
 import time
+from datetime import datetime
 from pathlib import Path
 
+from . import dashboard
 from . import db_ops
 from . import ods_ops
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 SESSION_FILE = BASE_DIR / "session.json"
 CHAT_ID = "6575275306"
+DASHBOARD_OUTPUT = dashboard.DEFAULT_OUTPUT
 LOGGER = logging.getLogger("forja_de_ferro.telegram")
 SEND_RETRY_DELAYS = (1, 2)
 POLL_RETRY_INITIAL = 3
@@ -132,6 +135,7 @@ def _command_name(text):
         "ajuda",
         "exercicios",
         "volume",
+        "dashboard",
         "planos",
         "plano",
         "aquecimento",
@@ -333,6 +337,36 @@ def handle_select_plan(text):
         send(f"Plano nao encontrado ou vazio: <b>{name}</b>.")
 
 
+def handle_dashboard():
+    try:
+        dashboard.salvar_dashboard(DASHBOARD_OUTPUT)
+        data = dashboard.carregar_dados()
+        summary = data["resumo"]
+        updated_at = datetime.now().strftime("%d/%m/%Y %H:%M")
+        lines = [f"Dashboard atualizado em <b>{updated_at}</b>."]
+        if summary["sessoes"]:
+            lines.extend(
+                [
+                    f"Ultima sessao: <b>{summary['ultima_data']}</b>",
+                    f"Volume: <b>{summary['ultimo_volume']:,.0f} kg</b>".replace(
+                        ",", "."
+                    ),
+                ]
+            )
+            if summary["rpe_medio"] is not None:
+                lines.append(
+                    f"RPE medio geral: <b>{summary['rpe_medio']:.1f}</b>".replace(
+                        ".", ","
+                    )
+                )
+        else:
+            lines.append("Ainda nao existem sessoes preenchidas.")
+        send("\n".join(lines))
+    except Exception as exc:
+        LOGGER.error("Falha ao atualizar dashboard tipo=%s", type(exc).__name__)
+        send("Erro ao atualizar o dashboard. Consulte o terminal.")
+
+
 def handle(text, session):
     text = text.strip()
     exercises = session.get("exercises", [])
@@ -455,6 +489,7 @@ def main():
                         "/exercicios — lista os exercicios atuais\n"
                         "/aquecimento — mostra o aquecimento\n"
                         "/volume — volume por grupo muscular\n"
+                        "/dashboard — atualiza o dashboard local\n"
                         "/planos — lista planos de treino\n"
                         "/plano NOME — seleciona o plano ativo\n"
                         "/status — exercicio atual e progresso\n"
@@ -472,6 +507,10 @@ def main():
 
                 if lower in ("/volume", "volume"):
                     handle_volume()
+                    continue
+
+                if lower in ("/dashboard", "dashboard"):
+                    handle_dashboard()
                     continue
 
                 if lower in ("/planos", "planos"):
