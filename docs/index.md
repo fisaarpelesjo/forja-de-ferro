@@ -50,7 +50,9 @@ Na raiz do repositorio:
 ```bash
 pip install -r requirements.txt
 python tests/smoke_test.py
+python tests/regras_treino_test.py
 python tests/e2e_training_flow_test.py
+python tests/dashboard_test.py
 python start_bot.py
 ```
 
@@ -58,6 +60,8 @@ No Linux/macOS, use `python3` se necessario:
 
 ```bash
 python3 tests/smoke_test.py
+python3 tests/regras_treino_test.py
 python3 tests/e2e_training_flow_test.py
+python3 tests/dashboard_test.py
 python3 start_bot.py
 ```

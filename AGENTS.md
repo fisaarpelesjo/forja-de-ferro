@@ -9,6 +9,8 @@ Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 
+Teste direto das regras: `python tests/regras_treino_test.py`.
+
 ## Padrao De Idioma
 
 O projeto deve ser o mais PT-BR possivel. Use portugues brasileiro como padrao

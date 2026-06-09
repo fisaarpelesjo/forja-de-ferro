@@ -135,6 +135,28 @@ def handle_preview():
     send("Previa do treino. Nada foi salvo. Use /gerar para iniciar uma sessao real.")
 
 
+def handle_exercises():
+    exercises = ods_ops.read_exercises()
+    send(_format_exercises_msg(exercises))
+
+
+def handle_volume():
+    exercises = ods_ops.read_exercises()
+    muscle_sets = {}
+    for ex in exercises:
+        muscles = ods_ops.MUSCLE_MAP.get(ex["name"], ["Other"])
+        for muscle in muscles:
+            muscle_sets[muscle] = muscle_sets.get(muscle, 0) + ex["sets"]
+    lines = [
+        "<b>Volume por musculo</b>\n",
+        "<i>series/sessao → series/semana (~3.5x)</i>\n",
+    ]
+    for muscle, sets in sorted(muscle_sets.items()):
+        weekly = round(sets * 3.5, 1)
+        lines.append(f"{muscle}: <b>{sets}</b> → ~{weekly:.0f}/sem")
+    send("\n".join(lines))
+
+
 def handle(text, session):
     text = text.strip()
     exercises = session.get("exercises", [])
@@ -239,22 +261,11 @@ def main():
                     continue
 
                 if lower in ("/exercicios", "exercicios", "/exercises", "exercises"):
-                    exercises = ods_ops.read_exercises()
-                    send(_format_exercises_msg(exercises))
+                    handle_exercises()
                     continue
 
                 if lower in ("/volume", "volume"):
-                    exercises = ods_ops.read_exercises()
-                    muscle_sets = {}
-                    for ex in exercises:
-                        muscles = ods_ops.MUSCLE_MAP.get(ex["name"], ["Other"])
-                        for m in muscles:
-                            muscle_sets[m] = muscle_sets.get(m, 0) + ex["sets"]
-                    lines = ["<b>Volume por musculo</b>\n", "<i>series/sessao → series/semana (~3.5x)</i>\n"]
-                    for muscle, sets in sorted(muscle_sets.items()):
-                        weekly = round(sets * 3.5, 1)
-                        lines.append(f"{muscle}: <b>{sets}</b> → ~{weekly:.0f}/sem")
-                    send("\n".join(lines))
+                    handle_volume()
                     continue
 
                 if lower in ("/aquecimento", "aquecimento", "/warmup", "warmup"):

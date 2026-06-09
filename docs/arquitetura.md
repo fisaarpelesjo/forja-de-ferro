@@ -21,6 +21,7 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 │   └── telegram_poller.py
 └── tests/
     ├── dashboard_test.py
+    ├── regras_treino_test.py
     ├── smoke_test.py
     └── e2e_training_flow_test.py
 ```

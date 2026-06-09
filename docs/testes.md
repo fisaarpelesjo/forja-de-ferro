@@ -54,12 +54,42 @@ O teste:
 
 Ele nao chama a API real do Telegram e nao mexe no banco real.
 
+## Teste Das Regras De Treino
+
+```bash
+python tests/regras_treino_test.py
+```
+
+O teste cobre:
+
+- progressao completa para RPE 7, 8, 9 e 10
+- carga sem RPE e carga anterior ausente
+- alvo inicial da rosca martelo
+- descansos e observacoes de montagem das barras W e H
+- `/prever`, `/exercicios` e `/volume`
+- entrada de carga invalida
+- `/desfazer` sem registro e depois de registrar carga
+- sessao completa e tentativa de registrar carga adicional
+
+Todo o estado fica em diretorio temporario.
+
+## Teste Do Dashboard
+
+```bash
+python tests/dashboard_test.py
+```
+
+Valida os calculos, alertas, analises e a geracao do HTML usando SQLite
+temporario.
+
 ## Ordem Recomendada
 
 ```bash
 pip install -r requirements.txt
 python tests/smoke_test.py
+python tests/regras_treino_test.py
 python tests/e2e_training_flow_test.py
+python tests/dashboard_test.py
 ```
 
 Se o teste de fumaca falhar, corrija ambiente primeiro. Se ele passar e o E2E
@@ -77,9 +107,7 @@ Preferir testes que:
 
 Bons proximos testes:
 
-- entrada invalida de carga
-- `/desfazer` sem nada preenchido
-- sessao completa
-- tabela de `/exercicios`
-- totais de `/volume`
 - funcoes de dieta
+- falhas temporarias da API do Telegram
+- migracoes de bancos antigos
+- backup, exportacao e restauracao

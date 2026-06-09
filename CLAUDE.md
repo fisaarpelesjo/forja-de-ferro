@@ -5,6 +5,8 @@ A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLit
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
 evolucao do volume de treino.
 
+Teste direto das regras: `python tests/regras_treino_test.py`.
+
 ## Padrao De Idioma
 
 O projeto deve ser o mais PT-BR possivel. Use portugues brasileiro como padrao

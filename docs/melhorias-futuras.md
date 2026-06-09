@@ -39,6 +39,8 @@ Criterio de conclusao:
 
 ### Ampliar Os Testes Das Regras De Treino
 
+Entregue em 2026-06-09.
+
 As regras centrais merecem testes diretos, alem do fluxo ponta a ponta.
 
 Cobertura proposta:

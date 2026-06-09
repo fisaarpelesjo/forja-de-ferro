@@ -36,6 +36,8 @@ forja_de_ferro/
 │   └── db_ops.py            # operacoes SQLite
 ├── tests/
 │   ├── smoke_test.py        # checagem basica do ambiente
+│   ├── regras_treino_test.py # regras de progressao e comandos
+│   ├── dashboard_test.py    # calculos e HTML do dashboard
 │   └── e2e_training_flow_test.py # teste ponta a ponta local
 ├── docs/
 │   └── index.md             # indice da documentacao detalhada
@@ -230,6 +232,7 @@ python tests/smoke_test.py
 5. Rode o teste ponta a ponta local:
 
 ```bash
+python tests/regras_treino_test.py
 python tests/dashboard_test.py
 python tests/e2e_training_flow_test.py
 ```

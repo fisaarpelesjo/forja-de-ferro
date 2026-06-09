@@ -9,6 +9,8 @@ Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 
+Teste direto das regras: `python tests/regras_treino_test.py`.
+
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
 
@@ -223,6 +225,7 @@ Comandos uteis:
 ```bash
 pip install -r requirements.txt
 python tests/smoke_test.py
+python tests/regras_treino_test.py
 python tests/dashboard_test.py
 python tests/e2e_training_flow_test.py
 python gerar_dashboard.py
