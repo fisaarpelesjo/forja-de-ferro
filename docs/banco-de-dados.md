@@ -214,6 +214,13 @@ usa o historico e a progressao por RPE.
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
 
+## Resumo Pos-Treino
+
+`db_ops.get_session_summary(session_id)` calcula volume, RPE medio, mudancas de
+carga, consolidacoes e recordes. Para comparar volume, procura a sessao anterior
+com a mesma sequencia de exercicios preenchidos. Isso evita comparar diretamente
+modelos de treino diferentes.
+
 Para `Tríceps testa` e `Pullover (barra)`, `ods_ops.format_loading_note()` usa
 barra W de 6 kg e calcula as anilhas como `target_weight - 6`. Exemplo:
 `target_weight = 18` gera `barra W 6kg + 12kg de anilhas`.

@@ -79,6 +79,61 @@ Criterio de conclusao:
 
 ## Prioridade Media
 
+### Gerar Resumo Automatico Ao Concluir O Treino
+
+Entregue em 2026-06-09.
+
+Quando o ultimo exercicio receber carga, o bot pode enviar um resumo da sessao
+sem exigir um novo comando.
+
+Resumo proposto:
+
+- volume total da sessao
+- RPE medio
+- comparacao de volume com a sessao anterior
+- exercicios que aumentaram ou reduziram carga
+- consolidacoes confirmadas, quando a mesma carga passar de RPE 9 para RPE 8
+- cargas mantidas em RPE 9, sem classifica-las automaticamente como estagnacao
+- recordes pessoais de carga ou volume
+
+A duracao do treino so deve aparecer depois que o horario de inicio e conclusao
+for armazenado de forma confiavel.
+
+Criterio de conclusao:
+
+- o resumo e enviado automaticamente ao completar o ultimo exercicio
+- os calculos usam apenas logs preenchidos da sessao concluida
+- a comparacao usa a sessao anterior compativel
+- RPE 9 mantido e consolidacao confirmada aparecem como conceitos distintos
+
+### Armazenar Grupos Musculares No SQLite
+
+Hoje os grupos musculares ficam definidos em mapas no codigo. Isso exige
+alterar Python quando um exercicio novo entra no catalogo e pode fazer
+exercicios desconhecidos aparecerem como `Outros`.
+
+Melhoria proposta:
+
+- criar uma tabela de relacao entre exercicios e grupos musculares
+- permitir distinguir grupo principal e secundario
+- fazer `/volume` e dashboard consultarem o SQLite
+- manter compatibilidade com o historico e com nomes antigos
+- migrar os grupos atuais sem alterar os calculos existentes
+
+Beneficios:
+
+- catalogo pode mudar sem editar mapas no codigo
+- volume semanal por grupo fica mais consistente
+- exercicios novos deixam de depender de reconhecimento pelo nome
+- a mesma classificacao passa a ser usada pelo bot e pelo dashboard
+
+Criterio de conclusao:
+
+- todos os exercicios ativos possuem pelo menos um grupo muscular
+- `/volume` e dashboard usam a mesma fonte de dados
+- nenhum exercicio ativo aparece como `Outros`
+- testes cobrem grupos principais, secundarios e exercicio sem classificacao
+
 ### Versionar O Esquema Do Banco
 
 Entregue em 2026-06-09.
@@ -131,32 +186,7 @@ Criterio de conclusao:
 - uma falha pode ser diagnosticada pelo terminal sem editar o codigo
 - segredos nunca aparecem nos logs
 
-### Adicionar Integracao Continua
-
-Executar os testes automaticamente em cada envio e pull request reduz
-regressoes e divergencias entre maquinas.
-
-Criterio de conclusao:
-
-- smoke test, fluxo ponta a ponta e teste do dashboard rodam no GitHub Actions
-- a automacao nao usa token real nem banco real
-
 ## Prioridade Baixa
-
-### Registrar Qualidade Tecnica Opcional
-
-O RPE mede esforco, mas nao registra sozinho melhora de amplitude, controle ou
-execucao. Um campo opcional de observacao curta poderia complementar a analise.
-
-Exemplos:
-
-- tecnica melhor
-- amplitude completa
-- repeticoes lentas
-- execucao instavel
-
-Esse dado nao deve ser obrigatorio nem alterar automaticamente a carga alvo sem
-uma regra futura bem definida.
 
 ### Permitir Ciclos E Variacoes De Treino
 
@@ -172,9 +202,33 @@ Antes de implementar:
 
 ### Gerar O Dashboard Por Comando Do Bot
 
-Pode ser util solicitar uma atualizacao ou um resumo pelo Telegram. A geracao do
-HTML completo deve continuar local enquanto nao houver uma forma segura e
-simples de entrega.
+Adicionar um comando oficial, como `/dashboard`, para atualizar o dashboard sem
+precisar acessar o terminal.
+
+Fluxo proposto:
+
+- o bot executa a mesma geracao usada por `python gerar_dashboard.py`
+- o HTML continua salvo localmente em `temp/dashboard-treino.html`
+- o bot confirma data e horario da atualizacao
+- a resposta pode incluir um resumo curto da ultima sessao
+- o arquivo completo so deve ser enviado pelo Telegram depois de validar
+  tamanho, seguranca e tratamento de falhas
+
+Resumo opcional na resposta:
+
+- volume e RPE medio da ultima sessao
+- comparacao com a sessao anterior
+- aumentos, reducoes e cargas mantidas
+- consolidacoes confirmadas
+- recordes pessoais
+
+Criterio de conclusao:
+
+- `/dashboard` atualiza o HTML usando a mesma funcao do launcher local
+- falhas de leitura ou escrita geram resposta clara e log no terminal
+- o comando nao cria nem altera sessoes de treino
+- testes usam banco e arquivo de saida temporarios
+- o envio do HTML permanece opcional e nao expoe caminhos locais
 
 ## Itens Que Nao Sao Prioridade
 
@@ -196,8 +250,10 @@ mais importantes do projeto atual.
 4. adicionar versao e migracoes do banco
 5. automatizar backup e exportacao
 6. melhorar logs e tratamento de falhas do polling
-7. adicionar integracao continua
-8. avaliar recursos opcionais com base no uso real
+7. gerar resumo automatico ao concluir o treino
+8. armazenar grupos musculares no SQLite
+9. permitir ciclos e variacoes de treino
+10. gerar o dashboard por comando do bot
 
 ## Manutencao Deste Documento
 

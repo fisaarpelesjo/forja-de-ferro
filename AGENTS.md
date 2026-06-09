@@ -100,6 +100,9 @@ Fluxo:
 6. `session.json` e validado contra o SQLite ao ser carregado. Se estiver
    ausente, corrompido ou antigo, o bot reconstrui a sessao mais recente com
    logs pendentes; sessoes completas nao sao reabertas.
+7. Ao registrar o ultimo exercicio, o bot envia resumo com volume, RPE medio,
+   comparacao com sessao compativel, mudancas de carga, consolidacoes, cargas
+   mantidas em RPE 9 e recordes.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -151,6 +154,8 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
 - Versao atual do esquema: `SCHEMA_VERSION = 2`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
+- `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
+  anterior com a mesma sequencia de exercicios para comparar volume.
 - Tabela principal de exercicios: `exercises` (`name`, `sets`, `reps`, `sort_order`, `active`).
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.

@@ -67,6 +67,9 @@ Comandos principais em PT-BR:
 - Ao carregar, `session.json` e validado contra o SQLite. Arquivo ausente,
   corrompido ou antigo e reconstruido pela sessao mais recente com logs
   pendentes; sessoes completas nao sao reabertas.
+- O ultimo registro da sessao gera resumo automatico com volume, RPE medio,
+  comparacao compativel, mudancas de carga, consolidacoes, cargas mantidas em
+  RPE 9 e recordes.
 
 Aliases antigos em ingles podem permanecer para compatibilidade.
 
@@ -153,6 +156,8 @@ Dashboard local de volume:
 - Versao atual do esquema: `SCHEMA_VERSION = 2`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
+- `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume
+  apenas com sessao anterior que tenha a mesma sequencia de exercicios.
 - Estado local: `session.json`, nao versionado.
 - Configuracao secreta: `.env`, nao versionada.
 - Sidecars SQLite (`*.db-shm`, `*.db-wal`) nao sao versionados.

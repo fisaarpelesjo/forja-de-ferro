@@ -178,6 +178,8 @@ def main():
 
             telegram_poller.handle("40 9", session)
             assert "Treino completo." in mensagens[-1]
+            assert "Resumo da sessao" in mensagens[-1]
+            assert "Volume: <b>600 kg</b>" in mensagens[-1]
 
             telegram_poller.handle("42 8", session)
             assert mensagens[-1] == "O treino ja esta completo. Use /status."

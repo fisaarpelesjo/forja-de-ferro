@@ -396,6 +396,163 @@ def is_session_incomplete(session_id, log_ids):
         return row["total"] == len(log_ids) and row["pending"] > 0
 
 
+def get_session_summary(session_id):
+    """Retorna resumo e comparacoes de uma sessao preenchida."""
+    init_db()
+    with _connect() as conn:
+        session = conn.execute(
+            "SELECT id, date, training_type FROM training_sessions WHERE id = ?",
+            (session_id,),
+        ).fetchone()
+        if session is None:
+            return None
+
+        logs = conn.execute(
+            """
+            SELECT id, exercise_name, sets, reps, weight, rpe, sort_order
+            FROM training_logs
+            WHERE session_id = ? AND weight IS NOT NULL AND weight > 0
+            ORDER BY sort_order, id
+            """,
+            (session_id,),
+        ).fetchall()
+        if not logs:
+            return None
+
+        current_names = [row["exercise_name"] for row in logs]
+        previous_session = None
+        candidates = conn.execute(
+            """
+            SELECT id, date
+            FROM training_sessions
+            WHERE id < ?
+            ORDER BY id DESC
+            """,
+            (session_id,),
+        ).fetchall()
+        for candidate in candidates:
+            candidate_logs = conn.execute(
+                """
+                SELECT exercise_name, sets, reps, weight
+                FROM training_logs
+                WHERE session_id = ? AND weight IS NOT NULL AND weight > 0
+                ORDER BY sort_order, id
+                """,
+                (candidate["id"],),
+            ).fetchall()
+            if [row["exercise_name"] for row in candidate_logs] == current_names:
+                previous_session = {
+                    "id": candidate["id"],
+                    "date": candidate["date"],
+                    "volume": sum(
+                        row["sets"] * row["reps"] * row["weight"]
+                        for row in candidate_logs
+                    ),
+                }
+                break
+
+        increases = []
+        reductions = []
+        consolidations = []
+        maintained_rpe9 = []
+        records = []
+        rpes = []
+
+        for log in logs:
+            if log["rpe"] is not None:
+                rpes.append(float(log["rpe"]))
+            previous = conn.execute(
+                """
+                SELECT weight, rpe
+                FROM training_logs
+                WHERE exercise_name = ?
+                  AND id < ?
+                  AND weight IS NOT NULL
+                  AND weight > 0
+                ORDER BY id DESC
+                LIMIT 1
+                """,
+                (log["exercise_name"], log["id"]),
+            ).fetchone()
+            previous_best = conn.execute(
+                """
+                SELECT
+                    MAX(weight) AS max_weight,
+                    MAX(sets * reps * weight) AS max_volume
+                FROM training_logs
+                WHERE exercise_name = ?
+                  AND id < ?
+                  AND weight IS NOT NULL
+                  AND weight > 0
+                """,
+                (log["exercise_name"], log["id"]),
+            ).fetchone()
+
+            current_weight = float(log["weight"])
+            current_volume = float(log["sets"] * log["reps"] * log["weight"])
+            item = {
+                "name": log["exercise_name"],
+                "weight": current_weight,
+                "rpe": float(log["rpe"]) if log["rpe"] is not None else None,
+            }
+
+            if previous:
+                previous_weight = float(previous["weight"])
+                previous_rpe = (
+                    float(previous["rpe"]) if previous["rpe"] is not None else None
+                )
+                item["previous_weight"] = previous_weight
+                item["previous_rpe"] = previous_rpe
+                if current_weight > previous_weight:
+                    increases.append(item)
+                elif current_weight < previous_weight:
+                    reductions.append(item)
+                elif (
+                    previous_rpe is not None
+                    and previous_rpe >= 9
+                    and item["rpe"] is not None
+                    and item["rpe"] <= 8
+                ):
+                    consolidations.append(item)
+                elif item["rpe"] == 9:
+                    maintained_rpe9.append(item)
+
+            if previous_best["max_weight"] is not None:
+                record_types = []
+                if current_weight > float(previous_best["max_weight"]):
+                    record_types.append("carga")
+                if current_volume > float(previous_best["max_volume"]):
+                    record_types.append("volume")
+                if record_types:
+                    records.append(
+                        {
+                            "name": log["exercise_name"],
+                            "types": record_types,
+                            "weight": current_weight,
+                        }
+                    )
+
+        volume = sum(
+            float(log["sets"] * log["reps"] * log["weight"]) for log in logs
+        )
+        return {
+            "session_id": session["id"],
+            "date": session["date"],
+            "volume": volume,
+            "rpe_average": sum(rpes) / len(rpes) if rpes else None,
+            "exercise_count": len(logs),
+            "previous_session": previous_session,
+            "volume_delta": (
+                volume - previous_session["volume"] if previous_session else None
+            ),
+            "increases": increases,
+            "reductions": reductions,
+            "consolidations": consolidations,
+            "maintained_rpe9": maintained_rpe9,
+            "records": records,
+        }
+
+
 def import_log_rows(rows):
     """
     Bulk-import historical diary rows. Groups by (date, training_type) into sessions.

@@ -251,6 +251,21 @@ Entrada invalida recebe:
 Formato: 80 8 (carga + RPE) ou 80 (somente carga)
 ```
 
+### Resumo Ao Concluir
+
+Quando o ultimo exercicio recebe carga, a mesma resposta inclui:
+
+- volume total e RPE medio
+- diferenca de volume para a sessao anterior compativel
+- aumentos e reducoes de carga
+- consolidacoes confirmadas
+- cargas mantidas em RPE 9
+- recordes de carga ou volume
+
+Uma sessao e compativel para comparacao quando possui a mesma sequencia de
+exercicios preenchidos. Manter RPE 9 nao e chamado de consolidacao confirmada;
+essa classificacao exige queda do RPE 9 para 8 ou menos com a mesma carga.
+
 ## Formato Da Sessao Ativa
 
 `session.json` contem:

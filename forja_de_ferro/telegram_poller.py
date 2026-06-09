@@ -185,6 +185,49 @@ def _format_training_msg(exercises):
     return "\n\n".join(lines)
 
 
+def _format_summary_names(items, limit=4):
+    names = [item["name"] for item in items[:limit]]
+    suffix = f" e mais {len(items) - limit}" if len(items) > limit else ""
+    return ", ".join(names) + suffix
+
+
+def _format_training_summary(session_id):
+    summary = db_ops.get_session_summary(session_id)
+    if summary is None:
+        return "Resumo indisponivel."
+
+    lines = [
+        "<b>Resumo da sessao</b>",
+        f"Volume: <b>{summary['volume']:,.0f} kg</b>".replace(",", "."),
+    ]
+    if summary["rpe_average"] is not None:
+        lines.append(f"RPE medio: <b>{summary['rpe_average']:.1f}</b>".replace(".", ","))
+    if summary["volume_delta"] is not None:
+        delta = summary["volume_delta"]
+        signal = "+" if delta > 0 else ""
+        lines.append(
+            f"Volume vs. sessao anterior: <b>{signal}{delta:,.0f} kg</b>".replace(
+                ",", "."
+            )
+        )
+    if summary["increases"]:
+        lines.append(f"Aumentos: {_format_summary_names(summary['increases'])}")
+    if summary["reductions"]:
+        lines.append(f"Reducoes: {_format_summary_names(summary['reductions'])}")
+    if summary["consolidations"]:
+        lines.append(
+            f"Consolidacoes: {_format_summary_names(summary['consolidations'])}"
+        )
+    if summary["maintained_rpe9"]:
+        lines.append(
+            f"Cargas mantidas em RPE 9: "
+            f"{_format_summary_names(summary['maintained_rpe9'])}"
+        )
+    if summary["records"]:
+        lines.append(f"Recordes: {_format_summary_names(summary['records'])}")
+    return "\n".join(lines)
+
+
 def _format_exercises_msg(exercises):
     lines = ["<pre>Lista de exercicios\n"]
     lines.append(f"{'#':>2} {'Exercicio':<22} {'S':>2} {'R':>3}\n")
@@ -311,9 +354,18 @@ def handle(text, session):
 
     rpe_str = f" RPE {rpe}" if rpe is not None else ""
     if new_filled >= total:
+        try:
+            summary = _format_training_summary(session.get("session_id"))
+        except Exception as exc:
+            LOGGER.error(
+                "Falha ao gerar resumo session_id=%s tipo=%s",
+                session.get("session_id"),
+                type(exc).__name__,
+            )
+            summary = "Resumo indisponivel. Consulte o terminal."
         send(
             f"<b>{ex['name']}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n\n"
-            f"Treino completo."
+            f"Treino completo.\n\n{summary}"
         )
     else:
         nxt = exercises[new_filled]

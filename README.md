@@ -15,6 +15,8 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - Enviar `80 8` registra 80 kg com RPE 8.
 - `/status` mostra o progresso da sessao ativa.
 - `/desfazer` apaga o ultimo exercicio registrado.
+- Ao concluir o ultimo exercicio, o bot envia resumo da sessao com volume, RPE,
+  comparacao, mudancas de carga, consolidacoes e recordes.
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
   volume de treino.
 - `python gerenciar_dados.py backup` cria uma copia consistente do SQLite.
@@ -84,6 +86,11 @@ Aliases antigos em ingles ainda podem funcionar por compatibilidade:
 80 8      Registra 80 kg e RPE 8
 80,5 8    Virgula decimal e aceita e salva como 80.5 kg
 ```
+
+No ultimo registro, a resposta inclui o resumo automatico. A comparacao de
+volume usa a sessao anterior com a mesma sequencia de exercicios. Carga mantida
+em RPE 9 e mostrada separadamente de consolidacao confirmada, que ocorre quando
+a mesma carga passa de RPE 9 para RPE 8 ou menor.
 
 ## Dashboard De Treino
 

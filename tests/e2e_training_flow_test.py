@@ -142,6 +142,20 @@ def main():
             reduced_first = reduced_session["exercises"][0]
             assert reduced_first["target_weight"] == 78.5
 
+            summary_session = db_ops.create_session("2026-06-10")
+            summary_log = db_ops.log_exercise(
+                summary_session,
+                "Agachamento Zercher",
+                3,
+                5,
+                0,
+            )
+            db_ops.update_log_weight(summary_log, 80.5, 8)
+            summary = db_ops.get_session_summary(summary_session)
+            assert summary["volume"] == 1207.5
+            assert summary["consolidations"][0]["name"] == "Agachamento Zercher"
+            assert summary["volume_delta"] is not None
+
             print("Teste ponta a ponta do fluxo de treino passou.")
         finally:
             db_ops.DB_PATH = original_db_path

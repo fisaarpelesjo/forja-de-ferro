@@ -82,6 +82,9 @@ Entrada de carga:
 Use `/prever` quando quiser conferir formato, alvo e descanso sem iniciar uma
 sessao real.
 
+Ao registrar o ultimo exercicio, o bot envia automaticamente o resumo da sessao.
+Nao e necessario executar outro comando.
+
 ## Progressao De Carga Por RPE
 
 Ao gerar treino, o bot sugere a proxima carga usando a ultima carga registrada
