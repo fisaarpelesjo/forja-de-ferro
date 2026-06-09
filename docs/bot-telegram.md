@@ -8,6 +8,20 @@ forja_de_ferro/telegram_poller.py
 
 Ele usa long polling pela API HTTP do Telegram. Nao ha webhook nem servidor web.
 
+## Logs E Falhas De Rede
+
+O terminal mostra logs com data, hora, nivel e contexto. Comandos sao
+identificados pelo nome; entradas de peso aparecem apenas como
+`registro_carga`, sem registrar o valor enviado. Quando existe sessao ativa, o
+log inclui `session_id`.
+
+O token e a URL completa da API nunca devem aparecer nos logs.
+
+- falha temporaria no polling: espera 3 segundos e dobra gradualmente ate 60
+- falha temporaria ao enviar: repete depois de 1 e 2 segundos
+- token invalido ou bot inexistente: registra erro permanente e encerra
+- resposta temporariamente invalida: trata como falha de rede e tenta novamente
+
 ## Configuracao
 
 O token fica em:

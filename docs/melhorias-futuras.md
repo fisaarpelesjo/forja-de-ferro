@@ -114,6 +114,8 @@ Criterio de conclusao:
 
 ### Melhorar A Observabilidade Do Bot
 
+Entregue em 2026-06-09.
+
 O polling deve deixar mais claro quando houve falha de rede, token invalido,
 erro de leitura da sessao ou erro de banco.
 

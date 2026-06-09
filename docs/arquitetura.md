@@ -26,6 +26,7 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
     ├── dashboard_test.py
     ├── regras_treino_test.py
     ├── smoke_test.py
+    ├── telegram_falhas_test.py
     └── e2e_training_flow_test.py
 ```
 
@@ -87,6 +88,10 @@ O bot usa long polling. Isso significa:
 - nao precisa abrir porta
 - precisa apenas de internet de saida
 - chama `getUpdates` periodicamente
+
+Falhas temporarias de rede usam espera gradual de 3 ate 60 segundos. Erros
+permanentes de token encerram o polling. Os logs registram horario, nivel,
+comando e `session_id`, mas nunca devem incluir token ou URL completa da API.
 
 ## Estado Local
 

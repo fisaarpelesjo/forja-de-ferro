@@ -48,6 +48,10 @@ com `from forja_de_ferro import db_ops`, `ods_ops` ou `telegram_poller`.
 
 Bot Telegram com long polling.
 
+O polling usa logs com horario, nivel, comando e `session_id`, sem registrar
+token ou URL completa da API. Falhas temporarias usam espera gradual; token
+invalido encerra o polling com erro claro.
+
 Comandos principais em PT-BR:
 
 - `/gerar` cria uma sessao de treino e envia o treino em texto.

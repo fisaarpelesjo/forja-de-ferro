@@ -224,6 +224,16 @@ Catalogo atual:
 
 ## Problemas Comuns
 
+### Falha De Rede No Telegram
+
+O bot registra a falha e aumenta gradualmente a espera entre tentativas, ate 60
+segundos. Nao e necessario reiniciar para uma interrupcao temporaria.
+
+### Token Invalido
+
+O polling encerra com uma mensagem clara. Corrija `TELEGRAM_TOKEN` em `.env` e
+inicie novamente. O token nunca deve aparecer no terminal ou em arquivos de log.
+
 ### `TELEGRAM_TOKEN nao encontrado no .env`
 
 Crie `.env` a partir de `.env.example` e configure o token.

@@ -50,6 +50,7 @@ forja_de_ferro/
 │   ├── regras_treino_test.py # regras de progressao e comandos
 │   ├── dashboard_test.py    # calculos e HTML do dashboard
 │   ├── backup_export_test.py # backup, exportacao e restauracao
+│   ├── telegram_falhas_test.py # rede, token e repeticao gradual
 │   └── e2e_training_flow_test.py # teste ponta a ponta local
 ├── docs/
 │   └── index.md             # indice da documentacao detalhada
@@ -246,6 +247,8 @@ python tests/smoke_test.py
 ```bash
 python tests/regras_treino_test.py
 python tests/dashboard_test.py
+python tests/backup_export_test.py
+python tests/telegram_falhas_test.py
 python tests/e2e_training_flow_test.py
 ```
 

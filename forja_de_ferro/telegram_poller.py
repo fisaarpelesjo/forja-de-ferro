@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 import time
 from pathlib import Path
 
@@ -9,6 +10,26 @@ from . import ods_ops
 BASE_DIR = Path(__file__).resolve().parents[1]
 SESSION_FILE = BASE_DIR / "session.json"
 CHAT_ID = "6575275306"
+LOGGER = logging.getLogger("forja_de_ferro.telegram")
+SEND_RETRY_DELAYS = (1, 2)
+POLL_RETRY_INITIAL = 3
+POLL_RETRY_MAX = 60
+
+
+class TelegramTemporaryError(RuntimeError):
+    pass
+
+
+class TelegramConfigurationError(RuntimeError):
+    pass
+
+
+def configure_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
 
 
 def read_token():
@@ -28,14 +49,35 @@ API = f"https://api.telegram.org/bot{TOKEN}"
 
 
 def send(text):
-    try:
-        requests.post(
-            f"{API}/sendMessage",
-            json={"chat_id": CHAT_ID, "text": text, "parse_mode": "HTML"},
-            timeout=10,
-        )
-    except Exception as e:
-        print(f"Erro ao enviar mensagem: {e}")
+    attempts = len(SEND_RETRY_DELAYS) + 1
+    for attempt in range(1, attempts + 1):
+        try:
+            response = requests.post(
+                f"{API}/sendMessage",
+                json={"chat_id": CHAT_ID, "text": text, "parse_mode": "HTML"},
+                timeout=10,
+            )
+            if response.status_code in (401, 404):
+                LOGGER.error("Falha permanente ao enviar mensagem: token invalido.")
+                return False
+            response.raise_for_status()
+            return True
+        except requests.RequestException as exc:
+            if attempt >= attempts:
+                LOGGER.error(
+                    "Falha temporaria ao enviar mensagem tentativa=%s tipo=%s",
+                    attempt,
+                    type(exc).__name__,
+                )
+                return False
+            delay = SEND_RETRY_DELAYS[attempt - 1]
+            LOGGER.warning(
+                "Falha temporaria ao enviar mensagem tentativa=%s tipo=%s espera=%ss",
+                attempt,
+                type(exc).__name__,
+                delay,
+            )
+            time.sleep(delay)
 
 
 def load_session():
@@ -66,9 +108,39 @@ def get_updates(offset=0):
             params={"offset": offset, "timeout": 3},
             timeout=10,
         )
-        return r.json().get("result", [])
-    except Exception:
-        return []
+        if r.status_code in (401, 404):
+            raise TelegramConfigurationError(
+                "Token do Telegram invalido ou bot nao encontrado."
+            )
+        r.raise_for_status()
+        payload = r.json()
+        result = payload.get("result", [])
+        if not isinstance(result, list):
+            raise ValueError("Resposta sem lista de atualizacoes.")
+        return result
+    except TelegramConfigurationError:
+        raise
+    except (requests.RequestException, ValueError, json.JSONDecodeError) as exc:
+        raise TelegramTemporaryError(type(exc).__name__) from None
+
+
+def _command_name(text):
+    normalized = text.strip().lower()
+    if normalized.startswith("/"):
+        return normalized.split(maxsplit=1)[0]
+    if normalized in {
+        "ajuda",
+        "exercicios",
+        "volume",
+        "aquecimento",
+        "gerar",
+        "prever",
+        "previa",
+        "status",
+        "desfazer",
+    }:
+        return normalized
+    return "registro_carga"
 
 
 def _format_weight(weight):
@@ -127,6 +199,10 @@ def handle_generate():
     try:
         exercises, session_id = ods_ops.generate_training()
     except Exception as e:
+        LOGGER.error(
+            "Falha ao gerar sessao tipo=%s",
+            type(e).__name__,
+        )
         send(f"Erro ao gerar sessao de treino: {e}")
         return
 
@@ -141,6 +217,10 @@ def handle_preview():
     try:
         exercises = ods_ops.preview_training()
     except Exception as e:
+        LOGGER.error(
+            "Falha ao gerar previa tipo=%s",
+            type(e).__name__,
+        )
         send(f"Erro ao gerar previa do treino: {e}")
         return
 
@@ -150,25 +230,33 @@ def handle_preview():
 
 
 def handle_exercises():
-    exercises = ods_ops.read_exercises()
-    send(_format_exercises_msg(exercises))
+    try:
+        exercises = ods_ops.read_exercises()
+        send(_format_exercises_msg(exercises))
+    except Exception as exc:
+        LOGGER.error("Falha ao listar exercicios tipo=%s", type(exc).__name__)
+        send("Erro ao listar exercicios. Consulte o terminal.")
 
 
 def handle_volume():
-    exercises = ods_ops.read_exercises()
-    muscle_sets = {}
-    for ex in exercises:
-        muscles = ods_ops.MUSCLE_MAP.get(ex["name"], ["Other"])
-        for muscle in muscles:
-            muscle_sets[muscle] = muscle_sets.get(muscle, 0) + ex["sets"]
-    lines = [
-        "<b>Volume por musculo</b>\n",
-        "<i>series/sessao → series/semana (~3.5x)</i>\n",
-    ]
-    for muscle, sets in sorted(muscle_sets.items()):
-        weekly = round(sets * 3.5, 1)
-        lines.append(f"{muscle}: <b>{sets}</b> → ~{weekly:.0f}/sem")
-    send("\n".join(lines))
+    try:
+        exercises = ods_ops.read_exercises()
+        muscle_sets = {}
+        for ex in exercises:
+            muscles = ods_ops.MUSCLE_MAP.get(ex["name"], ["Other"])
+            for muscle in muscles:
+                muscle_sets[muscle] = muscle_sets.get(muscle, 0) + ex["sets"]
+        lines = [
+            "<b>Volume por musculo</b>\n",
+            "<i>series/sessao → series/semana (~3.5x)</i>\n",
+        ]
+        for muscle, sets in sorted(muscle_sets.items()):
+            weekly = round(sets * 3.5, 1)
+            lines.append(f"{muscle}: <b>{sets}</b> → ~{weekly:.0f}/sem")
+        send("\n".join(lines))
+    except Exception as exc:
+        LOGGER.error("Falha ao calcular volume tipo=%s", type(exc).__name__)
+        send("Erro ao calcular volume. Consulte o terminal.")
 
 
 def handle(text, session):
@@ -236,16 +324,33 @@ def handle(text, session):
 
 
 def main():
+    configure_logging()
     if not TOKEN:
-        print("TELEGRAM_TOKEN nao encontrado no .env")
+        LOGGER.error("TELEGRAM_TOKEN nao encontrado no .env")
         return
 
     offset = 0
-    print("Bot Forja de Ferro em polling... (Ctrl+C para parar)")
+    retry_delay = POLL_RETRY_INITIAL
+    LOGGER.info("Bot Forja de Ferro em polling. Use Ctrl+C para parar.")
 
     try:
         while True:
-            updates = get_updates(offset)
+            try:
+                updates = get_updates(offset)
+                retry_delay = POLL_RETRY_INITIAL
+            except TelegramConfigurationError as exc:
+                LOGGER.error("Polling encerrado: %s", exc)
+                return
+            except TelegramTemporaryError as exc:
+                LOGGER.warning(
+                    "Falha temporaria no polling tipo=%s espera=%ss",
+                    exc,
+                    retry_delay,
+                )
+                time.sleep(retry_delay)
+                retry_delay = min(retry_delay * 2, POLL_RETRY_MAX)
+                continue
+
             for update in updates:
                 offset = update["update_id"] + 1
                 msg = update.get("message", {})
@@ -256,6 +361,8 @@ def main():
                     continue
 
                 lower = text.strip().lower()
+                command = _command_name(text)
+                LOGGER.info("Comando recebido comando=%s", command)
 
                 if lower in ("/ajuda", "ajuda", "/help", "help"):
                     send(
@@ -303,16 +410,40 @@ def main():
                     handle_preview()
                     continue
 
-                session = load_session()
+                try:
+                    session = load_session()
+                except Exception as exc:
+                    LOGGER.error(
+                        "Falha ao carregar sessao comando=%s tipo=%s",
+                        command,
+                        type(exc).__name__,
+                    )
+                    send("Erro ao carregar a sessao. Consulte o terminal.")
+                    continue
                 if session is None:
+                    LOGGER.info("Comando sem sessao ativa comando=%s", command)
                     send("Nenhuma sessao ativa. Use /gerar.")
                     continue
 
-                handle(text, session)
+                LOGGER.info(
+                    "Comando associado a sessao comando=%s session_id=%s",
+                    command,
+                    session.get("session_id"),
+                )
+                try:
+                    handle(text, session)
+                except Exception as exc:
+                    LOGGER.error(
+                        "Falha ao processar comando=%s session_id=%s tipo=%s",
+                        command,
+                        session.get("session_id"),
+                        type(exc).__name__,
+                    )
+                    send("Erro ao processar o comando. Consulte o terminal.")
 
             time.sleep(3)
     except KeyboardInterrupt:
-        print("\nBot encerrado.")
+        LOGGER.info("Bot encerrado pelo usuario.")
 
 
 if __name__ == "__main__":

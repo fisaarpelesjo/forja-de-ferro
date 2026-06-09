@@ -65,6 +65,10 @@ Launcher local que gera o dashboard HTML de volume de treino em
 
 Bot Telegram com long polling.
 
+O polling usa logs com horario, nivel, comando e `session_id`, sem registrar
+token ou URL completa da API. Falhas temporarias usam espera gradual; token
+invalido encerra o polling com erro claro.
+
 Comandos principais:
 
 - `/gerar`
@@ -247,6 +251,7 @@ python tests/smoke_test.py
 python tests/regras_treino_test.py
 python tests/dashboard_test.py
 python tests/backup_export_test.py
+python tests/telegram_falhas_test.py
 python tests/e2e_training_flow_test.py
 python gerar_dashboard.py
 python start_bot.py

@@ -91,6 +91,15 @@ python tests/backup_export_test.py
 Cria banco, backup, exportacao JSON e restauracao em diretorio temporario. O
 teste valida integridade, versao do esquema e preservacao dos dados.
 
+## Teste De Falhas Do Telegram
+
+```bash
+python tests/telegram_falhas_test.py
+```
+
+Simula token invalido, falha temporaria de rede e duas falhas de envio antes do
+sucesso. Nenhuma chamada real e feita ao Telegram.
+
 ## Ordem Recomendada
 
 ```bash
@@ -100,6 +109,7 @@ python tests/regras_treino_test.py
 python tests/e2e_training_flow_test.py
 python tests/dashboard_test.py
 python tests/backup_export_test.py
+python tests/telegram_falhas_test.py
 ```
 
 Se o teste de fumaca falhar, corrija ambiente primeiro. Se ele passar e o E2E
@@ -118,7 +128,6 @@ Preferir testes que:
 Bons proximos testes:
 
 - funcoes de dieta
-- falhas temporarias da API do Telegram
 
 O teste de regras tambem cria um banco legado sem `schema_migrations`, executa
 as migracoes e confirma que os dados anteriores permanecem intactos.

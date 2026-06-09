@@ -66,6 +66,10 @@ a partir desse pacote, por exemplo `from forja_de_ferro import db_ops`.
 
 Bot Telegram usado para controlar o treino pelo celular.
 
+O polling usa logs com horario, nivel, comando e `session_id`, sem registrar
+token ou URL completa da API. Falhas temporarias usam espera gradual; token
+invalido encerra o polling com erro claro.
+
 Comandos principais:
 
 - `/gerar`
