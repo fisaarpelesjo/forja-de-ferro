@@ -137,6 +137,9 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
+- Versao atual do esquema: `SCHEMA_VERSION = 2`.
+- `schema_migrations` registra migracoes aplicadas; `init_db()` executa
+  pendencias em ordem e rejeita bancos com versao futura.
 - Estado local: `session.json`, nao versionado.
 - Configuracao secreta: `.env`, nao versionada.
 - Sidecars SQLite (`*.db-shm`, `*.db-wal`) nao sao versionados.

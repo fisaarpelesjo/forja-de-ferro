@@ -58,6 +58,10 @@ gerar_dashboard.py
 
 `db_ops.py` fica na base e nao deve importar a camada do bot.
 
+`db_ops.init_db()` tambem controla a evolucao do esquema. Cada migracao e
+aplicada em ordem e registrada em `schema_migrations`; um banco com versao mais
+nova que o codigo e rejeitado para evitar alteracoes incompativeis.
+
 ## Inicializacao
 
 `python start_bot.py`:

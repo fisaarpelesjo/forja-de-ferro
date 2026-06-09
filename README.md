@@ -25,6 +25,9 @@ que e estado local e nao deve ser versionado.
 uma sessao antiga, o bot tenta reconstruir a sessao SQLite mais recente que
 ainda possui exercicios pendentes. Sessoes completas nao sao reabertas.
 
+O esquema SQLite possui versao propria em `schema_migrations`. Ao iniciar, o
+projeto aplica migracoes pendentes em ordem e preserva os dados existentes.
+
 ## Estrutura
 
 ```text

@@ -6,6 +6,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
+SCHEMA_VERSION = 2
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -30,10 +31,8 @@ def _connect():
     return conn
 
 
-def init_db():
-    with _connect() as conn:
-        conn.execute(
-            """
+SCHEMA_V1_STATEMENTS = (
+    """
             CREATE TABLE IF NOT EXISTS exercises (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
@@ -42,19 +41,15 @@ def init_db():
                 sort_order INTEGER NOT NULL UNIQUE,
                 active INTEGER NOT NULL DEFAULT 1
             )
-            """
-        )
-        conn.execute(
-            """
+            """,
+    """
             CREATE TABLE IF NOT EXISTS training_sessions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 date TEXT NOT NULL,
                 training_type TEXT NOT NULL DEFAULT 'TREINO'
             )
-            """
-        )
-        conn.execute(
-            """
+            """,
+    """
             CREATE TABLE IF NOT EXISTS training_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 session_id INTEGER NOT NULL REFERENCES training_sessions(id),
@@ -65,10 +60,8 @@ def init_db():
                 rpe REAL,
                 sort_order INTEGER NOT NULL DEFAULT 0
             )
-            """
-        )
-        conn.execute(
-            """
+            """,
+    """
             CREATE TABLE IF NOT EXISTS foods (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
@@ -85,10 +78,8 @@ def init_db():
                 zinc_mg REAL NOT NULL DEFAULT 0,
                 vitamin_d_ui REAL NOT NULL DEFAULT 0
             )
-            """
-        )
-        conn.execute(
-            """
+            """,
+    """
             CREATE TABLE IF NOT EXISTS diet_targets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 protein_g REAL,
@@ -102,10 +93,8 @@ def init_db():
                 zinc_mg REAL,
                 vitamin_d_ui REAL
             )
-            """
-        )
-        conn.execute(
-            """
+            """,
+    """
             CREATE TABLE IF NOT EXISTS diet_entries (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 meal TEXT NOT NULL,
@@ -113,9 +102,66 @@ def init_db():
                 quantity REAL NOT NULL,
                 sort_order INTEGER NOT NULL DEFAULT 0
             )
+            """,
+)
+
+SCHEMA_V2_STATEMENTS = (
+    """
+    CREATE INDEX IF NOT EXISTS idx_training_logs_session_pending
+    ON training_logs (session_id, weight, sort_order)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_training_logs_exercise_history
+    ON training_logs (exercise_name, id)
+    """,
+)
+
+MIGRATIONS = {
+    1: SCHEMA_V1_STATEMENTS,
+    2: SCHEMA_V2_STATEMENTS,
+}
+
+
+def get_schema_version(conn=None):
+    owns_connection = conn is None
+    connection = conn or _connect()
+    try:
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS schema_migrations (
+                version INTEGER PRIMARY KEY,
+                applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
             """
         )
-        conn.commit()
+        row = connection.execute(
+            "SELECT COALESCE(MAX(version), 0) AS version FROM schema_migrations"
+        ).fetchone()
+        return int(row["version"])
+    finally:
+        if owns_connection:
+            connection.close()
+
+
+def init_db():
+    with _connect() as conn:
+        current_version = get_schema_version(conn)
+        if current_version > SCHEMA_VERSION:
+            raise RuntimeError(
+                f"Banco usa esquema {current_version}, mas o codigo suporta ate "
+                f"{SCHEMA_VERSION}."
+            )
+
+        for version in range(current_version + 1, SCHEMA_VERSION + 1):
+            statements = MIGRATIONS.get(version)
+            if statements is None:
+                raise RuntimeError(f"Migracao de esquema ausente para a versao {version}.")
+            for statement in statements:
+                conn.execute(statement)
+            conn.execute(
+                "INSERT INTO schema_migrations (version) VALUES (?)",
+                (version,),
+            )
 
 
 # --- exercises ---

@@ -109,5 +109,7 @@ Bons proximos testes:
 
 - funcoes de dieta
 - falhas temporarias da API do Telegram
-- migracoes de bancos antigos
 - backup, exportacao e restauracao
+
+O teste de regras tambem cria um banco legado sem `schema_migrations`, executa
+as migracoes e confirma que os dados anteriores permanecem intactos.

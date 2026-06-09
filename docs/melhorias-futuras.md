@@ -81,6 +81,8 @@ Criterio de conclusao:
 
 ### Versionar O Esquema Do Banco
 
+Entregue em 2026-06-09.
+
 O banco e versionado junto com o projeto, mas ainda nao existe um mecanismo
 explicito de versao e migracao do esquema.
 

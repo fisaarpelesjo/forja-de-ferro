@@ -1,5 +1,6 @@
 import gc
 import json
+import sqlite3
 import sys
 import tempfile
 from pathlib import Path
@@ -69,6 +70,76 @@ def main():
             ods_ops.SESSION_FILE = test_session
             telegram_poller.SESSION_FILE = test_session
             telegram_poller.send = mensagens.append
+
+            db_ops.init_db()
+            conn = sqlite3.connect(test_db)
+            try:
+                versions = [
+                    row[0]
+                    for row in conn.execute(
+                        "SELECT version FROM schema_migrations ORDER BY version"
+                    )
+                ]
+                indexes = {
+                    row[0]
+                    for row in conn.execute(
+                        """
+                        SELECT name FROM sqlite_master
+                        WHERE type = 'index' AND name LIKE 'idx_training_logs_%'
+                        """
+                    )
+                }
+            finally:
+                conn.close()
+            assert versions == [1, 2]
+            assert "idx_training_logs_session_pending" in indexes
+            assert "idx_training_logs_exercise_history" in indexes
+
+            legacy_db = temp_path / "legado.db"
+            conn = sqlite3.connect(legacy_db)
+            try:
+                conn.execute(
+                    """
+                    CREATE TABLE training_sessions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        date TEXT NOT NULL,
+                        training_type TEXT NOT NULL DEFAULT 'TREINO'
+                    )
+                    """
+                )
+                conn.execute(
+                    """
+                    CREATE TABLE training_logs (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        session_id INTEGER NOT NULL REFERENCES training_sessions(id),
+                        exercise_name TEXT NOT NULL,
+                        sets INTEGER NOT NULL,
+                        reps INTEGER NOT NULL,
+                        weight REAL,
+                        rpe REAL,
+                        sort_order INTEGER NOT NULL DEFAULT 0
+                    )
+                    """
+                )
+                conn.execute(
+                    "INSERT INTO training_sessions (date) VALUES ('2026-06-01')"
+                )
+                conn.commit()
+            finally:
+                conn.close()
+            db_ops.DB_PATH = legacy_db
+            db_ops.init_db()
+            conn = sqlite3.connect(legacy_db)
+            try:
+                assert conn.execute(
+                    "SELECT COUNT(*) FROM training_sessions"
+                ).fetchone()[0] == 1
+                assert conn.execute(
+                    "SELECT MAX(version) FROM schema_migrations"
+                ).fetchone()[0] == db_ops.SCHEMA_VERSION
+            finally:
+                conn.close()
+            db_ops.DB_PATH = test_db
 
             telegram_poller.handle_preview()
             assert not test_session.exists()

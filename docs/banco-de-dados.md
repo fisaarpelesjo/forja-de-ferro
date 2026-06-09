@@ -11,6 +11,26 @@ data/forja_de_ferro.db
 Esse banco e versionado e e a fonte da verdade para exercicios, sessoes, logs e
 dados de dieta.
 
+## Versao E Migracoes
+
+O esquema atual usa `SCHEMA_VERSION = 2`. A tabela `schema_migrations` registra
+uma linha por versao aplicada, com data e hora.
+
+`db_ops.init_db()`:
+
+1. le a maior versao registrada
+2. rejeita bancos mais novos que o codigo
+3. aplica cada migracao pendente em ordem
+4. registra a versao somente depois de concluir suas operacoes
+
+A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localizar
+logs pendentes por sessao e historico por exercicio. As migracoes usam
+`IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
+tabelas, mas ainda nao tenham `schema_migrations`.
+
+Antes de criar uma nova migracao, fazer backup do banco e adicionar um teste que
+parta da versao anterior.
+
 ## Modulo SQLite
 
 Todo acesso direto ao banco fica em:
