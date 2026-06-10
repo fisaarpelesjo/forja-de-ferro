@@ -13,9 +13,12 @@ REQUIRED_MODULES = [
     "rich",
     "forja_de_ferro.db_ops",
     "forja_de_ferro.ods_ops",
+    "forja_de_ferro.video_ops",
     "forja_de_ferro.dashboard",
     "forja_de_ferro.telegram_poller",
     "forja_de_ferro.banner",
+    "gerar_frames",
+    "extrair_frames",
     "start_bot",
 ]
 
