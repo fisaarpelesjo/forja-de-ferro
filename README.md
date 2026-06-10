@@ -21,6 +21,8 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
   comparacao, mudancas de carga, consolidacoes e recordes.
 - `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
   volume de treino.
+- `python gerar_frames.py --todos --instalar-ffmpeg` verifica a dependencia e
+  gera todos os frames dos videos de `videos/entrada/`.
 - `python gerenciar_dados.py backup` cria uma copia consistente do SQLite.
 - `python gerenciar_dados.py exportar` exporta os dados para JSON.
 
@@ -44,6 +46,11 @@ forja_de_ferro/
 ├── start_bot.py             # launcher multiplataforma
 ├── start_bot.bat            # wrapper Windows
 ├── gerar_dashboard.py       # gera temp/dashboard-treino.html
+├── gerar_frames.py          # gera frames de video com ffmpeg
+├── extrair_frames.py        # alias de compatibilidade
+├── videos/
+│   ├── entrada/             # videos de entrada
+│   └── saida/               # frames gerados por arquivo
 ├── gerenciar_dados.py       # backup, exportacao e restauracao
 ├── forja_de_ferro/
 │   ├── banner.py            # banner do terminal
@@ -135,6 +142,39 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - consistencia semanal e dias desde o ultimo treino
 - analises cruzadas de volume x RPE, carga x RPE, RPE por faixa, grupos por semana e ultima sessao vs media das 3 anteriores
 - filtros rapidos por periodo, exercicio e ordenacao
+
+## Extrair Frames De Video
+
+Use o launcher local quando quiser analisar videos de execucao quadro a quadro:
+
+1. coloque o video em `videos/entrada/`
+2. rode o comando abaixo
+
+```bash
+python gerar_frames.py --todos --instalar-ffmpeg
+```
+
+O comando verifica se o `ffmpeg` esta disponivel e tenta instala-lo quando
+necessario. No Windows, a instalacao usa o `winget`. Cada video recebe sua
+propria pasta em `videos/saida/<nome-do-video>/`, e o terminal mostra quantos
+frames foram gerados.
+
+Sem `--fps`, todos os frames sao extraidos. Para reduzir a quantidade:
+
+```bash
+python gerar_frames.py --todos --instalar-ffmpeg --fps 1
+```
+
+Tambem e possivel processar apenas um arquivo:
+
+```bash
+python gerar_frames.py video.mp4 --instalar-ffmpeg
+python gerar_frames.py video.mp4 --fps 1
+python gerar_frames.py video.mp4 --saida temp/frames
+```
+
+JPG, JPEG, PNG, WebP e BMP sao aceitos. Antes de processar um video, os frames
+anteriores com o mesmo nome sao removidos para manter a contagem correta.
 
 ## Progressao De Carga Por RPE
 

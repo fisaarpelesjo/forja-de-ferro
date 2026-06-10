@@ -8,6 +8,7 @@ Responsabilidades principais:
 2. rodar um bot Telegram com long polling
 3. guardar a sessao ativa em `session.json`
 4. gerar um dashboard HTML local com a evolucao do volume de treino
+5. extrair frames de videos locais para analise de execucao
 
 ## Fluxo Principal
 
@@ -39,6 +40,13 @@ Usuario roda python gerar_dashboard.py
   -> cruza volume x RPE, carga x RPE e ultima sessao contra media recente
   -> organiza as secoes em abas com layout escuro e adiciona filtros rapidos
   -> escreve temp/dashboard-treino.html
+
+Usuario roda python gerar_frames.py --todos --instalar-ffmpeg
+  -> launcher verifica e instala ffmpeg quando necessario
+  -> localiza todos os videos em videos/entrada/
+  -> modulo chama ffmpeg sem interacao
+  -> cria uma pasta por video em videos/saida/
+  -> informa a quantidade de frames gerada
 ```
 
 ## Entry Points
@@ -46,6 +54,7 @@ Usuario roda python gerar_dashboard.py
 ```bash
 python start_bot.py
 python gerar_dashboard.py
+python gerar_frames.py --todos --instalar-ffmpeg
 ```
 
 No Windows:
@@ -60,11 +69,15 @@ start_bot.bat
 
 `gerar_dashboard.py`: gera `temp/dashboard-treino.html`.
 
+`gerar_frames.py`: extrai frames de videos locais usando `ffmpeg`.
+
 `forja_de_ferro/banner.py`: banner colorido do terminal.
 
 `forja_de_ferro/telegram_poller.py`: comandos, polling e mensagens Telegram.
 
 `forja_de_ferro/ods_ops.py`: gera sessoes e escreve `session.json`.
+
+`forja_de_ferro/video_ops.py`: valida e executa a extracao de frames.
 
 `forja_de_ferro/dashboard.py`: consolida logs de treino e renderiza HTML local.
 

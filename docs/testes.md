@@ -73,6 +73,16 @@ O teste cobre:
 
 Todo o estado fica em diretorio temporario.
 
+## Teste De Video Para Frames
+
+```bash
+python tests/video_ops_test.py
+```
+
+Valida a montagem nao interativa do comando do `ffmpeg`, formatos e FPS,
+limpeza e contagem de frames, processamento em lote, arquivo inexistente,
+ausencia e instalacao simulada do binario, sem chamar um executavel real.
+
 ## Teste Do Dashboard
 
 ```bash
@@ -106,6 +116,7 @@ sucesso. Nenhuma chamada real e feita ao Telegram.
 pip install -r requirements.txt
 python tests/smoke_test.py
 python tests/regras_treino_test.py
+python tests/video_ops_test.py
 python tests/e2e_training_flow_test.py
 python tests/dashboard_test.py
 python tests/backup_export_test.py

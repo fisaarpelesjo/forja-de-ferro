@@ -194,6 +194,16 @@ Criterio de conclusao:
 
 ## Prioridade Baixa
 
+### Extrair Frames Para Analise De Execucao
+
+Entregue em 2026-06-10.
+
+O launcher `gerar_frames.py` localiza todos os videos em `videos/entrada/`,
+instala o `ffmpeg` sob demanda, chama o binario sem interacao e grava imagens em
+`videos/saida/<nome-do-video>/`, informando a contagem por arquivo. Entradas e
+saidas geradas permanecem fora do versionamento, e os testes simulam o processo
+sem depender de um video ou binario real.
+
 ### Permitir Ciclos E Variacoes De Treino
 
 Entregue em 2026-06-09.

@@ -4,6 +4,9 @@ A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLit
 
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
 evolucao do volume de treino.
+Extracao de frames de video: `gerar_frames.py --todos --instalar-ffmpeg`
+verifica a dependencia, processa os videos de `videos/entrada/` e grava cada
+resultado em `videos/saida/<nome-do-video>/`, informando a contagem de frames.
 Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
 backups validados.
 
@@ -150,6 +153,16 @@ Dashboard local de volume:
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - Launcher local: `python gerar_dashboard.py`.
 - O bot usa a mesma funcao no comando `/dashboard`.
+
+### `forja_de_ferro/video_ops.py`
+
+- `extrair_frames(video_path, saida=None, fps=None, formato="jpg")` usa
+  `ffmpeg` para gerar frames em uma pasta local.
+- Formatos aceitos: JPG, JPEG, PNG, WebP e BMP. Arquivos existentes sao
+  substituidos sem prompt interativo.
+- `--todos` processa todos os videos de `videos/entrada/`; sem `--fps`, extrai
+  todos os frames.
+- `--instalar-ffmpeg` tenta instalar com winget, Homebrew ou apt-get.
 
 ### `forja_de_ferro/backup_ops.py`
 

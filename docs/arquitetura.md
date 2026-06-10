@@ -9,7 +9,11 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 .
 ├── start_bot.py
 ├── start_bot.bat
+├── gerar_frames.py
 ├── gerenciar_dados.py
+├── videos/
+│   ├── entrada/
+│   └── saida/
 ├── data/
 │   └── forja_de_ferro.db
 ├── docs/
@@ -20,13 +24,15 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 │   ├── dashboard.py
 │   ├── db_ops.py
 │   ├── ods_ops.py
-│   └── telegram_poller.py
+│   ├── telegram_poller.py
+│   └── video_ops.py
 └── tests/
     ├── backup_export_test.py
     ├── dashboard_test.py
     ├── regras_treino_test.py
     ├── smoke_test.py
     ├── telegram_falhas_test.py
+    ├── video_ops_test.py
     └── e2e_training_flow_test.py
 ```
 
@@ -62,6 +68,10 @@ gerar_dashboard.py
 gerenciar_dados.py
   -> forja_de_ferro.backup_ops
        -> SQLite
+
+gerar_frames.py
+  -> forja_de_ferro.video_ops
+       -> ffmpeg
 ```
 
 `db_ops.py` fica na base e nao deve importar a camada do bot.
@@ -114,6 +124,7 @@ Nao versionado:
 - `data/*.db-shm`
 - `data/*.db-wal`
 - `__pycache__/`
+- `videos/`
 
 ## Por Que `session.json` Existe
 

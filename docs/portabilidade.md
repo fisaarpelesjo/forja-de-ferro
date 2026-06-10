@@ -9,6 +9,7 @@ Python 3.10+
 SQLite
 requests
 rich
+ffmpeg (para extracao de frames de video)
 internet de saida
 ```
 
@@ -69,6 +70,28 @@ Se `pip` apontar para Python errado:
 python -m pip install -r requirements.txt
 python3 -m pip install -r requirements.txt
 py -3 -m pip install -r requirements.txt
+```
+
+## Video E Frames
+
+O launcher `gerar_frames.py` depende do executavel `ffmpeg` no `PATH`. A opcao
+`--instalar-ffmpeg` tenta instalar a dependencia com `winget` no Windows,
+Homebrew no macOS ou `apt-get` no Linux.
+
+O projeto usa `videos/entrada/` para os videos de entrada e `videos/saida/`
+para os frames gerados. O launcher cria a pasta `videos/saida/<nome-do-video>/`
+automaticamente.
+
+Verifique:
+
+```bash
+ffmpeg -version
+```
+
+Fluxo completo:
+
+```bash
+python gerar_frames.py --todos --instalar-ffmpeg
 ```
 
 ## Cor No Terminal

@@ -21,7 +21,7 @@ na documentacao do software.
 - [Portabilidade](portabilidade.md): Windows, Linux, macOS, WSL, maquinas fracas,
   terminal, Python e problemas comuns de ambiente.
 - [Operacao](operacao.md): uso diario, setup limpo, backup, troubleshooting e
-  checklist de manutencao.
+  checklist de manutencao, incluindo a geracao local de frames de video.
 - [Melhorias futuras](melhorias-futuras.md): roadmap tecnico priorizado, riscos,
   criterios de conclusao e itens que nao sao prioridade.
 

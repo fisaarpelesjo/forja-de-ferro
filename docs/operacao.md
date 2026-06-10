@@ -105,6 +105,25 @@ Para atualizar o dashboard pelo celular:
 
 O HTML continua salvo localmente em `temp/dashboard-treino.html`.
 
+## Gerar Frames De Video
+
+Quando quiser revisar uma execucao gravada, use o launcher local:
+
+1. coloque o video em `videos/entrada/`
+2. processe todos os arquivos com verificacao e instalacao do `ffmpeg`
+
+```bash
+python gerar_frames.py --todos --instalar-ffmpeg
+```
+
+Sem `--fps`, todos os frames sao extraidos. Use `--fps 1` para gerar uma imagem
+por segundo. O launcher cria `videos/saida/<nome-do-video>/` para cada arquivo e
+informa a quantidade gerada. JPG, JPEG, PNG, WebP e BMP sao aceitos.
+
+No Windows, `--instalar-ffmpeg` usa o `winget` se a dependencia estiver ausente.
+Frames anteriores daquele video sao removidos antes da nova extracao, evitando
+arquivos obsoletos e contagem incorreta.
+
 ## Progressao De Carga Por RPE
 
 Ao gerar treino, o bot sugere a proxima carga usando a ultima carga registrada
