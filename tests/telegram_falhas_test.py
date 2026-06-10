@@ -65,6 +65,14 @@ def main():
         assert telegram_poller._command_name("/status") == "/status"
         assert telegram_poller._command_name("80 9") == "registro_carga"
         assert "80" not in telegram_poller._command_name("80 9")
+        assert telegram_poller._is_session_input("/status") is True
+        assert telegram_poller._is_session_input("/desfazer") is True
+        assert telegram_poller._is_session_input("80 9") is True
+        assert telegram_poller._is_session_input("80,5") is True
+        assert telegram_poller._is_session_input("status") is False
+        assert telegram_poller._is_session_input("ajuda") is False
+        assert telegram_poller._is_session_input("/help") is False
+        assert telegram_poller._is_session_input("/generate") is False
 
         print("Teste de falhas do Telegram passou.")
     finally:

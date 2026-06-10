@@ -131,22 +131,18 @@ def _command_name(text):
     normalized = text.strip().lower()
     if normalized.startswith("/"):
         return normalized.split(maxsplit=1)[0]
-    if normalized in {
-        "ajuda",
-        "exercicios",
-        "volume",
-        "dashboard",
-        "planos",
-        "plano",
-        "aquecimento",
-        "gerar",
-        "prever",
-        "previa",
-        "status",
-        "desfazer",
-    }:
-        return normalized
     return "registro_carga"
+
+
+def _is_session_input(text):
+    normalized = text.strip().lower()
+    if normalized in {"/status", "/desfazer"}:
+        return True
+    try:
+        float(normalized.replace(",", ".").split()[0])
+        return True
+    except (ValueError, IndexError):
+        return False
 
 
 def _format_weight(weight):
@@ -379,7 +375,7 @@ def handle(text, session):
     total = len(exercises)
     filled = db_ops.count_filled(log_ids)
 
-    if text.lower() in ("/status", "status"):
+    if text.lower() == "/status":
         if filled >= total:
             send(f"Treino completo. {total}/{total} ✓")
         else:
@@ -392,7 +388,7 @@ def handle(text, session):
             send(msg)
         return
 
-    if text.lower() in ("/desfazer", "desfazer", "/undo", "undo"):
+    if text.lower() == "/desfazer":
         if filled == 0:
             send("Nada para desfazer.")
             return
@@ -481,7 +477,7 @@ def main():
                 command = _command_name(text)
                 LOGGER.info("Comando recebido comando=%s", command)
 
-                if lower in ("/ajuda", "ajuda", "/help", "help"):
+                if lower == "/ajuda":
                     send(
                         "<b>Forja de Ferro — Comandos</b>\n\n"
                         "/gerar — cria uma sessao de treino\n"
@@ -501,29 +497,27 @@ def main():
                     )
                     continue
 
-                if lower in ("/exercicios", "exercicios", "/exercises", "exercises"):
+                if lower == "/exercicios":
                     handle_exercises()
                     continue
 
-                if lower in ("/volume", "volume"):
+                if lower == "/volume":
                     handle_volume()
                     continue
 
-                if lower in ("/dashboard", "dashboard"):
+                if lower == "/dashboard":
                     handle_dashboard()
                     continue
 
-                if lower in ("/planos", "planos"):
+                if lower == "/planos":
                     handle_plans()
                     continue
 
-                if lower == "/plano" or lower == "plano" or lower.startswith(
-                    ("/plano ", "plano ")
-                ):
+                if lower == "/plano" or lower.startswith("/plano "):
                     handle_select_plan(text)
                     continue
 
-                if lower in ("/aquecimento", "aquecimento", "/warmup", "warmup"):
+                if lower == "/aquecimento":
                     send(
                         "<b>Aquecimento</b>\n\n"
                         "1. Agachamento livre — 1x10\n"
@@ -536,12 +530,16 @@ def main():
                     )
                     continue
 
-                if lower.startswith("/gerar") or lower.startswith("/generate"):
+                if lower == "/gerar":
                     handle_generate()
                     continue
 
-                if lower in ("/prever", "prever", "/previa", "previa", "/preview", "preview"):
+                if lower == "/prever":
                     handle_preview()
+                    continue
+
+                if not _is_session_input(text):
+                    send("Comando invalido. Use /ajuda.")
                     continue
 
                 try:

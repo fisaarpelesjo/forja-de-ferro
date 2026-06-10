@@ -18,7 +18,6 @@ REQUIRED_MODULES = [
     "forja_de_ferro.telegram_poller",
     "forja_de_ferro.banner",
     "gerar_frames",
-    "extrair_frames",
     "start_bot",
 ]
 
