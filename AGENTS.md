@@ -15,6 +15,7 @@ Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
 backups validados.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
+Catalogo unico de comandos: `docs/comandos.md`.
 
 ## Padrao De Idioma
 
@@ -37,9 +38,8 @@ natural em PT-BR. Termos tecnicos muito estabelecidos podem aparecer quando
 ajudarem a clareza, mas devem ser acompanhados de contexto em portugues sempre
 que forem visiveis ao usuario ou na documentacao.
 
-Aliases antigos em ingles podem continuar existindo para compatibilidade, mas a
-documentacao, a ajuda principal e os exemplos devem priorizar os comandos e nomes
-em PT-BR.
+Comandos textuais do Telegram devem usar somente os nomes oficiais em PT-BR e
+sempre exigir `/`. Nao aceitar aliases em ingles ou nomes sem barra.
 
 ## Sincronizacao Das Instrucoes De Agentes
 
@@ -88,13 +88,8 @@ Comandos principais:
 - `/ajuda`
 - `80` ou `80 8` para registrar carga e RPE opcional
 
-Aliases legados em ingles podem ser aceitos:
-
-- `/generate`
-- `/exercises`
-- `/warmup`
-- `/undo`
-- `/help`
+Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
+usam barra.
 
 Fluxo:
 

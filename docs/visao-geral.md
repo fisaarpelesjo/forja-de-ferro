@@ -112,4 +112,5 @@ A interface principal deve ser em PT-BR:
 - docs de uso
 - mensagens de launcher
 
-Aliases antigos em ingles podem continuar existindo por compatibilidade.
+Comandos textuais do Telegram exigem `/` e usam somente os nomes oficiais em
+PT-BR.

@@ -22,6 +22,8 @@ na documentacao do software.
   terminal, Python e problemas comuns de ambiente.
 - [Operacao](operacao.md): uso diario, setup limpo, backup, troubleshooting e
   checklist de manutencao, incluindo a geracao local de frames de video.
+- [Catalogo de comandos](comandos.md): referencia unica dos comandos do
+  Telegram, launchers, dados, videos, testes e instalacao.
 - [Melhorias futuras](melhorias-futuras.md): roadmap tecnico priorizado, riscos,
   criterios de conclusao e itens que nao sao prioridade.
 

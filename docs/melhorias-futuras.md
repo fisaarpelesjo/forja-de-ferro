@@ -257,7 +257,6 @@ Criterio de conclusao:
 - criar aplicativo movel separado
 - adicionar contas e autenticacao multiusuario
 - tornar o dashboard publico
-- remover aliases antigos que ainda preservam compatibilidade
 
 Esses itens aumentariam manutencao e superficie de falha sem resolver os riscos
 mais importantes do projeto atual.

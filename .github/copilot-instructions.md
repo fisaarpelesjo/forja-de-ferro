@@ -15,6 +15,7 @@ Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
 backups validados.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
+Catalogo unico de comandos: `docs/comandos.md`.
 
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
@@ -26,9 +27,8 @@ para interface, mensagens do bot, comandos principais, ajuda, documentacao
 tecnica, exemplos, titulos Markdown, nomes de arquivos e pastas novos de
 documentacao, mensagens de launcher e textos visiveis ao usuario.
 
-Aliases antigos em ingles podem permanecer por compatibilidade, mas a ajuda
-principal, os exemplos e a documentacao devem priorizar nomes e comandos em
-PT-BR.
+Comandos textuais do Telegram devem usar somente os nomes oficiais em PT-BR e
+sempre exigir `/`. Nao aceitar aliases em ingles ou nomes sem barra.
 
 ## Sincronizacao Das Instrucoes De Agentes
 
@@ -64,11 +64,6 @@ Wrapper Windows para iniciar o bot com duplo clique ou pelo terminal.
 Launcher local que gera o dashboard HTML de volume de treino em
 `temp/dashboard-treino.html`.
 
-### `extrair_frames.py`
-
-Launcher local para extrair frames de videos com `ffmpeg` e apoiar analise de
-execucao.
-
 ### `forja_de_ferro/telegram_poller.py`
 
 Bot Telegram com long polling.
@@ -92,13 +87,8 @@ Comandos principais:
 - `/ajuda`
 - `80` ou `80 8` para registrar carga e RPE opcional
 
-Aliases legados em ingles podem existir para compatibilidade:
-
-- `/generate`
-- `/exercises`
-- `/warmup`
-- `/undo`
-- `/help`
+Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
+usam barra.
 
 Fluxo principal:
 

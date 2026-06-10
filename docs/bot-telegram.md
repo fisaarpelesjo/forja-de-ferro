@@ -54,15 +54,8 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /ajuda          mostra ajuda
 ```
 
-Aliases em ingles podem continuar funcionando por compatibilidade:
-
-```text
-/generate
-/exercises
-/warmup
-/undo
-/help
-```
+Todos os comandos textuais exigem `/` e usam somente os nomes oficiais em
+PT-BR. Entradas numericas continuam reservadas para carga e RPE.
 
 ## Startup
 

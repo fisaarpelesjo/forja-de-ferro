@@ -26,6 +26,9 @@ A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
 - `python gerenciar_dados.py backup` cria uma copia consistente do SQLite.
 - `python gerenciar_dados.py exportar` exporta os dados para JSON.
 
+O catalogo completo e centralizado em
+[`docs/comandos.md`](docs/comandos.md).
+
 O banco principal e `data/forja_de_ferro.db`. A sessao ativa fica em `session.json`,
 que e estado local e nao deve ser versionado.
 
@@ -47,7 +50,6 @@ forja_de_ferro/
 ├── start_bot.bat            # wrapper Windows
 ├── gerar_dashboard.py       # gera temp/dashboard-treino.html
 ├── gerar_frames.py          # gera frames de video com ffmpeg
-├── extrair_frames.py        # alias de compatibilidade
 ├── videos/
 │   ├── entrada/             # videos de entrada
 │   └── saida/               # frames gerados por arquivo
@@ -91,8 +93,8 @@ forja_de_ferro/
 /ajuda          Mostra ajuda
 ```
 
-Aliases antigos em ingles ainda podem funcionar por compatibilidade:
-`/generate`, `/exercises`, `/warmup`, `/undo`, `/help`.
+Todos os comandos textuais do Telegram exigem `/` e usam somente os nomes
+oficiais em PT-BR. Entradas numericas como `80` e `80 8` registram carga e RPE.
 
 ## Registro De Carga
 

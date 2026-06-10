@@ -9,6 +9,7 @@ verifica a dependencia, processa os videos de `videos/entrada/` e grava cada
 resultado em `videos/saida/<nome-do-video>/`, informando a contagem de frames.
 Gestao de dados: `gerenciar_dados.py` cria backup, exporta JSON e restaura
 backups validados.
+Catalogo unico de comandos: `docs/comandos.md`.
 
 Teste direto das regras: `python tests/regras_treino_test.py`.
 
@@ -19,9 +20,9 @@ para interface, mensagens do bot, comandos principais, documentacao de uso,
 documentacao tecnica, titulos de Markdown, exemplos, nomes de arquivos e pastas
 novos de documentacao, mensagens de launcher e textos visiveis ao usuario.
 
-Evite criar novos nomes ou textos em ingles quando houver uma alternativa natural
-em PT-BR. Aliases legados em ingles podem permanecer por compatibilidade, mas a
-ajuda principal, os exemplos e a documentacao devem priorizar os nomes em PT-BR.
+Evite criar novos nomes ou textos em ingles quando houver uma alternativa
+natural em PT-BR. Comandos textuais do Telegram devem usar somente os nomes
+oficiais em portugues e sempre exigir `/`.
 
 ## Sincronizacao Das Instrucoes De Agentes
 
@@ -80,7 +81,8 @@ Comandos principais em PT-BR:
 - `/dashboard` reutiliza `dashboard.salvar_dashboard()`, nao altera sessoes e
   nao expoe caminho local.
 
-Aliases antigos em ingles podem permanecer para compatibilidade.
+Aliases em ingles e comandos textuais sem `/` nao sao aceitos. Entradas
+numericas de carga e RPE continuam sem barra.
 
 ### `forja_de_ferro/ods_ops.py`
 
