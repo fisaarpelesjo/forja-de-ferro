@@ -62,6 +62,14 @@ def main():
             assert dados["analises"]["volume_rpe_sessao"]
             assert dados["analises"]["rpe_distribuicao"]
             assert dados["analises"]["carga_rpe_exercicio"]
+            assert dados["mapa_ultima_sessao"]["data"] == "2026-05-08"
+            grupos_mapa = {
+                item["grupo"]: item
+                for item in dados["mapa_ultima_sessao"]["grupos"]
+            }
+            assert grupos_mapa["Peitoral"]["volume"] == 660.0
+            assert grupos_mapa["Dorsais"]["volume"] == 1200.0
+            assert grupos_mapa["Dorsais"]["intensidade"] == 1.0
 
             alertas_rpe_9 = dashboard._calcular_alertas(
                 [
@@ -127,6 +135,11 @@ def main():
             assert "data-aba=\"analises\"" in html
             assert "Volume x RPE medio" in html
             assert "Distribuicao de RPE" in html
+            assert "Mapa muscular da ultima sessao" in html
+            assert "Mapa muscular anterior da ultima sessao" in html
+            assert "Mapa muscular posterior da ultima sessao" in html
+            assert 'data-grupo="Dorsais"' in html
+            assert "body-muscles" in html
             assert "Supino reto (barra)" in html
             assert "2.460 kg" in html
 

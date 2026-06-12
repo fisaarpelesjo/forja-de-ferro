@@ -136,6 +136,8 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - series, repeticoes e media de volume por exercicio
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
+- mapa muscular anterior e posterior da ultima sessao, com opacidade proporcional
+  ao volume atribuido a cada grupo
 - maiores evolucoes, quedas, recordes pessoais e alertas simples
 - sinais de consolidacao quando o RPE cai com a mesma carga, sem classificar
   RPE 9 repetido como estagnacao
@@ -144,6 +146,11 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - consistencia semanal e dias desde o ultimo treino
 - analises cruzadas de volume x RPE, carga x RPE, RPE por faixa, grupos por semana e ultima sessao vs media das 3 anteriores
 - filtros rapidos por periodo, exercicio e ordenacao
+
+O mapa anatomico usa vetores adaptados da biblioteca
+[`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,
+sob licenca Apache-2.0. A copia da licenca fica em
+`docs/licencas/body-muscles-APACHE-2.0.txt`.
 
 ## Extrair Frames De Video
 

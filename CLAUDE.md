@@ -147,7 +147,14 @@ Dashboard local de volume:
 - O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
   carga, RPE, 1RM estimado, media movel, consistencia semanal, comparacao
   recente, PRs, maiores evolucoes, abas de navegacao, filtros rapidos, analises
-  cruzadas de volume/RPE/carga e alertas.
+  cruzadas de volume/RPE/carga, mapa muscular anterior e posterior da ultima
+  sessao e alertas.
+- O mapa muscular usa `exercise_muscle_groups`; regioes sem volume ficam
+  transparentes e o vermelho ganha opacidade conforme o volume relativo. A
+  visualizacao nao representa ativacao muscular medida.
+- A geometria anatomica local vem de `body-muscles` (Apache-2.0), armazenada em
+  `forja_de_ferro/assets/mapa_muscular_body_muscles.json`; preservar a
+  atribuicao e `docs/licencas/body-muscles-APACHE-2.0.txt`.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
   e reducao de carga apos RPE 10 aparecem como sinais de acompanhamento.

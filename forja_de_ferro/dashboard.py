@@ -13,6 +13,73 @@ from forja_de_ferro import db_ops
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
+MUSCLE_MAP_ASSET = (
+    ROOT_DIR / "forja_de_ferro" / "assets" / "mapa_muscular_body_muscles.json"
+)
+
+MUSCLE_IDS_BY_GROUP = {
+    "Peitoral": (
+        "chest-upper-left",
+        "chest-upper-right",
+        "chest-lower-left",
+        "chest-lower-right",
+    ),
+    "Deltoide anterior": ("shoulder-front-left", "shoulder-front-right"),
+    "Deltoide lateral": ("shoulder-side-left", "shoulder-side-right"),
+    "Deltoide posterior": ("deltoid-rear-left", "deltoid-rear-right"),
+    "Biceps": ("biceps-left", "biceps-right"),
+    "Triceps": (
+        "triceps-long-left",
+        "triceps-lateral-left",
+        "triceps-long-right",
+        "triceps-lateral-right",
+    ),
+    "Antebraco": (
+        "forearm-left",
+        "forearm-right",
+        "forearm-flexors-left",
+        "forearm-extensors-left",
+        "forearm-flexors-right",
+        "forearm-extensors-right",
+    ),
+    "Core": (
+        "abs-upper-left",
+        "abs-upper-right",
+        "abs-lower-left",
+        "abs-lower-right",
+        "obliques-left",
+        "obliques-right",
+    ),
+    "Quadriceps": ("quads-left", "quads-right"),
+    "Gluteos": (
+        "gluteus-medius-left",
+        "gluteus-maximus-left",
+        "gluteus-medius-right",
+        "gluteus-maximus-right",
+    ),
+    "Posteriores": (
+        "hamstrings-medial-left",
+        "hamstrings-lateral-left",
+        "hamstrings-medial-right",
+        "hamstrings-lateral-right",
+    ),
+    "Dorsais": (
+        "lats-upper-left",
+        "lats-mid-left",
+        "lats-lower-left",
+        "lats-upper-right",
+        "lats-mid-right",
+        "lats-lower-right",
+    ),
+    "Trapezio": (
+        "traps-upper-left",
+        "traps-mid-left",
+        "traps-lower-left",
+        "traps-upper-right",
+        "traps-mid-right",
+        "traps-lower-right",
+    ),
+}
 
 def _connect():
     db_ops.init_db()
@@ -112,6 +179,10 @@ def carregar_dados():
     for sessao in volume_por_sessao:
         rpes = sessao.get("rpes", [])
         sessao["rpe_medio"] = sum(rpes) / len(rpes) if rpes else None
+    mapa_ultima_sessao = _calcular_mapa_muscular(
+        volume_por_sessao[-1] if volume_por_sessao else None,
+        muscle_groups,
+    )
 
     volume_por_exercicio = []
     for nome, pontos in exercicios.items():
@@ -170,6 +241,7 @@ def carregar_dados():
         "grupos_musculares": sorted(
             grupos.values(), key=lambda item: item["volume"], reverse=True
         ),
+        "mapa_ultima_sessao": mapa_ultima_sessao,
         "prs": _calcular_prs(volume_por_exercicio),
         "alertas": _calcular_alertas(volume_por_sessao, volume_por_exercicio),
         "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
@@ -186,6 +258,33 @@ def _estimar_1rm(carga, reps):
 def _media(valores):
     lista = [v for v in valores if v is not None]
     return sum(lista) / len(lista) if lista else None
+
+
+def _calcular_mapa_muscular(sessao, muscle_groups):
+    if not sessao:
+        return {"data": None, "volume_maximo": 0.0, "grupos": []}
+
+    volumes = defaultdict(float)
+    for log in sessao["logs"]:
+        grupos = muscle_groups.get(log["nome"], [])
+        for grupo in grupos:
+            volumes[grupo["muscle_group"]] += log["volume"]
+
+    volume_maximo = max(volumes.values(), default=0.0)
+    return {
+        "data": sessao["data"],
+        "volume_maximo": volume_maximo,
+        "grupos": [
+            {
+                "grupo": grupo,
+                "volume": volume,
+                "intensidade": volume / volume_maximo if volume_maximo else 0.0,
+            }
+            for grupo, volume in sorted(
+                volumes.items(), key=lambda item: item[1], reverse=True
+            )
+        ],
+    }
 
 
 def _grupo_muscular(nome):
@@ -476,6 +575,86 @@ def _fmt_decimal(valor, casas=1):
 
 def _json(data):
     return html.escape(json.dumps(data, ensure_ascii=False), quote=False)
+
+
+def _render_mapa_muscular(mapa):
+    grupos = {item["grupo"]: item for item in mapa["grupos"]}
+    dados_anatomicos = json.loads(MUSCLE_MAP_ASSET.read_text(encoding="utf-8"))
+    grupo_por_musculo = {
+        muscle_id: grupo
+        for grupo, muscle_ids in MUSCLE_IDS_BY_GROUP.items()
+        for muscle_id in muscle_ids
+    }
+
+    def render_vista(vista):
+        caminhos = []
+        for musculo in dados_anatomicos[vista]:
+            grupo = grupo_por_musculo.get(musculo["id"])
+            item = grupos.get(grupo)
+            if item:
+                opacidade = 0.22 + (0.73 * item["intensidade"])
+                preenchimento = f"rgba(239, 68, 68, {opacidade:.3f})"
+                titulo = (
+                    f"{grupo}: {_fmt_numero(item['volume'])} kg "
+                    f"({item['intensidade'] * 100:.0f}% do maior volume muscular)"
+                )
+                dados = (
+                    f'data-grupo="{html.escape(grupo, quote=True)}" '
+                    f'data-volume="{item["volume"]:.1f}"'
+                )
+            else:
+                preenchimento = "rgba(148, 163, 184, 0.08)"
+                titulo = musculo["nome"]
+                dados = ""
+            caminhos.append(
+                f'<path d="{html.escape(musculo["caminho"], quote=True)}" '
+                f'class="musculo" style="fill: {preenchimento}" {dados}>'
+                f"<title>{html.escape(titulo)}</title></path>"
+            )
+        return "\n".join(caminhos)
+
+    anterior = render_vista("front")
+    posterior = render_vista("back")
+    legenda = "\n".join(
+        f"""
+        <div class="mapa-legenda-item">
+          <span class="mapa-cor" style="opacity: {0.22 + item['intensidade'] * 0.73:.3f}"></span>
+          <span>{html.escape(item["grupo"])}</span>
+          <strong>{_fmt_numero(item["volume"])} kg</strong>
+        </div>
+        """
+        for item in mapa["grupos"]
+    )
+    data = html.escape(mapa["data"] or "-")
+    return f"""
+    <div class="mapa-muscular-layout">
+      <div class="mapa-vistas">
+        <figure>
+          <svg class="mapa-corpo" viewBox="0 0 35 93" role="img"
+               aria-label="Mapa muscular anterior da ultima sessao">
+            {anterior}
+          </svg>
+          <figcaption>Anterior</figcaption>
+        </figure>
+        <figure>
+          <svg class="mapa-corpo" viewBox="37 0 35 93" role="img"
+               aria-label="Mapa muscular posterior da ultima sessao">
+            {posterior}
+          </svg>
+          <figcaption>Posterior</figcaption>
+        </figure>
+      </div>
+      <div class="mapa-legenda">
+        <p>Sessao de <strong>{data}</strong>. A opacidade e relativa ao maior
+        volume muscular desse treino.</p>
+        {legenda or '<p class="vazio">Sem grupos musculares registrados.</p>'}
+      </div>
+    </div>
+    <p class="mapa-fonte">
+      Anatomia vetorial adaptada de body-muscles, por Ivan Vulovic,
+      licenciada sob Apache-2.0.
+    </p>
+    """
 
 
 def _line_points(points, width=760, height=300, padding=28):
@@ -799,6 +978,7 @@ def gerar_html(dados):
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
     analises = dados["analises"]
+    mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
     grafico_volume_rpe = _render_dispersao_volume_rpe(analises["volume_rpe_sessao"])
     grafico_rpe = _render_barras_simples(analises["rpe_distribuicao"], "rpe", "quantidade")
     grafico_grupos_semana = _render_barras_simples(
@@ -1067,12 +1247,85 @@ def gerar_html(dados):
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
     }}
+    .mapa-muscular-layout {{
+      display: grid;
+      grid-template-columns: minmax(420px, 1.5fr) minmax(240px, 0.5fr);
+      gap: 18px;
+      align-items: center;
+    }}
+    .mapa-vistas {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      min-width: 0;
+    }}
+    .mapa-vistas figure {{
+      margin: 0;
+      min-width: 0;
+      text-align: center;
+    }}
+    .mapa-vistas figcaption {{
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-top: 8px;
+      text-transform: uppercase;
+    }}
+    .mapa-corpo {{
+      max-height: 590px;
+      overflow: visible;
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+    }}
+    .musculo {{
+      stroke: rgba(226, 232, 240, 0.34);
+      stroke-width: 0.1;
+      transition: filter 120ms ease, stroke 120ms ease;
+    }}
+    .musculo:hover {{
+      filter: brightness(1.45);
+      stroke: #fff;
+      stroke-width: 0.2;
+    }}
+    .mapa-legenda {{
+      display: grid;
+      gap: 7px;
+      align-content: center;
+    }}
+    .mapa-legenda > p {{
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0 0 8px;
+    }}
+    .mapa-legenda-item {{
+      display: grid;
+      grid-template-columns: 14px minmax(0, 1fr) auto;
+      gap: 9px;
+      align-items: center;
+      border-bottom: 1px solid var(--linha);
+      padding: 6px 0;
+      font-size: 12px;
+    }}
+    .mapa-legenda-item strong {{ color: var(--texto); }}
+    .mapa-cor {{
+      width: 12px;
+      height: 12px;
+      border: 1px solid #ef4444;
+      background: #ef4444;
+    }}
+    .mapa-fonte {{
+      color: #686868;
+      font-size: 10px;
+      margin: 12px 0 0;
+      text-align: right;
+    }}
     @media (max-width: 860px) {{
       header, .layout, .duas-colunas {{ display: block; }}
       header > div:last-child {{ margin-top: 12px; }}
       .grade-resumo {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .painel {{ margin-bottom: 16px; }}
       h1 {{ font-size: 28px; }}
+      .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
     }}
     @media (max-width: 560px) {{
       main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }}
@@ -1080,6 +1333,7 @@ def gerar_html(dados):
       .valor {{ font-size: 24px; }}
       th, td {{ font-size: 13px; padding: 10px 4px; }}
       .filtros, .mini-grade {{ grid-template-columns: 1fr; }}
+      .mapa-vistas {{ gap: 10px; }}
     }}
   </style>
 </head>
@@ -1293,6 +1547,14 @@ def gerar_html(dados):
     </section>
 
     <section class="aba-conteudo" data-painel-aba="analises">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Mapa muscular da ultima sessao</h2>
+          <span>volume atribuido por grupo</span>
+        </div>
+        {mapa_muscular}
+      </article>
+
       <article class="painel">
         <div class="linha-topo">
           <h2>Volume x RPE medio</h2>

@@ -163,7 +163,18 @@ volume = sets x reps x weight
 mes e grupo muscular. O HTML tambem mostra carga, RPE, series, repeticoes,
 comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes,
 1RM estimado, media movel, consistencia semanal, abas de navegacao, filtros
-rapidos, analises cruzadas de volume/RPE/carga e alertas simples.
+rapidos, analises cruzadas de volume/RPE/carga, mapa muscular da ultima sessao e
+alertas simples.
+
+O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
+dos exercicios da ultima sessao para cada grupo associado. A opacidade vermelha
+e normalizada pelo grupo de maior volume daquele treino; uma regiao sem volume
+fica transparente. O desenho representa volume atribuido pelo catalogo, nao
+ativacao muscular medida, recrutamento por EMG ou estimativa de hipertrofia.
+Os vetores anatomicos foram adaptados da biblioteca `body-muscles`, de Ivan
+Vulovic, sob licenca Apache-2.0. A geometria local fica em
+`forja_de_ferro/assets/mapa_muscular_body_muscles.json` e a licenca em
+`docs/licencas/body-muscles-APACHE-2.0.txt`.
 
 Os alertas consideram RPE 9 uma fase valida de consolidacao. O dashboard destaca
 queda de RPE com a mesma carga como evolucao, acompanha RPE 10 persistente e
