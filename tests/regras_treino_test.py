@@ -95,7 +95,7 @@ def main():
                 }
             finally:
                 conn.close()
-            assert versions == [1, 2, 3, 4]
+            assert versions == [1, 2, 3, 4, 5]
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
             active_exercises = db_ops.get_or_seed_exercises()
@@ -109,10 +109,22 @@ def main():
             assert any(
                 group["role"] == "secundario" for group in zercher_groups
             )
+            sumo_groups = db_ops.get_muscle_groups(
+                "Agachamento sumô com barra à frente"
+            )
+            assert sumo_groups[0] == {
+                "muscle_group": "Adutores",
+                "role": "principal",
+            }
             assert db_ops.get_muscle_groups("Exercicio desconhecido") == []
             plan_a = db_ops.get_active_training_plan()
             assert plan_a["name"] == "A"
             assert len(plan_a["exercises"]) == len(active_exercises)
+            assert plan_a["exercises"][1] == {
+                "name": "Agachamento sumô com barra à frente",
+                "sets": 3,
+                "reps": 10,
+            }
 
             db_ops.replace_training_plan(
                 "B",

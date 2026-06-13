@@ -77,7 +77,11 @@ def main():
             assert len(exercises) == total_exercises
             assert exercises[0]["target_weight"] is None
             assert exercises[0]["rest_interval"] == "4 min"
-            rosca_martelo = exercises[9]
+            rosca_martelo = next(
+                exercise
+                for exercise in exercises
+                if exercise["name"] == "Rosca martelo (barra H)"
+            )
             assert rosca_martelo["name"] == "Rosca martelo (barra H)"
             assert rosca_martelo["target_weight"] == 16.0
             assert rosca_martelo["loading_note"] == "barra H 9kg + 7kg de anilhas"

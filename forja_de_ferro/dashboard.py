@@ -51,6 +51,7 @@ MUSCLE_IDS_BY_GROUP = {
         "obliques-right",
     ),
     "Quadriceps": ("quads-left", "quads-right"),
+    "Adutores": ("adductors-left", "adductors-right"),
     "Gluteos": (
         "gluteus-medius-left",
         "gluteus-maximus-left",

@@ -6,10 +6,11 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
+    {"name": "Agachamento sumô com barra à frente", "sets": 3, "reps": 10},
     {"name": "Supino reto (barra)", "sets": 3, "reps": 5},
     {"name": "Supino reto back-off", "sets": 3, "reps": 8},
     {"name": "Remada curvada (barra)", "sets": 3, "reps": 8},
@@ -31,6 +32,11 @@ DEFAULT_MUSCLE_GROUPS = {
         ("Quadriceps", "principal"),
         ("Gluteos", "secundario"),
         ("Core", "secundario"),
+    ],
+    "Agachamento sumô com barra à frente": [
+        ("Adutores", "principal"),
+        ("Quadriceps", "secundario"),
+        ("Gluteos", "secundario"),
     ],
     "Zercher squat": [
         ("Quadriceps", "principal"),
@@ -209,11 +215,65 @@ SCHEMA_V4_STATEMENTS = (
     """,
 )
 
+SCHEMA_V5_STATEMENTS = (
+    """
+    UPDATE exercises
+    SET sort_order = sort_order + 100
+    WHERE sort_order >= 2
+      AND NOT EXISTS (
+          SELECT 1
+          FROM exercises
+          WHERE name = 'Agachamento sumô com barra à frente'
+      )
+    """,
+    """
+    INSERT OR IGNORE INTO exercises (name, sets, reps, sort_order, active)
+    SELECT 'Agachamento sumô com barra à frente', 3, 10, 2, 1
+    WHERE EXISTS (SELECT 1 FROM exercises)
+    """,
+    """
+    UPDATE exercises
+    SET sort_order = sort_order - 99
+    WHERE sort_order >= 102
+    """,
+    """
+    UPDATE training_plan_exercises
+    SET sort_order = sort_order + 100
+    WHERE sort_order >= 1
+      AND plan_id IN (SELECT id FROM training_plans WHERE active = 1)
+      AND NOT EXISTS (
+          SELECT 1
+          FROM training_plan_exercises AS existing
+          WHERE existing.plan_id = training_plan_exercises.plan_id
+            AND existing.exercise_name = 'Agachamento sumô com barra à frente'
+      )
+    """,
+    """
+    INSERT OR IGNORE INTO training_plan_exercises
+        (plan_id, exercise_name, sets, reps, sort_order)
+    SELECT id, 'Agachamento sumô com barra à frente', 3, 10, 1
+    FROM training_plans AS plan
+    WHERE active = 1
+      AND EXISTS (
+          SELECT 1
+          FROM training_plan_exercises
+          WHERE plan_id = plan.id
+      )
+    """,
+    """
+    UPDATE training_plan_exercises
+    SET sort_order = sort_order - 99
+    WHERE sort_order >= 101
+      AND plan_id IN (SELECT id FROM training_plans WHERE active = 1)
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
     3: SCHEMA_V3_STATEMENTS,
     4: SCHEMA_V4_STATEMENTS,
+    5: SCHEMA_V5_STATEMENTS,
 }
 
 
