@@ -577,6 +577,22 @@ def _json(data):
     return html.escape(json.dumps(data, ensure_ascii=False), quote=False)
 
 
+def _cor_mapa_calor(intensidade):
+    """Interpola azul (0) → amarelo (0.5) → vermelho (1)."""
+    t = max(0.0, min(1.0, intensidade))
+    if t <= 0.5:
+        s = t * 2
+        r = int(round(59 + 175 * s))
+        g = int(round(130 + 49 * s))
+        b = int(round(246 - 238 * s))
+    else:
+        s = (t - 0.5) * 2
+        r = int(round(234 + 5 * s))
+        g = int(round(179 - 111 * s))
+        b = int(round(8 + 60 * s))
+    return f"rgb({r},{g},{b})"
+
+
 def _render_mapa_muscular(mapa):
     grupos = {item["grupo"]: item for item in mapa["grupos"]}
     dados_anatomicos = json.loads(MUSCLE_MAP_ASSET.read_text(encoding="utf-8"))
@@ -587,38 +603,67 @@ def _render_mapa_muscular(mapa):
     }
 
     def render_vista(vista):
+        muscles = dados_anatomicos[vista]
+        if vista == "front":
+            vb = "0 0 32 93"
+            label = "anterior"
+        else:
+            vb = "37 0 32 93"
+            label = "posterior"
+
         caminhos = []
-        for musculo in dados_anatomicos[vista]:
+        for musculo in muscles:
             grupo = grupo_por_musculo.get(musculo["id"])
             item = grupos.get(grupo)
             if item:
-                opacidade = 0.22 + (0.73 * item["intensidade"])
-                preenchimento = f"rgba(239, 68, 68, {opacidade:.3f})"
+                preenchimento = _cor_mapa_calor(item["intensidade"])
                 titulo = (
                     f"{grupo}: {_fmt_numero(item['volume'])} kg "
                     f"({item['intensidade'] * 100:.0f}% do maior volume muscular)"
                 )
+                classe = "musculo com-volume"
                 dados = (
                     f'data-grupo="{html.escape(grupo, quote=True)}" '
                     f'data-volume="{item["volume"]:.1f}"'
                 )
             else:
-                preenchimento = "rgba(148, 163, 184, 0.08)"
-                titulo = musculo["nome"]
+                preenchimento = "#252d3d"
+                titulo = html.escape(musculo["nome"])
+                classe = "musculo"
                 dados = ""
+
             caminhos.append(
                 f'<path d="{html.escape(musculo["caminho"], quote=True)}" '
-                f'class="musculo" style="fill: {preenchimento}" {dados}>'
-                f"<title>{html.escape(titulo)}</title></path>"
+                f'id="{html.escape(musculo["id"])}" '
+                f'class="{classe}" '
+                f'style="fill:{preenchimento}" '
+                f'{dados}>'
+                f"<title>{titulo}</title></path>"
             )
-        return "\n".join(caminhos)
+
+        return f"""
+          <div class="mapa-corpo" role="img"
+               aria-label="Mapa muscular {label} da ultima sessao">
+            <svg class="mapa-anatomia-vetorial" viewBox="{vb}"
+                 preserveAspectRatio="xMidYMid meet" aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg">
+              {chr(10).join(caminhos)}
+            </svg>
+          </div>
+        """
+
+    _GRUPOS_ANTERIOR = {"Peitoral", "Deltoide anterior", "Deltoide lateral", "Biceps", "Antebraco", "Core", "Quadriceps"}
+    _GRUPOS_POSTERIOR = {"Dorsais", "Trapezio", "Deltoide posterior", "Triceps", "Gluteos", "Posteriores"}
+
+    vol_ant = sum(item["volume"] for item in mapa["grupos"] if item["grupo"] in _GRUPOS_ANTERIOR)
+    vol_pos = sum(item["volume"] for item in mapa["grupos"] if item["grupo"] in _GRUPOS_POSTERIOR)
 
     anterior = render_vista("front")
     posterior = render_vista("back")
     legenda = "\n".join(
         f"""
         <div class="mapa-legenda-item">
-          <span class="mapa-cor" style="opacity: {0.22 + item['intensidade'] * 0.73:.3f}"></span>
+          <span class="mapa-cor" style="background:{_cor_mapa_calor(item['intensidade'])};border-color:{_cor_mapa_calor(item['intensidade'])}"></span>
           <span>{html.escape(item["grupo"])}</span>
           <strong>{_fmt_numero(item["volume"])} kg</strong>
         </div>
@@ -630,29 +675,31 @@ def _render_mapa_muscular(mapa):
     <div class="mapa-muscular-layout">
       <div class="mapa-vistas">
         <figure>
-          <svg class="mapa-corpo" viewBox="0 0 35 93" role="img"
-               aria-label="Mapa muscular anterior da ultima sessao">
-            {anterior}
-          </svg>
+          {anterior}
           <figcaption>Anterior</figcaption>
         </figure>
         <figure>
-          <svg class="mapa-corpo" viewBox="37 0 35 93" role="img"
-               aria-label="Mapa muscular posterior da ultima sessao">
-            {posterior}
-          </svg>
+          {posterior}
           <figcaption>Posterior</figcaption>
         </figure>
       </div>
       <div class="mapa-legenda">
-        <p>Sessao de <strong>{data}</strong>. A opacidade e relativa ao maior
-        volume muscular desse treino.</p>
+        <p>Sessao de <strong>{data}</strong>. Azul = baixo volume, vermelho = alto volume.</p>
+        <div class="mapa-planos">
+          <div class="mapa-plano">
+            <span class="mapa-plano-label">Anterior</span>
+            <strong>{_fmt_numero(vol_ant)} kg</strong>
+          </div>
+          <div class="mapa-plano">
+            <span class="mapa-plano-label">Posterior</span>
+            <strong>{_fmt_numero(vol_pos)} kg</strong>
+          </div>
+        </div>
         {legenda or '<p class="vazio">Sem grupos musculares registrados.</p>'}
       </div>
     </div>
     <p class="mapa-fonte">
-      Anatomia vetorial adaptada de body-muscles, por Ivan Vulovic,
-      licenciada sob Apache-2.0.
+      Regioes musculares vetoriais de body-muscles, por Ivan Vulovic, Apache-2.0.
     </p>
     """
 
@@ -1272,19 +1319,26 @@ def gerar_html(dados):
       text-transform: uppercase;
     }}
     .mapa-corpo {{
-      max-height: 590px;
-      overflow: visible;
+      width: 100%;
       filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
     }}
-    .musculo {{
-      stroke: rgba(226, 232, 240, 0.34);
-      stroke-width: 0.1;
-      transition: filter 120ms ease, stroke 120ms ease;
+    .mapa-anatomia-vetorial {{
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 590px;
     }}
-    .musculo:hover {{
-      filter: brightness(1.45);
-      stroke: #fff;
-      stroke-width: 0.2;
+    .musculo {{
+      pointer-events: none;
+      stroke: #0d1117;
+      stroke-width: 0.12;
+      transition: filter 120ms ease;
+    }}
+    .musculo.com-volume {{
+      pointer-events: auto;
+    }}
+    .musculo.com-volume:hover {{
+      filter: brightness(1.6) saturate(1.3);
     }}
     .mapa-legenda {{
       display: grid;
@@ -1307,11 +1361,33 @@ def gerar_html(dados):
       font-size: 12px;
     }}
     .mapa-legenda-item strong {{ color: var(--texto); }}
+    .mapa-planos {{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }}
+    .mapa-plano {{
+      background: var(--card);
+      border: 1px solid var(--linha);
+      border-radius: 4px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }}
+    .mapa-plano-label {{
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }}
+    .mapa-plano strong {{ font-size: 15px; color: var(--texto); }}
     .mapa-cor {{
       width: 12px;
       height: 12px;
-      border: 1px solid #ef4444;
-      background: #ef4444;
+      border: 1px solid;
+      border-radius: 2px;
     }}
     .mapa-fonte {{
       color: #686868;
@@ -1348,15 +1424,15 @@ def gerar_html(dados):
     </header>
 
     <nav class="abas" aria-label="Abas do dashboard">
-      <button class="aba-botao ativa" type="button" data-aba="geral">Geral</button>
+      <button class="aba-botao" type="button" data-aba="geral">Geral</button>
       <button class="aba-botao" type="button" data-aba="exercicios">Exercicios</button>
       <button class="aba-botao" type="button" data-aba="periodos">Periodos</button>
-      <button class="aba-botao" type="button" data-aba="analises">Analises</button>
+      <button class="aba-botao ativa" type="button" data-aba="analises">Analises</button>
       <button class="aba-botao" type="button" data-aba="recordes">Recordes</button>
       <button class="aba-botao" type="button" data-aba="filtros">Filtros</button>
     </nav>
 
-    <section class="aba-conteudo ativa" data-painel-aba="geral">
+    <section class="aba-conteudo" data-painel-aba="geral">
     <section class="grade-resumo" aria-label="Resumo">
       <div class="indicador">
         <span class="rotulo">Sessoes</span>
@@ -1546,7 +1622,7 @@ def gerar_html(dados):
     </section>
     </section>
 
-    <section class="aba-conteudo" data-painel-aba="analises">
+    <section class="aba-conteudo ativa" data-painel-aba="analises">
       <article class="painel">
         <div class="linha-topo">
           <h2>Mapa muscular da ultima sessao</h2>
