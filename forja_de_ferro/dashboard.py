@@ -734,11 +734,11 @@ def _rotulos_linha(points, sessoes):
     n = len(points)
     step = 704 / max(n - 1, 1)
     if step >= 60:
-        fs_vol, fs_data = 14, 11
-    elif step >= 40:
         fs_vol, fs_data = 11, 9
-    else:
+    elif step >= 40:
         fs_vol, fs_data = 9, 8
+    else:
+        fs_vol, fs_data = 8, 7
 
     rotulos = []
     for idx, point in enumerate(points):
