@@ -177,11 +177,11 @@ Dashboard local de volume de treino.
 - `carregar_dados()` le `training_sessions` e `training_logs` no SQLite.
 - O volume de cada linha e calculado como `sets x reps x weight`.
 - Apenas logs com carga preenchida (`weight IS NOT NULL` e maior que zero) entram no dashboard.
-- O HTML mostra volume por sessao, semana, mes, exercicio e grupo muscular,
-  alem de carga, RPE, 1RM estimado, media movel, consistencia semanal,
-  comparacao recente, PRs, maiores evolucoes, abas de navegacao, filtros
-  rapidos, analises cruzadas de volume/RPE/carga, mapa muscular anterior e
-  posterior da ultima sessao e alertas.
+- O HTML exibe uma pagina unica rolavel com indicadores de resumo, grafico de
+  evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
+  carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
+  anterior, grupos musculares, volume semanal, maiores evolucoes, recordes
+  pessoais, alertas e filtros rapidos.
 - O mapa muscular usa `exercise_muscle_groups`, deixa regioes sem treino
   transparentes e aumenta a opacidade vermelha conforme o volume relativo da
   ultima sessao. Ele representa volume atribuido, nao ativacao muscular medida.

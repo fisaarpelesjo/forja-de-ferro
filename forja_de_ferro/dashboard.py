@@ -627,7 +627,7 @@ def _render_mapa_muscular(mapa):
                     f'data-volume="{item["volume"]:.1f}"'
                 )
             else:
-                preenchimento = "#252d3d"
+                preenchimento = "#1a1a1a"
                 titulo = html.escape(musculo["nome"])
                 classe = "musculo"
                 dados = ""
@@ -878,36 +878,25 @@ def gerar_html(dados):
     pontos_linha = _line_points([s["volume"] for s in sessoes])
     linha = _polyline(pontos_linha)
     rotulos_linha = _rotulos_linha(pontos_linha, sessoes)
-    barras = _barras_sessoes(sessoes)
+    consistencia = dados["consistencia"]
+    opcoes_exercicios = _opcoes_exercicios(exercicios)
+    mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
 
-    linhas_exercicios = []
-    for item in exercicios[:12]:
-        classe = "positivo" if item["variacao"] >= 0 else "negativo"
-        linhas_exercicios.append(
-            f"""
-            <tr>
-              <td>{html.escape(item["nome"])}</td>
-              <td>{_fmt_numero(item["volume_total"])} kg</td>
-              <td>{_fmt_numero(item["ultimo_volume"])} kg</td>
-              <td class="{classe}">{_fmt_delta(item["variacao"])}</td>
-            </tr>
-            """
-        )
+    var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
+    dias_desde = consistencia["dias_desde_ultimo"]
+    dias_str = str(dias_desde) if dias_desde is not None else "-"
 
-    tabela = "\n".join(linhas_exercicios) or (
-        "<tr><td colspan=\"4\">Ainda nao ha dados de treino registrados.</td></tr>"
-    )
-    tabela_cargas = _linhas_tabela(
+    tabela_exercicios = _linhas_tabela(
         exercicios[:12],
         [
             {"valor": lambda item: html.escape(item["nome"])},
             {"valor": lambda item: f"{_fmt_decimal(item['ultima_carga'])} kg"},
-            {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg"},
             {
                 "valor": lambda item: _fmt_delta(item["variacao_carga"]),
                 "classe": lambda item: _classe_delta(item["variacao_carga"]),
             },
             {"valor": lambda item: _fmt_decimal(item["rpe_medio"])},
+            {"valor": lambda item: f"{_fmt_decimal(item['pontos'][-1]['um_rm'])} kg"},
         ],
     )
     tabela_comparacao = _linhas_tabela(
@@ -944,6 +933,7 @@ def gerar_html(dados):
             {"valor": lambda item: str(item["series"])},
         ],
     )
+    tabela_semanal = _render_periodos(dados["volume_semanal"])
     tabela_prs = _linhas_tabela(
         dados["prs"][:10],
         [
@@ -972,7 +962,7 @@ def gerar_html(dados):
             },
         ],
     )
-    top_volume = _linhas_tabela(
+    top_volume_rows = _linhas_tabela(
         dados["top_evolucoes"]["volume"],
         [
             {"valor": lambda item: html.escape(item["nome"])},
@@ -992,72 +982,6 @@ def gerar_html(dados):
             },
         ],
     )
-    evolucao_exercicios = _linhas_tabela(
-        exercicios[:8],
-        [
-            {"valor": lambda item: html.escape(item["nome"])},
-            {
-                "valor": lambda item: " -> ".join(
-                    _fmt_numero(ponto["volume"]) for ponto in item["pontos"][-4:]
-                )
-            },
-            {"valor": lambda item: _fmt_delta(item["variacao"])},
-        ],
-    )
-    tabela_1rm = _linhas_tabela(
-        sorted(exercicios, key=lambda item: item["melhor_1rm"], reverse=True)[:12],
-        [
-            {"valor": lambda item: html.escape(item["nome"])},
-            {"valor": lambda item: f"{_fmt_decimal(item['melhor_1rm'])} kg"},
-            {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg"},
-            {"valor": lambda item: html.escape(item["data_melhor_1rm"])},
-        ],
-    )
-    tabela_media_movel = _linhas_tabela(
-        dados["media_movel"][-10:],
-        [
-            {"valor": lambda item: html.escape(item["data"])},
-            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
-            {"valor": lambda item: f"{_fmt_numero(item['media'])} kg"},
-            {"valor": lambda item: f"{item['janela']} sessoes"},
-        ],
-    )
-    consistencia = dados["consistencia"]
-    opcoes_exercicios = _opcoes_exercicios(exercicios)
-    analises = dados["analises"]
-    mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
-    grafico_volume_rpe = _render_dispersao_volume_rpe(analises["volume_rpe_sessao"])
-    grafico_rpe = _render_barras_simples(analises["rpe_distribuicao"], "rpe", "quantidade")
-    grafico_grupos_semana = _render_barras_simples(
-        analises["volume_grupo_semana"][-12:], "grupo", "volume", " kg"
-    )
-    tabela_carga_rpe_analise = _linhas_tabela(
-        analises["carga_rpe_exercicio"][:12],
-        [
-            {"valor": lambda item: html.escape(item["nome"])},
-            {"valor": lambda item: f"{_fmt_decimal(item['carga'])} kg"},
-            {"valor": lambda item: _fmt_decimal(item["rpe"])},
-            {"valor": lambda item: f"{_fmt_numero(item['volume'])} kg"},
-            {"valor": lambda item: f"{_fmt_decimal(item['um_rm'])} kg"},
-        ],
-    )
-    tabela_media3 = _linhas_tabela(
-        analises["ultima_vs_media3"],
-        [
-            {"valor": lambda item: html.escape(item["nome"])},
-            {"valor": lambda item: f"{_fmt_numero(item['volume_atual'])} kg"},
-            {"valor": lambda item: f"{_fmt_numero(item['media_volume'])} kg"},
-            {
-                "valor": lambda item: _fmt_delta(item["delta_volume"]),
-                "classe": lambda item: _classe_delta(item["delta_volume"]),
-            },
-            {
-                "valor": lambda item: _fmt_delta(item["delta_carga"]),
-                "classe": lambda item: _classe_delta(item["delta_carga"]),
-            },
-            {"valor": lambda item: _fmt_decimal(item["rpe"])},
-        ],
-    )
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -1068,20 +992,21 @@ def gerar_html(dados):
   <style>
     :root {{
       color-scheme: dark;
-      --fundo: #090909;
-      --texto: #e7e7e7;
-      --muted: #8d8d8d;
-      --linha: #2a2a2a;
+      --fundo: #0c0c0c;
+      --texto: #e2e2e2;
+      --muted: #555555;
+      --linha: #1e1e1e;
       --painel: #111111;
       --painel-2: #161616;
-      --verde: #62c370;
-      --azul: #d8d8d8;
-      --vermelho: #e05d5d;
+      --card: #111111;
+      --verde: #4ade80;
+      --azul: #94a3b8;
+      --vermelho: #f87171;
     }}
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Courier New', monospace;
       background: var(--fundo);
       color: var(--texto);
     }}
@@ -1099,13 +1024,14 @@ def gerar_html(dados):
       margin-bottom: 16px;
       padding-bottom: 16px;
     }}
-    h1, h2 {{ margin: 0; letter-spacing: 0; }}
-    h1 {{ font-size: 30px; line-height: 1.08; }}
-    h2 {{ font-size: 17px; }}
+    h1, h2, h3 {{ margin: 0; letter-spacing: 0; }}
+    h1 {{ font-size: 28px; line-height: 1.08; }}
+    h2 {{ font-size: 16px; }}
+    h3 {{ font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 18px 0 6px; font-weight: 600; }}
     .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
     .grade-resumo {{
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 12px;
     }}
@@ -1120,44 +1046,21 @@ def gerar_html(dados):
       color: var(--muted);
       font-size: 11px;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
       margin-bottom: 8px;
     }}
-    .valor {{ font-size: 25px; font-weight: 700; }}
-    .valor-menor {{ font-size: 19px; }}
+    .valor {{ font-size: 24px; font-weight: 700; }}
+    .valor-menor {{ font-size: 18px; }}
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
-    .layout {{
-      display: block;
-    }}
-    .duas-colunas {{
-      display: block;
-    }}
     .painel {{ padding: 16px; margin-top: 12px; }}
-    .abas {{
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--linha);
-      padding: 0 0 12px;
-      margin-bottom: 2px;
+    .duas-colunas {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
     }}
-    .aba-botao {{
-      border: 1px solid var(--linha);
-      border-radius: 2px;
-      background: transparent;
-      color: var(--texto);
-      cursor: pointer;
-      font: inherit;
-      padding: 9px 12px;
-      white-space: nowrap;
-    }}
-    .aba-botao.ativa {{
-      background: var(--texto);
-      border-color: var(--texto);
-      color: #080808;
-    }}
-    .aba-conteudo {{ display: none; }}
-    .aba-conteudo.ativa {{ display: block; }}
+    .duas-colunas > .painel {{ margin-top: 0; }}
     .filtros {{
       display: grid;
       grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -1195,7 +1098,6 @@ def gerar_html(dados):
     .eixo {{ stroke: var(--linha); stroke-width: 1; }}
     .linha-volume {{ fill: none; stroke: var(--azul); stroke-width: 3; }}
     .ponto-volume {{ fill: var(--fundo); stroke: var(--azul); stroke-width: 2; }}
-    .ponto-analise {{ fill: var(--texto); stroke: var(--fundo); stroke-width: 2; }}
     .rotulo-volume {{
       fill: var(--texto);
       font-size: 14px;
@@ -1204,46 +1106,6 @@ def gerar_html(dados):
     .rotulo-data {{
       fill: var(--muted);
       font-size: 11px;
-    }}
-    .barras {{
-      height: 238px;
-      display: grid;
-      grid-template-columns: repeat(12, minmax(18px, 1fr));
-      gap: 6px;
-      align-items: end;
-      padding-top: 12px;
-    }}
-    .barra-item {{
-      height: 100%;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: end;
-      gap: 7px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 11px;
-    }}
-    .barra-item span {{
-      display: block;
-      white-space: nowrap;
-      font-size: 10px;
-      line-height: 1;
-    }}
-    .barra-item strong {{
-      color: var(--texto);
-      display: block;
-      font-size: 12px;
-      line-height: 1.1;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      align-self: center;
-      max-height: 72px;
-    }}
-    .barra {{
-      min-height: 8px;
-      border-radius: 5px 5px 2px 2px;
-      background: var(--texto);
     }}
     .barra-horizontal {{
       display: grid;
@@ -1289,11 +1151,6 @@ def gerar_html(dados):
     .vazio {{ color: var(--muted); }}
     .lista {{ margin: 0; padding-left: 18px; color: var(--texto); }}
     .lista li {{ margin: 8px 0; }}
-    .mini-grade {{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }}
     .mapa-muscular-layout {{
       display: grid;
       grid-template-columns: minmax(420px, 1.5fr) minmax(240px, 0.5fr);
@@ -1330,15 +1187,15 @@ def gerar_html(dados):
     }}
     .musculo {{
       pointer-events: none;
-      stroke: #0d1117;
-      stroke-width: 0.12;
-      transition: filter 120ms ease;
+      stroke: #0c0c0c;
+      stroke-width: 0.15;
+      transition: filter 150ms ease;
     }}
     .musculo.com-volume {{
       pointer-events: auto;
     }}
     .musculo.com-volume:hover {{
-      filter: brightness(1.6) saturate(1.3);
+      filter: brightness(1.4);
     }}
     .mapa-legenda {{
       display: grid;
@@ -1395,11 +1252,14 @@ def gerar_html(dados):
       margin: 12px 0 0;
       text-align: right;
     }}
+    @media (max-width: 1080px) {{
+      .grade-resumo {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }}
+    }}
     @media (max-width: 860px) {{
-      header, .layout, .duas-colunas {{ display: block; }}
+      header {{ display: block; }}
       header > div:last-child {{ margin-top: 12px; }}
       .grade-resumo {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
-      .painel {{ margin-bottom: 16px; }}
+      .duas-colunas {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 28px; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
     }}
@@ -1408,7 +1268,7 @@ def gerar_html(dados):
       .grade-resumo {{ grid-template-columns: 1fr; }}
       .valor {{ font-size: 24px; }}
       th, td {{ font-size: 13px; padding: 10px 4px; }}
-      .filtros, .mini-grade {{ grid-template-columns: 1fr; }}
+      .filtros {{ grid-template-columns: 1fr; }}
       .mapa-vistas {{ gap: 10px; }}
     }}
   </style>
@@ -1423,16 +1283,6 @@ def gerar_html(dados):
       <div class="subtitulo">Ultima sessao: {html.escape(str(resumo["ultima_data"]))}</div>
     </header>
 
-    <nav class="abas" aria-label="Abas do dashboard">
-      <button class="aba-botao" type="button" data-aba="geral">Geral</button>
-      <button class="aba-botao" type="button" data-aba="exercicios">Exercicios</button>
-      <button class="aba-botao" type="button" data-aba="periodos">Periodos</button>
-      <button class="aba-botao ativa" type="button" data-aba="analises">Analises</button>
-      <button class="aba-botao" type="button" data-aba="recordes">Recordes</button>
-      <button class="aba-botao" type="button" data-aba="filtros">Filtros</button>
-    </nav>
-
-    <section class="aba-conteudo" data-painel-aba="geral">
     <section class="grade-resumo" aria-label="Resumo">
       <div class="indicador">
         <span class="rotulo">Sessoes</span>
@@ -1440,88 +1290,56 @@ def gerar_html(dados):
       </div>
       <div class="indicador">
         <span class="rotulo">Volume total</span>
-        <span class="valor">{_fmt_numero(resumo["volume_total"])} kg</span>
+        <span class="valor valor-menor">{_fmt_numero(resumo["volume_total"])} kg</span>
       </div>
       <div class="indicador">
         <span class="rotulo">Ultima sessao</span>
-        <span class="valor">{_fmt_numero(resumo["ultimo_volume"])} kg</span>
+        <span class="valor valor-menor">{_fmt_numero(resumo["ultimo_volume"])} kg</span>
       </div>
       <div class="indicador">
         <span class="rotulo">Variacao recente</span>
-        <span class="valor valor-menor {'positivo' if resumo["variacao_ultima"] >= 0 else 'negativo'}">{_fmt_delta(resumo["variacao_ultima"])}</span>
-      </div>
-      <div class="indicador">
-        <span class="rotulo">Series totais</span>
-        <span class="valor">{resumo["series_total"]}</span>
-      </div>
-      <div class="indicador">
-        <span class="rotulo">Repeticoes totais</span>
-        <span class="valor">{resumo["repeticoes_total"]}</span>
-      </div>
-      <div class="indicador">
-        <span class="rotulo">Media por exercicio</span>
-        <span class="valor valor-menor">{_fmt_numero(resumo["volume_medio_exercicio"])} kg</span>
+        <span class="valor valor-menor {var_classe}">{_fmt_delta(resumo["variacao_ultima"])}</span>
       </div>
       <div class="indicador">
         <span class="rotulo">RPE medio</span>
         <span class="valor">{_fmt_decimal(resumo["rpe_medio"])}</span>
       </div>
-    </section>
-
-    <section class="layout">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume por sessao</h2>
-          <span>{len(sessoes)} sessoes registradas</span>
-        </div>
-        <svg viewBox="0 0 760 300" role="img" aria-label="Linha de evolucao do volume por sessao">
-          <line class="eixo" x1="28" y1="232" x2="732" y2="232"></line>
-          <line class="eixo" x1="28" y1="28" x2="28" y2="232"></line>
-          <polyline class="linha-volume" points="{linha}"></polyline>
-          {rotulos_linha}
-        </svg>
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Ultimas sessoes</h2>
-          <span>ate 12 treinos</span>
-        </div>
-        <div class="barras">{barras}</div>
-      </article>
-    </section>
-
-    <section class="painel" style="margin-top: 16px;">
-      <div class="linha-topo">
-        <h2>Exercicios por volume acumulado</h2>
-        <span>top 12</span>
+      <div class="indicador">
+        <span class="rotulo">Dias desde ultimo</span>
+        <span class="valor">{dias_str}</span>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Exercicio</th>
-            <th>Total</th>
-            <th>Ultimo</th>
-            <th>Variacao</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tabela}
-        </tbody>
-      </table>
-    </section>
     </section>
 
-    <section class="aba-conteudo" data-painel-aba="exercicios">
+    <article class="painel">
+      <div class="linha-topo">
+        <h2>Volume por sessao</h2>
+        <span>{len(sessoes)} sessoes registradas</span>
+      </div>
+      <svg viewBox="0 0 760 300" role="img" aria-label="Linha de evolucao do volume por sessao">
+        <line class="eixo" x1="28" y1="232" x2="732" y2="232"></line>
+        <line class="eixo" x1="28" y1="28" x2="28" y2="232"></line>
+        <polyline class="linha-volume" points="{linha}"></polyline>
+        {rotulos_linha}
+      </svg>
+    </article>
+
+    <article class="painel">
+      <div class="linha-topo">
+        <h2>Mapa muscular da ultima sessao</h2>
+        <span>volume atribuido por grupo</span>
+      </div>
+      {mapa_muscular}
+    </article>
+
     <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
-          <h2>Carga e RPE por exercicio</h2>
+          <h2>Carga, RPE e 1RM</h2>
           <span>top 12</span>
         </div>
         <table>
-          <thead><tr><th>Exercicio</th><th>Ultima</th><th>Melhor</th><th>Variacao</th><th>RPE</th></tr></thead>
-          <tbody>{tabela_cargas}</tbody>
+          <thead><tr><th>Exercicio</th><th>Ultima</th><th>Variacao</th><th>RPE</th><th>1RM est.</th></tr></thead>
+          <tbody>{tabela_exercicios}</tbody>
         </table>
       </article>
       <article class="painel">
@@ -1539,53 +1357,6 @@ def gerar_html(dados):
     <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
-          <h2>1RM estimado</h2>
-          <span>formula de Epley</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>1RM est.</th><th>Melhor carga</th><th>Data</th></tr></thead>
-          <tbody>{tabela_1rm}</tbody>
-        </table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Media movel de volume</h2>
-          <span>janela de 3 sessoes</span>
-        </div>
-        <table>
-          <thead><tr><th>Data</th><th>Volume</th><th>Media</th><th>Janela</th></tr></thead>
-          <tbody>{tabela_media_movel}</tbody>
-        </table>
-      </article>
-    </section>
-
-    <section class="duas-colunas">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Consistencia</h2>
-          <span>semanas com treino</span>
-        </div>
-        <div class="mini-grade">
-          <div class="indicador"><span class="rotulo">Semanas ativas</span><span class="valor">{consistencia["semanas_com_treino"]}</span></div>
-          <div class="indicador"><span class="rotulo">Melhor sequencia</span><span class="valor">{consistencia["melhor_sequencia"]}</span></div>
-          <div class="indicador"><span class="rotulo">Sequencia atual</span><span class="valor">{consistencia["sequencia_atual"]}</span></div>
-          <div class="indicador"><span class="rotulo">Dias desde ultimo</span><span class="valor">{consistencia["dias_desde_ultimo"] if consistencia["dias_desde_ultimo"] is not None else "-"}</span></div>
-        </div>
-      </article>
-    </section>
-    <section class="duas-colunas">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Evolucao por exercicio</h2>
-          <span>ultimos 4 volumes</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>Sequencia</th><th>Variacao</th></tr></thead>
-          <tbody>{evolucao_exercicios}</tbody>
-        </table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
           <h2>Grupos musculares</h2>
           <span>volume e series</span>
         </div>
@@ -1594,11 +1365,6 @@ def gerar_html(dados):
           <tbody>{tabela_grupos}</tbody>
         </table>
       </article>
-    </section>
-    </section>
-
-    <section class="aba-conteudo" data-painel-aba="periodos">
-    <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
           <h2>Volume semanal</h2>
@@ -1606,79 +1372,11 @@ def gerar_html(dados):
         </div>
         <table>
           <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
-          <tbody>{_render_periodos(dados["volume_semanal"])}</tbody>
-        </table>
-      </article>
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume mensal</h2>
-          <span>ultimos 8 meses</span>
-        </div>
-        <table>
-          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
-          <tbody>{_render_periodos(dados["volume_mensal"])}</tbody>
-        </table>
-      </article>
-    </section>
-    </section>
-
-    <section class="aba-conteudo ativa" data-painel-aba="analises">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Mapa muscular da ultima sessao</h2>
-          <span>volume atribuido por grupo</span>
-        </div>
-        {mapa_muscular}
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume x RPE medio</h2>
-          <span>por sessao</span>
-        </div>
-        {grafico_volume_rpe}
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Carga x RPE por exercicio</h2>
-          <span>ultimo registro</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>Carga</th><th>RPE</th><th>Volume</th><th>1RM</th></tr></thead>
-          <tbody>{tabela_carga_rpe_analise}</tbody>
-        </table>
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Volume semanal por grupo</h2>
-          <span>ultimos grupos registrados</span>
-        </div>
-        {grafico_grupos_semana}
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Distribuicao de RPE</h2>
-          <span>todos os registros</span>
-        </div>
-        {grafico_rpe}
-      </article>
-
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Ultima sessao vs media das 3 anteriores</h2>
-          <span>por exercicio</span>
-        </div>
-        <table>
-          <thead><tr><th>Exercicio</th><th>Volume atual</th><th>Media 3</th><th>Delta volume</th><th>Delta carga</th><th>RPE</th></tr></thead>
-          <tbody>{tabela_media3}</tbody>
+          <tbody>{tabela_semanal}</tbody>
         </table>
       </article>
     </section>
 
-    <section class="aba-conteudo" data-painel-aba="recordes">
     <section class="duas-colunas">
       <article class="painel">
         <div class="linha-topo">
@@ -1688,7 +1386,7 @@ def gerar_html(dados):
         <h3>Carga</h3>
         <table><tbody>{top_carga}</tbody></table>
         <h3>Volume</h3>
-        <table><tbody>{top_volume}</tbody></table>
+        <table><tbody>{top_volume_rows}</tbody></table>
         <h3>Quedas</h3>
         <table><tbody>{quedas}</tbody></table>
       </article>
@@ -1704,49 +1402,46 @@ def gerar_html(dados):
       </article>
     </section>
 
-    <section class="painel" style="margin-top: 16px;">
+    <article class="painel">
       <div class="linha-topo">
         <h2>Alertas</h2>
         <span>regras simples</span>
       </div>
       {_render_lista_simples(dados["alertas"])}
-    </section>
-    </section>
+    </article>
 
-    <section class="aba-conteudo" data-painel-aba="filtros">
-      <article class="painel">
-        <div class="linha-topo">
-          <h2>Filtros rapidos</h2>
-          <span>periodo e exercicio</span>
-        </div>
-        <div class="filtros">
-          <label>Periodo
-            <select id="filtro-periodo">
-              <option value="todos">Tudo</option>
-              <option value="7">7 dias</option>
-              <option value="30">30 dias</option>
-              <option value="90">90 dias</option>
-            </select>
-          </label>
-          <label>Exercicio
-            <select id="filtro-exercicio">
-              {opcoes_exercicios}
-            </select>
-          </label>
-          <label>Ordenar
-            <select id="filtro-ordem">
-              <option value="data">Data</option>
-              <option value="volume">Volume</option>
-              <option value="carga">Carga</option>
-            </select>
-          </label>
-        </div>
-        <table>
-          <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
-          <tbody id="tabela-filtrada"></tbody>
-        </table>
-      </article>
-    </section>
+    <article class="painel">
+      <div class="linha-topo">
+        <h2>Filtros rapidos</h2>
+        <span>periodo e exercicio</span>
+      </div>
+      <div class="filtros">
+        <label>Periodo
+          <select id="filtro-periodo">
+            <option value="todos">Tudo</option>
+            <option value="7">7 dias</option>
+            <option value="30">30 dias</option>
+            <option value="90">90 dias</option>
+          </select>
+        </label>
+        <label>Exercicio
+          <select id="filtro-exercicio">
+            {opcoes_exercicios}
+          </select>
+        </label>
+        <label>Ordenar
+          <select id="filtro-ordem">
+            <option value="data">Data</option>
+            <option value="volume">Volume</option>
+            <option value="carga">Carga</option>
+          </select>
+        </label>
+      </div>
+      <table>
+        <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
+        <tbody id="tabela-filtrada"></tbody>
+      </table>
+    </article>
   </main>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>
   <script>
@@ -1760,18 +1455,6 @@ def gerar_html(dados):
     const filtroExercicio = document.getElementById("filtro-exercicio");
     const filtroOrdem = document.getElementById("filtro-ordem");
     const tabelaFiltrada = document.getElementById("tabela-filtrada");
-    const botoesAbas = document.querySelectorAll(".aba-botao");
-    const paineisAbas = document.querySelectorAll(".aba-conteudo");
-
-    botoesAbas.forEach((botao) => {{
-      botao.addEventListener("click", () => {{
-        const aba = botao.dataset.aba;
-        botoesAbas.forEach((item) => item.classList.toggle("ativa", item === botao));
-        paineisAbas.forEach((painel) =>
-          painel.classList.toggle("ativa", painel.dataset.painelAba === aba)
-        );
-      }});
-    }});
 
     function renderFiltrada() {{
       const dias = filtroPeriodo.value;

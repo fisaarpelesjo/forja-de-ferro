@@ -128,23 +128,17 @@ ultima sessao, volume e RPE medio geral. O arquivo permanece local e nenhum
 caminho do computador e enviado.
 
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
-para navegar por abas em um layout escuro, cru e compacto, e ver:
+para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
-- volume por sessao, semana e mes
-- evolucao por exercicio
-- carga atual, melhor carga, variacao e RPE medio
-- series, repeticoes e media de volume por exercicio
+- 6 indicadores de resumo: sessoes, volume total, ultima sessao, variacao, RPE medio e dias desde o ultimo treino
+- grafico de evolucao do volume por sessao
+- mapa muscular anterior e posterior da ultima sessao com gradiente azul-amarelo-vermelho proporcional ao volume
+- carga, RPE e 1RM estimado (Epley) por exercicio
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
-- mapa muscular anterior e posterior da ultima sessao, com opacidade proporcional
-  ao volume atribuido a cada grupo
-- maiores evolucoes, quedas, recordes pessoais e alertas simples
-- sinais de consolidacao quando o RPE cai com a mesma carga, sem classificar
-  RPE 9 repetido como estagnacao
-- 1RM estimado por exercicio usando a formula de Epley
-- media movel de volume em janela de 3 sessoes
-- consistencia semanal e dias desde o ultimo treino
-- analises cruzadas de volume x RPE, carga x RPE, RPE por faixa, grupos por semana e ultima sessao vs media das 3 anteriores
+- volume semanal
+- maiores evolucoes de carga e volume, quedas e recordes pessoais
+- alertas simples com sinais de consolidacao
 - filtros rapidos por periodo, exercicio e ordenacao
 
 O mapa muscular renderiza os paths vetoriais de

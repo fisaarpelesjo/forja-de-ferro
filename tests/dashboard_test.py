@@ -122,25 +122,19 @@ def main():
             html = caminho.read_text(encoding="utf-8")
             assert "Dashboard de treino" in html
             assert "Volume por sessao" in html
-            assert "Carga e RPE por exercicio" in html
+            assert "Carga, RPE e 1RM" in html
             assert "Ultima vs anterior" in html
             assert "Recordes pessoais" in html
             assert "Alertas" in html
-            assert "1RM estimado" in html
-            assert "Media movel de volume" in html
-            assert "Consistencia" in html
             assert "Filtros rapidos" in html
-            assert "data-aba=\"geral\"" in html
-            assert "data-painel-aba=\"filtros\"" in html
-            assert "data-aba=\"analises\"" in html
-            assert "Volume x RPE medio" in html
-            assert "Distribuicao de RPE" in html
+            assert "Maiores evolucoes" in html
+            assert "Grupos musculares" in html
+            assert "Volume semanal" in html
             assert "Mapa muscular da ultima sessao" in html
             assert "Mapa muscular anterior da ultima sessao" in html
             assert "Mapa muscular posterior da ultima sessao" in html
             assert 'data-grupo="Dorsais"' in html
             assert "body-muscles" in html
-            assert "Termininja" in html
             assert "mapa-anatomia-vetorial" in html
             assert "musculo com-volume" in html
             assert "data:image/" not in html

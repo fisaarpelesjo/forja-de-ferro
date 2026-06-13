@@ -159,12 +159,11 @@ volume de treino de cada linha assim:
 volume = sets x reps x weight
 ```
 
-`python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana,
-mes e grupo muscular. O HTML tambem mostra carga, RPE, series, repeticoes,
-comparacao da ultima sessao com a anterior, recordes pessoais, maiores evolucoes,
-1RM estimado, media movel, consistencia semanal, abas de navegacao, filtros
-rapidos, analises cruzadas de volume/RPE/carga, mapa muscular da ultima sessao e
-alertas simples.
+`python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana
+e grupo muscular. O HTML exibe uma pagina unica rolavel com indicadores de resumo,
+grafico de evolucao, mapa muscular, carga e RPE e 1RM estimado por exercicio,
+comparacao da ultima sessao com a anterior, grupos musculares, volume semanal,
+maiores evolucoes, recordes pessoais, alertas simples e filtros rapidos.
 
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
 dos exercicios da ultima sessao para cada grupo associado. A opacidade vermelha
