@@ -140,6 +140,11 @@ def main():
             assert "Mapa muscular posterior da ultima sessao" in html
             assert 'data-grupo="Dorsais"' in html
             assert "body-muscles" in html
+            assert "Termininja" in html
+            assert "mapa-anatomia-vetorial" in html
+            assert "musculo com-volume" in html
+            assert "data:image/" not in html
+            assert "<image" not in html
             assert "Supino reto (barra)" in html
             assert "2.460 kg" in html
 
