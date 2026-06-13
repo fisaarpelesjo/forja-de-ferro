@@ -121,7 +121,9 @@ Catalogo atual:
 - `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Primeiro exercicio ativo: `Agachamento Zercher` (`3x5`).
-- Decimo exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
+- Segundo exercicio ativo: `Agachamento sumô com barra à frente` (`3x10`),
+  com foco principal nos adutores.
+- Decimo primeiro exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
 - Substitui o agachamento com barra para sessoes futuras por falta de rack adequado.
 - Logs historicos podem permanecer com nomes antigos.
 
@@ -184,7 +186,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 4`.
+- Versao atual do esquema: `SCHEMA_VERSION = 5`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume

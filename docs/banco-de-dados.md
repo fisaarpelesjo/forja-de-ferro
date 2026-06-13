@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 4`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 5`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -25,7 +25,8 @@ uma linha por versao aplicada, com data e hora.
 
 A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localizar
 logs pendentes por sessao e historico por exercicio. A versao 3 cria
-`exercise_muscle_groups`. A versao 4 cria planos de treino. As migracoes usam
+`exercise_muscle_groups`. A versao 4 cria planos de treino e a versao 5 inclui
+o agachamento sumô com barra à frente no catalogo e no plano ativo. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -204,9 +205,10 @@ reps       5
 Ele substituiu o agachamento com barra para sessoes futuras por falta de rack.
 Historico antigo deve permanecer como historico salvo no SQLite.
 
-O decimo exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo
-`Rosca direta` para sessoes futuras. Historico antigo de `Rosca direta`
-permanece como historico salvo no SQLite.
+O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
+com foco principal nos adutores. O decimo primeiro e `Rosca martelo (barra H)`
+(`3x8`), substituindo `Rosca direta` para sessoes futuras. Historico antigo de
+`Rosca direta` permanece como historico salvo no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 

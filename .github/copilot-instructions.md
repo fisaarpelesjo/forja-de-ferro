@@ -150,13 +150,15 @@ Regras importantes:
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
+- O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
+  com foco principal nos adutores.
 
 ### `forja_de_ferro/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 4`.
+- Versao atual do esquema: `SCHEMA_VERSION = 5`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -236,16 +238,17 @@ Fonte unica: tabela `exercises` em `data/forja_de_ferro.db`.
 Ordem ativa atual:
 
 1. Agachamento Zercher - 3x5
-2. Supino reto (barra) - 3x5
-3. Supino reto back-off - 2x8
-4. Remada curvada (barra) - 3x8
-5. Desenvolvimento (barra em pe) - 3x5
-6. Levantamento Terra Romeno - 3x8
-7. Pullover (barra) - 3x10
-8. Remada alta (barra) - 3x10
-9. Remada curvada alta no peito (barra) - 3x10
-10. Rosca martelo (barra H) - 3x8
-11. Triceps testa - 3x8
+2. Agachamento sumô com barra à frente - 3x10
+3. Supino reto (barra) - 3x5
+4. Supino reto back-off - 2x8
+5. Remada curvada (barra) - 3x8
+6. Desenvolvimento (barra em pe) - 3x5
+7. Levantamento Terra Romeno - 3x8
+8. Pullover (barra) - 3x10
+9. Remada alta (barra) - 3x10
+10. Remada curvada alta no peito (barra) - 3x10
+11. Rosca martelo (barra H) - 3x8
+12. Triceps testa - 3x8
 
 ## Documentacao
 

@@ -98,10 +98,13 @@ pendentes. Uma sessao completa nao e recuperada como ativa.
 
 ```text
 Agachamento Zercher - 3x5
+Agachamento sumô com barra à frente - 3x10
 ```
 
-Esse exercicio substitui o agachamento com barra para sessoes futuras porque o
-setup atual nao tem rack adequado. Historico antigo permanece como historico.
+O Zercher substitui o agachamento com barra para sessoes futuras porque o setup
+atual nao tem rack adequado. O agachamento sumô com barra à frente complementa
+o treino com foco principal nos adutores. Historico antigo permanece como
+historico.
 
 ## Idioma
 

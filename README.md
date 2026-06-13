@@ -271,6 +271,7 @@ O catalogo ativo comeca com:
 
 ```text
 Agachamento Zercher    3x5
+Agachamento sumô com barra à frente 3x10
 Supino reto back-off   2x8
 Rosca martelo (barra H) 3x8
 ```

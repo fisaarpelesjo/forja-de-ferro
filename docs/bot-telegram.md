@@ -104,6 +104,8 @@ handle_generate()
 ```
 
 O primeiro exercicio gerado atualmente e `Agachamento Zercher` (`3x5`).
+O segundo e `Agachamento sumô com barra à frente` (`3x10`), com foco principal
+nos adutores.
 
 O texto enviado lista cada exercicio com series, repeticoes, carga alvo e
 descanso sugerido. Quando existe carga anterior para o exercicio, o alvo e

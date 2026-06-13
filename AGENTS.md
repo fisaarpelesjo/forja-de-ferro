@@ -149,7 +149,9 @@ Regras importantes:
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao deve mostrar carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
-- O decimo exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
+- O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
+  com foco principal nos adutores.
+- O decimo primeiro exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
 - Logs historicos de `Agachamento (barra)` ou `Zercher squat` podem permanecer como historico.
 
 ### `forja_de_ferro/db_ops.py`
@@ -157,7 +159,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 4`.
+- Versao atual do esquema: `SCHEMA_VERSION = 5`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
