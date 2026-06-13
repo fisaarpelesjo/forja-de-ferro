@@ -732,32 +732,27 @@ def _rotulos_linha(points, sessoes):
     if not points:
         return ""
     n = len(points)
-    max_labels = 10
-    if n <= max_labels:
-        com_rotulo = set(range(n))
+    step = 704 / max(n - 1, 1)
+    if step >= 60:
+        fs_vol, fs_data = 14, 11
+    elif step >= 40:
+        fs_vol, fs_data = 11, 9
     else:
-        step = (n - 1) / (max_labels - 1)
-        com_rotulo = {round(i * step) for i in range(max_labels)}
-        com_rotulo.add(0)
-        com_rotulo.add(n - 1)
+        fs_vol, fs_data = 9, 8
 
     rotulos = []
     for idx, point in enumerate(points):
-        circulo = f'<circle class="ponto-volume" cx="{point["x"]:.1f}" cy="{point["y"]:.1f}" r="4"></circle>'
-        if idx not in com_rotulo:
-            rotulos.append(circulo)
-            continue
-        label = _fmt_numero(point["valor"])
         x = point["x"]
         if idx == 0:
             x = max(x, 36)
         elif idx == n - 1:
             x = min(x, 724)
+        label = _fmt_numero(point["valor"])
         data = sessoes[idx]["data"][5:] if idx < len(sessoes) else ""
         rotulos.append(
-            f'{circulo}\n'
-            f'<text class="rotulo-volume" x="{x:.1f}" y="264" text-anchor="middle">{label}</text>\n'
-            f'<text class="rotulo-data" x="{x:.1f}" y="284" text-anchor="middle">{html.escape(data)}</text>'
+            f'<circle class="ponto-volume" cx="{point["x"]:.1f}" cy="{point["y"]:.1f}" r="4"></circle>\n'
+            f'<text class="rotulo-volume" x="{x:.1f}" y="264" text-anchor="middle" style="font-size:{fs_vol}px">{label}</text>\n'
+            f'<text class="rotulo-data" x="{x:.1f}" y="284" text-anchor="middle" style="font-size:{fs_data}px">{html.escape(data)}</text>'
         )
     return "\n".join(rotulos)
 
