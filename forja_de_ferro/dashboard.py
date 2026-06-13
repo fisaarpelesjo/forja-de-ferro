@@ -729,22 +729,35 @@ def _polyline(points):
 
 
 def _rotulos_linha(points, sessoes):
+    if not points:
+        return ""
+    n = len(points)
+    max_labels = 10
+    if n <= max_labels:
+        com_rotulo = set(range(n))
+    else:
+        step = (n - 1) / (max_labels - 1)
+        com_rotulo = {round(i * step) for i in range(max_labels)}
+        com_rotulo.add(0)
+        com_rotulo.add(n - 1)
+
     rotulos = []
     for idx, point in enumerate(points):
+        circulo = f'<circle class="ponto-volume" cx="{point["x"]:.1f}" cy="{point["y"]:.1f}" r="4"></circle>'
+        if idx not in com_rotulo:
+            rotulos.append(circulo)
+            continue
         label = _fmt_numero(point["valor"])
         x = point["x"]
         if idx == 0:
-            x = max(point["x"], 36)
-        elif idx == len(points) - 1:
-            x = min(point["x"], 724)
-        anchor = "middle"
+            x = max(x, 36)
+        elif idx == n - 1:
+            x = min(x, 724)
         data = sessoes[idx]["data"][5:] if idx < len(sessoes) else ""
         rotulos.append(
-            f"""
-            <circle class="ponto-volume" cx="{point['x']:.1f}" cy="{point['y']:.1f}" r="4"></circle>
-            <text class="rotulo-volume" x="{x:.1f}" y="264" text-anchor="{anchor}">{label}</text>
-            <text class="rotulo-data" x="{x:.1f}" y="284" text-anchor="{anchor}">{html.escape(data)}</text>
-            """
+            f'{circulo}\n'
+            f'<text class="rotulo-volume" x="{x:.1f}" y="264" text-anchor="middle">{label}</text>\n'
+            f'<text class="rotulo-data" x="{x:.1f}" y="284" text-anchor="middle">{html.escape(data)}</text>'
         )
     return "\n".join(rotulos)
 
