@@ -185,9 +185,10 @@ Dashboard local de volume de treino.
 - O mapa muscular usa `exercise_muscle_groups`, deixa regioes sem treino
   transparentes e aumenta a opacidade vermelha conforme o volume relativo da
   ultima sessao. Ele representa volume atribuido, nao ativacao muscular medida.
-- A geometria anatomica local vem de `body-muscles` (Apache-2.0), armazenada em
-  `forja_de_ferro/assets/mapa_muscular_body_muscles.json`; preservar a
-  atribuicao e `docs/licencas/body-muscles-APACHE-2.0.txt`.
+- As regioes musculares sao renderizadas diretamente dos paths vetoriais de
+  `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
+  Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
+  Manter os ativos e os textos das licencas em `docs/licencas/`.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
   e reducao de carga apos RPE 10 aparecem como sinais de acompanhamento.

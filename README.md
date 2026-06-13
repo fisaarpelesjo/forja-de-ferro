@@ -147,10 +147,11 @@ para navegar por abas em um layout escuro, cru e compacto, e ver:
 - analises cruzadas de volume x RPE, carga x RPE, RPE por faixa, grupos por semana e ultima sessao vs media das 3 anteriores
 - filtros rapidos por periodo, exercicio e ordenacao
 
-O mapa anatomico usa vetores adaptados da biblioteca
+O mapa muscular renderiza os paths vetoriais de
 [`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,
-sob licenca Apache-2.0. A copia da licenca fica em
-`docs/licencas/body-muscles-APACHE-2.0.txt`.
+sob Apache-2.0, numa SVG unica por vista. Os SVGs anatomicos de Termininja
+(CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`. A atribuicao e
+as licencas ficam em `docs/licencas/`.
 
 ## Extrair Frames De Video
 

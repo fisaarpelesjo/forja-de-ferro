@@ -171,10 +171,11 @@ dos exercicios da ultima sessao para cada grupo associado. A opacidade vermelha
 e normalizada pelo grupo de maior volume daquele treino; uma regiao sem volume
 fica transparente. O desenho representa volume atribuido pelo catalogo, nao
 ativacao muscular medida, recrutamento por EMG ou estimativa de hipertrofia.
-Os vetores anatomicos foram adaptados da biblioteca `body-muscles`, de Ivan
-Vulovic, sob licenca Apache-2.0. A geometria local fica em
-`forja_de_ferro/assets/mapa_muscular_body_muscles.json` e a licenca em
-`docs/licencas/body-muscles-APACHE-2.0.txt`.
+As regioes musculares sao renderizadas diretamente dos paths vetoriais de
+`body-muscles`, de Ivan Vulovic, sob Apache-2.0, numa SVG unica por vista.
+Os SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em
+`forja_de_ferro/assets/`. Os ativos e os textos das licencas ficam em
+`docs/licencas/`.
 
 Os alertas consideram RPE 9 uma fase valida de consolidacao. O dashboard destaca
 queda de RPE com a mesma carga como evolucao, acompanha RPE 10 persistente e
