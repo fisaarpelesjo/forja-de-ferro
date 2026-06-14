@@ -140,6 +140,8 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 - maiores evolucoes de carga e volume, quedas e recordes pessoais
 - alertas simples com sinais de consolidacao
 - filtros rapidos por periodo, exercicio e ordenacao
+- dieta atual no final da pagina, com alimentos repetidos consolidados
+- totais de calorias e macros comparados com as metas diarias
 
 O mapa muscular renderiza os paths vetoriais de
 [`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,

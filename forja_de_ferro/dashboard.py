@@ -249,6 +249,32 @@ def carregar_dados():
         "media_movel": _calcular_media_movel(volume_por_sessao),
         "consistencia": _calcular_consistencia(volume_por_sessao),
         "analises": _calcular_analises(volume_por_sessao, volume_por_exercicio),
+        "dieta": _carregar_dieta(),
+    }
+
+
+def _carregar_dieta():
+    entradas = db_ops.list_diet_entries()
+    totais_e_metas = db_ops.get_diet_totals()
+    itens = {}
+
+    for entrada in entradas:
+        chave = entrada["name"]
+        if chave not in itens:
+            itens[chave] = dict(entrada)
+            continue
+
+        item = itens[chave]
+        item["quantity"] += entrada["quantity"]
+        for nutriente in db_ops._NUTRIENT_COLS:
+            item[nutriente] = float(item[nutriente] or 0) + float(
+                entrada[nutriente] or 0
+            )
+
+    return {
+        "itens": list(itens.values()),
+        "totais": totais_e_metas["totals"],
+        "metas": totais_e_metas["targets"],
     }
 
 
@@ -574,6 +600,23 @@ def _fmt_decimal(valor, casas=1):
     return f"{valor:.{casas}f}".replace(".", ",")
 
 
+def _fmt_quantidade(quantidade, unidade):
+    valor = _fmt_decimal(quantidade, 0 if float(quantidade).is_integer() else 1)
+    if unidade == "g":
+        return f"{valor} g"
+    if quantidade == 1:
+        return f"{valor} {html.escape(unidade)}"
+    plurais = {
+        "unidade": "unidades",
+        "copo": "copos",
+        "capsula": "capsulas",
+        "cápsula": "capsulas",
+        "colher": "colheres",
+        "porção": "porcoes",
+    }
+    return f"{valor} {html.escape(plurais.get(unidade, unidade))}"
+
+
 def _json(data):
     return html.escape(json.dumps(data, ensure_ascii=False), quote=False)
 
@@ -821,6 +864,81 @@ def _render_lista_simples(itens):
     ) + "</ul>"
 
 
+def _render_resumo_dieta(dieta):
+    totais = dieta["totais"]
+    metas = dieta["metas"] or {}
+    nutrientes = (
+        ("Calorias", "calories", "kcal", 0),
+        ("Proteina", "protein_g", "g", 1),
+        ("Carboidrato", "carbo_g", "g", 1),
+        ("Gordura", "fat_g", "g", 1),
+    )
+    cards = []
+    for rotulo, chave, unidade, casas in nutrientes:
+        total = float(totais.get(chave) or 0)
+        meta = metas.get(chave)
+        percentual = (total / meta * 100) if meta else None
+        progresso = min(percentual or 0, 100)
+        formatar = _fmt_numero if casas == 0 else lambda valor: _fmt_decimal(valor, casas)
+        comparacao = (
+            f"{formatar(total)} / {formatar(meta)} {unidade}"
+            if meta
+            else f"{formatar(total)} {unidade}"
+        )
+        cards.append(
+            f"""
+            <div class="dieta-indicador">
+              <span class="rotulo">{rotulo}</span>
+              <strong>{comparacao}</strong>
+              <div class="dieta-progresso" aria-label="{rotulo}: {_fmt_decimal(percentual)}%">
+                <i style="width: {progresso:.1f}%"></i>
+              </div>
+              <small>{_fmt_decimal(percentual)}% da meta</small>
+            </div>
+            """
+        )
+    return "\n".join(cards)
+
+
+def _render_itens_dieta(dieta):
+    if not dieta["itens"]:
+        return '<p class="vazio">Nenhum alimento cadastrado na dieta atual.</p>'
+
+    itens = "".join(
+        f"""
+        <tr>
+          <td>{html.escape(item["name"])}</td>
+          <td>{_fmt_quantidade(item["quantity"], item["unit"])}</td>
+          <td>{_fmt_decimal(item["protein_g"])} g</td>
+          <td>{_fmt_decimal(item["carbo_g"])} g</td>
+          <td>{_fmt_decimal(item["fat_g"])} g</td>
+          <td>{_fmt_decimal(item["calories"], 0)} kcal</td>
+        </tr>
+        """
+        for item in dieta["itens"]
+    )
+    totais = dieta["totais"]
+    return f"""
+    <div class="tabela-rolavel">
+      <table>
+        <thead>
+          <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th></tr>
+        </thead>
+        <tbody>{itens}</tbody>
+        <tfoot>
+          <tr>
+            <th>Total</th><th></th>
+            <th>{_fmt_decimal(totais["protein_g"])} g</th>
+            <th>{_fmt_decimal(totais["carbo_g"])} g</th>
+            <th>{_fmt_decimal(totais["fat_g"])} g</th>
+            <th>{_fmt_decimal(totais["calories"], 0)} kcal</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    """
+
+
 def _opcoes_exercicios(exercicios):
     opcoes = ['<option value="">Todos</option>']
     for item in sorted(exercicios, key=lambda ex: ex["nome"]):
@@ -890,6 +1008,8 @@ def gerar_html(dados):
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
     mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
+    resumo_dieta = _render_resumo_dieta(dados["dieta"])
+    itens_dieta = _render_itens_dieta(dados["dieta"])
 
     var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
     dias_desde = consistencia["dias_desde_ultimo"]
@@ -1063,6 +1183,32 @@ def gerar_html(dados):
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
     .painel {{ padding: 16px; margin-top: 12px; }}
+    .grade-dieta {{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }}
+    .dieta-indicador {{
+      background: var(--painel-2);
+      border: 1px solid var(--linha);
+      padding: 12px;
+    }}
+    .dieta-indicador strong {{ display: block; font-size: 16px; }}
+    .dieta-indicador small {{ color: var(--muted); font-size: 11px; }}
+    .dieta-progresso {{
+      height: 6px;
+      background: var(--fundo);
+      border: 1px solid var(--linha);
+      margin: 10px 0 6px;
+    }}
+    .dieta-progresso i {{
+      display: block;
+      height: 100%;
+      background: var(--verde);
+    }}
+    .tabela-rolavel {{ overflow-x: auto; }}
+    tfoot th {{ color: var(--texto); }}
     .duas-colunas {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1271,6 +1417,7 @@ def gerar_html(dados):
       .duas-colunas {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 28px; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
+      .grade-dieta {{ grid-template-columns: 1fr; }}
     }}
     @media (max-width: 560px) {{
       main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }}
@@ -1450,6 +1597,17 @@ def gerar_html(dados):
         <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
         <tbody id="tabela-filtrada"></tbody>
       </table>
+    </article>
+
+    <article class="painel">
+      <div class="linha-topo">
+        <h2>Dieta atual</h2>
+        <span>alimentos e metas diarias</span>
+      </div>
+      <div class="grade-dieta">
+        {resumo_dieta}
+      </div>
+      {itens_dieta}
     </article>
   </main>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>

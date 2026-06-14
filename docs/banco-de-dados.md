@@ -164,7 +164,13 @@ volume = sets x reps x weight
 e grupo muscular. O HTML exibe uma pagina unica rolavel com indicadores de resumo,
 grafico de evolucao, mapa muscular, carga e RPE e 1RM estimado por exercicio,
 comparacao da ultima sessao com a anterior, grupos musculares, volume semanal,
-maiores evolucoes, recordes pessoais, alertas simples e filtros rapidos.
+maiores evolucoes, recordes pessoais, alertas simples, filtros rapidos e a
+dieta atual no final da pagina.
+
+A secao de dieta usa `diet_entries`, `foods` e `diet_targets`. Uma tabela unica
+consolida alimentos repetidos, somando quantidades, calorias e macros; o resumo
+compara os totais diarios de calorias, proteina, carboidrato e gordura com as
+metas cadastradas.
 
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
 dos exercicios da ultima sessao para cada grupo associado. A opacidade vermelha

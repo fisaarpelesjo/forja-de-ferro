@@ -34,6 +34,33 @@ def main():
             telegram_poller.send = sent_messages.append
             db_ops.init_db()
 
+            leite_id = db_ops.upsert_food(
+                "Leite semidesnatado",
+                "copo",
+                250,
+                protein_g=8,
+                carbo_g=12,
+                fat_g=3,
+                calories=105,
+            )
+            frango_id = db_ops.upsert_food(
+                "Peito de frango",
+                "g",
+                100,
+                protein_g=23,
+                fat_g=1,
+                calories=101,
+            )
+            db_ops.add_diet_entry("Cafe", leite_id, 1, 1)
+            db_ops.add_diet_entry("Almoco", frango_id, 200, 2)
+            db_ops.add_diet_entry("Janta", leite_id, 2, 3)
+            db_ops.set_diet_targets(
+                protein_g=100,
+                carbo_g=150,
+                fat_g=60,
+                calories=2000,
+            )
+
             sessao_1 = db_ops.create_session("2026-05-01")
             log_1 = db_ops.log_exercise(sessao_1, "Supino reto (barra)", 3, 5, 1)
             db_ops.update_log_weight(log_1, 40, 8)
@@ -63,6 +90,13 @@ def main():
             assert dados["analises"]["rpe_distribuicao"]
             assert dados["analises"]["carga_rpe_exercicio"]
             assert dados["mapa_ultima_sessao"]["data"] == "2026-05-08"
+            assert len(dados["dieta"]["itens"]) == 2
+            assert dados["dieta"]["itens"][0]["name"] == "Leite semidesnatado"
+            assert dados["dieta"]["itens"][0]["quantity"] == 3.0
+            assert dados["dieta"]["itens"][0]["protein_g"] == 24.0
+            assert dados["dieta"]["itens"][1]["protein_g"] == 46.0
+            assert dados["dieta"]["totais"]["calories"] == 517.0
+            assert dados["dieta"]["metas"]["protein_g"] == 100.0
             grupos_mapa = {
                 item["grupo"]: item
                 for item in dados["mapa_ultima_sessao"]["grupos"]
@@ -133,6 +167,14 @@ def main():
             assert "Mapa muscular da ultima sessao" in html
             assert "Mapa muscular anterior da ultima sessao" in html
             assert "Mapa muscular posterior da ultima sessao" in html
+            assert "Dieta atual" in html
+            assert "alimentos e metas diarias" in html
+            assert "Leite semidesnatado" in html
+            assert "Peito de frango" in html
+            assert "46,0 g" in html
+            assert "3 copos" in html
+            assert "517 / 2.000 kcal" in html
+            assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert 'data-grupo="Dorsais"' in html
             assert "body-muscles" in html
             assert "mapa-anatomia-vetorial" in html

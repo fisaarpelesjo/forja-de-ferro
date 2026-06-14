@@ -183,7 +183,10 @@ Dashboard local de volume de treino.
   evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, grupos musculares, volume semanal, maiores evolucoes, recordes
-  pessoais, alertas e filtros rapidos.
+  pessoais, alertas, filtros rapidos e dieta atual no final da pagina.
+- A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
+  unica de alimentos, consolida itens repetidos e compara os totais diarios de
+  macros com as metas.
 - O mapa muscular usa `exercise_muscle_groups`, deixa regioes sem treino
   transparentes e aumenta a opacidade vermelha conforme o volume relativo da
   ultima sessao. Ele representa volume atribuido, nao ativacao muscular medida.
