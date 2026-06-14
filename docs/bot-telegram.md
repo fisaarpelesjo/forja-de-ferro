@@ -49,6 +49,8 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /dashboard      atualiza o dashboard local
 /planos         lista planos de treino
 /plano NOME     seleciona o plano ativo
+/peso VALOR     registra o peso corporal
+/peso           mostra o peso atual e o historico
 /status         mostra progresso
 /desfazer       apaga o ultimo registro
 /ajuda          mostra ajuda
@@ -56,6 +58,14 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 
 Todos os comandos textuais exigem `/` e usam somente os nomes oficiais em
 PT-BR. Entradas numericas continuam reservadas para carga e RPE.
+
+## `/peso`
+
+`/peso 118`, `/peso 118,5` e `/peso 118.5` registram uma nova medicao em
+quilogramas com data e horario. O valor deve ficar entre 30 e 400 kg.
+
+`/peso` sem valor mostra o peso atual, a variacao desde a medicao anterior e as
+cinco entradas mais recentes. Cada registro e preservado no historico.
 
 ## Startup
 

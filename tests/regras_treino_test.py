@@ -95,9 +95,28 @@ def main():
                 }
             finally:
                 conn.close()
-            assert versions == [1, 2, 3, 4, 5]
+            assert versions == list(range(1, db_ops.SCHEMA_VERSION + 1))
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
+            assert db_ops.get_latest_body_weight() is None
+            first_weight = db_ops.add_body_weight(
+                118,
+                source="teste",
+                recorded_at="2026-06-13 08:00:00",
+            )
+            second_weight = db_ops.add_body_weight(
+                117.5,
+                source="teste",
+                recorded_at="2026-06-14 08:00:00",
+            )
+            assert first_weight["weight_kg"] == 118.0
+            assert db_ops.get_latest_body_weight()["id"] == second_weight["id"]
+            assert len(db_ops.list_body_weights()) == 2
+            try:
+                db_ops.add_body_weight(20)
+                raise AssertionError("Peso abaixo do limite deveria falhar.")
+            except ValueError:
+                pass
             active_exercises = db_ops.get_or_seed_exercises()
             muscle_groups = db_ops.list_muscle_groups()
             assert all(ex["name"] in muscle_groups for ex in active_exercises)

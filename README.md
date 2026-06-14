@@ -88,6 +88,8 @@ forja_de_ferro/
 /dashboard      Atualiza o dashboard local e mostra um resumo
 /planos         Lista planos de treino cadastrados
 /plano NOME     Seleciona o plano ativo
+/peso 118,5     Registra o peso corporal em quilogramas
+/peso           Mostra o peso atual e as ultimas medicoes
 /status         Mostra exercicio atual e progresso da sessao
 /desfazer       Limpa o ultimo registro de carga
 /ajuda          Mostra ajuda
@@ -130,7 +132,7 @@ caminho do computador e enviado.
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
 para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
-- 6 indicadores de resumo: sessoes, volume total, ultima sessao, variacao, RPE medio e dias desde o ultimo treino
+- 7 indicadores de resumo, incluindo peso corporal atual e variacao recente
 - grafico de evolucao do volume por sessao
 - mapa muscular anterior e posterior da ultima sessao com gradiente azul-amarelo-vermelho proporcional ao volume
 - carga, RPE e 1RM estimado (Epley) por exercicio

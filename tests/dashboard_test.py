@@ -60,6 +60,16 @@ def main():
                 fat_g=60,
                 calories=2000,
             )
+            db_ops.add_body_weight(
+                118,
+                source="teste",
+                recorded_at="2026-05-07 08:00:00",
+            )
+            db_ops.add_body_weight(
+                117.5,
+                source="teste",
+                recorded_at="2026-05-08 08:00:00",
+            )
 
             sessao_1 = db_ops.create_session("2026-05-01")
             log_1 = db_ops.log_exercise(sessao_1, "Supino reto (barra)", 3, 5, 1)
@@ -97,6 +107,8 @@ def main():
             assert dados["dieta"]["itens"][1]["protein_g"] == 46.0
             assert dados["dieta"]["totais"]["calories"] == 517.0
             assert dados["dieta"]["metas"]["protein_g"] == 100.0
+            assert dados["peso_corporal"]["atual"]["weight_kg"] == 117.5
+            assert dados["peso_corporal"]["variacao"] == -0.5
             grupos_mapa = {
                 item["grupo"]: item
                 for item in dados["mapa_ultima_sessao"]["grupos"]
@@ -175,6 +187,8 @@ def main():
             assert "3 copos" in html
             assert "517 / 2.000 kcal" in html
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
+            assert "Peso corporal" in html
+            assert "117,5 kg" in html
             assert 'data-grupo="Dorsais"' in html
             assert "body-muscles" in html
             assert "mapa-anatomia-vetorial" in html

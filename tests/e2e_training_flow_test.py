@@ -91,6 +91,12 @@ def main():
 
             first_log_id = exercises[0]["log_id"]
 
+            telegram_poller.handle_weight("/peso 118,5")
+            assert "118,5 kg" in sent_messages[-1]
+            telegram_poller.handle_weight("/peso")
+            assert "Peso corporal" in sent_messages[-1]
+            assert "118,5 kg" in sent_messages[-1]
+
             telegram_poller.handle("80 8", session)
             first_log = _fetch_log(test_db, first_log_id)
             assert first_log["weight"] == 80.0
@@ -117,6 +123,7 @@ def main():
             telegram_poller.handle("/status", session)
             assert "Treino" in sent_messages[-1]
             assert f"1/{total_exercises}" in sent_messages[-1]
+            assert "Peso atual: 118,5 kg" in sent_messages[-1]
 
             telegram_poller.handle("/desfazer", session)
             undone_log = _fetch_log(test_db, first_log_id)

@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 5`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 6`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -25,8 +25,9 @@ uma linha por versao aplicada, com data e hora.
 
 A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localizar
 logs pendentes por sessao e historico por exercicio. A versao 3 cria
-`exercise_muscle_groups`. A versao 4 cria planos de treino e a versao 5 inclui
-o agachamento sumô com barra à frente no catalogo e no plano ativo. As migracoes usam
+`exercise_muscle_groups`. A versao 4 cria planos de treino, a versao 5 inclui
+o agachamento sumô com barra à frente no catalogo e no plano ativo e a versao 6
+cria o historico de peso corporal. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -196,6 +197,16 @@ Tambem existem:
 - `diet_entries`
 
 Essas tabelas guardam alimentos, metas e entradas de dieta.
+
+### Peso Corporal
+
+`body_weights` guarda cada medicao sem sobrescrever o historico:
+
+- `weight_kg`: peso entre 30 e 400 kg
+- `recorded_at`: data e horario do registro
+- `source`: origem da medicao, como `telegram`
+
+O indice `idx_body_weights_recorded_at` acelera a consulta do peso mais recente.
 
 ## Catalogo Atual
 

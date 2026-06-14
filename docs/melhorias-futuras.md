@@ -321,6 +321,11 @@ sessao.
 
 ### Peso Corporal E Forca Relativa
 
+**Estado parcial:** o historico temporal de peso corporal, o comando
+`/peso VALOR`, a consulta `/peso`, o backup/exportacao e o indicador de peso no
+dashboard foram entregues. Permanecem neste roadmap a associacao temporal com
+sessoes e os calculos de forca relativa.
+
 **Dependencia:** os indicadores de forca relativa dependem de uma referencia de
 1RM testado ou estimado para o exercicio. O registro de peso corporal permanece
 opcional e nao bloqueia o fluxo de treino.
@@ -331,10 +336,10 @@ massa corporal do proprio praticante.
 
 **Comportamento esperado:**
 
-- adicionar `/peso VALOR` para registrar peso corporal em quilogramas com data
-  e horario
-- aceitar virgula ou ponto decimal e validar limites configurados
-- permitir consultar o peso atual e o historico sem alterar sessoes de treino
+- [x] adicionar `/peso VALOR` para registrar peso corporal em quilogramas com
+  data e horario
+- [x] aceitar virgula ou ponto decimal e validar limites configurados
+- [x] permitir consultar o peso atual e o historico sem alterar sessoes de treino
 - associar cada sessao ao registro de peso corporal mais recente disponivel na
   data, sem copiar ou reescrever silenciosamente o historico
 - calcular forca relativa como `1RM de referencia / peso corporal`

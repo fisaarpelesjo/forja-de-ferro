@@ -1,12 +1,13 @@
 """Operacoes SQLite para os dados da Forja de Ferro."""
 
 import sqlite3
+from datetime import datetime
 from itertools import groupby
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -268,12 +269,28 @@ SCHEMA_V5_STATEMENTS = (
     """,
 )
 
+SCHEMA_V6_STATEMENTS = (
+    """
+    CREATE TABLE IF NOT EXISTS body_weights (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        weight_kg REAL NOT NULL CHECK (weight_kg BETWEEN 30 AND 400),
+        recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        source TEXT NOT NULL DEFAULT 'telegram'
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_body_weights_recorded_at
+    ON body_weights (recorded_at DESC, id DESC)
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
     3: SCHEMA_V3_STATEMENTS,
     4: SCHEMA_V4_STATEMENTS,
     5: SCHEMA_V5_STATEMENTS,
+    6: SCHEMA_V6_STATEMENTS,
 }
 
 
@@ -319,6 +336,53 @@ def init_db():
             )
         _seed_default_muscle_groups(conn)
         _seed_default_training_plan(conn)
+
+
+def add_body_weight(weight_kg, source="telegram", recorded_at=None):
+    weight = float(weight_kg)
+    if not 30 <= weight <= 400:
+        raise ValueError("O peso deve ficar entre 30 e 400 kg.")
+
+    timestamp = recorded_at or datetime.now().isoformat(
+        sep=" ",
+        timespec="seconds",
+    )
+    init_db()
+    with _connect() as conn:
+        cur = conn.execute(
+            """
+            INSERT INTO body_weights (weight_kg, recorded_at, source)
+            VALUES (?, ?, ?)
+            """,
+            (weight, timestamp, source),
+        )
+        conn.commit()
+        row = conn.execute(
+            "SELECT * FROM body_weights WHERE id = ?",
+            (cur.lastrowid,),
+        ).fetchone()
+        return dict(row)
+
+
+def list_body_weights(limit=None):
+    init_db()
+    query = """
+        SELECT id, weight_kg, recorded_at, source
+        FROM body_weights
+        ORDER BY recorded_at DESC, id DESC
+    """
+    params = ()
+    if limit is not None:
+        query += " LIMIT ?"
+        params = (int(limit),)
+    with _connect() as conn:
+        rows = conn.execute(query, params).fetchall()
+        return [dict(row) for row in rows]
+
+
+def get_latest_body_weight():
+    weights = list_body_weights(limit=1)
+    return weights[0] if weights else None
 
 
 def _seed_default_muscle_groups(conn):

@@ -24,6 +24,7 @@ EXPORT_TABLES = (
     "foods",
     "diet_targets",
     "diet_entries",
+    "body_weights",
     "schema_migrations",
 )
 

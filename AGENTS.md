@@ -83,6 +83,8 @@ Comandos principais:
 - `/dashboard`
 - `/planos`
 - `/plano NOME`
+- `/peso VALOR`
+- `/peso`
 - `/status`
 - `/desfazer`
 - `/ajuda`
@@ -108,6 +110,8 @@ Fluxo:
    por `/gerar`, `/prever`, `/exercicios` e `/volume`.
 9. `/dashboard` atualiza `temp/dashboard-treino.html` e responde com horario,
    ultima sessao, volume e RPE medio geral, sem expor caminho local.
+10. `/peso VALOR` registra o peso corporal com data e `/peso` consulta o valor
+    atual, a variacao anterior e as ultimas medicoes.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -159,7 +163,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 5`.
+- Versao atual do esquema: `SCHEMA_VERSION = 6`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -169,6 +173,7 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
   secundarios. `/volume` e dashboard usam essa tabela como fonte unica.
 - `training_plans` e `training_plan_exercises` armazenam modelos A/B ou outros
   ciclos. Apenas um plano com exercicios fica ativo por vez.
+- `body_weights` armazena o historico temporal de peso corporal.
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
@@ -183,7 +188,8 @@ Dashboard local de volume de treino.
   evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, grupos musculares, volume semanal, maiores evolucoes, recordes
-  pessoais, alertas, filtros rapidos e dieta atual no final da pagina.
+  pessoais, alertas, filtros rapidos, peso corporal atual e dieta atual no final
+  da pagina.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.

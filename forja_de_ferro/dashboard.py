@@ -6,7 +6,7 @@ import html
 import json
 import sqlite3
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from forja_de_ferro import db_ops
@@ -250,6 +250,22 @@ def carregar_dados():
         "consistencia": _calcular_consistencia(volume_por_sessao),
         "analises": _calcular_analises(volume_por_sessao, volume_por_exercicio),
         "dieta": _carregar_dieta(),
+        "peso_corporal": _carregar_peso_corporal(),
+    }
+
+
+def _carregar_peso_corporal():
+    historico = db_ops.list_body_weights()
+    atual = historico[0] if historico else None
+    anterior = historico[1] if len(historico) > 1 else None
+    return {
+        "atual": atual,
+        "variacao": (
+            atual["weight_kg"] - anterior["weight_kg"]
+            if atual and anterior
+            else None
+        ),
+        "historico": historico,
     }
 
 
@@ -1010,6 +1026,21 @@ def gerar_html(dados):
     mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
     resumo_dieta = _render_resumo_dieta(dados["dieta"])
     itens_dieta = _render_itens_dieta(dados["dieta"])
+    peso_atual = dados["peso_corporal"]["atual"]
+    variacao_peso = dados["peso_corporal"]["variacao"]
+    peso_valor = (
+        f"{_fmt_decimal(peso_atual['weight_kg'])} kg" if peso_atual else "-"
+    )
+    peso_data = (
+        datetime.fromisoformat(peso_atual["recorded_at"]).strftime("%d/%m/%Y")
+        if peso_atual
+        else "sem registro"
+    )
+    peso_variacao = (
+        f"{'+' if variacao_peso > 0 else ''}{_fmt_decimal(variacao_peso)} kg"
+        if variacao_peso is not None
+        else "sem comparacao"
+    )
 
     var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
     dias_desde = consistencia["dias_desde_ultimo"]
@@ -1160,7 +1191,7 @@ def gerar_html(dados):
     .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
     .grade-resumo {{
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 12px;
     }}
@@ -1463,6 +1494,11 @@ def gerar_html(dados):
       <div class="indicador">
         <span class="rotulo">Dias desde ultimo</span>
         <span class="valor">{dias_str}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Peso corporal</span>
+        <span class="valor valor-menor">{peso_valor}</span>
+        <span class="subtitulo">{peso_data} | {peso_variacao}</span>
       </div>
     </section>
 

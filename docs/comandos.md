@@ -16,6 +16,8 @@ Todos os comandos textuais devem ser enviados com `/`.
 | `/dashboard` | Atualiza o dashboard HTML local. |
 | `/planos` | Lista os planos de treino cadastrados. |
 | `/plano NOME` | Seleciona o plano ativo. |
+| `/peso VALOR` | Registra o peso corporal em quilogramas. |
+| `/peso` | Mostra o peso atual, a variacao e as ultimas medicoes. |
 | `/status` | Mostra o exercicio atual e o progresso da sessao. |
 | `/desfazer` | Remove a carga e o RPE do ultimo registro preenchido. |
 | `/ajuda` | Mostra a ajuda principal do bot. |

@@ -44,6 +44,7 @@ def main():
                 0,
             )
             db_ops.update_log_weight(log_id, 48, 9)
+            db_ops.add_body_weight(118, source="teste")
 
             backup = backup_ops.criar_backup(
                 temp_path / "backups",
@@ -63,6 +64,7 @@ def main():
             assert payload["tables"]["exercise_muscle_groups"]
             assert payload["tables"]["training_plans"]
             assert payload["tables"]["training_plan_exercises"]
+            assert payload["tables"]["body_weights"][0]["weight_kg"] == 118
 
             restored, safety = backup_ops.restaurar_backup(
                 backup,

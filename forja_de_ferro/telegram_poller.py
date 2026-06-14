@@ -151,6 +151,14 @@ def _format_weight(weight):
     return str(int(weight) if weight == int(weight) else weight)
 
 
+def _format_body_weight(weight):
+    return f"{float(weight):.1f}".replace(".", ",")
+
+
+def _format_weight_date(recorded_at):
+    return datetime.fromisoformat(recorded_at).strftime("%d/%m/%Y %H:%M")
+
+
 def _format_target_suffix(ex):
     target_weight = ex.get("target_weight")
     if target_weight is None:
@@ -363,6 +371,47 @@ def handle_dashboard():
         send("Erro ao atualizar o dashboard. Consulte o terminal.")
 
 
+def handle_weight(text):
+    parts = text.strip().split(maxsplit=1)
+    if len(parts) == 2:
+        try:
+            weight = float(parts[1].strip().replace(",", "."))
+            entry = db_ops.add_body_weight(weight)
+        except ValueError as exc:
+            send(f"{exc}\nUse <code>/peso 118,5</code>.")
+            return
+        send(
+            f"Peso registrado: <b>{_format_body_weight(entry['weight_kg'])} kg</b>."
+        )
+        return
+
+    history = db_ops.list_body_weights(limit=5)
+    if not history:
+        send("Nenhum peso registrado. Use <code>/peso 118,5</code>.")
+        return
+
+    latest = history[0]
+    lines = [
+        "<b>Peso corporal</b>",
+        f"Atual: <b>{_format_body_weight(latest['weight_kg'])} kg</b>",
+        f"Registrado em: {_format_weight_date(latest['recorded_at'])}",
+    ]
+    if len(history) > 1:
+        delta = latest["weight_kg"] - history[1]["weight_kg"]
+        signal = "+" if delta > 0 else ""
+        lines.append(
+            f"Desde a medicao anterior: "
+            f"<b>{signal}{_format_body_weight(delta)} kg</b>"
+        )
+    lines.append("\n<b>Ultimas medicoes</b>")
+    lines.extend(
+        f"{_format_weight_date(item['recorded_at'])}: "
+        f"{_format_body_weight(item['weight_kg'])} kg"
+        for item in history
+    )
+    send("\n".join(lines))
+
+
 def handle(text, session):
     text = text.strip()
     exercises = session.get("exercises", [])
@@ -376,8 +425,14 @@ def handle(text, session):
     filled = db_ops.count_filled(log_ids)
 
     if text.lower() == "/status":
+        latest_weight = db_ops.get_latest_body_weight()
+        weight_line = (
+            f"\nPeso atual: {_format_body_weight(latest_weight['weight_kg'])} kg"
+            if latest_weight
+            else ""
+        )
         if filled >= total:
-            send(f"Treino completo. {total}/{total} ✓")
+            send(f"Treino completo. {total}/{total} ✓{weight_line}")
         else:
             ex = exercises[filled]
             done = "\n".join(f"✓ {exercises[i]['name']}" for i in range(filled))
@@ -385,6 +440,7 @@ def handle(text, session):
             if done:
                 msg += done + "\n"
             msg += _format_current_exercise(ex)
+            msg += weight_line
             send(msg)
         return
 
@@ -488,6 +544,8 @@ def main():
                         "/dashboard — atualiza o dashboard local\n"
                         "/planos — lista planos de treino\n"
                         "/plano NOME — seleciona o plano ativo\n"
+                        "/peso VALOR — registra o peso corporal\n"
+                        "/peso — mostra o peso atual e o historico\n"
                         "/status — exercicio atual e progresso\n"
                         "/desfazer — apaga o ultimo registro\n"
                         "/ajuda — esta mensagem\n\n"
@@ -515,6 +573,10 @@ def main():
 
                 if lower == "/plano" or lower.startswith("/plano "):
                     handle_select_plan(text)
+                    continue
+
+                if lower == "/peso" or lower.startswith("/peso "):
+                    handle_weight(text)
                     continue
 
                 if lower == "/aquecimento":

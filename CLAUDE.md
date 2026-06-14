@@ -66,6 +66,7 @@ Comandos principais em PT-BR:
 - `/dashboard` atualiza o dashboard local e envia resumo curto.
 - `/planos` lista planos cadastrados.
 - `/plano NOME` seleciona o plano ativo.
+- `/peso VALOR` registra peso corporal e `/peso` consulta o historico recente.
 - `/status` mostra progresso da sessao ativa.
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
@@ -150,7 +151,8 @@ Dashboard local de volume:
   evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, grupos musculares, volume semanal, maiores evolucoes, recordes
-  pessoais, alertas, filtros rapidos e dieta atual no final da pagina.
+  pessoais, alertas, filtros rapidos, peso corporal atual e dieta atual no final
+  da pagina.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.
@@ -189,7 +191,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 5`.
+- Versao atual do esquema: `SCHEMA_VERSION = 6`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume
