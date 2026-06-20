@@ -113,9 +113,18 @@ def main():
                 item["grupo"]: item
                 for item in dados["mapa_ultima_sessao"]["grupos"]
             }
-            assert grupos_mapa["Peitoral"]["volume"] == 660.0
-            assert grupos_mapa["Dorsais"]["volume"] == 1200.0
-            assert grupos_mapa["Dorsais"]["intensidade"] == 1.0
+            assert round(grupos_mapa["Peitoral superior"]["volume"], 1) == 132.0
+            assert round(grupos_mapa["Peitoral inferior"]["volume"], 1) == 264.0
+            assert round(grupos_mapa["Deltoide anterior"]["volume"], 1) == 99.0
+            assert round(grupos_mapa["Triceps cabeca longa"]["volume"], 1) == 79.2
+            assert round(grupos_mapa["Serratil anterior"]["volume"], 1) == 33.0
+            assert round(grupos_mapa["Dorsal superior"]["volume"], 1) == 180.0
+            assert round(grupos_mapa["Dorsal medio"]["volume"], 1) == 240.0
+            assert round(grupos_mapa["Dorsal inferior"]["volume"], 1) == 120.0
+            assert round(grupos_mapa["Trapezio medio"]["volume"], 1) == 144.0
+            assert round(grupos_mapa["Deltoide posterior"]["volume"], 1) == 180.0
+            assert round(grupos_mapa["Eretores lombares"]["volume"], 1) == 96.0
+            assert grupos_mapa["Peitoral inferior"]["intensidade"] == 1.0
 
             alertas_rpe_9 = dashboard._calcular_alertas(
                 [
@@ -189,7 +198,7 @@ def main():
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert "Peso corporal" in html
             assert "117,5 kg" in html
-            assert 'data-grupo="Dorsais"' in html
+            assert 'data-grupo="Dorsal superior"' in html
             assert "body-muscles" in html
             assert "mapa-anatomia-vetorial" in html
             assert "musculo com-volume" in html

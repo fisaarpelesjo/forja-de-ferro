@@ -18,68 +18,643 @@ MUSCLE_MAP_ASSET = (
 )
 
 MUSCLE_IDS_BY_GROUP = {
-    "Peitoral": (
+    "Peitoral superior": (
         "chest-upper-left",
         "chest-upper-right",
+    ),
+    "Peitoral inferior": (
         "chest-lower-left",
         "chest-lower-right",
     ),
-    "Deltoide anterior": ("shoulder-front-left", "shoulder-front-right"),
-    "Deltoide lateral": ("shoulder-side-left", "shoulder-side-right"),
+    "Deltoide anterior": ("shoulder-front-split-left", "shoulder-front-split-right"),
+    "Deltoide lateral": ("shoulder-side-split-left", "shoulder-side-split-right"),
     "Deltoide posterior": ("deltoid-rear-left", "deltoid-rear-right"),
-    "Biceps": ("biceps-left", "biceps-right"),
-    "Triceps": (
+    "Biceps cabeca longa": ("biceps-long-left", "biceps-long-right"),
+    "Biceps cabeca curta": ("biceps-short-left", "biceps-short-right"),
+    "Biceps distal": ("biceps-distal-left", "biceps-distal-right"),
+    "Triceps cabeca longa": (
         "triceps-long-left",
-        "triceps-lateral-left",
         "triceps-long-right",
+    ),
+    "Triceps cabeca lateral": (
+        "triceps-lateral-left",
         "triceps-lateral-right",
     ),
-    "Antebraco": (
-        "forearm-left",
-        "forearm-right",
+    "Antebraco anterior": (
+        "forearm-front-anterior-left",
+        "forearm-front-anterior-right",
         "forearm-flexors-left",
-        "forearm-extensors-left",
         "forearm-flexors-right",
+    ),
+    "Antebraco posterior": (
+        "forearm-front-posterior-left",
+        "forearm-front-posterior-right",
+        "forearm-extensors-left",
         "forearm-extensors-right",
     ),
-    "Core": (
+    "Abdomen superior": (
         "abs-upper-left",
         "abs-upper-right",
+    ),
+    "Abdomen inferior": (
         "abs-lower-left",
         "abs-lower-right",
+    ),
+    "Obliquos": (
         "obliques-left",
         "obliques-right",
     ),
-    "Quadriceps": ("quads-left", "quads-right"),
+    "Quadriceps lateral": ("quads-lateral-left", "quads-lateral-right"),
+    "Quadriceps central": ("quads-central-left", "quads-central-right"),
+    "Quadriceps medial": ("quads-medial-left", "quads-medial-right"),
     "Adutores": ("adductors-left", "adductors-right"),
-    "Gluteos": (
+    "Gluteo medio": (
         "gluteus-medius-left",
-        "gluteus-maximus-left",
         "gluteus-medius-right",
+    ),
+    "Gluteo maximo": (
+        "gluteus-maximus-left",
         "gluteus-maximus-right",
     ),
-    "Posteriores": (
+    "Posteriores mediais": (
         "hamstrings-medial-left",
-        "hamstrings-lateral-left",
         "hamstrings-medial-right",
+    ),
+    "Posteriores laterais": (
+        "hamstrings-lateral-left",
         "hamstrings-lateral-right",
     ),
-    "Dorsais": (
+    "Dorsal superior": (
         "lats-upper-left",
-        "lats-mid-left",
-        "lats-lower-left",
         "lats-upper-right",
+    ),
+    "Dorsal medio": (
+        "lats-mid-left",
         "lats-mid-right",
+    ),
+    "Dorsal inferior": (
+        "lats-lower-left",
         "lats-lower-right",
     ),
-    "Trapezio": (
+    "Trapezio superior": (
         "traps-upper-left",
-        "traps-mid-left",
-        "traps-lower-left",
         "traps-upper-right",
+    ),
+    "Trapezio medio": (
+        "traps-mid-left",
         "traps-mid-right",
+    ),
+    "Trapezio inferior": (
+        "traps-lower-left",
         "traps-lower-right",
     ),
+    "Serratil anterior": (
+        "serratus-anterior-left",
+        "serratus-anterior-right",
+    ),
+    "Eretores lombares": (
+        "lower-back-erectors-left",
+        "lower-back-erectors-right",
+    ),
+}
+
+SEGMENTOS_ANATOMICOS_POR_GRUPO = {
+    "Peitoral": ("Peitoral superior", "Peitoral inferior"),
+    "Deltoide": ("Deltoide anterior", "Deltoide lateral", "Deltoide posterior"),
+    "Deltoides": ("Deltoide anterior", "Deltoide lateral", "Deltoide posterior"),
+    "Biceps": ("Biceps cabeca longa", "Biceps cabeca curta", "Biceps distal"),
+    "Triceps": ("Triceps cabeca longa", "Triceps cabeca lateral"),
+    "Antebraco": ("Antebraco anterior", "Antebraco posterior"),
+    "Core": ("Abdomen superior", "Abdomen inferior", "Obliquos"),
+    "Quadriceps": ("Quadriceps lateral", "Quadriceps central", "Quadriceps medial"),
+    "Gluteos": ("Gluteo medio", "Gluteo maximo"),
+    "Posteriores": ("Posteriores mediais", "Posteriores laterais"),
+    "Dorsais": ("Dorsal superior", "Dorsal medio", "Dorsal inferior"),
+    "Trapezio": ("Trapezio superior", "Trapezio medio", "Trapezio inferior"),
+}
+
+SEGMENTOS_POR_EXERCICIO = {
+    "Agachamento (barra)": {
+        "Quadriceps": {
+            "Quadriceps lateral": 0.30,
+            "Quadriceps central": 0.35,
+            "Quadriceps medial": 0.35,
+        },
+        "Gluteos": {"Gluteo medio": 0.25, "Gluteo maximo": 0.75},
+    },
+    "Agachamento Zercher": {
+        "Quadriceps": {
+            "Quadriceps lateral": 0.30,
+            "Quadriceps central": 0.35,
+            "Quadriceps medial": 0.35,
+        },
+        "Gluteos": {"Gluteo medio": 0.25, "Gluteo maximo": 0.75},
+        "Core": {
+            "Abdomen superior": 0.35,
+            "Abdomen inferior": 0.30,
+            "Obliquos": 0.35,
+        },
+    },
+    "Agachamento sumô com barra à frente": {
+        "Quadriceps": {
+            "Quadriceps lateral": 0.25,
+            "Quadriceps central": 0.35,
+            "Quadriceps medial": 0.40,
+        },
+        "Gluteos": {"Gluteo medio": 0.30, "Gluteo maximo": 0.70},
+    },
+    "Zercher squat": {
+        "Quadriceps": {
+            "Quadriceps lateral": 0.30,
+            "Quadriceps central": 0.35,
+            "Quadriceps medial": 0.35,
+        },
+        "Gluteos": {"Gluteo medio": 0.25, "Gluteo maximo": 0.75},
+        "Core": {
+            "Abdomen superior": 0.35,
+            "Abdomen inferior": 0.30,
+            "Obliquos": 0.35,
+        },
+    },
+    "Supino reto (barra)": {
+        "Peitoral": {"Peitoral superior": 0.35, "Peitoral inferior": 0.65},
+    },
+    "Supino reto back-off": {
+        "Peitoral": {"Peitoral superior": 0.35, "Peitoral inferior": 0.65},
+    },
+    "Remada curvada (barra)": {
+        "Dorsais": {
+            "Dorsal superior": 0.30,
+            "Dorsal medio": 0.45,
+            "Dorsal inferior": 0.25,
+        },
+    },
+    "Pullover (barra)": {
+        "Dorsais": {
+            "Dorsal superior": 0.35,
+            "Dorsal medio": 0.40,
+            "Dorsal inferior": 0.25,
+        },
+    },
+    "Remada alta (barra)": {
+        "Trapezio": {
+            "Trapezio superior": 0.70,
+            "Trapezio medio": 0.25,
+            "Trapezio inferior": 0.05,
+        },
+    },
+    "Remada curvada alta no peito (barra)": {
+        "Trapezio": {
+            "Trapezio superior": 0.15,
+            "Trapezio medio": 0.65,
+            "Trapezio inferior": 0.20,
+        },
+    },
+    "Levantamento Terra Romeno": {
+        "Posteriores": {
+            "Posteriores mediais": 0.45,
+            "Posteriores laterais": 0.55,
+        },
+        "Gluteos": {"Gluteo medio": 0.15, "Gluteo maximo": 0.85},
+    },
+    "Rosca direta": {
+        "Biceps": {
+            "Biceps cabeca longa": 0.45,
+            "Biceps cabeca curta": 0.45,
+            "Biceps distal": 0.10,
+        },
+    },
+    "Rosca martelo (barra H)": {
+        "Biceps": {
+            "Biceps cabeca longa": 0.35,
+            "Biceps cabeca curta": 0.35,
+            "Biceps distal": 0.30,
+        },
+        "Antebraco": {"Antebraco anterior": 0.70, "Antebraco posterior": 0.30},
+    },
+    "Rosca de punho (barra)": {
+        "Antebraco": {"Antebraco anterior": 0.85, "Antebraco posterior": 0.15},
+    },
+    "Wrist curl (barra)": {
+        "Antebraco": {"Antebraco anterior": 0.85, "Antebraco posterior": 0.15},
+    },
+    "Rosca de punho reversa (barra)": {
+        "Antebraco": {"Antebraco anterior": 0.15, "Antebraco posterior": 0.85},
+    },
+    "Reverse wrist curl (barra)": {
+        "Antebraco": {"Antebraco anterior": 0.15, "Antebraco posterior": 0.85},
+    },
+    "Tríceps testa": {
+        "Triceps": {"Triceps cabeca longa": 0.65, "Triceps cabeca lateral": 0.35},
+    },
+    "Triceps testa": {
+        "Triceps": {"Triceps cabeca longa": 0.65, "Triceps cabeca lateral": 0.35},
+    },
+}
+
+SEGMENTOS_DIRETOS_POR_EXERCICIO = {
+    "Agachamento (barra)": {
+        "Quadriceps lateral": 0.18,
+        "Quadriceps central": 0.21,
+        "Quadriceps medial": 0.21,
+        "Gluteo maximo": 0.20,
+        "Gluteo medio": 0.07,
+        "Adutores": 0.06,
+        "Eretores lombares": 0.04,
+        "Abdomen superior": 0.01,
+        "Abdomen inferior": 0.01,
+        "Obliquos": 0.01,
+    },
+    "Agachamento Zercher": {
+        "Quadriceps lateral": 0.17,
+        "Quadriceps central": 0.20,
+        "Quadriceps medial": 0.20,
+        "Gluteo maximo": 0.15,
+        "Gluteo medio": 0.05,
+        "Adutores": 0.08,
+        "Eretores lombares": 0.05,
+        "Abdomen superior": 0.03,
+        "Abdomen inferior": 0.02,
+        "Obliquos": 0.05,
+    },
+    "Zercher squat": {
+        "Quadriceps lateral": 0.17,
+        "Quadriceps central": 0.20,
+        "Quadriceps medial": 0.20,
+        "Gluteo maximo": 0.15,
+        "Gluteo medio": 0.05,
+        "Adutores": 0.08,
+        "Eretores lombares": 0.05,
+        "Abdomen superior": 0.03,
+        "Abdomen inferior": 0.02,
+        "Obliquos": 0.05,
+    },
+    "Agachamento sumô com barra à frente": {
+        "Adutores": 0.35,
+        "Quadriceps lateral": 0.10,
+        "Quadriceps central": 0.15,
+        "Quadriceps medial": 0.20,
+        "Gluteo maximo": 0.15,
+        "Gluteo medio": 0.05,
+    },
+    "Supino reto (barra)": {
+        "Peitoral superior": 0.20,
+        "Peitoral inferior": 0.40,
+        "Deltoide anterior": 0.15,
+        "Triceps cabeca longa": 0.12,
+        "Triceps cabeca lateral": 0.08,
+        "Serratil anterior": 0.05,
+    },
+    "Supino reto back-off": {
+        "Peitoral superior": 0.20,
+        "Peitoral inferior": 0.40,
+        "Deltoide anterior": 0.15,
+        "Triceps cabeca longa": 0.12,
+        "Triceps cabeca lateral": 0.08,
+        "Serratil anterior": 0.05,
+    },
+    "Remada curvada (barra)": {
+        "Dorsal superior": 0.15,
+        "Dorsal medio": 0.20,
+        "Dorsal inferior": 0.10,
+        "Trapezio medio": 0.12,
+        "Trapezio inferior": 0.03,
+        "Deltoide posterior": 0.15,
+        "Biceps cabeca longa": 0.04,
+        "Biceps cabeca curta": 0.04,
+        "Biceps distal": 0.04,
+        "Eretores lombares": 0.08,
+        "Antebraco anterior": 0.03,
+        "Antebraco posterior": 0.02,
+    },
+    "Desenvolvimento (barra em pé)": {
+        "Deltoide anterior": 0.35,
+        "Deltoide lateral": 0.25,
+        "Triceps cabeca longa": 0.15,
+        "Triceps cabeca lateral": 0.10,
+        "Trapezio superior": 0.10,
+        "Serratil anterior": 0.05,
+    },
+    "Desenvolvimento (barra em pe)": {
+        "Deltoide anterior": 0.35,
+        "Deltoide lateral": 0.25,
+        "Triceps cabeca longa": 0.15,
+        "Triceps cabeca lateral": 0.10,
+        "Trapezio superior": 0.10,
+        "Serratil anterior": 0.05,
+    },
+    "Levantamento Terra Romeno": {
+        "Posteriores mediais": 0.25,
+        "Posteriores laterais": 0.30,
+        "Gluteo maximo": 0.25,
+        "Eretores lombares": 0.15,
+        "Gluteo medio": 0.05,
+    },
+    "Pullover (barra)": {
+        "Dorsal superior": 0.20,
+        "Dorsal medio": 0.25,
+        "Dorsal inferior": 0.15,
+        "Peitoral superior": 0.05,
+        "Peitoral inferior": 0.10,
+        "Serratil anterior": 0.10,
+        "Triceps cabeca longa": 0.10,
+        "Abdomen superior": 0.03,
+        "Obliquos": 0.02,
+    },
+    "Remada alta (barra)": {
+        "Deltoide lateral": 0.40,
+        "Trapezio superior": 0.35,
+        "Trapezio medio": 0.10,
+        "Deltoide anterior": 0.05,
+        "Biceps distal": 0.05,
+        "Antebraco anterior": 0.03,
+        "Antebraco posterior": 0.02,
+    },
+    "Remada curvada alta no peito (barra)": {
+        "Deltoide posterior": 0.35,
+        "Trapezio medio": 0.25,
+        "Trapezio superior": 0.10,
+        "Trapezio inferior": 0.05,
+        "Dorsal superior": 0.10,
+        "Biceps cabeca longa": 0.04,
+        "Biceps cabeca curta": 0.04,
+        "Biceps distal": 0.02,
+        "Antebraco anterior": 0.03,
+        "Antebraco posterior": 0.02,
+    },
+    "Rosca direta": {
+        "Biceps cabeca longa": 0.45,
+        "Biceps cabeca curta": 0.45,
+        "Biceps distal": 0.10,
+    },
+    "Rosca martelo (barra H)": {
+        "Biceps cabeca longa": 0.20,
+        "Biceps cabeca curta": 0.20,
+        "Biceps distal": 0.15,
+        "Antebraco anterior": 0.30,
+        "Antebraco posterior": 0.15,
+    },
+    "Rosca de punho (barra)": {
+        "Antebraco anterior": 0.85,
+        "Antebraco posterior": 0.15,
+    },
+    "Wrist curl (barra)": {
+        "Antebraco anterior": 0.85,
+        "Antebraco posterior": 0.15,
+    },
+    "Rosca de punho reversa (barra)": {
+        "Antebraco anterior": 0.15,
+        "Antebraco posterior": 0.85,
+    },
+    "Reverse wrist curl (barra)": {
+        "Antebraco anterior": 0.15,
+        "Antebraco posterior": 0.85,
+    },
+    "Tríceps testa": {
+        "Triceps cabeca longa": 0.55,
+        "Triceps cabeca lateral": 0.30,
+        "Antebraco anterior": 0.05,
+        "Antebraco posterior": 0.05,
+        "Deltoide anterior": 0.05,
+    },
+    "Triceps testa": {
+        "Triceps cabeca longa": 0.55,
+        "Triceps cabeca lateral": 0.30,
+        "Antebraco anterior": 0.05,
+        "Antebraco posterior": 0.05,
+        "Deltoide anterior": 0.05,
+    },
+}
+
+SEGMENTOS_ANTERIORES = {
+    "Peitoral superior",
+    "Peitoral inferior",
+    "Deltoide anterior",
+    "Deltoide lateral",
+    "Biceps cabeca longa",
+    "Biceps cabeca curta",
+    "Biceps distal",
+    "Antebraco anterior",
+    "Antebraco posterior",
+    "Abdomen superior",
+    "Abdomen inferior",
+    "Obliquos",
+    "Serratil anterior",
+    "Quadriceps lateral",
+    "Quadriceps central",
+    "Quadriceps medial",
+    "Adutores",
+}
+
+SEGMENTOS_POSTERIORES = {
+    "Dorsal superior",
+    "Dorsal medio",
+    "Dorsal inferior",
+    "Trapezio superior",
+    "Trapezio medio",
+    "Trapezio inferior",
+    "Eretores lombares",
+    "Deltoide posterior",
+    "Triceps cabeca longa",
+    "Triceps cabeca lateral",
+    "Gluteo medio",
+    "Gluteo maximo",
+    "Posteriores mediais",
+    "Posteriores laterais",
+}
+
+MUSCULOS_SUBSTITUTOS_POR_VISTA = {
+    "front": (
+        {
+            "id": "shoulder-side-split-left",
+            "nome": "Deltoide lateral esquerdo",
+            "caminho": (
+                "m 22.922305,15.657195 0.75814,-0.41 2.40806,1.66799 "
+                "1.17364,1.50707 0.62662,1.5626 -0.0464,3.70194 "
+                "-1.3284,-1.72153 0.0407,-2.59376 -0.48842,-0.50049 "
+                "c 0,0 -3.09778,-3.19058 -3.14371,-3.21401 z"
+            ),
+        },
+        {
+            "id": "shoulder-front-split-left",
+            "nome": "Deltoide anterior esquerdo",
+            "caminho": (
+                "M 22.681405,15.765925 c -0.001,0.0525 "
+                "3.32987,3.54733 3.32987,3.54733 l 0.10067,3.10396 "
+                "-1.15426,-1.97782 -2.22547,-0.94804 "
+                "-1.56576,-2.88481 z"
+            ),
+        },
+        {
+            "id": "shoulder-side-split-right",
+            "nome": "Deltoide lateral direito",
+            "caminho": (
+                "m 8.7502951,15.657195 -0.75814,-0.41 -2.40806,1.66799 "
+                "-1.17364,1.50707 -0.62662,1.56259 0.0464,3.70195 "
+                "1.3284,-1.72153 -0.0407,-2.59376 0.48843,-0.5005 "
+                "c 0,0 3.09777,-3.19057 3.1437,-3.214 z"
+            ),
+        },
+        {
+            "id": "shoulder-front-split-right",
+            "nome": "Deltoide anterior direito",
+            "caminho": (
+                "M 8.9911951,15.765925 c 0.002,0.0525 "
+                "-3.32987,3.54733 -3.32987,3.54733 l -0.10067,3.10396 "
+                "1.15426,-1.97782 2.22547,-0.94804 "
+                "1.5657499,-2.88481 z"
+            ),
+        },
+        {
+            "id": "biceps-long-left",
+            "nome": "Biceps cabeca longa esquerda",
+            "caminho": (
+                "M 24.768955,28.205115 c -0.0259,-0.0144 "
+                "-0.0536,-0.0254 -0.0824,-0.0324 l -1.48333,-4.95503 "
+                "1.00456,-2.08428 1.65511,1.74532 2.23034,6.67667 "
+                "0.0415,0.93739 c -1.06528,-0.84215 -2.18962,-1.60679 "
+                "-3.36434,-2.28803 z"
+            ),
+        },
+        {
+            "id": "biceps-short-left",
+            "nome": "Biceps cabeca curta esquerda",
+            "caminho": (
+                "M 26.463455,22.448575 l 1.64893,6.43421 "
+                "-0.36469,-4.92266 z"
+            ),
+        },
+        {
+            "id": "biceps-distal-left",
+            "nome": "Biceps distal esquerdo",
+            "caminho": (
+                "m 27.621665,30.814715 -0.33838,1.70499 "
+                "-1.81932,-2.54418 -0.6629,-1.26895 z"
+            ),
+        },
+        {
+            "id": "biceps-long-right",
+            "nome": "Biceps cabeca longa direita",
+            "caminho": (
+                "M 6.9273451,28.205115 c 0.0259,-0.0144 "
+                "0.0536,-0.0254 0.0824,-0.0324 l 1.48332,-4.95503 "
+                "-1.00455,-2.08428 -1.65509,1.74532 -2.23034,6.67667 "
+                "-0.0415,0.93739 c 1.06528,-0.84215 2.18961,-1.60679 "
+                "3.36433,-2.28803 z"
+            ),
+        },
+        {
+            "id": "biceps-short-right",
+            "nome": "Biceps cabeca curta direita",
+            "caminho": (
+                "M 5.2328451,22.448575 l -1.64891,6.43421 "
+                "0.36468,-4.92266 z"
+            ),
+        },
+        {
+            "id": "biceps-distal-right",
+            "nome": "Biceps distal direito",
+            "caminho": (
+                "m 4.0746451,30.814715 0.33838,1.70499 "
+                "1.81931,-2.54418 0.66289,-1.26895 z"
+            ),
+        },
+        {
+            "id": "forearm-front-anterior-left",
+            "nome": "Antebraco anterior esquerdo",
+            "caminho": (
+                "m 26.955425,32.969125 1.30083,10.28927 -1.10778,0.01 "
+                "-1.89387,-7.99609 0.19174,-4.53719 z"
+            ),
+        },
+        {
+            "id": "forearm-front-posterior-left",
+            "nome": "Antebraco posterior esquerdo",
+            "caminho": (
+                "M 28.175205,31.019415 l -0.58729,2.58635 "
+                "1.11876,9.15614 0.55849,-0.21663 0.2304,-6.77018 z"
+            ),
+        },
+        {
+            "id": "forearm-front-anterior-right",
+            "nome": "Antebraco anterior direito",
+            "caminho": (
+                "m 4.5752651,32.969125 -1.30083,10.28927 1.10778,0.01 "
+                "1.89387,-7.99609 -0.19174,-4.53719 z"
+            ),
+        },
+        {
+            "id": "forearm-front-posterior-right",
+            "nome": "Antebraco posterior direito",
+            "caminho": (
+                "M 3.3554851,31.019415 l 0.58728,2.58635 "
+                "-1.11875,9.15614 -0.55849,-0.21663 -0.2304,-6.77018 z"
+            ),
+        },
+        {
+            "id": "quads-lateral-left",
+            "nome": "Quadriceps lateral esquerdo",
+            "caminho": (
+                "m 23.419015,50.399125 -0.15504,4.75091 "
+                "-2.40263,6.60949 0.7362,1.90021 2.36401,-8.34435 z"
+            ),
+        },
+        {
+            "id": "quads-central-left",
+            "nome": "Quadriceps central esquerdo",
+            "caminho": (
+                "M 22.837475,38.790875 l -0.15485,4.00722 "
+                "1.31793,7.93154 0.61977,-6.40308 z"
+            ),
+        },
+        {
+            "id": "quads-medial-left",
+            "nome": "Quadriceps medial esquerdo",
+            "caminho": (
+                "M 22.450165,43.913555 l -2.75152,6.07258 "
+                "-0.62015,4.87425 1.16232,6.85771 2.51886,-6.98144 "
+                "0.15504,-7.18764 z"
+            ),
+        },
+        {
+            "id": "quads-lateral-right",
+            "nome": "Quadriceps lateral direito",
+            "caminho": (
+                "m 8.2694651,50.399125 0.15504,4.75053 "
+                "2.4026299,6.60968 -0.73638,1.90021 -2.3640099,-8.34435 z"
+            ),
+        },
+        {
+            "id": "quads-central-right",
+            "nome": "Quadriceps central direito",
+            "caminho": (
+                "M 8.8506351,38.791445 l 0.15503,4.00684 "
+                "-1.31754,7.93154 -0.61978,-6.40308 z"
+            ),
+        },
+        {
+            "id": "quads-medial-right",
+            "nome": "Quadriceps medial direito",
+            "caminho": (
+                "M 9.2383251,43.913745 l 2.7515099,6.07239 "
+                "0.61997,4.87425 -1.16232,6.85771 -2.5190499,-6.98163 "
+                "-0.15504,-7.18801 z"
+            ),
+        },
+    ),
+}
+
+MUSCULOS_SUBSTITUIDOS = {
+    "shoulder-front-left",
+    "shoulder-front-right",
+    "shoulder-side-left",
+    "shoulder-side-right",
+    "biceps-left",
+    "biceps-right",
+    "forearm-left",
+    "forearm-right",
+    "quads-left",
+    "quads-right",
 }
 
 def _connect():
@@ -170,11 +745,10 @@ def carregar_dados():
             }
         )
         exercise_groups = muscle_groups.get(row["exercise_name"], [])
-        group_names = [item["muscle_group"] for item in exercise_groups] or ["Outros"]
-        for grupo in group_names:
-            grupos[grupo]["grupo"] = grupo
-            grupos[grupo]["volume"] += volume
-            grupos[grupo]["series"] += int(row["sets"])
+        for segmento, fracao in _segmentos_anatomicos(row["exercise_name"], exercise_groups):
+            grupos[segmento]["grupo"] = segmento
+            grupos[segmento]["volume"] += volume * fracao
+            grupos[segmento]["series"] += int(row["sets"])
 
     volume_por_sessao = list(sessoes.values())
     for sessao in volume_por_sessao:
@@ -310,8 +884,8 @@ def _calcular_mapa_muscular(sessao, muscle_groups):
     volumes = defaultdict(float)
     for log in sessao["logs"]:
         grupos = muscle_groups.get(log["nome"], [])
-        for grupo in grupos:
-            volumes[grupo["muscle_group"]] += log["volume"]
+        for segmento, fracao in _segmentos_anatomicos(log["nome"], grupos):
+            volumes[segmento] += log["volume"] * fracao
 
     volume_maximo = max(volumes.values(), default=0.0)
     return {
@@ -333,6 +907,37 @@ def _calcular_mapa_muscular(sessao, muscle_groups):
 def _grupo_muscular(nome):
     groups = db_ops.get_muscle_groups(nome)
     return groups[0]["muscle_group"] if groups else "Outros"
+
+
+def _segmentos_anatomicos(exercise_name, groups):
+    pesos_diretos = SEGMENTOS_DIRETOS_POR_EXERCICIO.get(exercise_name)
+    if pesos_diretos:
+        total = sum(pesos_diretos.values()) or 1
+        return [
+            (segmento, peso / total)
+            for segmento, peso in pesos_diretos.items()
+        ]
+
+    if not groups:
+        return [("Outros", 1.0)]
+
+    segmentos = []
+    pesos_exercicio = SEGMENTOS_POR_EXERCICIO.get(exercise_name, {})
+    for group in groups:
+        nome = group["muscle_group"]
+        pesos_grupo = pesos_exercicio.get(nome)
+        if pesos_grupo:
+            total = sum(pesos_grupo.values()) or 1
+            segmentos.extend(
+                (segmento, peso / total)
+                for segmento, peso in pesos_grupo.items()
+            )
+            continue
+
+        partes = SEGMENTOS_ANATOMICOS_POR_GRUPO.get(nome, (nome,))
+        fracao = 1 / len(partes)
+        segmentos.extend((parte, fracao) for parte in partes)
+    return segmentos
 
 
 def _parse_data(data_iso):
@@ -535,12 +1140,11 @@ def _calcular_analises(sessoes, exercicios):
             if log["rpe"] is not None:
                 rpe_distribuicao[str(int(round(log["rpe"])))] += 1
             groups = muscle_groups.get(log["nome"], [])
-            group_names = [item["muscle_group"] for item in groups] or ["Outros"]
-            for grupo in group_names:
-                chave = (periodo, grupo)
+            for segmento, fracao in _segmentos_anatomicos(log["nome"], groups):
+                chave = (periodo, segmento)
                 volume_grupo_semana[chave]["periodo"] = periodo
-                volume_grupo_semana[chave]["grupo"] = grupo
-                volume_grupo_semana[chave]["volume"] += log["volume"]
+                volume_grupo_semana[chave]["grupo"] = segmento
+                volume_grupo_semana[chave]["volume"] += log["volume"] * fracao
 
     for item in exercicios:
         ultimo = item["pontos"][-1]
@@ -663,7 +1267,12 @@ def _render_mapa_muscular(mapa):
     }
 
     def render_vista(vista):
-        muscles = dados_anatomicos[vista]
+        muscles = [
+            musculo
+            for musculo in dados_anatomicos[vista]
+            if musculo["id"] not in MUSCULOS_SUBSTITUIDOS
+        ]
+        muscles.extend(MUSCULOS_SUBSTITUTOS_POR_VISTA.get(vista, ()))
         if vista == "front":
             vb = "0 0 32 93"
             label = "anterior"
@@ -712,11 +1321,14 @@ def _render_mapa_muscular(mapa):
           </div>
         """
 
-    _GRUPOS_ANTERIOR = {"Peitoral", "Deltoide anterior", "Deltoide lateral", "Biceps", "Antebraco", "Core", "Quadriceps"}
-    _GRUPOS_POSTERIOR = {"Dorsais", "Trapezio", "Deltoide posterior", "Triceps", "Gluteos", "Posteriores"}
-
-    vol_ant = sum(item["volume"] for item in mapa["grupos"] if item["grupo"] in _GRUPOS_ANTERIOR)
-    vol_pos = sum(item["volume"] for item in mapa["grupos"] if item["grupo"] in _GRUPOS_POSTERIOR)
+    vol_ant = sum(
+        item["volume"] for item in mapa["grupos"]
+        if item["grupo"] in SEGMENTOS_ANTERIORES
+    )
+    vol_pos = sum(
+        item["volume"] for item in mapa["grupos"]
+        if item["grupo"] in SEGMENTOS_POSTERIORES
+    )
 
     anterior = render_vista("front")
     posterior = render_vista("back")
