@@ -134,7 +134,7 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
 - 7 indicadores de resumo, incluindo peso corporal atual e variacao recente
 - grafico de evolucao do volume por sessao
-- mapa muscular anterior e posterior da ultima sessao com gradiente azul-amarelo-vermelho proporcional ao volume
+- mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - carga, RPE e 1RM estimado (Epley) por exercicio
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
@@ -147,9 +147,13 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
 O mapa muscular renderiza os paths vetoriais de
 [`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,
-sob Apache-2.0, numa SVG unica por vista. Os SVGs anatomicos de Termininja
-(CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`. A atribuicao e
-as licencas ficam em `docs/licencas/`.
+sob Apache-2.0, numa SVG unica por vista. Grupos amplos do catalogo, como
+peitoral, dorsais, trapezio, biceps, triceps, antebraco, core, quadriceps,
+gluteos e posteriores, sao distribuidos em segmentos anatomicos para o desenho
+e a legenda lateral. Quando houver regra especifica para o exercicio, o
+dashboard usa pesos por segmento em vez de dividir tudo igualmente. Os
+SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em
+`forja_de_ferro/assets/`. A atribuicao e as licencas ficam em `docs/licencas/`.
 
 ## Extrair Frames De Video
 

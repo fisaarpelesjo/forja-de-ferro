@@ -174,10 +174,15 @@ compara os totais diarios de calorias, proteina, carboidrato e gordura com as
 metas cadastradas.
 
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
-dos exercicios da ultima sessao para cada grupo associado. A opacidade vermelha
-e normalizada pelo grupo de maior volume daquele treino; uma regiao sem volume
-fica transparente. O desenho representa volume atribuido pelo catalogo, nao
-ativacao muscular medida, recrutamento por EMG ou estimativa de hipertrofia.
+dos exercicios da ultima sessao para cada grupo associado. No dashboard, grupos
+amplos como peitoral, dorsais, trapezio, biceps, triceps, antebraco, core,
+quadriceps, gluteos e posteriores sao distribuidos em segmentos anatomicos
+visuais para o desenho e a legenda lateral. Quando houver regra especifica para
+o exercicio, o dashboard usa pesos por segmento em vez de dividir o grupo
+igualmente. A opacidade vermelha e normalizada pelo segmento de maior volume
+daquele treino; uma regiao sem volume fica transparente. O desenho
+representa volume atribuido pelo catalogo, nao ativacao muscular medida,
+recrutamento por EMG ou estimativa de hipertrofia.
 As regioes musculares sao renderizadas diretamente dos paths vetoriais de
 `body-muscles`, de Ivan Vulovic, sob Apache-2.0, numa SVG unica por vista.
 Os SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em

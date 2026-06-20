@@ -193,9 +193,11 @@ Dashboard local de volume de treino.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.
-- O mapa muscular usa `exercise_muscle_groups`, deixa regioes sem treino
-  transparentes e aumenta a opacidade vermelha conforme o volume relativo da
-  ultima sessao. Ele representa volume atribuido, nao ativacao muscular medida.
+- O mapa muscular usa `exercise_muscle_groups`, expande grupos amplos em
+  segmentos anatomicos visuais, deixa regioes sem treino transparentes e aumenta
+  a opacidade vermelha conforme o volume relativo da ultima sessao. Ele
+  usa pesos por exercicio quando houver regra especifica e representa volume
+  atribuido, nao ativacao muscular medida.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
   `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
   Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
