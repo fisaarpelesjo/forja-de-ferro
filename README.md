@@ -149,8 +149,8 @@ O mapa muscular renderiza os paths vetoriais de
 [`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,
 sob Apache-2.0, numa SVG unica por vista. Grupos amplos do catalogo, como
 peitoral, dorsais, trapezio, biceps, triceps, antebraco, core, quadriceps,
-gluteos e posteriores, sao distribuidos em segmentos anatomicos para o desenho
-e a legenda lateral. Quando houver regra especifica para o exercicio, o
+adutores, gluteos e posteriores, sao distribuidos em segmentos anatomicos para
+o desenho e a legenda lateral. Quando houver regra especifica para o exercicio, o
 dashboard usa pesos por segmento em vez de dividir tudo igualmente. Os
 SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em
 `forja_de_ferro/assets/`. A atribuicao e as licencas ficam em `docs/licencas/`.

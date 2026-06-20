@@ -176,7 +176,7 @@ metas cadastradas.
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
 dos exercicios da ultima sessao para cada grupo associado. No dashboard, grupos
 amplos como peitoral, dorsais, trapezio, biceps, triceps, antebraco, core,
-quadriceps, gluteos e posteriores sao distribuidos em segmentos anatomicos
+quadriceps, adutores, gluteos e posteriores sao distribuidos em segmentos anatomicos
 visuais para o desenho e a legenda lateral. Quando houver regra especifica para
 o exercicio, o dashboard usa pesos por segmento em vez de dividir o grupo
 igualmente. A opacidade vermelha e normalizada pelo segmento de maior volume

@@ -67,7 +67,8 @@ MUSCLE_IDS_BY_GROUP = {
     "Quadriceps lateral": ("quads-lateral-left", "quads-lateral-right"),
     "Quadriceps central": ("quads-central-left", "quads-central-right"),
     "Quadriceps medial": ("quads-medial-left", "quads-medial-right"),
-    "Adutores": ("adductors-left", "adductors-right"),
+    "Adutores proximais": ("adductors-proximal-left", "adductors-proximal-right"),
+    "Adutores distais": ("adductors-distal-left", "adductors-distal-right"),
     "Gluteo medio": (
         "gluteus-medius-left",
         "gluteus-medius-right",
@@ -259,7 +260,8 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Quadriceps medial": 0.21,
         "Gluteo maximo": 0.20,
         "Gluteo medio": 0.07,
-        "Adutores": 0.06,
+        "Adutores proximais": 0.035,
+        "Adutores distais": 0.025,
         "Eretores lombares": 0.04,
         "Abdomen superior": 0.01,
         "Abdomen inferior": 0.01,
@@ -271,7 +273,8 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Quadriceps medial": 0.20,
         "Gluteo maximo": 0.15,
         "Gluteo medio": 0.05,
-        "Adutores": 0.08,
+        "Adutores proximais": 0.045,
+        "Adutores distais": 0.035,
         "Eretores lombares": 0.05,
         "Abdomen superior": 0.03,
         "Abdomen inferior": 0.02,
@@ -283,14 +286,16 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Quadriceps medial": 0.20,
         "Gluteo maximo": 0.15,
         "Gluteo medio": 0.05,
-        "Adutores": 0.08,
+        "Adutores proximais": 0.045,
+        "Adutores distais": 0.035,
         "Eretores lombares": 0.05,
         "Abdomen superior": 0.03,
         "Abdomen inferior": 0.02,
         "Obliquos": 0.05,
     },
     "Agachamento sumô com barra à frente": {
-        "Adutores": 0.35,
+        "Adutores proximais": 0.21,
+        "Adutores distais": 0.14,
         "Quadriceps lateral": 0.10,
         "Quadriceps central": 0.15,
         "Quadriceps medial": 0.20,
@@ -443,7 +448,8 @@ SEGMENTOS_ANTERIORES = {
     "Quadriceps lateral",
     "Quadriceps central",
     "Quadriceps medial",
-    "Adutores",
+    "Adutores proximais",
+    "Adutores distais",
 }
 
 SEGMENTOS_POSTERIORES = {
@@ -641,6 +647,40 @@ MUSCULOS_SUBSTITUTOS_POR_VISTA = {
                 "-0.15504,-7.18801 z"
             ),
         },
+        {
+            "id": "adductors-proximal-left",
+            "nome": "Adutores proximais esquerdos",
+            "caminho": (
+                "m 22.063225,39.369605 v 4.21363 l -2.94574,5.82511 "
+                "-1.86027,5.78349 0.19365,-4.0072 z"
+            ),
+        },
+        {
+            "id": "adductors-distal-left",
+            "nome": "Adutores distais esquerdos",
+            "caminho": (
+                "M 18.813785,52.795565 l -0.0649,0.15467 "
+                "-1.21294,2.90207 0.78325,7.18803 1.23619,-0.66122 "
+                "-1.0714,-6.69272 z"
+            ),
+        },
+        {
+            "id": "adductors-proximal-right",
+            "nome": "Adutores proximais direitos",
+            "caminho": (
+                "m 9.6258251,39.369415 v 4.21363 l 2.9451699,5.8253 "
+                "1.86028,5.78349 -0.19366,-4.0072 z"
+            ),
+        },
+        {
+            "id": "adductors-distal-right",
+            "nome": "Adutores distais direitos",
+            "caminho": (
+                "M 12.874695,52.795005 l 0.0647,0.15485 "
+                "1.21294,2.90207 -0.78307,7.18803 -1.23618,-0.66102 "
+                "1.0714,-6.69273 z"
+            ),
+        },
     ),
 }
 
@@ -655,6 +695,8 @@ MUSCULOS_SUBSTITUIDOS = {
     "forearm-right",
     "quads-left",
     "quads-right",
+    "adductors-left",
+    "adductors-right",
 }
 
 def _connect():
