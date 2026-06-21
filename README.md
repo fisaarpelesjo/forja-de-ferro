@@ -135,13 +135,17 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 - 7 indicadores de resumo, incluindo peso corporal atual e variacao recente
 - grafico de evolucao do volume por sessao
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
+- equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes
+- calendario de carga das ultimas sessoes
 - carga, RPE e 1RM estimado (Epley) por exercicio
 - comparacao da ultima sessao com a anterior
 - grupos musculares por volume e series
 - volume semanal
-- maiores evolucoes de carga e volume, quedas e recordes pessoais
+- maiores evolucoes de carga e volume, quedas, recordes pessoais e PRs expandidos
+- grafico de carga vs. RPE por exercicio
 - alertas simples com sinais de consolidacao
-- filtros rapidos por periodo, exercicio e ordenacao
+- filtros rapidos por periodo, exercicio, segmento anatomico e ordenacao
+- relatorio semanal local com volume, RPE, segmentos principais e observacoes
 - dieta atual no final da pagina, com alimentos repetidos consolidados
 - totais de calorias e macros comparados com as metas diarias
 

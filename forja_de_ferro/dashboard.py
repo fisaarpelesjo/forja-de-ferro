@@ -772,6 +772,11 @@ def carregar_dados():
             "um_rm": _estimar_1rm(float(row["weight"]), int(row["reps"])),
             "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
         }
+        exercise_groups = muscle_groups.get(row["exercise_name"], [])
+        log["segmentos"] = [
+            segmento
+            for segmento, _fracao in _segmentos_anatomicos(row["exercise_name"], exercise_groups)
+        ]
         sessao["logs"].append(log)
         exercicios[row["exercise_name"]].append(
             {
@@ -786,7 +791,6 @@ def carregar_dados():
                 "rpe": float(row["rpe"]) if row["rpe"] is not None else None,
             }
         )
-        exercise_groups = muscle_groups.get(row["exercise_name"], [])
         for segmento, fracao in _segmentos_anatomicos(row["exercise_name"], exercise_groups):
             grupos[segmento]["grupo"] = segmento
             grupos[segmento]["volume"] += volume * fracao
@@ -860,11 +864,15 @@ def carregar_dados():
         ),
         "mapa_ultima_sessao": mapa_ultima_sessao,
         "prs": _calcular_prs(volume_por_exercicio),
+        "prs_expandidos": _calcular_prs_expandidos(volume_por_exercicio),
         "alertas": _calcular_alertas(volume_por_sessao, volume_por_exercicio),
         "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
         "media_movel": _calcular_media_movel(volume_por_sessao),
         "consistencia": _calcular_consistencia(volume_por_sessao),
         "analises": _calcular_analises(volume_por_sessao, volume_por_exercicio),
+        "equilibrio_muscular": _calcular_equilibrio_muscular(mapa_ultima_sessao),
+        "heatmap_sessoes": _calcular_heatmap_sessoes(volume_por_sessao),
+        "relatorio_semanal": _calcular_relatorio_semanal(volume_por_sessao, mapa_ultima_sessao),
         "dieta": _carregar_dieta(),
         "peso_corporal": _carregar_peso_corporal(),
     }
@@ -1103,6 +1111,174 @@ def _calcular_prs(exercicios):
             }
         )
     return sorted(prs, key=lambda item: item["melhor_volume"], reverse=True)
+
+
+def _calcular_prs_expandidos(exercicios):
+    prs = []
+    for item in exercicios:
+        pontos = item["pontos"]
+        melhor_carga = max(pontos, key=lambda p: p["carga"])
+        melhor_volume = max(pontos, key=lambda p: p["volume"])
+        melhor_1rm = max(pontos, key=lambda p: p["um_rm"])
+        melhor_eficiencia = None
+
+        pontos_com_rpe = [p for p in pontos if p["rpe"] is not None]
+        for anterior, atual in zip(pontos_com_rpe, pontos_com_rpe[1:]):
+            if atual["carga"] == anterior["carga"] and atual["rpe"] < anterior["rpe"]:
+                delta = anterior["rpe"] - atual["rpe"]
+                if melhor_eficiencia is None or delta > melhor_eficiencia["delta_rpe"]:
+                    melhor_eficiencia = {
+                        "data": atual["data"],
+                        "carga": atual["carga"],
+                        "rpe_anterior": anterior["rpe"],
+                        "rpe_atual": atual["rpe"],
+                        "delta_rpe": delta,
+                    }
+
+        prs.append(
+            {
+                "nome": item["nome"],
+                "melhor_carga": melhor_carga["carga"],
+                "data_carga": melhor_carga["data"],
+                "melhor_volume": melhor_volume["volume"],
+                "data_volume": melhor_volume["data"],
+                "melhor_1rm": melhor_1rm["um_rm"],
+                "data_1rm": melhor_1rm["data"],
+                "melhor_eficiencia": melhor_eficiencia,
+            }
+        )
+    return sorted(prs, key=lambda item: item["melhor_1rm"], reverse=True)
+
+
+def _volume_por_grupo(mapa):
+    return {item["grupo"]: item["volume"] for item in mapa.get("grupos", [])}
+
+
+def _calcular_equilibrio_muscular(mapa):
+    volumes = _volume_por_grupo(mapa)
+
+    def soma(grupos):
+        return sum(volumes.get(grupo, 0.0) for grupo in grupos)
+
+    relacoes = [
+        {
+            "nome": "Anterior vs posterior",
+            "a": "Anterior",
+            "b": "Posterior",
+            "volume_a": soma(SEGMENTOS_ANTERIORES),
+            "volume_b": soma(SEGMENTOS_POSTERIORES),
+        },
+        {
+            "nome": "Empurrar vs puxar",
+            "a": "Empurrar",
+            "b": "Puxar",
+            "volume_a": soma({
+                "Peitoral superior", "Peitoral inferior", "Deltoide anterior",
+                "Deltoide lateral", "Triceps cabeca longa", "Triceps cabeca lateral",
+                "Serratil anterior",
+            }),
+            "volume_b": soma({
+                "Dorsal superior", "Dorsal medio", "Dorsal inferior",
+                "Trapezio superior", "Trapezio medio", "Trapezio inferior",
+                "Deltoide posterior", "Biceps cabeca longa", "Biceps cabeca curta",
+                "Biceps distal",
+            }),
+        },
+        {
+            "nome": "Quadriceps vs posteriores",
+            "a": "Quadriceps",
+            "b": "Posteriores",
+            "volume_a": soma({"Quadriceps lateral", "Quadriceps central", "Quadriceps medial"}),
+            "volume_b": soma({"Posteriores mediais", "Posteriores laterais"}),
+        },
+        {
+            "nome": "Peitoral vs costas",
+            "a": "Peitoral",
+            "b": "Costas",
+            "volume_a": soma({"Peitoral superior", "Peitoral inferior"}),
+            "volume_b": soma({
+                "Dorsal superior", "Dorsal medio", "Dorsal inferior",
+                "Trapezio superior", "Trapezio medio", "Trapezio inferior",
+            }),
+        },
+        {
+            "nome": "Deltoide anterior vs posterior",
+            "a": "Anterior",
+            "b": "Posterior",
+            "volume_a": soma({"Deltoide anterior"}),
+            "volume_b": soma({"Deltoide posterior"}),
+        },
+        {
+            "nome": "Deltoide lateral vs demais",
+            "a": "Lateral",
+            "b": "Ant/Post",
+            "volume_a": soma({"Deltoide lateral"}),
+            "volume_b": soma({"Deltoide anterior", "Deltoide posterior"}),
+        },
+    ]
+
+    for item in relacoes:
+        total = item["volume_a"] + item["volume_b"]
+        item["percentual_a"] = item["volume_a"] / total * 100 if total else None
+        item["percentual_b"] = item["volume_b"] / total * 100 if total else None
+        item["razao"] = item["volume_a"] / item["volume_b"] if item["volume_b"] else None
+    return relacoes
+
+
+def _calcular_heatmap_sessoes(sessoes):
+    if not sessoes:
+        return []
+
+    max_volume = max(sessao["volume"] for sessao in sessoes) or 1
+    return [
+        {
+            "data": sessao["data"],
+            "volume": sessao["volume"],
+            "rpe_medio": sessao["rpe_medio"],
+            "intensidade": sessao["volume"] / max_volume,
+        }
+        for sessao in sessoes[-42:]
+    ]
+
+
+def _calcular_relatorio_semanal(sessoes, mapa):
+    if not sessoes:
+        return {
+            "periodo": "-",
+            "sessoes": 0,
+            "volume": 0.0,
+            "rpe_medio": None,
+            "segmentos": [],
+            "observacoes": ["Sem sessoes registradas."],
+        }
+
+    ultima_data = _parse_data(sessoes[-1]["data"])
+    ano, semana, _ = ultima_data.isocalendar()
+    inicio_semana = date.fromisocalendar(ano, semana, 1)
+    sessoes_semana = [
+        sessao for sessao in sessoes
+        if _parse_data(sessao["data"]) >= inicio_semana
+    ]
+    rpes = [sessao["rpe_medio"] for sessao in sessoes_semana if sessao["rpe_medio"] is not None]
+    segmentos = mapa.get("grupos", [])[:8]
+    observacoes = []
+    if rpes and sum(rpes) / len(rpes) >= 9:
+        observacoes.append("RPE medio semanal alto; avaliar recuperacao antes de subir muitas cargas.")
+    if segmentos:
+        observacoes.append(
+            f"Segmento mais carregado na ultima sessao: {segmentos[0]['grupo']}."
+        )
+    if not observacoes:
+        observacoes.append("Semana sem alertas simples de volume ou RPE.")
+
+    return {
+        "periodo": f"{inicio_semana.isoformat()} a {date.fromordinal(inicio_semana.toordinal() + 6).isoformat()}",
+        "sessoes": len(sessoes_semana),
+        "volume": sum(sessao["volume"] for sessao in sessoes_semana),
+        "rpe_medio": sum(rpes) / len(rpes) if rpes else None,
+        "segmentos": segmentos,
+        "observacoes": observacoes,
+    }
 
 
 def _calcular_top_evolucoes(exercicios):
@@ -1637,6 +1813,140 @@ def _render_barras_simples(itens, chave_rotulo, chave_valor, unidade=""):
     return "\n".join(barras)
 
 
+def _render_equilibrio(relacoes):
+    if not relacoes:
+        return "<p class=\"vazio\">Sem dados suficientes.</p>"
+
+    linhas = []
+    for item in relacoes:
+        total = item["volume_a"] + item["volume_b"]
+        pct_a = item["percentual_a"] if item["percentual_a"] is not None else 50
+        pct_b = item["percentual_b"] if item["percentual_b"] is not None else 50
+        texto_razao = (
+            f"{item['razao']:.2f}:1".replace(".", ",")
+            if item["razao"] is not None
+            else "-"
+        )
+        linhas.append(
+            f"""
+            <div class="equilibrio-item">
+              <div>
+                <strong>{html.escape(item["nome"])}</strong>
+                <span>{html.escape(item["a"])} {_fmt_numero(item["volume_a"])} kg | {html.escape(item["b"])} {_fmt_numero(item["volume_b"])} kg | {texto_razao}</span>
+              </div>
+              <div class="equilibrio-barra" title="{html.escape(item['nome'])}">
+                <i style="width:{pct_a:.1f}%"></i><b style="width:{pct_b:.1f}%"></b>
+              </div>
+            </div>
+            """
+        )
+    return "\n".join(linhas)
+
+
+def _render_prs_expandidos(prs):
+    return _linhas_tabela(
+        prs[:10],
+        [
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg em {html.escape(item['data_carga'])}"},
+            {"valor": lambda item: f"{_fmt_numero(item['melhor_volume'])} kg em {html.escape(item['data_volume'])}"},
+            {"valor": lambda item: f"{_fmt_decimal(item['melhor_1rm'])} kg em {html.escape(item['data_1rm'])}"},
+            {
+                "valor": lambda item: (
+                    f"{_fmt_decimal(item['melhor_eficiencia']['carga'])} kg: "
+                    f"RPE {_fmt_decimal(item['melhor_eficiencia']['rpe_anterior'])} -> "
+                    f"{_fmt_decimal(item['melhor_eficiencia']['rpe_atual'])}"
+                    if item["melhor_eficiencia"] else "-"
+                )
+            },
+        ],
+    )
+
+
+def _render_carga_rpe(pontos):
+    if not pontos:
+        return "<p class=\"vazio\">Sem RPE registrado.</p>"
+    width, height, padding = 760, 320, 44
+    pontos_validos = [p for p in pontos if p["rpe"] is not None]
+    if not pontos_validos:
+        return "<p class=\"vazio\">Sem RPE registrado.</p>"
+
+    cargas = [p["carga"] for p in pontos_validos]
+    rpes = [p["rpe"] for p in pontos_validos]
+    min_carga, max_carga = min(cargas), max(cargas)
+    min_rpe, max_rpe = min(rpes), max(rpes)
+    span_carga = max(max_carga - min_carga, 1)
+    span_rpe = max(max_rpe - min_rpe, 1)
+    circulos = []
+    for ponto in pontos_validos[:30]:
+        x = padding + ((ponto["carga"] - min_carga) / span_carga) * (width - padding * 2)
+        y = height - padding - ((ponto["rpe"] - min_rpe) / span_rpe) * (height - padding * 2)
+        titulo = (
+            f"{ponto['nome']}: {_fmt_decimal(ponto['carga'])} kg, "
+            f"RPE {_fmt_decimal(ponto['rpe'])}"
+        )
+        circulos.append(
+            f"""
+            <circle class="ponto-analise" cx="{x:.1f}" cy="{y:.1f}" r="5">
+              <title>{html.escape(titulo)}</title>
+            </circle>
+            <text class="rotulo-data" x="{x:.1f}" y="{y + 17:.1f}" text-anchor="middle">{html.escape(ponto['nome'][:12])}</text>
+            """
+        )
+    return f"""
+    <svg viewBox="0 0 {width} {height}" role="img" aria-label="Dispersao de carga por RPE">
+      <line class="eixo" x1="{padding}" y1="{height - padding}" x2="{width - padding}" y2="{height - padding}"></line>
+      <line class="eixo" x1="{padding}" y1="{padding}" x2="{padding}" y2="{height - padding}"></line>
+      <text class="rotulo-data" x="{width - padding}" y="{height - 10}" text-anchor="end">carga</text>
+      <text class="rotulo-data" x="{padding}" y="20" text-anchor="start">RPE</text>
+      {''.join(circulos)}
+    </svg>
+    """
+
+
+def _render_heatmap_sessoes(itens):
+    if not itens:
+        return "<p class=\"vazio\">Sem sessoes registradas.</p>"
+    blocos = []
+    for item in itens:
+        cor = _cor_mapa_calor(item["intensidade"])
+        titulo = (
+            f"{item['data']} - volume {_fmt_numero(item['volume'])} kg"
+            f" - RPE {_fmt_decimal(item['rpe_medio'])}"
+        )
+        blocos.append(
+            f"""
+            <div class="heatmap-dia" style="background:{cor}" title="{html.escape(titulo)}">
+              <span>{html.escape(item['data'][5:])}</span>
+            </div>
+            """
+        )
+    return '<div class="heatmap-sessoes">' + "\n".join(blocos) + "</div>"
+
+
+def _render_relatorio_semanal(relatorio):
+    segmentos = "".join(
+        f"<li>{html.escape(item['grupo'])}: {_fmt_numero(item['volume'])} kg</li>"
+        for item in relatorio["segmentos"][:5]
+    )
+    observacoes = "".join(
+        f"<li>{html.escape(item)}</li>"
+        for item in relatorio["observacoes"]
+    )
+    return f"""
+    <div class="relatorio-semanal">
+      <div class="relatorio-card"><span class="rotulo">Periodo</span><strong>{html.escape(relatorio['periodo'])}</strong></div>
+      <div class="relatorio-card"><span class="rotulo">Sessoes</span><strong>{relatorio['sessoes']}</strong></div>
+      <div class="relatorio-card"><span class="rotulo">Volume</span><strong>{_fmt_numero(relatorio['volume'])} kg</strong></div>
+      <div class="relatorio-card"><span class="rotulo">RPE medio</span><strong>{_fmt_decimal(relatorio['rpe_medio'])}</strong></div>
+    </div>
+    <h3>Segmentos principais</h3>
+    <ul class="lista">{segmentos or '<li>Sem segmentos registrados.</li>'}</ul>
+    <h3>Observacoes</h3>
+    <ul class="lista">{observacoes}</ul>
+    """
+
+
 def _render_dispersao_volume_rpe(pontos):
     if not pontos:
         return "<p class=\"vazio\">Sem RPE registrado para cruzar com volume.</p>"
@@ -1677,6 +1987,11 @@ def gerar_html(dados):
     rotulos_linha = _rotulos_linha(pontos_linha, sessoes)
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
+    grupos_filtro = sorted({item["grupo"] for item in dados["grupos_musculares"]})
+    opcoes_grupos = '<option value="">Todos</option>' + "".join(
+        f'<option value="{html.escape(grupo, quote=True)}">{html.escape(grupo)}</option>'
+        for grupo in grupos_filtro
+    )
     mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
     resumo_dieta = _render_resumo_dieta(dados["dieta"])
     itens_dieta = _render_itens_dieta(dados["dieta"])
@@ -1748,6 +2063,7 @@ def gerar_html(dados):
         ],
     )
     tabela_semanal = _render_periodos(dados["volume_semanal"])
+    tabela_prs_expandidos = _render_prs_expandidos(dados["prs_expandidos"])
     tabela_prs = _linhas_tabela(
         dados["prs"][:10],
         [
@@ -1796,6 +2112,10 @@ def gerar_html(dados):
             },
         ],
     )
+    equilibrio_muscular = _render_equilibrio(dados["equilibrio_muscular"])
+    carga_rpe = _render_carga_rpe(dados["analises"]["carga_rpe_exercicio"])
+    heatmap_sessoes = _render_heatmap_sessoes(dados["heatmap_sessoes"])
+    relatorio_semanal = _render_relatorio_semanal(dados["relatorio_semanal"])
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -1972,6 +2292,52 @@ def gerar_html(dados):
       font-weight: 700;
       text-align: right;
     }}
+    .equilibrio-item {{
+      display: grid;
+      gap: 7px;
+      border-bottom: 1px solid var(--linha);
+      padding: 9px 0;
+      font-size: 12px;
+    }}
+    .equilibrio-item strong {{ display: block; color: var(--texto); }}
+    .equilibrio-item span {{ color: var(--muted); }}
+    .equilibrio-barra {{
+      display: flex;
+      height: 10px;
+      background: var(--fundo);
+      border: 1px solid var(--linha);
+    }}
+    .equilibrio-barra i, .equilibrio-barra b {{ display: block; height: 100%; }}
+    .equilibrio-barra i {{ background: var(--vermelho); }}
+    .equilibrio-barra b {{ background: var(--azul); }}
+    .ponto-analise {{ fill: var(--fundo); stroke: var(--vermelho); stroke-width: 2; }}
+    .heatmap-sessoes {{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+      gap: 6px;
+    }}
+    .heatmap-dia {{
+      min-height: 36px;
+      border: 1px solid var(--linha);
+      display: grid;
+      place-items: center;
+      color: #0c0c0c;
+      font-size: 10px;
+      font-weight: 700;
+    }}
+    .relatorio-semanal {{
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }}
+    .relatorio-card {{
+      background: var(--painel-2);
+      border: 1px solid var(--linha);
+      padding: 10px;
+    }}
+    .relatorio-card strong {{ display: block; color: var(--texto); font-size: 14px; }}
+    .oculto {{ display: none; }}
     table {{
       width: 100%;
       border-collapse: collapse;
@@ -2103,6 +2469,7 @@ def gerar_html(dados):
       h1 {{ font-size: 28px; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
       .grade-dieta {{ grid-template-columns: 1fr; }}
+      .relatorio-semanal {{ grid-template-columns: 1fr 1fr; }}
     }}
     @media (max-width: 560px) {{
       main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }}
@@ -2111,6 +2478,7 @@ def gerar_html(dados):
       th, td {{ font-size: 13px; padding: 10px 4px; }}
       .filtros {{ grid-template-columns: 1fr; }}
       .mapa-vistas {{ gap: 10px; }}
+      .relatorio-semanal {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
@@ -2176,6 +2544,23 @@ def gerar_html(dados):
       </div>
       {mapa_muscular}
     </article>
+
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Equilibrio muscular</h2>
+          <span>relacoes da ultima sessao</span>
+        </div>
+        {equilibrio_muscular}
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Calendario de carga</h2>
+          <span>ultimas sessoes</span>
+        </div>
+        {heatmap_sessoes}
+      </article>
+    </section>
 
     <section class="duas-colunas">
       <article class="painel">
@@ -2248,6 +2633,26 @@ def gerar_html(dados):
       </article>
     </section>
 
+    <section class="duas-colunas">
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>PRs expandidos</h2>
+          <span>carga, volume, 1RM e eficiencia</span>
+        </div>
+        <table>
+          <thead><tr><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM est.</th><th>Eficiencia</th></tr></thead>
+          <tbody>{tabela_prs_expandidos}</tbody>
+        </table>
+      </article>
+      <article class="painel">
+        <div class="linha-topo">
+          <h2>Carga vs RPE</h2>
+          <span>ultima entrada por exercicio</span>
+        </div>
+        {carga_rpe}
+      </article>
+    </section>
+
     <article class="painel">
       <div class="linha-topo">
         <h2>Alertas</h2>
@@ -2275,11 +2680,17 @@ def gerar_html(dados):
             {opcoes_exercicios}
           </select>
         </label>
+        <label>Segmento
+          <select id="filtro-grupo">
+            {opcoes_grupos}
+          </select>
+        </label>
         <label>Ordenar
           <select id="filtro-ordem">
             <option value="data">Data</option>
             <option value="volume">Volume</option>
             <option value="carga">Carga</option>
+            <option value="rpe">RPE</option>
           </select>
         </label>
       </div>
@@ -2287,6 +2698,14 @@ def gerar_html(dados):
         <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
         <tbody id="tabela-filtrada"></tbody>
       </table>
+    </article>
+
+    <article class="painel">
+      <div class="linha-topo">
+        <h2>Relatorio semanal</h2>
+        <span>resumo local</span>
+      </div>
+      {relatorio_semanal}
     </article>
 
     <article class="painel">
@@ -2310,12 +2729,14 @@ def gerar_html(dados):
     const fmtDecimal = (valor) => valor == null ? "-" : Number(valor).toLocaleString("pt-BR", {{ maximumFractionDigits: 1 }});
     const filtroPeriodo = document.getElementById("filtro-periodo");
     const filtroExercicio = document.getElementById("filtro-exercicio");
+    const filtroGrupo = document.getElementById("filtro-grupo");
     const filtroOrdem = document.getElementById("filtro-ordem");
     const tabelaFiltrada = document.getElementById("tabela-filtrada");
 
     function renderFiltrada() {{
       const dias = filtroPeriodo.value;
       const exercicio = filtroExercicio.value;
+      const grupo = filtroGrupo.value;
       const ordem = filtroOrdem.value;
       const datas = linhas.map((linha) => new Date(linha.data + "T00:00:00"));
       const dataMax = datas.length ? new Date(Math.max(...datas)) : null;
@@ -2323,11 +2744,13 @@ def gerar_html(dados):
         const noPeriodo = dias === "todos" || !dataMax ||
           ((dataMax - new Date(linha.data + "T00:00:00")) / 86400000) <= Number(dias);
         const noExercicio = !exercicio || linha.nome === exercicio;
-        return noPeriodo && noExercicio;
+        const noGrupo = !grupo || (linha.segmentos || []).includes(grupo);
+        return noPeriodo && noExercicio && noGrupo;
       }});
       filtradas.sort((a, b) => {{
         if (ordem === "volume") return b.volume - a.volume;
         if (ordem === "carga") return b.carga - a.carga;
+        if (ordem === "rpe") return (b.rpe ?? -1) - (a.rpe ?? -1);
         return a.data.localeCompare(b.data);
       }});
       tabelaFiltrada.innerHTML = filtradas.slice(-40).map((linha) => `
@@ -2341,7 +2764,7 @@ def gerar_html(dados):
         </tr>
       `).join("") || "<tr><td colspan=\\"6\\">Sem registros nesse filtro.</td></tr>";
     }}
-    [filtroPeriodo, filtroExercicio, filtroOrdem].forEach((controle) =>
+    [filtroPeriodo, filtroExercicio, filtroGrupo, filtroOrdem].forEach((controle) =>
       controle.addEventListener("change", renderFiltrada)
     );
     renderFiltrada();

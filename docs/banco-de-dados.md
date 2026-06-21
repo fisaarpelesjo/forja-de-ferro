@@ -164,9 +164,10 @@ volume = sets x reps x weight
 `python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana
 e grupo muscular. O HTML exibe uma pagina unica rolavel com indicadores de resumo,
 grafico de evolucao, mapa muscular, carga e RPE e 1RM estimado por exercicio,
-comparacao da ultima sessao com a anterior, grupos musculares, volume semanal,
-maiores evolucoes, recordes pessoais, alertas simples, filtros rapidos e a
-dieta atual no final da pagina.
+comparacao da ultima sessao com a anterior, equilibrio muscular, calendario de
+carga, grupos musculares, volume semanal, maiores evolucoes, recordes pessoais,
+PRs expandidos, carga vs RPE, alertas simples, filtros rapidos por segmento,
+relatorio semanal e a dieta atual no final da pagina.
 
 A secao de dieta usa `diet_entries`, `foods` e `diet_targets`. Uma tabela unica
 consolida alimentos repetidos, somando quantidades, calorias e macros; o resumo

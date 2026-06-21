@@ -99,6 +99,10 @@ def main():
             assert dados["analises"]["volume_rpe_sessao"]
             assert dados["analises"]["rpe_distribuicao"]
             assert dados["analises"]["carga_rpe_exercicio"]
+            assert dados["equilibrio_muscular"]
+            assert dados["prs_expandidos"]
+            assert dados["heatmap_sessoes"]
+            assert dados["relatorio_semanal"]["sessoes"] > 0
             assert dados["mapa_ultima_sessao"]["data"] == "2026-05-08"
             assert len(dados["dieta"]["itens"]) == 2
             assert dados["dieta"]["itens"][0]["name"] == "Leite semidesnatado"
@@ -180,8 +184,14 @@ def main():
             assert "Carga, RPE e 1RM" in html
             assert "Ultima vs anterior" in html
             assert "Recordes pessoais" in html
+            assert "PRs expandidos" in html
+            assert "Carga vs RPE" in html
+            assert "Equilibrio muscular" in html
+            assert "Calendario de carga" in html
+            assert "Relatorio semanal" in html
             assert "Alertas" in html
             assert "Filtros rapidos" in html
+            assert 'id="filtro-grupo"' in html
             assert "Maiores evolucoes" in html
             assert "Grupos musculares" in html
             assert "Volume semanal" in html

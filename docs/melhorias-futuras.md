@@ -24,6 +24,92 @@ ou manter tarefas ja concluidas como se ainda fizessem parte da fila.
 
 ## Novas Propostas
 
+### Analises Avancadas Do Dashboard
+
+**Estado parcial:** foram entregues painel de equilibrio muscular, PRs
+expandidos, grafico de carga vs. RPE, filtro rapido por segmento anatomico,
+calendario/heatmap de sessoes e relatorio semanal local. Permanecem pendentes
+tendencias semanais por segmento, deteccao automatica de lacunas, fadiga
+acumulada, sugestao de proxima sessao, alvos semanais configuraveis e notas de
+tecnica/dor/amplitude.
+
+**Problema observado:** o dashboard ja mostra volume, RPE, mapa muscular e
+comparacoes basicas, mas ainda nao transforma esses dados em uma leitura
+integrada do equilibrio do programa, lacunas de treino, fadiga recente e
+proximas decisoes de progressao.
+
+**Comportamento esperado:**
+
+- mostrar tendencia semanal por grupo e segmento anatomico, com comparacao
+  contra a media recente
+- criar um painel de equilibrio muscular, comparando anterior vs. posterior,
+  empurrar vs. puxar, quadriceps vs. posteriores, peitoral vs. costas e
+  deltoide anterior/lateral/posterior
+- detectar lacunas do programa, como ausencia de puxada vertical, panturrilha,
+  core direto, rotadores externos ou excesso relativo de deltoide anterior
+- calcular um indicador descritivo de fadiga acumulada por segmento usando
+  volume recente, RPE e proximidade temporal, sem diagnostico clinico
+- sugerir a proxima sessao de forma conservadora, indicando quais exercicios
+  podem subir, manter ou exigir cautela com base em RPE, consolidacoes e
+  segmentos sobrecarregados
+- expandir recordes para maior carga, maior volume, melhor 1RM estimado e
+  melhor desempenho com a mesma carga e menor RPE
+- mostrar grafico de carga vs. RPE por exercicio para evidenciar consolidacao,
+  queda de esforco e possiveis travamentos
+- permitir definir alvos semanais por grupo ou segmento e exibir abaixo, no
+  alvo ou acima do intervalo planejado
+- adicionar filtros interativos por periodo, exercicio, grupo muscular e
+  segmento anatomico, usando JavaScript puro ou uma biblioteca leve quando isso
+  simplificar a manutencao
+- criar calendario/heatmap de sessoes por dia, com intensidade visual por
+  volume, RPE ou fadiga estimada
+- gerar um relatorio semanal em HTML ou PDF com volume, RPE, segmentos
+  treinados, recordes, lacunas e sugestoes
+- permitir notas de tecnica, dor, amplitude, execucao e observacoes por
+  exercicio ou sessao para contextualizar alertas que RPE e carga nao explicam
+  sozinhos
+
+**Impacto esperado:** transformar o dashboard de um painel descritivo em uma
+ferramenta de revisao do programa, ajudando a tomar decisoes sobre progressao,
+recuperacao, lacunas e equilibrio muscular sem adicionar atrito ao registro pelo
+Telegram.
+
+**Criterios objetivos de conclusao:**
+
+1. A tendencia por segmento mostra pelo menos volume semanal, media movel e
+   variacao percentual em periodo configuravel.
+2. O painel de equilibrio apresenta relacoes claras e auditaveis, sem rotular
+   automaticamente desequilibrio como lesao ou diagnostico.
+3. A deteccao de lacunas usa regras configuraveis e explica qual evidencia foi
+   usada para cada alerta.
+4. A fadiga acumulada informa formula, janela temporal e limitacoes, e evita
+   classificacoes clinicas.
+5. As sugestoes da proxima sessao mostram o motivo da recomendacao e nunca
+   aumentam carga automaticamente.
+6. Graficos interativos mantem o dashboard funcionando como HTML local sem
+   servidor obrigatorio.
+7. Exportacao semanal nao inclui segredos, caminhos locais sensiveis ou estado
+   temporario indevido.
+8. Notas de tecnica ficam persistidas em estrutura propria e sao opcionais no
+   fluxo normal.
+9. Testes cobrem os calculos centrais, dados ausentes, historico antigo,
+   configuracoes e renderizacao HTML.
+10. A documentacao diferencia volume atribuido, estimativas e observacoes
+    subjetivas de medidas fisiologicas reais.
+
+**Riscos e decisoes pendentes:**
+
+- decidir se graficos interativos usam JavaScript puro, Chart.js, Apache ECharts
+  ou outra biblioteca localmente empacotada
+- definir configuracao de alvos semanais sem tornar o banco ou o bot complexos
+- escolher uma formula simples e auditavel para fadiga acumulada, deixando claro
+  que ela e heuristica
+- evitar que sugestoes automaticas substituam julgamento sobre tecnica, dor,
+  sono, alimentacao e recuperacao
+- definir se relatorios PDF serao gerados por HTML local, navegador headless ou
+  biblioteca Python
+- projetar notas de tecnica sem poluir o registro rapido de carga e RPE
+
 ### Registro De Repeticoes Reais E Indicadores De Forca
 
 **Problema observado:** o sistema registra carga e RPE, mas presume que todas

@@ -185,9 +185,10 @@ Dashboard local de volume:
 - O HTML exibe uma pagina unica rolavel com indicadores de resumo, grafico de
   evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
-  anterior, grupos musculares, volume semanal, maiores evolucoes, recordes
-  pessoais, alertas, filtros rapidos, peso corporal atual e dieta atual no final
-  da pagina.
+  anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
+  semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
+  alertas, filtros rapidos por segmento, relatorio semanal, peso corporal atual
+  e dieta atual no final da pagina.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.
