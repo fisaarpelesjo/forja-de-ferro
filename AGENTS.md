@@ -17,6 +17,10 @@ backups validados.
 Teste direto das regras: `python tests/regras_treino_test.py`.
 Catalogo unico de comandos: `docs/comandos.md`.
 
+Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
+modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
+do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
+
 ## Padrao De Idioma
 
 O projeto deve ser o mais PT-BR possivel. Use portugues brasileiro como padrao

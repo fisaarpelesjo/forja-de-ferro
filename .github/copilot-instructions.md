@@ -19,6 +19,9 @@ Catalogo unico de comandos: `docs/comandos.md`.
 
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
+Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
+modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
+do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
 
 ## Padrao De Idioma
 
