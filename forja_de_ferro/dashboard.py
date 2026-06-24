@@ -875,6 +875,7 @@ def carregar_dados():
         "relatorio_semanal": _calcular_relatorio_semanal(volume_por_sessao, mapa_ultima_sessao),
         "dieta": _carregar_dieta(),
         "peso_corporal": _carregar_peso_corporal(),
+        "cintura": _carregar_cintura(),
     }
 
 
@@ -886,6 +887,21 @@ def _carregar_peso_corporal():
         "atual": atual,
         "variacao": (
             atual["weight_kg"] - anterior["weight_kg"]
+            if atual and anterior
+            else None
+        ),
+        "historico": historico,
+    }
+
+
+def _carregar_cintura():
+    historico = db_ops.list_waist_measurements()
+    atual = historico[0] if historico else None
+    anterior = historico[1] if len(historico) > 1 else None
+    return {
+        "atual": atual,
+        "variacao": (
+            atual["circumference_cm"] - anterior["circumference_cm"]
             if atual and anterior
             else None
         ),
@@ -2010,6 +2026,24 @@ def gerar_html(dados):
         if variacao_peso is not None
         else "sem comparacao"
     )
+    cintura_atual = dados["cintura"]["atual"]
+    variacao_cintura = dados["cintura"]["variacao"]
+    cintura_valor = (
+        f"{_fmt_decimal(cintura_atual['circumference_cm'])} cm"
+        if cintura_atual
+        else "-"
+    )
+    cintura_data = (
+        datetime.fromisoformat(cintura_atual["recorded_at"]).strftime("%d/%m/%Y")
+        if cintura_atual
+        else "sem registro"
+    )
+    cintura_variacao = (
+        f"{'+' if variacao_cintura > 0 else ''}"
+        f"{_fmt_decimal(variacao_cintura)} cm"
+        if variacao_cintura is not None
+        else "sem comparacao"
+    )
 
     var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
     dias_desde = consistencia["dias_desde_ultimo"]
@@ -2521,6 +2555,11 @@ def gerar_html(dados):
         <span class="rotulo">Peso corporal</span>
         <span class="valor valor-menor">{peso_valor}</span>
         <span class="subtitulo">{peso_data} | {peso_variacao}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Cintura</span>
+        <span class="valor valor-menor">{cintura_valor}</span>
+        <span class="subtitulo">{cintura_data} | {cintura_variacao}</span>
       </div>
     </section>
 

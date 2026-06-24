@@ -16,6 +16,14 @@ Teste direto das regras: `python tests/regras_treino_test.py`.
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
 modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
+No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
+assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
+nao possui `logged_at`; usar `session_id`, `sort_order` e `id` para ordenar logs.
+Em consultas via `python -c` no PowerShell, evitar metacaracteres como `|` dentro
+da string do comando. Preferir codigo Python entre aspas simples e saida CSV ou
+texto simples. Se o sandbox do Windows falhar com `CreateProcessAsUserW failed:
+1312`, repetir a mesma consulta com permissao escalada em vez de trocar para o
+binario `sqlite3`.
 
 ## Padrao De Idioma
 
@@ -71,6 +79,8 @@ Comandos principais em PT-BR:
 - `/planos` lista planos cadastrados.
 - `/plano NOME` seleciona o plano ativo.
 - `/peso VALOR` registra peso corporal e `/peso` consulta o historico recente.
+- `/cintura VALOR` registra a circunferencia em centimetros e `/cintura`
+  consulta o historico recente.
 - `/status` mostra progresso da sessao ativa.
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
@@ -143,6 +153,7 @@ Operacoes SQLite:
 - `update_log_weight()`
 - `get_last_weights()`
 - `count_filled()`
+- `add_body_weight()` e `add_waist_measurement()` preservam historicos temporais.
 
 ### `forja_de_ferro/dashboard.py`
 
@@ -156,8 +167,8 @@ Dashboard local de volume:
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
   semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
-  alertas, filtros rapidos por segmento, relatorio semanal, peso corporal atual
-  e dieta atual no final da pagina.
+  alertas, filtros rapidos por segmento, relatorio semanal, peso corporal,
+  cintura atual e dieta atual no final da pagina.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.
@@ -198,7 +209,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 6`.
+- Versao atual do esquema: `SCHEMA_VERSION = 7`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume

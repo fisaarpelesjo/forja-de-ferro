@@ -90,6 +90,8 @@ forja_de_ferro/
 /plano NOME     Seleciona o plano ativo
 /peso 118,5     Registra o peso corporal em quilogramas
 /peso           Mostra o peso atual e as ultimas medicoes
+/cintura 110,5  Registra a circunferencia da cintura em centimetros
+/cintura        Mostra a cintura atual e as ultimas medicoes
 /status         Mostra exercicio atual e progresso da sessao
 /desfazer       Limpa o ultimo registro de carga
 /ajuda          Mostra ajuda
@@ -132,7 +134,7 @@ caminho do computador e enviado.
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
 para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
-- 7 indicadores de resumo, incluindo peso corporal atual e variacao recente
+- 8 indicadores de resumo, incluindo peso corporal, cintura e variacoes recentes
 - grafico de evolucao do volume por sessao
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes

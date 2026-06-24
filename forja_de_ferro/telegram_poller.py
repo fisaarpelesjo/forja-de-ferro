@@ -412,6 +412,48 @@ def handle_weight(text):
     send("\n".join(lines))
 
 
+def handle_waist(text):
+    parts = text.strip().split(maxsplit=1)
+    if len(parts) == 2:
+        try:
+            circumference = float(parts[1].strip().replace(",", "."))
+            entry = db_ops.add_waist_measurement(circumference)
+        except ValueError as exc:
+            send(f"{exc}\nUse <code>/cintura 110,5</code>.")
+            return
+        send(
+            "Cintura registrada: "
+            f"<b>{_format_body_weight(entry['circumference_cm'])} cm</b>."
+        )
+        return
+
+    history = db_ops.list_waist_measurements(limit=5)
+    if not history:
+        send("Nenhuma medida de cintura registrada. Use <code>/cintura 110,5</code>.")
+        return
+
+    latest = history[0]
+    lines = [
+        "<b>Circunferencia da cintura</b>",
+        f"Atual: <b>{_format_body_weight(latest['circumference_cm'])} cm</b>",
+        f"Registrada em: {_format_weight_date(latest['recorded_at'])}",
+    ]
+    if len(history) > 1:
+        delta = latest["circumference_cm"] - history[1]["circumference_cm"]
+        signal = "+" if delta > 0 else ""
+        lines.append(
+            f"Desde a medicao anterior: "
+            f"<b>{signal}{_format_body_weight(delta)} cm</b>"
+        )
+    lines.append("\n<b>Ultimas medicoes</b>")
+    lines.extend(
+        f"{_format_weight_date(item['recorded_at'])}: "
+        f"{_format_body_weight(item['circumference_cm'])} cm"
+        for item in history
+    )
+    send("\n".join(lines))
+
+
 def handle(text, session):
     text = text.strip()
     exercises = session.get("exercises", [])
@@ -546,6 +588,8 @@ def main():
                         "/plano NOME — seleciona o plano ativo\n"
                         "/peso VALOR — registra o peso corporal\n"
                         "/peso — mostra o peso atual e o historico\n"
+                        "/cintura VALOR — registra a circunferencia em cm\n"
+                        "/cintura — mostra a cintura atual e o historico\n"
                         "/status — exercicio atual e progresso\n"
                         "/desfazer — apaga o ultimo registro\n"
                         "/ajuda — esta mensagem\n\n"
@@ -577,6 +621,10 @@ def main():
 
                 if lower == "/peso" or lower.startswith("/peso "):
                     handle_weight(text)
+                    continue
+
+                if lower == "/cintura" or lower.startswith("/cintura "):
+                    handle_waist(text)
                     continue
 
                 if lower == "/aquecimento":

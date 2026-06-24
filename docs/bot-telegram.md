@@ -51,6 +51,8 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /plano NOME     seleciona o plano ativo
 /peso VALOR     registra o peso corporal
 /peso           mostra o peso atual e o historico
+/cintura VALOR  registra a circunferencia da cintura em cm
+/cintura        mostra a cintura atual e o historico
 /status         mostra progresso
 /desfazer       apaga o ultimo registro
 /ajuda          mostra ajuda
@@ -66,6 +68,16 @@ quilogramas com data e horario. O valor deve ficar entre 30 e 400 kg.
 
 `/peso` sem valor mostra o peso atual, a variacao desde a medicao anterior e as
 cinco entradas mais recentes. Cada registro e preservado no historico.
+
+## `/cintura`
+
+`/cintura 110`, `/cintura 110,5` e `/cintura 110.5` registram uma nova
+medicao em centimetros com data e horario. O valor deve ficar entre 40 e
+250 cm.
+
+`/cintura` sem valor mostra a circunferencia atual, a variacao desde a medicao
+anterior e as cinco entradas mais recentes. Cada registro e preservado no
+historico.
 
 ## Startup
 

@@ -64,6 +64,7 @@ def main():
 
         assert telegram_poller._command_name("/status") == "/status"
         assert telegram_poller._command_name("/peso 118,5") == "/peso"
+        assert telegram_poller._command_name("/cintura 110,5") == "/cintura"
         assert telegram_poller._command_name("80 9") == "registro_carga"
         assert "80" not in telegram_poller._command_name("80 9")
         assert telegram_poller._is_session_input("/status") is True

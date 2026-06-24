@@ -479,6 +479,11 @@ Antes de adicionar um item:
 
 ## Historico De Entregas
 
+### 2026-06-23
+
+- registro temporal da circunferencia da cintura pelo comando `/cintura`,
+  com consulta de historico, dashboard, backup e exportacao
+
 ### 2026-06-10
 
 - extracao em lote de frames para analise de execucao:

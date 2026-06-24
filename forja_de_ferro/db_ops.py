@@ -7,7 +7,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -284,6 +284,21 @@ SCHEMA_V6_STATEMENTS = (
     """,
 )
 
+SCHEMA_V7_STATEMENTS = (
+    """
+    CREATE TABLE IF NOT EXISTS waist_measurements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        circumference_cm REAL NOT NULL CHECK (circumference_cm BETWEEN 40 AND 250),
+        recorded_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        source TEXT NOT NULL DEFAULT 'telegram'
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_waist_measurements_recorded_at
+    ON waist_measurements (recorded_at DESC, id DESC)
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -291,6 +306,7 @@ MIGRATIONS = {
     4: SCHEMA_V4_STATEMENTS,
     5: SCHEMA_V5_STATEMENTS,
     6: SCHEMA_V6_STATEMENTS,
+    7: SCHEMA_V7_STATEMENTS,
 }
 
 
@@ -383,6 +399,54 @@ def list_body_weights(limit=None):
 def get_latest_body_weight():
     weights = list_body_weights(limit=1)
     return weights[0] if weights else None
+
+
+def add_waist_measurement(circumference_cm, source="telegram", recorded_at=None):
+    circumference = float(circumference_cm)
+    if not 40 <= circumference <= 250:
+        raise ValueError("A circunferencia deve ficar entre 40 e 250 cm.")
+
+    timestamp = recorded_at or datetime.now().isoformat(
+        sep=" ",
+        timespec="seconds",
+    )
+    init_db()
+    with _connect() as conn:
+        cur = conn.execute(
+            """
+            INSERT INTO waist_measurements
+                (circumference_cm, recorded_at, source)
+            VALUES (?, ?, ?)
+            """,
+            (circumference, timestamp, source),
+        )
+        conn.commit()
+        row = conn.execute(
+            "SELECT * FROM waist_measurements WHERE id = ?",
+            (cur.lastrowid,),
+        ).fetchone()
+        return dict(row)
+
+
+def list_waist_measurements(limit=None):
+    init_db()
+    query = """
+        SELECT id, circumference_cm, recorded_at, source
+        FROM waist_measurements
+        ORDER BY recorded_at DESC, id DESC
+    """
+    params = ()
+    if limit is not None:
+        query += " LIMIT ?"
+        params = (int(limit),)
+    with _connect() as conn:
+        rows = conn.execute(query, params).fetchall()
+        return [dict(row) for row in rows]
+
+
+def get_latest_waist_measurement():
+    measurements = list_waist_measurements(limit=1)
+    return measurements[0] if measurements else None
 
 
 def _seed_default_muscle_groups(conn):

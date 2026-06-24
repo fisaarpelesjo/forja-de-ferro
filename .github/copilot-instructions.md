@@ -22,6 +22,14 @@ dieta. Nao mover a gestao de exercicios de volta para ODS.
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
 modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
+No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
+assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
+nao possui `logged_at`; usar `session_id`, `sort_order` e `id` para ordenar logs.
+Em consultas via `python -c` no PowerShell, evitar metacaracteres como `|` dentro
+da string do comando. Preferir codigo Python entre aspas simples e saida CSV ou
+texto simples. Se o sandbox do Windows falhar com `CreateProcessAsUserW failed:
+1312`, repetir a mesma consulta com permissao escalada em vez de trocar para o
+binario `sqlite3`.
 
 ## Padrao De Idioma
 
@@ -87,6 +95,8 @@ Comandos principais:
 - `/plano NOME`
 - `/peso VALOR`
 - `/peso`
+- `/cintura VALOR`
+- `/cintura`
 - `/status`
 - `/desfazer`
 - `/ajuda`
@@ -115,6 +125,8 @@ Fluxo principal:
     ultima sessao, volume e RPE medio geral, sem expor caminho local.
 11. `/peso VALOR` registra o peso corporal com data e `/peso` consulta o valor
     atual, a variacao anterior e as ultimas medicoes.
+12. `/cintura VALOR` registra a circunferencia da cintura em centimetros e
+    `/cintura` consulta o valor atual, a variacao e as ultimas medicoes.
 
 ### `forja_de_ferro/ods_ops.py`
 
@@ -165,7 +177,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 6`.
+- Versao atual do esquema: `SCHEMA_VERSION = 7`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -175,6 +187,8 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
   secundarios. `/volume` e dashboard usam essa tabela como fonte unica.
 - `training_plans` e `training_plan_exercises` armazenam modelos A/B ou outros
   ciclos. Apenas um plano com exercicios fica ativo por vez.
+- `body_weights` e `waist_measurements` armazenam historicos temporais de peso
+  corporal e circunferencia da cintura.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 - Mudancas que devem valer no banco atual precisam atualizar `data/forja_de_ferro.db`.
 
@@ -190,8 +204,8 @@ Dashboard local de volume:
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
   semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
-  alertas, filtros rapidos por segmento, relatorio semanal, peso corporal atual
-  e dieta atual no final da pagina.
+  alertas, filtros rapidos por segmento, relatorio semanal, peso corporal,
+  cintura atual e dieta atual no final da pagina.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.

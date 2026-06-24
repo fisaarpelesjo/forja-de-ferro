@@ -97,6 +97,12 @@ def main():
             assert "Peso corporal" in sent_messages[-1]
             assert "118,5 kg" in sent_messages[-1]
 
+            telegram_poller.handle_waist("/cintura 110,5")
+            assert "110,5 cm" in sent_messages[-1]
+            telegram_poller.handle_waist("/cintura")
+            assert "Circunferencia da cintura" in sent_messages[-1]
+            assert "110,5 cm" in sent_messages[-1]
+
             telegram_poller.handle("80 8", session)
             first_log = _fetch_log(test_db, first_log_id)
             assert first_log["weight"] == 80.0
