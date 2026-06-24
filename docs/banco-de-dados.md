@@ -319,6 +319,15 @@ Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`,
 `target_weight - 6`. Exemplo: `target_weight = 18` gera
 `barra W 6kg + 12kg de anilhas`.
 
+Para os dois supinos, `Agachamento Zercher`, `Remada curvada (barra)`,
+`Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada curvada
+alta no peito (barra)`, a funcao usa a barra reta de 2,20 m e 11 kg. Exemplo:
+`target_weight = 40` gera `barra reta 2,20 m 11kg + 29kg de anilhas`.
+
+Para `Agachamento sumô com barra à frente`, a funcao usa a barra oca de 1,50 m
+e 1 kg. Exemplo: `target_weight = 40` gera
+`barra oca 1,50 m 1kg + 39kg de anilhas`.
+
 Para `Rosca martelo (barra H)`, a funcao usa barra H de 9 kg e calcula as
 anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera
 `barra H 9kg + 9kg de anilhas`.

@@ -150,6 +150,9 @@ def main():
             assert ods_ops.format_loading_note("Pullover (barra)", 16.0) == "barra W 6kg + 10kg de anilhas"
             assert ods_ops.format_loading_note("Remada alta (barra)", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Rosca martelo (barra H)", 18.0) == "barra H 9kg + 9kg de anilhas"
+            assert ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40.0) == "barra oca 1,50 m 1kg + 39kg de anilhas"
+            assert ods_ops.format_loading_note("Supino reto (barra)", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
+            assert ods_ops.format_loading_note("Remada curvada (barra)", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
             triceps = {"name": "Tríceps testa", "sets": 3, "reps": 8, "target_weight": 18.0}
             assert "barra W 6kg + 12kg de anilhas" in telegram_poller._format_current_exercise(triceps)
             assert "barra W" not in telegram_poller._format_training_msg([triceps])

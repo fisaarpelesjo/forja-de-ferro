@@ -232,10 +232,14 @@ ainda nao houver historico proprio. Depois do primeiro registro, ela segue a
 progressao normal por RPE.
 
 Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. `Tríceps testa`, `Pullover (barra)` e `Remada alta
-(barra)` usam barra W de 6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg.
-Essa observacao aparece no `/status` e na indicacao do proximo exercicio, mas
-nao na lista `/exercicios`.
+de montagem em `session.json`. Os dois supinos, `Agachamento Zercher`, `Remada
+curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno`
+e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
+`Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg.
+`Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de
+6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg. Essa observacao aparece
+no `/status` e na indicacao do proximo exercicio, mas nao na lista
+`/exercicios`.
 
 ## Descanso Entre Series
 

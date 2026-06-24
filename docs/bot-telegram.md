@@ -161,7 +161,23 @@ O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
-o bot tambem mostra a montagem da carga. Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`, a barra W
+o bot tambem mostra a montagem da carga. Nos dois supinos, `Agachamento Zercher`,
+`Remada curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra
+Romeno` e `Remada curvada alta no peito (barra)`, a barra reta de 2,20 m pesa
+11 kg. Um alvo de 40 kg aparece como:
+
+```text
+barra reta 2,20 m 11kg + 29kg de anilhas
+```
+
+No `Agachamento sumô com barra à frente`, a barra oca de 1,50 m pesa 1 kg.
+Um alvo de 40 kg aparece como:
+
+```text
+barra oca 1,50 m 1kg + 39kg de anilhas
+```
+
+Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`, a barra W
 pesa 6 kg, entao um alvo de 18 kg aparece como:
 
 ```text

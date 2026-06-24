@@ -49,7 +49,23 @@ def _assert_equipamento_e_descanso():
         ods_ops.format_loading_note("Rosca martelo (barra H)", 18)
         == "barra H 9kg + 9kg de anilhas"
     )
-    assert ods_ops.format_loading_note("Supino reto (barra)", 40) is None
+    assert (
+        ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40)
+        == "barra oca 1,50 m 1kg + 39kg de anilhas"
+    )
+    for exercise_name in (
+        "Agachamento Zercher",
+        "Supino reto (barra)",
+        "Supino reto back-off",
+        "Remada curvada (barra)",
+        "Desenvolvimento (barra em pé)",
+        "Levantamento Terra Romeno",
+        "Remada curvada alta no peito (barra)",
+    ):
+        assert (
+            ods_ops.format_loading_note(exercise_name, 40)
+            == "barra reta 2,20 m 11kg + 29kg de anilhas"
+        )
 
 
 def main():

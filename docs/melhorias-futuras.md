@@ -479,6 +479,14 @@ Antes de adicionar um item:
 
 ## Historico De Entregas
 
+### 2026-06-24
+
+- configuracao da barra reta de 2,20 m e 11 kg nos supinos, Agachamento
+  Zercher, Remada curvada, Desenvolvimento em pe, Levantamento Terra Romeno e
+  Remada curvada alta no peito
+- configuracao da barra oca de 1,50 m e 1 kg no Agachamento sumô com barra à
+  frente
+
 ### 2026-06-23
 
 - registro temporal da circunferencia da cintura pelo comando `/cintura`,

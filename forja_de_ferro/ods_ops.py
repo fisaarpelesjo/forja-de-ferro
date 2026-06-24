@@ -39,8 +39,32 @@ REST_INTERVALS = {
 }
 
 LOAD_EQUIPMENT = {
+    "Agachamento Zercher": {"name": "barra reta 2,20 m", "weight": 11.0},
+    "Agachamento sumô com barra à frente": {
+        "name": "barra oca 1,50 m",
+        "weight": 1.0,
+    },
+    "Supino reto (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
+    "Supino reto back-off": {"name": "barra reta 2,20 m", "weight": 11.0},
+    "Remada curvada (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
+    "Desenvolvimento (barra em pé)": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
+    "Desenvolvimento (barra em pe)": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
+    "Levantamento Terra Romeno": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
     "Pullover (barra)": {"name": "barra W", "weight": 6.0},
     "Remada alta (barra)": {"name": "barra W", "weight": 6.0},
+    "Remada curvada alta no peito (barra)": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
     "Rosca martelo (barra H)": {"name": "barra H", "weight": 9.0},
     "Tríceps testa": {"name": "barra W", "weight": 6.0},
     "Triceps testa": {"name": "barra W", "weight": 6.0},
