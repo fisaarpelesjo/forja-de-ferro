@@ -26,6 +26,7 @@ EXPORT_TABLES = (
     "diet_entries",
     "body_weights",
     "waist_measurements",
+    "body_profile",
     "schema_migrations",
 )
 

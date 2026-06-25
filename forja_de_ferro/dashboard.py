@@ -834,6 +834,10 @@ def carregar_dados():
     ultima = volume_por_sessao[-1] if volume_por_sessao else None
     anterior = volume_por_sessao[-2] if len(volume_por_sessao) > 1 else None
 
+    peso_corporal = _carregar_peso_corporal()
+    cintura = _carregar_cintura()
+    perfil_corporal = db_ops.get_body_profile()
+
     return {
         "resumo": {
             "sessoes": len(volume_por_sessao),
@@ -874,8 +878,14 @@ def carregar_dados():
         "heatmap_sessoes": _calcular_heatmap_sessoes(volume_por_sessao),
         "relatorio_semanal": _calcular_relatorio_semanal(volume_por_sessao, mapa_ultima_sessao),
         "dieta": _carregar_dieta(),
-        "peso_corporal": _carregar_peso_corporal(),
-        "cintura": _carregar_cintura(),
+        "peso_corporal": peso_corporal,
+        "cintura": cintura,
+        "perfil_corporal": perfil_corporal,
+        "composicao_corporal": _calcular_composicao_corporal(
+            perfil_corporal,
+            peso_corporal["atual"],
+            cintura["atual"],
+        ),
     }
 
 
@@ -906,6 +916,66 @@ def _carregar_cintura():
             else None
         ),
         "historico": historico,
+    }
+
+
+def _calcular_composicao_corporal(perfil, peso_atual, cintura_atual):
+    if not perfil:
+        return {
+            "imc": None,
+            "classificacao_imc": "perfil sem altura",
+            "relacao_cintura_altura": None,
+            "referencia_cintura_altura": "perfil sem altura",
+            "meta_peso_kg": None,
+            "meta_cintura_cm": None,
+            "meta_imc": "18,5 a 24,9",
+            "meta_relacao_cintura_altura": "abaixo de 0,50",
+        }
+
+    altura_m = perfil["height_cm"] / 100
+    meta_peso_kg = 24.9 * (altura_m**2)
+    meta_cintura_cm = perfil["height_cm"] * 0.5
+    imc = (
+        peso_atual["weight_kg"] / (altura_m**2)
+        if peso_atual
+        else None
+    )
+    if imc is None:
+        classificacao_imc = "sem peso"
+    elif imc < 18.5:
+        classificacao_imc = "baixo peso"
+    elif imc < 25:
+        classificacao_imc = "faixa adequada"
+    elif imc < 30:
+        classificacao_imc = "sobrepeso"
+    elif imc < 35:
+        classificacao_imc = "obesidade grau I"
+    elif imc < 40:
+        classificacao_imc = "obesidade grau II"
+    else:
+        classificacao_imc = "obesidade grau III"
+
+    relacao = (
+        cintura_atual["circumference_cm"] / perfil["height_cm"]
+        if cintura_atual
+        else None
+    )
+    if relacao is None:
+        referencia = "sem cintura"
+    elif relacao < 0.5:
+        referencia = "abaixo de 0,50"
+    else:
+        referencia = "acima da referencia de 0,50"
+
+    return {
+        "imc": imc,
+        "classificacao_imc": classificacao_imc,
+        "relacao_cintura_altura": relacao,
+        "referencia_cintura_altura": referencia,
+        "meta_peso_kg": meta_peso_kg,
+        "meta_cintura_cm": meta_cintura_cm,
+        "meta_imc": "18,5 a 24,9",
+        "meta_relacao_cintura_altura": "abaixo de 0,50",
     }
 
 
@@ -2044,6 +2114,36 @@ def gerar_html(dados):
         if variacao_cintura is not None
         else "sem comparacao"
     )
+    perfil_corporal = dados["perfil_corporal"]
+    composicao_corporal = dados["composicao_corporal"]
+    perfil_resumo = (
+        f"{_fmt_decimal(perfil_corporal['height_cm'] / 100, 2)} m | "
+        f"{perfil_corporal['age_years']} anos"
+        if perfil_corporal
+        else "perfil nao cadastrado"
+    )
+    imc_valor = (
+        _fmt_decimal(composicao_corporal["imc"])
+        if composicao_corporal["imc"] is not None
+        else "-"
+    )
+    relacao_valor = (
+        _fmt_decimal(composicao_corporal["relacao_cintura_altura"], 2)
+        if composicao_corporal["relacao_cintura_altura"] is not None
+        else "-"
+    )
+    meta_peso = (
+        f"Meta de referencia: ate "
+        f"{_fmt_decimal(composicao_corporal['meta_peso_kg'])} kg"
+        if composicao_corporal["meta_peso_kg"] is not None
+        else "Meta indisponivel sem altura"
+    )
+    meta_cintura = (
+        f"Meta de referencia: abaixo de "
+        f"{_fmt_decimal(composicao_corporal['meta_cintura_cm'])} cm"
+        if composicao_corporal["meta_cintura_cm"] is not None
+        else "Meta indisponivel sem altura"
+    )
 
     var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
     dias_desde = consistencia["dias_desde_ultimo"]
@@ -2199,7 +2299,7 @@ def gerar_html(dados):
     .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
     .grade-resumo {{
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 12px;
     }}
@@ -2219,6 +2319,13 @@ def gerar_html(dados):
     }}
     .valor {{ font-size: 24px; font-weight: 700; }}
     .valor-menor {{ font-size: 18px; }}
+    .meta-indicador {{
+      display: block;
+      color: var(--verde);
+      font-size: 11px;
+      line-height: 1.35;
+      margin-top: 8px;
+    }}
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
     .painel {{ padding: 16px; margin-top: 12px; }}
@@ -2555,11 +2662,25 @@ def gerar_html(dados):
         <span class="rotulo">Peso corporal</span>
         <span class="valor valor-menor">{peso_valor}</span>
         <span class="subtitulo">{peso_data} | {peso_variacao}</span>
+        <span class="meta-indicador">{meta_peso}</span>
       </div>
       <div class="indicador">
         <span class="rotulo">Cintura</span>
         <span class="valor valor-menor">{cintura_valor}</span>
         <span class="subtitulo">{cintura_data} | {cintura_variacao}</span>
+        <span class="meta-indicador">{meta_cintura}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">IMC</span>
+        <span class="valor">{imc_valor}</span>
+        <span class="subtitulo">{html.escape(composicao_corporal["classificacao_imc"])} | {perfil_resumo}</span>
+        <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_imc"]}</span>
+      </div>
+      <div class="indicador">
+        <span class="rotulo">Cintura / altura</span>
+        <span class="valor">{relacao_valor}</span>
+        <span class="subtitulo">{html.escape(composicao_corporal["referencia_cintura_altura"])}</span>
+        <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_relacao_cintura_altura"]}</span>
       </div>
     </section>
 

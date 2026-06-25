@@ -161,6 +161,8 @@ Operacoes SQLite:
 - `get_last_weights()`
 - `count_filled()`
 - `add_body_weight()` e `add_waist_measurement()` preservam historicos temporais.
+- `body_profile` armazena altura e idade em um registro unico para os calculos
+  corporais do dashboard.
 
 ### `forja_de_ferro/dashboard.py`
 
@@ -175,7 +177,11 @@ Dashboard local de volume:
   anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
   semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
   alertas, filtros rapidos por segmento, relatorio semanal, peso corporal,
-  cintura atual e dieta atual no final da pagina.
+  cintura atual, IMC, relacao cintura/altura e dieta atual no final da pagina.
+- IMC e relacao cintura/altura usam as medicoes mais recentes e sao
+  indicadores derivados, nao diagnosticos.
+- Os cards corporais mostram metas de referencia: IMC de 18,5 a 24,9,
+  cintura/altura abaixo de 0,50 e limites de peso e cintura derivados da altura.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.
@@ -216,7 +222,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 7`.
+- Versao atual do esquema: `SCHEMA_VERSION = 8`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume

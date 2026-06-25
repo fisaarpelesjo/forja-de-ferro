@@ -60,6 +60,7 @@ def main():
                 fat_g=60,
                 calories=2000,
             )
+            db_ops.set_body_profile(183, 30)
             db_ops.add_body_weight(
                 118,
                 source="teste",
@@ -125,6 +126,21 @@ def main():
             assert dados["peso_corporal"]["variacao"] == -0.5
             assert dados["cintura"]["atual"]["circumference_cm"] == 110.5
             assert dados["cintura"]["variacao"] == -1.5
+            assert dados["perfil_corporal"]["height_cm"] == 183.0
+            assert dados["perfil_corporal"]["age_years"] == 30
+            assert round(dados["composicao_corporal"]["imc"], 1) == 35.1
+            assert round(dados["composicao_corporal"]["meta_peso_kg"], 1) == 83.4
+            assert (
+                dados["composicao_corporal"]["meta_cintura_cm"]
+                == 91.5
+            )
+            assert (
+                round(
+                    dados["composicao_corporal"]["relacao_cintura_altura"],
+                    2,
+                )
+                == 0.60
+            )
             grupos_mapa = {
                 item["grupo"]: item
                 for item in dados["mapa_ultima_sessao"]["grupos"]
@@ -220,6 +236,15 @@ def main():
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert "Peso corporal" in html
             assert "117,5 kg" in html
+            assert "Cintura / altura" in html
+            assert "IMC" in html
+            assert "35,1" in html
+            assert "1,83 m | 30 anos" in html
+            assert "Meta de referencia: ate 83,4 kg" in html
+            assert "Meta de referencia: abaixo de 91,5 cm" in html
+            assert "Meta de referencia: 18,5 a 24,9" in html
+            assert "Meta de referencia: abaixo de 0,50" in html
+            assert "grid-template-columns: repeat(5, minmax(0, 1fr))" in html
             assert 'data-grupo="Dorsal superior"' in html
             assert "body-muscles" in html
             assert "mapa-anatomia-vetorial" in html

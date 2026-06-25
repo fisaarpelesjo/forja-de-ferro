@@ -134,7 +134,9 @@ caminho do computador e enviado.
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
 para ver um layout escuro, cru e compacto com pagina unica rolavel:
 
-- 8 indicadores de resumo, incluindo peso corporal, cintura e variacoes recentes
+- 10 indicadores de resumo, incluindo peso corporal, cintura, IMC, relacao
+  cintura/altura e variacoes recentes
+- metas corporais de referencia calculadas pela altura cadastrada
 - grafico de evolucao do volume por sessao
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes

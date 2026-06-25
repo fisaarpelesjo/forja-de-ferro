@@ -114,6 +114,16 @@ def main():
             assert versions == list(range(1, db_ops.SCHEMA_VERSION + 1))
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
+            assert db_ops.get_body_profile() is None
+            perfil = db_ops.set_body_profile(183, 30)
+            assert perfil["height_cm"] == 183.0
+            assert perfil["age_years"] == 30
+            assert db_ops.get_body_profile()["height_cm"] == 183.0
+            try:
+                db_ops.set_body_profile(80, 30)
+                raise AssertionError("Altura abaixo do limite deveria falhar.")
+            except ValueError:
+                pass
             assert db_ops.get_latest_body_weight() is None
             first_weight = db_ops.add_body_weight(
                 118,

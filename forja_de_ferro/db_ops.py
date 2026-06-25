@@ -7,7 +7,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -299,6 +299,17 @@ SCHEMA_V7_STATEMENTS = (
     """,
 )
 
+SCHEMA_V8_STATEMENTS = (
+    """
+    CREATE TABLE IF NOT EXISTS body_profile (
+        id INTEGER PRIMARY KEY CHECK (id = 1),
+        height_cm REAL NOT NULL CHECK (height_cm BETWEEN 100 AND 250),
+        age_years INTEGER NOT NULL CHECK (age_years BETWEEN 10 AND 120),
+        updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -307,6 +318,7 @@ MIGRATIONS = {
     5: SCHEMA_V5_STATEMENTS,
     6: SCHEMA_V6_STATEMENTS,
     7: SCHEMA_V7_STATEMENTS,
+    8: SCHEMA_V8_STATEMENTS,
 }
 
 
@@ -447,6 +459,43 @@ def list_waist_measurements(limit=None):
 def get_latest_waist_measurement():
     measurements = list_waist_measurements(limit=1)
     return measurements[0] if measurements else None
+
+
+def set_body_profile(height_cm, age_years):
+    height = float(height_cm)
+    age = int(age_years)
+    if not 100 <= height <= 250:
+        raise ValueError("A altura deve ficar entre 100 e 250 cm.")
+    if not 10 <= age <= 120:
+        raise ValueError("A idade deve ficar entre 10 e 120 anos.")
+
+    timestamp = datetime.now().isoformat(sep=" ", timespec="seconds")
+    init_db()
+    with _connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO body_profile (id, height_cm, age_years, updated_at)
+            VALUES (1, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                height_cm = excluded.height_cm,
+                age_years = excluded.age_years,
+                updated_at = excluded.updated_at
+            """,
+            (height, age, timestamp),
+        )
+        row = conn.execute(
+            "SELECT height_cm, age_years, updated_at FROM body_profile WHERE id = 1"
+        ).fetchone()
+        return dict(row)
+
+
+def get_body_profile():
+    init_db()
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT height_cm, age_years, updated_at FROM body_profile WHERE id = 1"
+        ).fetchone()
+        return dict(row) if row else None
 
 
 def _seed_default_muscle_groups(conn):

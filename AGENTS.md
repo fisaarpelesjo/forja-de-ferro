@@ -186,7 +186,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 7`.
+- Versao atual do esquema: `SCHEMA_VERSION = 8`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -198,6 +198,8 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
   ciclos. Apenas um plano com exercicios fica ativo por vez.
 - `body_weights` armazena o historico temporal de peso corporal.
 - `waist_measurements` armazena o historico temporal da circunferencia da cintura.
+- `body_profile` armazena altura e idade em um registro unico para os calculos
+  corporais do dashboard.
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
@@ -214,7 +216,12 @@ Dashboard local de volume de treino.
   anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
   semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
   alertas, filtros rapidos por segmento, relatorio semanal, peso corporal,
-  cintura atual e dieta atual no final da pagina.
+  cintura atual, IMC, relacao cintura/altura e dieta atual no final da pagina.
+- IMC e relacao cintura/altura usam as medicoes mais recentes e sao
+  indicadores derivados, nao diagnosticos.
+- Os cards corporais mostram metas de referencia: IMC de 18,5 a 24,9,
+  cintura/altura abaixo de 0,50 e os limites correspondentes de peso e cintura
+  calculados pela altura cadastrada.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.

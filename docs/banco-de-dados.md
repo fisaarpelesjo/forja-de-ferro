@@ -27,8 +27,9 @@ A versao 1 cria as tabelas principais. A versao 2 adiciona indices para localiza
 logs pendentes por sessao e historico por exercicio. A versao 3 cria
 `exercise_muscle_groups`. A versao 4 cria planos de treino, a versao 5 inclui
 o agachamento sumô com barra à frente no catalogo e no plano ativo, a versao 6
-cria o historico de peso corporal e a versao 7 cria o historico de
-circunferencia da cintura. As migracoes usam
+cria o historico de peso corporal, a versao 7 cria o historico de
+circunferencia da cintura e a versao 8 cria o perfil corporal usado pelos
+indicadores derivados do dashboard. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -225,6 +226,11 @@ O indice `idx_body_weights_recorded_at` acelera a consulta do peso mais recente.
 
 O indice `idx_waist_measurements_recorded_at` acelera a consulta da medida mais
 recente.
+
+`body_profile` guarda um unico registro com `height_cm`, `age_years` e
+`updated_at`. O dashboard combina a altura com o peso mais recente para
+calcular o IMC e com a cintura mais recente para calcular a relacao
+cintura/altura. Esses valores sao indicadores derivados e nao diagnosticos.
 
 ## Catalogo Atual
 

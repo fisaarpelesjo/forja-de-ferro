@@ -479,6 +479,12 @@ Antes de adicionar um item:
 
 ## Historico De Entregas
 
+### 2026-06-25
+
+- perfil corporal persistido com altura e idade
+- calculo de IMC e relacao cintura/altura no dashboard usando as medicoes mais
+  recentes
+
 ### 2026-06-24
 
 - configuracao da barra reta de 2,20 m e 11 kg nos supinos, Agachamento

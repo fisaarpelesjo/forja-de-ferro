@@ -46,6 +46,7 @@ def main():
             db_ops.update_log_weight(log_id, 48, 9)
             db_ops.add_body_weight(118, source="teste")
             db_ops.add_waist_measurement(110.5, source="teste")
+            db_ops.set_body_profile(183, 30)
 
             backup = backup_ops.criar_backup(
                 temp_path / "backups",
@@ -70,6 +71,8 @@ def main():
                 payload["tables"]["waist_measurements"][0]["circumference_cm"]
                 == 110.5
             )
+            assert payload["tables"]["body_profile"][0]["height_cm"] == 183
+            assert payload["tables"]["body_profile"][0]["age_years"] == 30
 
             restored, safety = backup_ops.restaurar_backup(
                 backup,
