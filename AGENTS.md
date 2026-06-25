@@ -222,6 +222,10 @@ Dashboard local de volume de treino.
 - Os cards corporais mostram metas de referencia: IMC de 18,5 a 24,9,
   cintura/altura abaixo de 0,50 e os limites correspondentes de peso e cintura
   calculados pela altura cadastrada.
+- Cada card com meta mostra uma barra de proximidade calculada como
+  `limite da meta / valor atual`, limitada a 100%.
+- Os quatro cards corporais mostram minigraficos de linha. Peso e IMC usam o
+  historico de peso; cintura e cintura/altura usam o historico de cintura.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas.

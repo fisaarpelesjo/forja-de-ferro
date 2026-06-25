@@ -930,6 +930,10 @@ def _calcular_composicao_corporal(perfil, peso_atual, cintura_atual):
             "meta_cintura_cm": None,
             "meta_imc": "18,5 a 24,9",
             "meta_relacao_cintura_altura": "abaixo de 0,50",
+            "progresso_peso": None,
+            "progresso_cintura": None,
+            "progresso_imc": None,
+            "progresso_relacao_cintura_altura": None,
         }
 
     altura_m = perfil["height_cm"] / 100
@@ -976,7 +980,23 @@ def _calcular_composicao_corporal(perfil, peso_atual, cintura_atual):
         "meta_cintura_cm": meta_cintura_cm,
         "meta_imc": "18,5 a 24,9",
         "meta_relacao_cintura_altura": "abaixo de 0,50",
+        "progresso_peso": _proximidade_meta(
+            peso_atual["weight_kg"] if peso_atual else None,
+            meta_peso_kg,
+        ),
+        "progresso_cintura": _proximidade_meta(
+            cintura_atual["circumference_cm"] if cintura_atual else None,
+            meta_cintura_cm,
+        ),
+        "progresso_imc": _proximidade_meta(imc, 24.9),
+        "progresso_relacao_cintura_altura": _proximidade_meta(relacao, 0.5),
     }
+
+
+def _proximidade_meta(valor_atual, limite_meta):
+    if valor_atual is None or valor_atual <= 0:
+        return None
+    return min(100.0, (limite_meta / valor_atual) * 100)
 
 
 def _carregar_dieta():
@@ -1522,6 +1542,49 @@ def _fmt_decimal(valor, casas=1):
     if valor is None:
         return "-"
     return f"{valor:.{casas}f}".replace(".", ",")
+
+
+def _render_progresso_meta(percentual):
+    if percentual is None:
+        return '<span class="meta-percentual">Sem dados para calcular</span>'
+    percentual_limitado = max(0.0, min(100.0, percentual))
+    return f"""
+        <div class="meta-progresso" role="progressbar"
+             aria-valuemin="0" aria-valuemax="100"
+             aria-valuenow="{percentual_limitado:.1f}">
+          <i style="width: {percentual_limitado:.1f}%"></i>
+        </div>
+        <span class="meta-percentual">
+          {_fmt_decimal(percentual_limitado)}% de proximidade da meta
+        </span>
+    """
+
+
+def _render_minigrafico(valores, rotulo):
+    pontos_validos = [float(valor) for valor in valores if valor is not None]
+    if len(pontos_validos) < 2:
+        return '<span class="minigrafico-vazio">Aguardando mais medicoes</span>'
+
+    largura = 240
+    altura = 56
+    margem = 4
+    minimo = min(pontos_validos)
+    maximo = max(pontos_validos)
+    amplitude = maximo - minimo
+    passo = (largura - 2 * margem) / (len(pontos_validos) - 1)
+    coordenadas = []
+    for indice, valor in enumerate(pontos_validos):
+        x = margem + indice * passo
+        proporcao = (valor - minimo) / amplitude if amplitude else 0.5
+        y = altura - margem - proporcao * (altura - 2 * margem)
+        coordenadas.append(f"{x:.1f},{y:.1f}")
+
+    return f"""
+        <svg class="minigrafico" viewBox="0 0 {largura} {altura}"
+             role="img" aria-label="{html.escape(rotulo)}">
+          <polyline points="{' '.join(coordenadas)}"></polyline>
+        </svg>
+    """
 
 
 def _fmt_quantidade(quantidade, unidade):
@@ -2144,6 +2207,51 @@ def gerar_html(dados):
         if composicao_corporal["meta_cintura_cm"] is not None
         else "Meta indisponivel sem altura"
     )
+    progresso_peso = _render_progresso_meta(
+        composicao_corporal["progresso_peso"]
+    )
+    progresso_cintura = _render_progresso_meta(
+        composicao_corporal["progresso_cintura"]
+    )
+    progresso_imc = _render_progresso_meta(
+        composicao_corporal["progresso_imc"]
+    )
+    progresso_relacao = _render_progresso_meta(
+        composicao_corporal["progresso_relacao_cintura_altura"]
+    )
+    historico_peso = list(reversed(dados["peso_corporal"]["historico"]))
+    historico_cintura = list(reversed(dados["cintura"]["historico"]))
+    altura_m = (
+        perfil_corporal["height_cm"] / 100
+        if perfil_corporal
+        else None
+    )
+    grafico_peso = _render_minigrafico(
+        [item["weight_kg"] for item in historico_peso],
+        "Evolucao historica do peso corporal",
+    )
+    grafico_cintura = _render_minigrafico(
+        [item["circumference_cm"] for item in historico_cintura],
+        "Evolucao historica da cintura",
+    )
+    grafico_imc = _render_minigrafico(
+        [
+            item["weight_kg"] / (altura_m**2)
+            for item in historico_peso
+        ]
+        if altura_m
+        else [],
+        "Evolucao historica do IMC",
+    )
+    grafico_relacao = _render_minigrafico(
+        [
+            item["circumference_cm"] / perfil_corporal["height_cm"]
+            for item in historico_cintura
+        ]
+        if perfil_corporal
+        else [],
+        "Evolucao historica da relacao cintura por altura",
+    )
 
     var_classe = "positivo" if resumo["variacao_ultima"] >= 0 else "negativo"
     dias_desde = consistencia["dias_desde_ultimo"]
@@ -2299,9 +2407,14 @@ def gerar_html(dados):
     .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
     .grade-resumo {{
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 10px;
       margin-bottom: 12px;
+    }}
+    .grade-resumo-treino {{
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }}
+    .grade-resumo-corporal {{
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }}
     .indicador, .painel {{
       background: var(--painel);
@@ -2325,6 +2438,44 @@ def gerar_html(dados):
       font-size: 11px;
       line-height: 1.35;
       margin-top: 8px;
+    }}
+    .meta-progresso {{
+      height: 6px;
+      background: var(--fundo);
+      border: 1px solid var(--linha);
+      margin-top: 8px;
+      overflow: hidden;
+    }}
+    .meta-progresso i {{
+      display: block;
+      height: 100%;
+      background: var(--verde);
+    }}
+    .meta-percentual {{
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 4px;
+    }}
+    .minigrafico {{
+      display: block;
+      width: 100%;
+      height: 56px;
+      margin-top: 10px;
+      background: var(--painel-2);
+      border: 1px solid var(--linha);
+    }}
+    .minigrafico polyline {{
+      fill: none;
+      stroke: var(--verde);
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }}
+    .minigrafico-vazio {{
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 10px;
     }}
     .positivo {{ color: var(--verde); }}
     .negativo {{ color: var(--vermelho); }}
@@ -2600,12 +2751,14 @@ def gerar_html(dados):
       text-align: right;
     }}
     @media (max-width: 1080px) {{
-      .grade-resumo {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }}
+      .grade-resumo-treino {{ grid-template-columns: repeat(3, minmax(0, 1fr)); }}
+      .grade-resumo-corporal {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
     }}
     @media (max-width: 860px) {{
       header {{ display: block; }}
       header > div:last-child {{ margin-top: 12px; }}
-      .grade-resumo {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
+      .grade-resumo-treino,
+      .grade-resumo-corporal {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .duas-colunas {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 28px; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
@@ -2614,7 +2767,8 @@ def gerar_html(dados):
     }}
     @media (max-width: 560px) {{
       main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }}
-      .grade-resumo {{ grid-template-columns: 1fr; }}
+      .grade-resumo-treino,
+      .grade-resumo-corporal {{ grid-template-columns: 1fr; }}
       .valor {{ font-size: 24px; }}
       th, td {{ font-size: 13px; padding: 10px 4px; }}
       .filtros {{ grid-template-columns: 1fr; }}
@@ -2633,7 +2787,7 @@ def gerar_html(dados):
       <div class="subtitulo">Ultima sessao: {html.escape(str(resumo["ultima_data"]))}</div>
     </header>
 
-    <section class="grade-resumo" aria-label="Resumo">
+    <section class="grade-resumo grade-resumo-treino" aria-label="Resumo do treino">
       <div class="indicador">
         <span class="rotulo">Sessoes</span>
         <span class="valor">{resumo["sessoes"]}</span>
@@ -2658,29 +2812,40 @@ def gerar_html(dados):
         <span class="rotulo">Dias desde ultimo</span>
         <span class="valor">{dias_str}</span>
       </div>
+    </section>
+
+    <section class="grade-resumo grade-resumo-corporal" aria-label="Resumo corporal">
       <div class="indicador">
         <span class="rotulo">Peso corporal</span>
         <span class="valor valor-menor">{peso_valor}</span>
         <span class="subtitulo">{peso_data} | {peso_variacao}</span>
         <span class="meta-indicador">{meta_peso}</span>
+        {progresso_peso}
+        {grafico_peso}
       </div>
       <div class="indicador">
         <span class="rotulo">Cintura</span>
         <span class="valor valor-menor">{cintura_valor}</span>
         <span class="subtitulo">{cintura_data} | {cintura_variacao}</span>
         <span class="meta-indicador">{meta_cintura}</span>
+        {progresso_cintura}
+        {grafico_cintura}
       </div>
       <div class="indicador">
         <span class="rotulo">IMC</span>
         <span class="valor">{imc_valor}</span>
         <span class="subtitulo">{html.escape(composicao_corporal["classificacao_imc"])} | {perfil_resumo}</span>
         <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_imc"]}</span>
+        {progresso_imc}
+        {grafico_imc}
       </div>
       <div class="indicador">
         <span class="rotulo">Cintura / altura</span>
         <span class="valor">{relacao_valor}</span>
         <span class="subtitulo">{html.escape(composicao_corporal["referencia_cintura_altura"])}</span>
         <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_relacao_cintura_altura"]}</span>
+        {progresso_relacao}
+        {grafico_relacao}
       </div>
     </section>
 

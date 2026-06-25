@@ -137,6 +137,8 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 - 10 indicadores de resumo, incluindo peso corporal, cintura, IMC, relacao
   cintura/altura e variacoes recentes
 - metas corporais de referencia calculadas pela altura cadastrada
+- barras de proximidade das metas, recalculadas com as medicoes mais recentes
+- minigraficos de evolucao dentro dos quatro cards corporais
 - grafico de evolucao do volume por sessao
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes

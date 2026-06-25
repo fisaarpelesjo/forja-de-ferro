@@ -134,6 +134,14 @@ def main():
                 dados["composicao_corporal"]["meta_cintura_cm"]
                 == 91.5
             )
+            assert round(
+                dados["composicao_corporal"]["progresso_peso"],
+                1,
+            ) == 71.0
+            assert round(
+                dados["composicao_corporal"]["progresso_cintura"],
+                1,
+            ) == 82.8
             assert (
                 round(
                     dados["composicao_corporal"]["relacao_cintura_altura"],
@@ -244,7 +252,18 @@ def main():
             assert "Meta de referencia: abaixo de 91,5 cm" in html
             assert "Meta de referencia: 18,5 a 24,9" in html
             assert "Meta de referencia: abaixo de 0,50" in html
-            assert "grid-template-columns: repeat(5, minmax(0, 1fr))" in html
+            assert html.count('role="progressbar"') == 4
+            assert "71,0% de proximidade da meta" in html
+            assert "82,8% de proximidade da meta" in html
+            assert html.count('class="minigrafico"') == 4
+            assert "Evolucao historica do peso corporal" in html
+            assert "Evolucao historica da cintura" in html
+            assert "Evolucao historica do IMC" in html
+            assert "Evolucao historica da relacao cintura por altura" in html
+            assert "grade-resumo-treino" in html
+            assert "grade-resumo-corporal" in html
+            assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in html
+            assert "grid-template-columns: repeat(4, minmax(0, 1fr))" in html
             assert 'data-grupo="Dorsal superior"' in html
             assert "body-muscles" in html
             assert "mapa-anatomia-vetorial" in html
