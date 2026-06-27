@@ -22,7 +22,8 @@ modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
 No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
 assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
-nao possui `logged_at`; usar `session_id`, `sort_order` e `id` para ordenar logs.
+usa `exercise_name` para o nome do exercicio, nao `exercise`, e nao possui
+`logged_at`; usar `session_id`, `sort_order` e `id` para ordenar logs.
 Em consultas via `python -c` no PowerShell, evitar metacaracteres como `|` dentro
 da string do comando. Preferir codigo Python entre aspas simples e saida CSV ou
 texto simples. Se o sandbox do Windows falhar com `CreateProcessAsUserW failed:
