@@ -227,16 +227,18 @@ Le os exercicios ativos do SQLite e envia uma tabela compacta.
 
 ## `/aquecimento`
 
-Mostra um aquecimento curto, sem cargas prescritas, usando nomes em PT-BR:
+Mostra um aquecimento dinamico curto de corpo todo, pensado para durar cerca
+de 5 minutos sem virar um segundo treino:
 
 ```text
-1. Agachamento livre — 1x10
-2. Dobradiça de quadril — 1x10
-3. Sustentação Zercher com barra vazia — 1x15s
-4. Agachamento Zercher com barra vazia — 1x5
-5. Agachamento Zercher leve — 1x3
-6. Supino reto com barra vazia — 1x8
-7. Supino reto leve — 1x3
+1. Marcha rapida ou polichinelo leve — 60s
+2. Circulos de braco e abrir/fechar bracos — 30s
+3. Rotacao de tronco — 30s
+4. Agachamento livre — 1x10
+5. Afundo alternado ou passada para tras — 1x6 por perna
+6. Bom dia sem peso ou com barra vazia — 1x10
+7. Flexao facil — 1x5-8
+8. Prancha com toque no ombro — 10 toques
 ```
 
 ## `/volume`

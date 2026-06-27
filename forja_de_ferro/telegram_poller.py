@@ -630,13 +630,15 @@ def main():
                 if lower == "/aquecimento":
                     send(
                         "<b>Aquecimento</b>\n\n"
-                        "1. Agachamento livre — 1x10\n"
-                        "2. Dobradiça de quadril — 1x10\n"
-                        "3. Sustentação Zercher com barra vazia — 1x15s\n"
-                        "4. Agachamento Zercher com barra vazia — 1x5\n"
-                        "5. Agachamento Zercher leve — 1x3\n"
-                        "6. Supino reto com barra vazia — 1x8\n"
-                        "7. Supino reto leve — 1x3"
+                        "5 minutos, sem transformar em outro treino:\n\n"
+                        "1. Marcha rapida ou polichinelo leve — 60s\n"
+                        "2. Circulos de braco e abrir/fechar bracos — 30s\n"
+                        "3. Rotacao de tronco — 30s\n"
+                        "4. Agachamento livre — 1x10\n"
+                        "5. Afundo alternado ou passada para tras — 1x6 por perna\n"
+                        "6. Bom dia sem peso ou com barra vazia — 1x10\n"
+                        "7. Flexao facil — 1x5-8\n"
+                        "8. Prancha com toque no ombro — 10 toques"
                     )
                     continue
 

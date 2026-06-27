@@ -85,6 +85,8 @@ Comandos principais em PT-BR:
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
 - `80` ou `80 8` registra carga e RPE opcional.
+- `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca
+  de 5 minutos, sem prescrever um segundo treino.
 - O texto de `/gerar` mostra `alvo`, calculado pela ultima carga do exercicio e pelo RPE, e `descanso`.
 - Ao carregar, `session.json` e validado contra o SQLite. Arquivo ausente,
   corrompido ou antigo e reconstruido pela sessao mais recente com logs

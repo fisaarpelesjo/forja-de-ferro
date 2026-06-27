@@ -106,6 +106,8 @@ Comandos principais:
 
 Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
+`/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca de
+5 minutos, sem prescrever um segundo treino.
 
 Fluxo:
 
