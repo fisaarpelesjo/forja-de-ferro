@@ -111,7 +111,9 @@ usam barra.
 
 Fluxo:
 
-1. `/gerar` cria uma sessao de treino no SQLite e reseta o arquivo de sessao ativa.
+1. `/gerar` cria uma sessao de treino no SQLite, reseta o arquivo de sessao
+   ativa, envia a lista do treino e em seguida indica o primeiro exercicio a
+   executar.
 2. O texto gerado mostra `alvo`, calculado pela ultima carga registrada e pelo RPE, e `descanso`.
 3. `/prever` mostra o mesmo formato sem criar sessao, logs ou `session.json`.
 4. Entrada de carga e escrita diretamente no SQLite.

@@ -264,6 +264,8 @@ def handle_generate():
     msg = _format_training_msg(exercises)
     send(msg)
     send("Sessao de treino gerada. Envie <code>carga rpe</code> para cada exercicio.")
+    if exercises:
+        send(f"<b>Agora faca:</b>\n{_format_current_exercise(exercises[0])}")
 
 
 def handle_preview():

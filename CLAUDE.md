@@ -70,7 +70,8 @@ invalido encerra o polling com erro claro.
 
 Comandos principais em PT-BR:
 
-- `/gerar` cria uma sessao de treino e envia o treino em texto.
+- `/gerar` cria uma sessao de treino, envia a lista do treino e em seguida
+  indica o primeiro exercicio a executar.
 - `/prever` mostra o treino em texto sem salvar sessao ou logs.
 - `/exercicios` lista exercicios atuais.
 - `/aquecimento` mostra o aquecimento.

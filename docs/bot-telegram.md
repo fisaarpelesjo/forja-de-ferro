@@ -123,6 +123,7 @@ handle_generate()
   -> _format_training_msg(exercises)
   -> send(texto do treino)
   -> send("Sessao de treino gerada...")
+  -> send("Agora faca..." com o primeiro exercicio)
 ```
 
 O primeiro exercicio gerado atualmente e `Agachamento Zercher` (`3x5`).
@@ -130,7 +131,9 @@ O segundo e `Agachamento sumô com barra à frente` (`3x10`), com foco principal
 nos adutores.
 
 O texto enviado lista cada exercicio com series, repeticoes, carga alvo e
-descanso sugerido. Quando existe carga anterior para o exercicio, o alvo e
+descanso sugerido. Depois da lista, o bot envia tambem o primeiro exercicio a
+executar no mesmo formato usado para indicar o proximo exercicio apos um
+registro de carga. Quando existe carga anterior para o exercicio, o alvo e
 calculado pela ultima carga registrada e pelo RPE:
 
 ```text

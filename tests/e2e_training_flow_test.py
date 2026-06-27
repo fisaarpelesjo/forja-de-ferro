@@ -85,9 +85,11 @@ def main():
             assert rosca_martelo["name"] == "Rosca martelo (barra H)"
             assert rosca_martelo["target_weight"] == 16.0
             assert rosca_martelo["loading_note"] == "barra H 9kg + 7kg de anilhas"
-            assert "descanso: 4 min" in sent_messages[-2]
-            assert "<pre>" not in sent_messages[-2]
-            assert "Sessao de treino gerada." in sent_messages[-1]
+            assert "descanso: 4 min" in sent_messages[-3]
+            assert "<pre>" not in sent_messages[-3]
+            assert "Sessao de treino gerada." in sent_messages[-2]
+            assert "<b>Agora faca:</b>" in sent_messages[-1]
+            assert "▶ <b>Agachamento Zercher</b> (3x5)" in sent_messages[-1]
 
             first_log_id = exercises[0]["log_id"]
 
@@ -123,8 +125,10 @@ def main():
             progressed_session = json.loads(test_session.read_text(encoding="utf-8"))
             progressed_first = progressed_session["exercises"][0]
             assert progressed_first["target_weight"] == 82.0
-            assert "82" in sent_messages[-2]
-            assert "descanso: 4 min" in sent_messages[-2]
+            assert "82" in sent_messages[-3]
+            assert "82" in sent_messages[-1]
+            assert "descanso: 4 min" in sent_messages[-3]
+            assert "descanso 4 min" in sent_messages[-1]
 
             telegram_poller.handle("/status", session)
             assert "Treino" in sent_messages[-1]

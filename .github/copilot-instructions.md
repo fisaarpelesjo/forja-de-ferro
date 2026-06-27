@@ -109,7 +109,8 @@ usam barra.
 
 Fluxo principal:
 
-1. `/gerar` cria uma sessao de treino no SQLite.
+1. `/gerar` cria uma sessao de treino no SQLite, envia a lista do treino e em
+   seguida indica o primeiro exercicio a executar.
 2. `ods_ops.write_session(...)` grava o estado ativo em `session.json`.
 3. O texto de treino mostra `alvo`, calculado pela ultima carga registrada e pelo RPE, e `descanso`.
 4. `/prever` mostra o mesmo formato sem criar sessao, logs ou `session.json`.
