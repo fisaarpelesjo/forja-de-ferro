@@ -2281,6 +2281,12 @@ def gerar_html(dados):
       --forja-blue: #78a9ff;
       --forja-success: #42be65;
       --forja-error: #fa4d56;
+      --tipo-xs: 0.75rem;
+      --tipo-sm: 0.875rem;
+      --tipo-md: 1rem;
+      --tipo-lg: 1.25rem;
+      --tipo-xl: 1.5rem;
+      --tipo-2xl: 2rem;
     }}
     * {{ box-sizing: border-box; }}
     html {{ background: var(--forja-background); }}
@@ -2289,7 +2295,7 @@ def gerar_html(dados):
       font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
       background: var(--forja-background);
       color: var(--forja-text-primary);
-      font-size: 14px;
+      font-size: var(--tipo-sm);
       line-height: 1.45;
     }}
     main {{
@@ -2307,11 +2313,11 @@ def gerar_html(dados):
       padding-bottom: 1rem;
     }}
     h1, h2, h3 {{ margin: 0; letter-spacing: 0; font-weight: 400; }}
-    h1 {{ font-size: 42px; line-height: 1.05; }}
-    h2 {{ font-size: 20px; line-height: 1.3; }}
+    h1 {{ font-size: 2.625rem; line-height: 1.05; }}
+    h2 {{ font-size: var(--tipo-lg); line-height: 1.3; }}
     h3 {{
       color: var(--forja-text-secondary);
-      font-size: 14px;
+      font-size: var(--tipo-sm);
       line-height: 1.3;
       margin: 1.5rem 0 0.5rem;
       font-weight: 600;
@@ -2340,17 +2346,22 @@ def gerar_html(dados):
     .rotulo {{
       display: block;
       color: var(--forja-text-helper);
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       font-weight: 600;
       letter-spacing: 0;
       margin-bottom: 0.5rem;
     }}
-    .valor {{ font-size: 32px; font-weight: 400; line-height: 1.15; }}
-    .valor-menor {{ font-size: 24px; }}
+    .valor,
+    .valor-menor {{
+      display: block;
+      font-size: var(--tipo-xl);
+      font-weight: 400;
+      line-height: 1.2;
+    }}
     .meta-indicador {{
       display: block;
       color: var(--forja-success);
-      font-size: 11px;
+      font-size: var(--tipo-xs);
       line-height: 1.35;
       margin-top: 0.5rem;
     }}
@@ -2369,7 +2380,7 @@ def gerar_html(dados):
     .meta-percentual {{
       display: block;
       color: var(--forja-text-helper);
-      font-size: 10px;
+      font-size: var(--tipo-xs);
       margin-top: 0.25rem;
     }}
     .minigrafico {{
@@ -2384,7 +2395,7 @@ def gerar_html(dados):
     .minigrafico-vazio {{
       display: block;
       color: var(--forja-text-helper);
-      font-size: 10px;
+      font-size: var(--tipo-xs);
       margin-top: 0.75rem;
     }}
     .positivo {{ color: var(--forja-success); }}
@@ -2404,8 +2415,8 @@ def gerar_html(dados):
       border: 1px solid var(--forja-border-strong);
       padding: 1rem;
     }}
-    .dieta-indicador strong {{ display: block; font-size: 18px; font-weight: 400; }}
-    .dieta-indicador small {{ color: var(--forja-text-helper); font-size: 12px; }}
+    .dieta-indicador strong {{ display: block; font-size: var(--tipo-lg); font-weight: 400; }}
+    .dieta-indicador small {{ color: var(--forja-text-helper); font-size: var(--tipo-xs); }}
     .dieta-progresso {{
       height: 8px;
       background: var(--forja-layer-03);
@@ -2436,7 +2447,7 @@ def gerar_html(dados):
       display: grid;
       gap: 0.5rem;
       color: var(--forja-text-secondary);
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       font-weight: 600;
     }}
     cds-select {{ width: 100%; }}
@@ -2449,7 +2460,7 @@ def gerar_html(dados):
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
     }}
-    .linha-topo span {{ color: var(--forja-text-helper); font-size: 13px; }}
+    .linha-topo span {{ color: var(--forja-text-helper); font-size: var(--tipo-xs); }}
     svg {{ width: 100%; height: auto; display: block; }}
     .grafico-container {{
       height: 320px;
@@ -2476,7 +2487,7 @@ def gerar_html(dados):
       border-bottom: 1px solid var(--forja-border);
       padding: 0.75rem 0;
       color: var(--forja-text-secondary);
-      font-size: 13px;
+      font-size: var(--tipo-sm);
     }}
     .barra-horizontal div {{
       height: 10px;
@@ -2498,7 +2509,7 @@ def gerar_html(dados):
       gap: 0.5rem;
       border-bottom: 1px solid var(--forja-border);
       padding: 0.75rem 0;
-      font-size: 12px;
+      font-size: var(--tipo-xs);
     }}
     .equilibrio-item strong {{ display: block; color: var(--forja-text-primary); }}
     .equilibrio-item span {{ color: var(--forja-text-secondary); }}
@@ -2536,7 +2547,7 @@ def gerar_html(dados):
       border: 1px solid var(--forja-border-strong);
       padding: 1rem;
     }}
-    .relatorio-card strong {{ display: block; color: var(--forja-text-primary); font-size: 16px; font-weight: 400; }}
+    .relatorio-card strong {{ display: block; color: var(--forja-text-primary); font-size: var(--tipo-md); font-weight: 400; }}
     .oculto {{ display: none; }}
     table {{ width: 100%; }}
     th, td {{ text-align: right; white-space: nowrap; }}
@@ -2562,7 +2573,7 @@ def gerar_html(dados):
     }}
     .mapa-resumo > p {{
       color: var(--forja-text-secondary);
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       line-height: 1.5;
       margin: 0;
     }}
@@ -2579,7 +2590,7 @@ def gerar_html(dados):
     }}
     .mapa-vistas figcaption {{
       color: var(--forja-text-secondary);
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       margin-top: 0.5rem;
     }}
     .mapa-corpo {{
@@ -2621,7 +2632,7 @@ def gerar_html(dados):
     }}
     .mapa-legenda > p {{
       color: var(--forja-text-secondary);
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       line-height: 1.5;
       margin: 0 0 0.5rem;
     }}
@@ -2632,7 +2643,7 @@ def gerar_html(dados):
       align-items: center;
       border-bottom: 1px solid var(--forja-border);
       padding: 0.5rem 0;
-      font-size: 12px;
+      font-size: var(--tipo-xs);
     }}
     .mapa-legenda-item span:nth-child(2) {{
       min-width: 0;
@@ -2661,10 +2672,10 @@ def gerar_html(dados):
       margin-bottom: 0.75rem;
     }}
     .mapa-plano-label {{
-      font-size: 12px;
+      font-size: var(--tipo-xs);
       color: var(--forja-text-helper);
     }}
-    .mapa-plano strong {{ font-size: 18px; color: var(--forja-text-primary); font-weight: 400; }}
+    .mapa-plano strong {{ font-size: var(--tipo-lg); color: var(--forja-text-primary); font-weight: 400; }}
     .mapa-cor {{
       width: 12px;
       height: 12px;
@@ -2673,7 +2684,7 @@ def gerar_html(dados):
     }}
     .mapa-fonte {{
       color: var(--forja-text-helper);
-      font-size: 10px;
+      font-size: var(--tipo-xs);
       margin: 1rem 0 0;
       text-align: right;
     }}
@@ -2687,7 +2698,7 @@ def gerar_html(dados):
       .grade-resumo-treino,
       .grade-resumo-corporal {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .duas-colunas {{ grid-template-columns: 1fr; }}
-      h1 {{ font-size: 28px; }}
+      h1 {{ font-size: 1.75rem; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
       .mapa-resumo {{ grid-template-columns: 1fr; }}
       .grade-dieta {{ grid-template-columns: 1fr; }}
@@ -2697,8 +2708,8 @@ def gerar_html(dados):
       main {{ padding: 1rem 0.5rem 2.5rem; }}
       .grade-resumo-treino,
       .grade-resumo-corporal {{ grid-template-columns: 1fr; }}
-      .valor {{ font-size: 24px; }}
-      th, td {{ font-size: 13px; }}
+      .valor, .valor-menor {{ font-size: var(--tipo-xl); }}
+      th, td {{ font-size: var(--tipo-xs); }}
       .filtros {{ grid-template-columns: 1fr; }}
       .mapa-vistas {{ gap: 10px; }}
       .relatorio-semanal {{ grid-template-columns: 1fr; }}

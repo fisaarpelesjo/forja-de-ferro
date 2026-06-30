@@ -267,6 +267,8 @@ def main():
             assert 'callback: (value) => formatoDecimal.format(value)' in html
             assert "grade-resumo-treino" in html
             assert "grade-resumo-corporal" in html
+            assert ".valor,\n    .valor-menor" in html
+            assert "font-size: var(--tipo-xl)" in html
             assert "@carbon/web-components" not in html
             assert "carbon/web-components/tag/v2/latest/tile.min.js" in html
             assert "carbon/web-components/tag/v2/latest/theme.min.js" in html
