@@ -132,14 +132,16 @@ ultima sessao, volume e RPE medio geral. O arquivo permanece local e nenhum
 caminho do computador e enviado.
 
 O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
-para ver um layout escuro, cru e compacto com pagina unica rolavel:
+para ver um layout escuro, cru e compacto com IBM Carbon Design System oficial
+via Carbon Web Components. O arquivo abre sem servidor ou build, mas usa a CDN
+oficial configurada no HTML para carregar os componentes `cds-*`.
 
 - 10 indicadores de resumo, incluindo peso corporal, cintura, IMC, relacao
   cintura/altura e variacoes recentes
 - metas corporais de referencia calculadas pela altura cadastrada
 - barras de proximidade das metas, recalculadas com as medicoes mais recentes
-- minigraficos de evolucao dentro dos quatro cards corporais
-- grafico de evolucao do volume por sessao
+- minigraficos de evolucao dentro dos quatro cards corporais, renderizados com Chart.js
+- grafico de evolucao do volume por sessao, renderizado com Chart.js
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes
 - calendario de carga das ultimas sessoes
@@ -148,7 +150,7 @@ para ver um layout escuro, cru e compacto com pagina unica rolavel:
 - grupos musculares por volume e series
 - volume semanal
 - maiores evolucoes de carga e volume, quedas, recordes pessoais e PRs expandidos
-- grafico de carga vs. RPE por exercicio
+- grafico de carga vs. RPE por exercicio, renderizado com Chart.js
 - alertas simples com sinais de consolidacao
 - filtros rapidos por periodo, exercicio, segmento anatomico e ordenacao
 - relatorio semanal local com volume, RPE, segmentos principais e observacoes

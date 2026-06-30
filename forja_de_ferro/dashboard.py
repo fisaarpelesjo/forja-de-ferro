@@ -1565,25 +1565,13 @@ def _render_minigrafico(valores, rotulo):
     if len(pontos_validos) < 2:
         return '<span class="minigrafico-vazio">Aguardando mais medicoes</span>'
 
-    largura = 240
-    altura = 56
-    margem = 4
-    minimo = min(pontos_validos)
-    maximo = max(pontos_validos)
-    amplitude = maximo - minimo
-    passo = (largura - 2 * margem) / (len(pontos_validos) - 1)
-    coordenadas = []
-    for indice, valor in enumerate(pontos_validos):
-        x = margem + indice * passo
-        proporcao = (valor - minimo) / amplitude if amplitude else 0.5
-        y = altura - margem - proporcao * (altura - 2 * margem)
-        coordenadas.append(f"{x:.1f},{y:.1f}")
-
+    data = html.escape(json.dumps(pontos_validos), quote=True)
     return f"""
-        <svg class="minigrafico" viewBox="0 0 {largura} {altura}"
-             role="img" aria-label="{html.escape(rotulo)}">
-          <polyline points="{' '.join(coordenadas)}"></polyline>
-        </svg>
+        <canvas class="minigrafico grafico-chartjs"
+                data-chart="mini"
+                data-valores="{data}"
+                aria-label="{html.escape(rotulo)}"
+                role="img"></canvas>
     """
 
 
@@ -1699,19 +1687,42 @@ def _render_mapa_muscular(mapa):
 
     anterior = render_vista("front")
     posterior = render_vista("back")
-    legenda = "\n".join(
-        f"""
-        <div class="mapa-legenda-item">
-          <span class="mapa-cor" style="background:{_cor_mapa_calor(item['intensidade'])};border-color:{_cor_mapa_calor(item['intensidade'])}"></span>
-          <span>{html.escape(item["grupo"])}</span>
-          <strong>{_fmt_numero(item["volume"])} kg</strong>
-        </div>
-        """
-        for item in mapa["grupos"]
-    )
+    def render_legenda(itens):
+        return "\n".join(
+            f"""
+            <div class="mapa-legenda-item">
+              <span class="mapa-cor" style="background:{_cor_mapa_calor(item['intensidade'])};border-color:{_cor_mapa_calor(item['intensidade'])}"></span>
+              <span>{html.escape(item["grupo"])}</span>
+              <strong>{_fmt_numero(item["volume"])} kg</strong>
+            </div>
+            """
+            for item in itens
+        )
+
+    grupos_anteriores = [
+        item for item in mapa["grupos"]
+        if item["grupo"] in SEGMENTOS_ANTERIORES
+    ]
+    grupos_posteriores = [
+        item for item in mapa["grupos"]
+        if item["grupo"] in SEGMENTOS_POSTERIORES
+    ]
+    legenda_anterior = render_legenda(grupos_anteriores)
+    legenda_posterior = render_legenda(grupos_posteriores)
     data = html.escape(mapa["data"] or "-")
     return f"""
+    <div class="mapa-resumo">
+      <p>Sessao de <strong>{data}</strong>. Azul = baixo volume, vermelho = alto volume.</p>
+    </div>
     <div class="mapa-muscular-layout">
+      <div class="mapa-legenda mapa-legenda-anterior">
+        <div class="mapa-plano">
+          <span class="mapa-plano-label">Anterior</span>
+          <strong>{_fmt_numero(vol_ant)} kg</strong>
+        </div>
+        <h3>Anterior</h3>
+        {legenda_anterior or '<p class="vazio">Sem segmentos anteriores.</p>'}
+      </div>
       <div class="mapa-vistas">
         <figure>
           {anterior}
@@ -1722,78 +1733,19 @@ def _render_mapa_muscular(mapa):
           <figcaption>Posterior</figcaption>
         </figure>
       </div>
-      <div class="mapa-legenda">
-        <p>Sessao de <strong>{data}</strong>. Azul = baixo volume, vermelho = alto volume.</p>
-        <div class="mapa-planos">
-          <div class="mapa-plano">
-            <span class="mapa-plano-label">Anterior</span>
-            <strong>{_fmt_numero(vol_ant)} kg</strong>
-          </div>
-          <div class="mapa-plano">
-            <span class="mapa-plano-label">Posterior</span>
-            <strong>{_fmt_numero(vol_pos)} kg</strong>
-          </div>
+      <div class="mapa-legenda mapa-legenda-posterior">
+        <div class="mapa-plano">
+          <span class="mapa-plano-label">Posterior</span>
+          <strong>{_fmt_numero(vol_pos)} kg</strong>
         </div>
-        {legenda or '<p class="vazio">Sem grupos musculares registrados.</p>'}
+        <h3>Posterior</h3>
+        {legenda_posterior or '<p class="vazio">Sem segmentos posteriores.</p>'}
       </div>
     </div>
     <p class="mapa-fonte">
       Regioes musculares vetoriais de body-muscles, por Ivan Vulovic, Apache-2.0.
     </p>
     """
-
-
-def _line_points(points, width=760, height=300, padding=28):
-    if not points:
-        return []
-    if len(points) == 1:
-        x_values = [width / 2]
-    else:
-        step = (width - padding * 2) / (len(points) - 1)
-        x_values = [padding + idx * step for idx in range(len(points))]
-
-    min_y = min(points)
-    max_y = max(points)
-    span = max(max_y - min_y, 1)
-    coords = []
-    for x, value in zip(x_values, points):
-        chart_bottom = height - 68
-        y = chart_bottom - ((value - min_y) / span) * (chart_bottom - padding)
-        coords.append({"x": x, "y": y, "valor": value})
-    return coords
-
-
-def _polyline(points):
-    return " ".join(f"{p['x']:.1f},{p['y']:.1f}" for p in points)
-
-
-def _rotulos_linha(points, sessoes):
-    if not points:
-        return ""
-    n = len(points)
-    step = 704 / max(n - 1, 1)
-    if step >= 60:
-        fs_vol, fs_data = 11, 9
-    elif step >= 40:
-        fs_vol, fs_data = 9, 8
-    else:
-        fs_vol, fs_data = 8, 7
-
-    rotulos = []
-    for idx, point in enumerate(points):
-        x = point["x"]
-        if idx == 0:
-            x = max(x, 36)
-        elif idx == n - 1:
-            x = min(x, 724)
-        label = _fmt_numero(point["valor"])
-        data = sessoes[idx]["data"][5:] if idx < len(sessoes) else ""
-        rotulos.append(
-            f'<circle class="ponto-volume" cx="{point["x"]:.1f}" cy="{point["y"]:.1f}" r="4"></circle>\n'
-            f'<text class="rotulo-volume" x="{x:.1f}" y="264" text-anchor="middle" style="font-size:{fs_vol}px">{label}</text>\n'
-            f'<text class="rotulo-data" x="{x:.1f}" y="284" text-anchor="middle" style="font-size:{fs_data}px">{html.escape(data)}</text>'
-        )
-    return "\n".join(rotulos)
 
 
 def _barras_sessoes(sessoes):
@@ -1915,7 +1867,7 @@ def _render_itens_dieta(dieta):
     totais = dieta["totais"]
     return f"""
     <div class="tabela-rolavel">
-      <table>
+      <table class="cds--data-table cds--data-table--lg">
         <thead>
           <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th></tr>
         </thead>
@@ -1935,11 +1887,13 @@ def _render_itens_dieta(dieta):
 
 
 def _opcoes_exercicios(exercicios):
-    opcoes = ['<option value="">Todos</option>']
+    opcoes = ['<cds-select-item value="" text="Todos"></cds-select-item>']
     for item in sorted(exercicios, key=lambda ex: ex["nome"]):
         nome = html.escape(item["nome"])
         valor = html.escape(item["nome"], quote=True)
-        opcoes.append(f'<option value="{valor}">{nome}</option>')
+        opcoes.append(
+            f'<cds-select-item value="{valor}" text="{nome}"></cds-select-item>'
+        )
     return "\n".join(opcoes)
 
 
@@ -2015,41 +1969,14 @@ def _render_prs_expandidos(prs):
 def _render_carga_rpe(pontos):
     if not pontos:
         return "<p class=\"vazio\">Sem RPE registrado.</p>"
-    width, height, padding = 760, 320, 44
     pontos_validos = [p for p in pontos if p["rpe"] is not None]
     if not pontos_validos:
         return "<p class=\"vazio\">Sem RPE registrado.</p>"
 
-    cargas = [p["carga"] for p in pontos_validos]
-    rpes = [p["rpe"] for p in pontos_validos]
-    min_carga, max_carga = min(cargas), max(cargas)
-    min_rpe, max_rpe = min(rpes), max(rpes)
-    span_carga = max(max_carga - min_carga, 1)
-    span_rpe = max(max_rpe - min_rpe, 1)
-    circulos = []
-    for ponto in pontos_validos[:30]:
-        x = padding + ((ponto["carga"] - min_carga) / span_carga) * (width - padding * 2)
-        y = height - padding - ((ponto["rpe"] - min_rpe) / span_rpe) * (height - padding * 2)
-        titulo = (
-            f"{ponto['nome']}: {_fmt_decimal(ponto['carga'])} kg, "
-            f"RPE {_fmt_decimal(ponto['rpe'])}"
-        )
-        circulos.append(
-            f"""
-            <circle class="ponto-analise" cx="{x:.1f}" cy="{y:.1f}" r="5">
-              <title>{html.escape(titulo)}</title>
-            </circle>
-            <text class="rotulo-data" x="{x:.1f}" y="{y + 17:.1f}" text-anchor="middle">{html.escape(ponto['nome'][:12])}</text>
-            """
-        )
-    return f"""
-    <svg viewBox="0 0 {width} {height}" role="img" aria-label="Dispersao de carga por RPE">
-      <line class="eixo" x1="{padding}" y1="{height - padding}" x2="{width - padding}" y2="{height - padding}"></line>
-      <line class="eixo" x1="{padding}" y1="{padding}" x2="{padding}" y2="{height - padding}"></line>
-      <text class="rotulo-data" x="{width - padding}" y="{height - 10}" text-anchor="end">carga</text>
-      <text class="rotulo-data" x="{padding}" y="20" text-anchor="start">RPE</text>
-      {''.join(circulos)}
-    </svg>
+    return """
+    <div class="grafico-container grafico-dispersao">
+        <canvas id="grafico-carga-rpe" width="760" height="300" aria-label="Dispersao de carga por RPE" role="img"></canvas>
+    </div>
     """
 
 
@@ -2096,49 +2023,16 @@ def _render_relatorio_semanal(relatorio):
     """
 
 
-def _render_dispersao_volume_rpe(pontos):
-    if not pontos:
-        return "<p class=\"vazio\">Sem RPE registrado para cruzar com volume.</p>"
-    width, height, padding = 760, 300, 36
-    volumes = [p["volume"] for p in pontos]
-    rpes = [p["rpe_medio"] for p in pontos]
-    min_volume, max_volume = min(volumes), max(volumes)
-    min_rpe, max_rpe = min(rpes), max(rpes)
-    span_volume = max(max_volume - min_volume, 1)
-    span_rpe = max(max_rpe - min_rpe, 1)
-    circulos = []
-    for ponto in pontos:
-        x = padding + ((ponto["volume"] - min_volume) / span_volume) * (width - padding * 2)
-        y = height - padding - ((ponto["rpe_medio"] - min_rpe) / span_rpe) * (height - padding * 2)
-        circulos.append(
-            f"""
-            <circle class="ponto-analise" cx="{x:.1f}" cy="{y:.1f}" r="5"></circle>
-            <text class="rotulo-data" x="{x:.1f}" y="{y + 18:.1f}" text-anchor="middle">{html.escape(ponto["data"][5:])}</text>
-            """
-        )
-    return f"""
-    <svg viewBox="0 0 {width} {height}" role="img" aria-label="Dispersao de volume por RPE medio">
-      <line class="eixo" x1="{padding}" y1="{height - padding}" x2="{width - padding}" y2="{height - padding}"></line>
-      <line class="eixo" x1="{padding}" y1="{padding}" x2="{padding}" y2="{height - padding}"></line>
-      <text class="rotulo-data" x="{width - padding}" y="{height - 8}" text-anchor="end">volume</text>
-      <text class="rotulo-data" x="{padding}" y="18" text-anchor="start">RPE</text>
-      {''.join(circulos)}
-    </svg>
-    """
-
-
 def gerar_html(dados):
     resumo = dados["resumo"]
     sessoes = dados["volume_por_sessao"]
     exercicios = dados["volume_por_exercicio"]
-    pontos_linha = _line_points([s["volume"] for s in sessoes])
-    linha = _polyline(pontos_linha)
-    rotulos_linha = _rotulos_linha(pontos_linha, sessoes)
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
     grupos_filtro = sorted({item["grupo"] for item in dados["grupos_musculares"]})
-    opcoes_grupos = '<option value="">Todos</option>' + "".join(
-        f'<option value="{html.escape(grupo, quote=True)}">{html.escape(grupo)}</option>'
+    opcoes_grupos = '<cds-select-item value="" text="Todos"></cds-select-item>' + "".join(
+        f'<cds-select-item value="{html.escape(grupo, quote=True)}" '
+        f'text="{html.escape(grupo, quote=True)}"></cds-select-item>'
         for grupo in grupos_filtro
     )
     mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
@@ -2365,50 +2259,71 @@ def gerar_html(dados):
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard de treino - Forja de Ferro</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@carbon/styles@1.109.0/css/styles.css">
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/theme.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/select.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/progress-bar.min.js"></script>
+  <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/data-table.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
   <style>
     :root {{
       color-scheme: dark;
-      --fundo: #0c0c0c;
-      --texto: #e2e2e2;
-      --muted: #555555;
-      --linha: #1e1e1e;
-      --painel: #111111;
-      --painel-2: #161616;
-      --card: #111111;
-      --verde: #4ade80;
-      --azul: #94a3b8;
-      --vermelho: #f87171;
+      --forja-background: #161616;
+      --forja-layer-01: #262626;
+      --forja-layer-02: #393939;
+      --forja-layer-03: #525252;
+      --forja-border: #393939;
+      --forja-border-strong: #525252;
+      --forja-text-primary: #f4f4f4;
+      --forja-text-secondary: #c6c6c6;
+      --forja-text-helper: #a8a8a8;
+      --forja-blue: #78a9ff;
+      --forja-success: #42be65;
+      --forja-error: #fa4d56;
     }}
     * {{ box-sizing: border-box; }}
+    html {{ background: var(--forja-background); }}
     body {{
       margin: 0;
-      font-family: 'JetBrains Mono', 'Fira Mono', 'Courier New', monospace;
-      background: var(--fundo);
-      color: var(--texto);
+      font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+      background: var(--forja-background);
+      color: var(--forja-text-primary);
+      font-size: 14px;
+      line-height: 1.45;
     }}
     main {{
-      width: min(1180px, calc(100% - 32px));
+      width: min(1280px, 100%);
       margin: 0 auto;
-      padding: 24px 0 44px;
+      padding: 2rem 1rem 3rem;
     }}
     header {{
       display: flex;
       align-items: end;
       justify-content: space-between;
-      gap: 24px;
-      border-bottom: 1px solid var(--linha);
-      margin-bottom: 16px;
-      padding-bottom: 16px;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--forja-border-strong);
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
     }}
-    h1, h2, h3 {{ margin: 0; letter-spacing: 0; }}
-    h1 {{ font-size: 28px; line-height: 1.08; }}
-    h2 {{ font-size: 16px; }}
-    h3 {{ font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 18px 0 6px; font-weight: 600; }}
-    .subtitulo {{ color: var(--muted); margin: 8px 0 0; }}
+    h1, h2, h3 {{ margin: 0; letter-spacing: 0; font-weight: 400; }}
+    h1 {{ font-size: 42px; line-height: 1.05; }}
+    h2 {{ font-size: 20px; line-height: 1.3; }}
+    h3 {{
+      color: var(--forja-text-secondary);
+      font-size: 14px;
+      line-height: 1.3;
+      margin: 1.5rem 0 0.5rem;
+      font-weight: 600;
+    }}
+    .subtitulo {{
+      color: var(--forja-text-secondary);
+      margin: 0.5rem 0 0;
+    }}
     .grade-resumo {{
       display: grid;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 1px;
+      margin-bottom: 1rem;
     }}
     .grade-resumo-treino {{
       grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -2416,249 +2331,245 @@ def gerar_html(dados):
     .grade-resumo-corporal {{
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }}
-    .indicador, .painel {{
-      background: var(--painel);
-      border: 1px solid var(--linha);
-      border-radius: 2px;
+    .indicador {{
+      min-height: 112px;
+      padding: 1rem;
+      position: relative;
     }}
-    .indicador {{ padding: 14px; min-height: 96px; }}
+    .indicador, .painel {{ position: relative; }}
     .rotulo {{
       display: block;
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
+      color: var(--forja-text-helper);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0;
+      margin-bottom: 0.5rem;
     }}
-    .valor {{ font-size: 24px; font-weight: 700; }}
-    .valor-menor {{ font-size: 18px; }}
+    .valor {{ font-size: 32px; font-weight: 400; line-height: 1.15; }}
+    .valor-menor {{ font-size: 24px; }}
     .meta-indicador {{
       display: block;
-      color: var(--verde);
+      color: var(--forja-success);
       font-size: 11px;
       line-height: 1.35;
-      margin-top: 8px;
+      margin-top: 0.5rem;
     }}
     .meta-progresso {{
-      height: 6px;
-      background: var(--fundo);
-      border: 1px solid var(--linha);
-      margin-top: 8px;
+      height: 8px;
+      background: var(--forja-layer-03);
+      border: 0;
+      margin-top: 0.5rem;
       overflow: hidden;
     }}
     .meta-progresso i {{
       display: block;
       height: 100%;
-      background: var(--verde);
+      background: var(--forja-success);
     }}
     .meta-percentual {{
       display: block;
-      color: var(--muted);
+      color: var(--forja-text-helper);
       font-size: 10px;
-      margin-top: 4px;
+      margin-top: 0.25rem;
     }}
     .minigrafico {{
       display: block;
       width: 100%;
-      height: 56px;
-      margin-top: 10px;
-      background: var(--painel-2);
-      border: 1px solid var(--linha);
-    }}
-    .minigrafico polyline {{
-      fill: none;
-      stroke: var(--verde);
-      stroke-width: 2;
-      vector-effect: non-scaling-stroke;
+      height: 92px;
+      max-height: 92px;
+      margin-top: 0.75rem;
+      background: var(--forja-layer-02);
+      border: 1px solid var(--forja-border-strong);
     }}
     .minigrafico-vazio {{
       display: block;
-      color: var(--muted);
+      color: var(--forja-text-helper);
       font-size: 10px;
-      margin-top: 10px;
+      margin-top: 0.75rem;
     }}
-    .positivo {{ color: var(--verde); }}
-    .negativo {{ color: var(--vermelho); }}
-    .painel {{ padding: 16px; margin-top: 12px; }}
+    .positivo {{ color: var(--forja-success); }}
+    .negativo {{ color: var(--forja-error); }}
+    .painel {{
+      margin-top: 1rem;
+      padding: 1.5rem;
+    }}
     .grade-dieta {{
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 1px;
+      margin-bottom: 1rem;
     }}
     .dieta-indicador {{
-      background: var(--painel-2);
-      border: 1px solid var(--linha);
-      padding: 12px;
+      background: var(--forja-layer-02);
+      border: 1px solid var(--forja-border-strong);
+      padding: 1rem;
     }}
-    .dieta-indicador strong {{ display: block; font-size: 16px; }}
-    .dieta-indicador small {{ color: var(--muted); font-size: 11px; }}
+    .dieta-indicador strong {{ display: block; font-size: 18px; font-weight: 400; }}
+    .dieta-indicador small {{ color: var(--forja-text-helper); font-size: 12px; }}
     .dieta-progresso {{
-      height: 6px;
-      background: var(--fundo);
-      border: 1px solid var(--linha);
-      margin: 10px 0 6px;
+      height: 8px;
+      background: var(--forja-layer-03);
+      border: 0;
+      margin: 0.75rem 0 0.5rem;
     }}
     .dieta-progresso i {{
       display: block;
       height: 100%;
-      background: var(--verde);
+      background: var(--forja-success);
     }}
     .tabela-rolavel {{ overflow-x: auto; }}
     tfoot th {{ color: var(--texto); }}
     .duas-colunas {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 12px;
+      gap: 1rem;
+      margin-top: 1rem;
     }}
     .duas-colunas > .painel {{ margin-top: 0; }}
     .filtros {{
       display: grid;
-      grid-template-columns: repeat(3, minmax(150px, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
     }}
     label {{
       display: grid;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 11px;
-      text-transform: uppercase;
+      gap: 0.5rem;
+      color: var(--forja-text-secondary);
+      font-size: 12px;
+      font-weight: 600;
     }}
-    select {{
-      width: 100%;
-      border: 1px solid var(--linha);
-      border-radius: 2px;
-      background: var(--painel-2);
-      color: var(--texto);
-      font: inherit;
-      padding: 8px 10px;
-      text-transform: none;
-    }}
+    cds-select {{ width: 100%; }}
     .linha-topo {{
       display: flex;
       align-items: baseline;
       justify-content: space-between;
-      gap: 16px;
-      border-bottom: 1px solid var(--linha);
-      margin-bottom: 12px;
-      padding-bottom: 10px;
+      gap: 1rem;
+      border-bottom: 1px solid var(--forja-border-strong);
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
     }}
-    .linha-topo span {{ color: var(--muted); font-size: 13px; }}
+    .linha-topo span {{ color: var(--forja-text-helper); font-size: 13px; }}
     svg {{ width: 100%; height: auto; display: block; }}
-    .eixo {{ stroke: var(--linha); stroke-width: 1; }}
-    .linha-volume {{ fill: none; stroke: var(--azul); stroke-width: 3; }}
-    .ponto-volume {{ fill: var(--fundo); stroke: var(--azul); stroke-width: 2; }}
-    .rotulo-volume {{
-      fill: var(--texto);
-      font-size: 14px;
-      font-weight: 700;
+    .grafico-container {{
+      height: 320px;
+      min-height: 320px;
+      max-height: 320px;
+      position: relative;
     }}
-    .rotulo-data {{
-      fill: var(--muted);
-      font-size: 11px;
+    .grafico-container canvas {{
+      display: block;
+      height: 100% !important;
+      max-height: 100%;
+      width: 100% !important;
+    }}
+    .grafico-dispersao {{
+      height: 300px;
+      min-height: 300px;
+      max-height: 300px;
     }}
     .barra-horizontal {{
       display: grid;
       grid-template-columns: 120px minmax(0, 1fr) 90px;
-      gap: 10px;
+      gap: 0.75rem;
       align-items: center;
-      border-bottom: 1px solid var(--linha);
-      padding: 9px 0;
-      color: var(--muted);
+      border-bottom: 1px solid var(--forja-border);
+      padding: 0.75rem 0;
+      color: var(--forja-text-secondary);
       font-size: 13px;
     }}
     .barra-horizontal div {{
       height: 10px;
-      background: var(--painel-2);
-      border: 1px solid var(--linha);
+      background: var(--forja-layer-02);
+      border: 0;
     }}
     .barra-horizontal i {{
       display: block;
       height: 100%;
-      background: var(--texto);
+      background: var(--forja-blue);
     }}
     .barra-horizontal strong {{
-      color: var(--texto);
-      font-weight: 700;
+      color: var(--forja-text-primary);
+      font-weight: 600;
       text-align: right;
     }}
     .equilibrio-item {{
       display: grid;
-      gap: 7px;
-      border-bottom: 1px solid var(--linha);
-      padding: 9px 0;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--forja-border);
+      padding: 0.75rem 0;
       font-size: 12px;
     }}
-    .equilibrio-item strong {{ display: block; color: var(--texto); }}
-    .equilibrio-item span {{ color: var(--muted); }}
+    .equilibrio-item strong {{ display: block; color: var(--forja-text-primary); }}
+    .equilibrio-item span {{ color: var(--forja-text-secondary); }}
     .equilibrio-barra {{
       display: flex;
       height: 10px;
-      background: var(--fundo);
-      border: 1px solid var(--linha);
+      background: var(--forja-layer-03);
+      border: 0;
     }}
     .equilibrio-barra i, .equilibrio-barra b {{ display: block; height: 100%; }}
-    .equilibrio-barra i {{ background: var(--vermelho); }}
-    .equilibrio-barra b {{ background: var(--azul); }}
-    .ponto-analise {{ fill: var(--fundo); stroke: var(--vermelho); stroke-width: 2; }}
+    .equilibrio-barra i {{ background: var(--forja-error); }}
+    .equilibrio-barra b {{ background: var(--forja-blue); }}
     .heatmap-sessoes {{
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
-      gap: 6px;
+      gap: 0.5rem;
     }}
     .heatmap-dia {{
-      min-height: 36px;
-      border: 1px solid var(--linha);
+      min-height: 40px;
+      border: 1px solid var(--forja-border);
       display: grid;
       place-items: center;
-      color: #0c0c0c;
-      font-size: 10px;
-      font-weight: 700;
+      color: #161616;
+      font-size: 11px;
+      font-weight: 600;
     }}
     .relatorio-semanal {{
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 1px;
+      margin-bottom: 1rem;
     }}
     .relatorio-card {{
-      background: var(--painel-2);
-      border: 1px solid var(--linha);
-      padding: 10px;
+      background: var(--forja-layer-02);
+      border: 1px solid var(--forja-border-strong);
+      padding: 1rem;
     }}
-    .relatorio-card strong {{ display: block; color: var(--texto); font-size: 14px; }}
+    .relatorio-card strong {{ display: block; color: var(--forja-text-primary); font-size: 16px; font-weight: 400; }}
     .oculto {{ display: none; }}
-    table {{
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }}
-    th, td {{
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--linha);
-      text-align: right;
-      white-space: nowrap;
-    }}
+    table {{ width: 100%; }}
+    th, td {{ text-align: right; white-space: nowrap; }}
     th:first-child, td:first-child {{
       text-align: left;
       white-space: normal;
     }}
-    th {{ color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 11px; }}
-    .vazio {{ color: var(--muted); }}
-    .lista {{ margin: 0; padding-left: 18px; color: var(--texto); }}
-    .lista li {{ margin: 8px 0; }}
+    .vazio {{ color: var(--forja-text-helper); }}
+    .lista {{ margin: 0; padding-left: 18px; color: var(--forja-text-primary); }}
+    .lista li {{ margin: 0.5rem 0; }}
     .mapa-muscular-layout {{
       display: grid;
-      grid-template-columns: minmax(420px, 1.5fr) minmax(240px, 0.5fr);
-      gap: 18px;
-      align-items: center;
+      grid-template-columns: minmax(260px, 0.55fr) minmax(430px, 1fr) minmax(260px, 0.55fr);
+      gap: 1.5rem;
+      align-items: start;
+    }}
+    .mapa-resumo {{
+      align-items: start;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr);
+      margin-bottom: 1rem;
+    }}
+    .mapa-resumo > p {{
+      color: var(--forja-text-secondary);
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 0;
     }}
     .mapa-vistas {{
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 22px;
+      gap: 1rem;
       min-width: 0;
     }}
     .mapa-vistas figure {{
@@ -2667,25 +2578,25 @@ def gerar_html(dados):
       text-align: center;
     }}
     .mapa-vistas figcaption {{
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 2px;
-      margin-top: 8px;
-      text-transform: uppercase;
+      color: var(--forja-text-secondary);
+      font-size: 12px;
+      margin-top: 0.5rem;
     }}
     .mapa-corpo {{
       width: 100%;
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+      background: transparent;
+      border: 0;
+      padding: 0;
     }}
     .mapa-anatomia-vetorial {{
       display: block;
       width: 100%;
       height: auto;
-      max-height: 590px;
+      max-height: 500px;
     }}
     .musculo {{
       pointer-events: none;
-      stroke: #0c0c0c;
+      stroke: #161616;
       stroke-width: 0.15;
       transition: filter 150ms ease;
     }}
@@ -2697,57 +2608,73 @@ def gerar_html(dados):
     }}
     .mapa-legenda {{
       display: grid;
-      gap: 7px;
-      align-content: center;
+      gap: 0.5rem;
+      align-content: start;
+      min-width: 0;
+      overflow: visible;
+    }}
+    .mapa-legenda h3 {{
+      border-bottom: 1px solid var(--forja-border-strong);
+      color: var(--forja-text-primary);
+      margin: 0;
+      padding-bottom: 0.5rem;
     }}
     .mapa-legenda > p {{
-      color: var(--muted);
+      color: var(--forja-text-secondary);
       font-size: 12px;
       line-height: 1.5;
-      margin: 0 0 8px;
+      margin: 0 0 0.5rem;
     }}
     .mapa-legenda-item {{
       display: grid;
-      grid-template-columns: 14px minmax(0, 1fr) auto;
-      gap: 9px;
+      grid-template-columns: 14px minmax(120px, 1fr) minmax(58px, auto);
+      gap: 0.5rem;
       align-items: center;
-      border-bottom: 1px solid var(--linha);
-      padding: 6px 0;
+      border-bottom: 1px solid var(--forja-border);
+      padding: 0.5rem 0;
       font-size: 12px;
     }}
-    .mapa-legenda-item strong {{ color: var(--texto); }}
+    .mapa-legenda-item span:nth-child(2) {{
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }}
+    .mapa-legenda-item strong {{
+      color: var(--forja-text-primary);
+      text-align: right;
+      white-space: nowrap;
+    }}
     .mapa-planos {{
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: 1px;
+      margin-bottom: 0;
+      max-width: 370px;
     }}
     .mapa-plano {{
-      background: var(--card);
-      border: 1px solid var(--linha);
-      border-radius: 4px;
-      padding: 8px 10px;
+      background: var(--forja-layer-02);
+      border: 1px solid var(--forja-border-strong);
+      border-radius: 0;
+      padding: 0.75rem 1rem;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
     }}
     .mapa-plano-label {{
-      font-size: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 12px;
+      color: var(--forja-text-helper);
     }}
-    .mapa-plano strong {{ font-size: 15px; color: var(--texto); }}
+    .mapa-plano strong {{ font-size: 18px; color: var(--forja-text-primary); font-weight: 400; }}
     .mapa-cor {{
       width: 12px;
       height: 12px;
       border: 1px solid;
-      border-radius: 2px;
+      border-radius: 0;
     }}
     .mapa-fonte {{
-      color: #686868;
+      color: var(--forja-text-helper);
       font-size: 10px;
-      margin: 12px 0 0;
+      margin: 1rem 0 0;
       text-align: right;
     }}
     @media (max-width: 1080px) {{
@@ -2762,22 +2689,24 @@ def gerar_html(dados):
       .duas-colunas {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 28px; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
+      .mapa-resumo {{ grid-template-columns: 1fr; }}
       .grade-dieta {{ grid-template-columns: 1fr; }}
       .relatorio-semanal {{ grid-template-columns: 1fr 1fr; }}
     }}
     @media (max-width: 560px) {{
-      main {{ width: min(100% - 20px, 1180px); padding-top: 20px; }}
+      main {{ padding: 1rem 0.5rem 2.5rem; }}
       .grade-resumo-treino,
       .grade-resumo-corporal {{ grid-template-columns: 1fr; }}
       .valor {{ font-size: 24px; }}
-      th, td {{ font-size: 13px; padding: 10px 4px; }}
+      th, td {{ font-size: 13px; }}
       .filtros {{ grid-template-columns: 1fr; }}
       .mapa-vistas {{ gap: 10px; }}
       .relatorio-semanal {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
-<body>
+<body class="cds--g100">
+  <cds-theme theme="g100">
   <main>
     <header>
       <div>
@@ -2788,252 +2717,249 @@ def gerar_html(dados):
     </header>
 
     <section class="grade-resumo grade-resumo-treino" aria-label="Resumo do treino">
-      <div class="indicador">
+      <cds-tile class="indicador">
         <span class="rotulo">Sessoes</span>
         <span class="valor">{resumo["sessoes"]}</span>
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Volume total</span>
         <span class="valor valor-menor">{_fmt_numero(resumo["volume_total"])} kg</span>
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Ultima sessao</span>
         <span class="valor valor-menor">{_fmt_numero(resumo["ultimo_volume"])} kg</span>
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Variacao recente</span>
         <span class="valor valor-menor {var_classe}">{_fmt_delta(resumo["variacao_ultima"])}</span>
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">RPE medio</span>
         <span class="valor">{_fmt_decimal(resumo["rpe_medio"])}</span>
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Dias desde ultimo</span>
         <span class="valor">{dias_str}</span>
-      </div>
+      </cds-tile>
     </section>
 
     <section class="grade-resumo grade-resumo-corporal" aria-label="Resumo corporal">
-      <div class="indicador">
+      <cds-tile class="indicador">
         <span class="rotulo">Peso corporal</span>
         <span class="valor valor-menor">{peso_valor}</span>
         <span class="subtitulo">{peso_data} | {peso_variacao}</span>
         <span class="meta-indicador">{meta_peso}</span>
         {progresso_peso}
         {grafico_peso}
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Cintura</span>
         <span class="valor valor-menor">{cintura_valor}</span>
         <span class="subtitulo">{cintura_data} | {cintura_variacao}</span>
         <span class="meta-indicador">{meta_cintura}</span>
         {progresso_cintura}
         {grafico_cintura}
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">IMC</span>
         <span class="valor">{imc_valor}</span>
         <span class="subtitulo">{html.escape(composicao_corporal["classificacao_imc"])} | {perfil_resumo}</span>
         <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_imc"]}</span>
         {progresso_imc}
         {grafico_imc}
-      </div>
-      <div class="indicador">
+      </cds-tile>
+      <cds-tile class="indicador">
         <span class="rotulo">Cintura / altura</span>
         <span class="valor">{relacao_valor}</span>
         <span class="subtitulo">{html.escape(composicao_corporal["referencia_cintura_altura"])}</span>
         <span class="meta-indicador">Meta de referencia: {composicao_corporal["meta_relacao_cintura_altura"]}</span>
         {progresso_relacao}
         {grafico_relacao}
-      </div>
+      </cds-tile>
     </section>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Volume por sessao</h2>
         <span>{len(sessoes)} sessoes registradas</span>
       </div>
-      <svg viewBox="0 0 760 300" role="img" aria-label="Linha de evolucao do volume por sessao">
-        <line class="eixo" x1="28" y1="232" x2="732" y2="232"></line>
-        <line class="eixo" x1="28" y1="28" x2="28" y2="232"></line>
-        <polyline class="linha-volume" points="{linha}"></polyline>
-        {rotulos_linha}
-      </svg>
-    </article>
+      <div class="grafico-container">
+        <canvas id="grafico-volume-sessao" width="760" height="320" aria-label="Linha de evolucao do volume por sessao" role="img"></canvas>
+      </div>
+    </cds-tile>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Mapa muscular da ultima sessao</h2>
         <span>volume atribuido por grupo</span>
       </div>
       {mapa_muscular}
-    </article>
+    </cds-tile>
 
     <section class="duas-colunas">
-      <article class="painel">
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Equilibrio muscular</h2>
           <span>relacoes da ultima sessao</span>
         </div>
         {equilibrio_muscular}
-      </article>
-      <article class="painel">
+      </cds-tile>
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Calendario de carga</h2>
           <span>ultimas sessoes</span>
         </div>
         {heatmap_sessoes}
-      </article>
+      </cds-tile>
     </section>
 
     <section class="duas-colunas">
-      <article class="painel">
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Carga, RPE e 1RM</h2>
           <span>top 12</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Exercicio</th><th>Ultima</th><th>Variacao</th><th>RPE</th><th>1RM est.</th></tr></thead>
           <tbody>{tabela_exercicios}</tbody>
         </table>
-      </article>
-      <article class="painel">
+      </cds-tile>
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Ultima vs anterior</h2>
           <span>mesmos exercicios</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Exercicio</th><th>Carga</th><th>Delta carga</th><th>Delta volume</th><th>RPE</th></tr></thead>
           <tbody>{tabela_comparacao}</tbody>
         </table>
-      </article>
+      </cds-tile>
     </section>
 
     <section class="duas-colunas">
-      <article class="painel">
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Grupos musculares</h2>
           <span>volume e series</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Grupo</th><th>Volume</th><th>Series</th></tr></thead>
           <tbody>{tabela_grupos}</tbody>
         </table>
-      </article>
-      <article class="painel">
+      </cds-tile>
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Volume semanal</h2>
           <span>ultimas 8 semanas</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
           <tbody>{tabela_semanal}</tbody>
         </table>
-      </article>
+      </cds-tile>
     </section>
 
     <section class="duas-colunas">
-      <article class="painel">
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Maiores evolucoes</h2>
           <span>carga e volume</span>
         </div>
         <h3>Carga</h3>
-        <table><tbody>{top_carga}</tbody></table>
+        <table class="cds--data-table cds--data-table--lg"><tbody>{top_carga}</tbody></table>
         <h3>Volume</h3>
-        <table><tbody>{top_volume_rows}</tbody></table>
+        <table class="cds--data-table cds--data-table--lg"><tbody>{top_volume_rows}</tbody></table>
         <h3>Quedas</h3>
-        <table><tbody>{quedas}</tbody></table>
-      </article>
-      <article class="painel">
+        <table class="cds--data-table cds--data-table--lg"><tbody>{quedas}</tbody></table>
+      </cds-tile>
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Recordes pessoais</h2>
           <span>carga e volume</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Exercicio</th><th>Maior carga</th><th>Maior volume</th></tr></thead>
           <tbody>{tabela_prs}</tbody>
         </table>
-      </article>
+      </cds-tile>
     </section>
 
     <section class="duas-colunas">
-      <article class="painel">
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>PRs expandidos</h2>
           <span>carga, volume, 1RM e eficiencia</span>
         </div>
-        <table>
+        <table class="cds--data-table cds--data-table--lg">
           <thead><tr><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM est.</th><th>Eficiencia</th></tr></thead>
           <tbody>{tabela_prs_expandidos}</tbody>
         </table>
-      </article>
-      <article class="painel">
+      </cds-tile>
+      <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Carga vs RPE</h2>
           <span>ultima entrada por exercicio</span>
         </div>
         {carga_rpe}
-      </article>
+      </cds-tile>
     </section>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Alertas</h2>
         <span>regras simples</span>
       </div>
       {_render_lista_simples(dados["alertas"])}
-    </article>
+    </cds-tile>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Filtros rapidos</h2>
         <span>periodo e exercicio</span>
       </div>
       <div class="filtros">
         <label>Periodo
-          <select id="filtro-periodo">
-            <option value="todos">Tudo</option>
-            <option value="7">7 dias</option>
-            <option value="30">30 dias</option>
-            <option value="90">90 dias</option>
-          </select>
+          <cds-select id="filtro-periodo" value="todos">
+            <cds-select-item value="todos" text="Tudo"></cds-select-item>
+            <cds-select-item value="7" text="7 dias"></cds-select-item>
+            <cds-select-item value="30" text="30 dias"></cds-select-item>
+            <cds-select-item value="90" text="90 dias"></cds-select-item>
+          </cds-select>
         </label>
         <label>Exercicio
-          <select id="filtro-exercicio">
+          <cds-select id="filtro-exercicio" value="">
             {opcoes_exercicios}
-          </select>
+          </cds-select>
         </label>
         <label>Segmento
-          <select id="filtro-grupo">
+          <cds-select id="filtro-grupo" value="">
             {opcoes_grupos}
-          </select>
+          </cds-select>
         </label>
         <label>Ordenar
-          <select id="filtro-ordem">
-            <option value="data">Data</option>
-            <option value="volume">Volume</option>
-            <option value="carga">Carga</option>
-            <option value="rpe">RPE</option>
-          </select>
+          <cds-select id="filtro-ordem" value="data">
+            <cds-select-item value="data" text="Data"></cds-select-item>
+            <cds-select-item value="volume" text="Volume"></cds-select-item>
+            <cds-select-item value="carga" text="Carga"></cds-select-item>
+            <cds-select-item value="rpe" text="RPE"></cds-select-item>
+          </cds-select>
         </label>
       </div>
-      <table>
+      <table class="cds--data-table cds--data-table--lg">
         <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
         <tbody id="tabela-filtrada"></tbody>
       </table>
-    </article>
+    </cds-tile>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Relatorio semanal</h2>
         <span>resumo local</span>
       </div>
       {relatorio_semanal}
-    </article>
+    </cds-tile>
 
-    <article class="painel">
+    <cds-tile class="painel">
       <div class="linha-topo">
         <h2>Dieta atual</h2>
         <span>alimentos e metas diarias</span>
@@ -3042,11 +2968,215 @@ def gerar_html(dados):
         {resumo_dieta}
       </div>
       {itens_dieta}
-    </article>
+    </cds-tile>
   </main>
+  </cds-theme>
   <script type="application/json" id="dados-dashboard">{_json(dados)}</script>
   <script>
     const dados = JSON.parse(document.getElementById("dados-dashboard").textContent);
+    Chart.defaults.color = "#c6c6c6";
+    Chart.defaults.borderColor = "#393939";
+    Chart.defaults.font.family = '"IBM Plex Sans", "Segoe UI", Arial, sans-serif';
+
+    const formatoInteiro = new Intl.NumberFormat("pt-BR", {{ maximumFractionDigits: 0 }});
+    const formatoDecimal = new Intl.NumberFormat("pt-BR", {{ maximumFractionDigits: 1 }});
+    const baseChartOptions = {{
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {{
+        legend: {{ display: false }},
+        tooltip: {{
+          backgroundColor: "#262626",
+          borderColor: "#525252",
+          borderWidth: 1,
+          titleColor: "#f4f4f4",
+          bodyColor: "#f4f4f4"
+        }}
+      }},
+      scales: {{
+        x: {{
+          grid: {{ color: "#393939" }},
+          ticks: {{ color: "#c6c6c6", maxRotation: 0, autoSkip: true }}
+        }},
+        y: {{
+          grid: {{ color: "#393939" }},
+          ticks: {{ color: "#c6c6c6" }}
+        }}
+      }}
+    }};
+
+    function criarGraficoVolume() {{
+      const canvas = document.getElementById("grafico-volume-sessao");
+      if (!canvas || !dados.volume_por_sessao.length) return;
+      new Chart(canvas, {{
+        type: "line",
+        data: {{
+          labels: dados.volume_por_sessao.map((sessao) => sessao.data.slice(5)),
+          datasets: [{{
+            label: "Volume",
+            data: dados.volume_por_sessao.map((sessao) => sessao.volume),
+            borderColor: "#78a9ff",
+            backgroundColor: "rgba(120, 169, 255, 0.14)",
+            pointBackgroundColor: "#161616",
+            pointBorderColor: "#78a9ff",
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            borderWidth: 2,
+            fill: true,
+            tension: 0.25
+          }}]
+        }},
+        options: {{
+          ...baseChartOptions,
+          plugins: {{
+            ...baseChartOptions.plugins,
+            tooltip: {{
+              ...baseChartOptions.plugins.tooltip,
+              callbacks: {{
+                label: (ctx) => `Volume: ${{formatoInteiro.format(ctx.parsed.y)}} kg`
+              }}
+            }}
+          }},
+          scales: {{
+            ...baseChartOptions.scales,
+            y: {{
+              ...baseChartOptions.scales.y,
+              ticks: {{
+                color: "#c6c6c6",
+                callback: (value) => `${{formatoInteiro.format(value)}} kg`
+              }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    function criarMinigraficos() {{
+      document.querySelectorAll('canvas[data-chart="mini"]').forEach((canvas) => {{
+        const valores = JSON.parse(canvas.dataset.valores || "[]");
+        if (valores.length < 2) return;
+        new Chart(canvas, {{
+          type: "line",
+          data: {{
+            labels: valores.map((_, indice) => indice + 1),
+            datasets: [{{
+              data: valores,
+              borderColor: "#42be65",
+              pointRadius: 0,
+              borderWidth: 2,
+              fill: false,
+              tension: 0.35
+            }}]
+          }},
+          options: {{
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {{ padding: {{ top: 4, right: 4, bottom: 0, left: 0 }} }},
+            plugins: {{
+              legend: {{ display: false }},
+              tooltip: {{
+                backgroundColor: "#262626",
+                borderColor: "#525252",
+                borderWidth: 1,
+                callbacks: {{
+                  label: (ctx) => `Valor: ${{formatoDecimal.format(ctx.parsed.y)}}`
+                }}
+              }}
+            }},
+            scales: {{
+              x: {{
+                display: true,
+                grid: {{ display: false }},
+                border: {{ color: "#525252" }},
+                ticks: {{
+                  color: "#a8a8a8",
+                  autoSkip: false,
+                  maxRotation: 0,
+                  font: {{ size: 9 }},
+                  callback: (value, index) => {{
+                    if (index === 0) return "1";
+                    if (index === valores.length - 1) return String(valores.length);
+                    return "";
+                  }}
+                }}
+              }},
+              y: {{
+                display: true,
+                grid: {{ color: "#393939" }},
+                border: {{ color: "#525252" }},
+                ticks: {{
+                  color: "#a8a8a8",
+                  maxTicksLimit: 3,
+                  font: {{ size: 9 }},
+                  callback: (value) => formatoDecimal.format(value)
+                }}
+              }}
+            }},
+            elements: {{ line: {{ borderCapStyle: "round" }} }}
+          }}
+        }});
+      }});
+    }}
+
+    function criarGraficoCargaRpe() {{
+      const canvas = document.getElementById("grafico-carga-rpe");
+      if (!canvas) return;
+      const pontos = (dados.analises.carga_rpe_exercicio || [])
+        .filter((ponto) => ponto.rpe != null)
+        .slice(0, 30);
+      if (!pontos.length) return;
+      new Chart(canvas, {{
+        type: "scatter",
+        data: {{
+          datasets: [{{
+            label: "Carga vs RPE",
+            data: pontos.map((ponto) => ({{
+              x: ponto.carga,
+              y: ponto.rpe,
+              nome: ponto.nome
+            }})),
+            borderColor: "#fa4d56",
+            backgroundColor: "rgba(250, 77, 86, 0.72)",
+            pointRadius: 5,
+            pointHoverRadius: 7
+          }}]
+        }},
+        options: {{
+          ...baseChartOptions,
+          plugins: {{
+            ...baseChartOptions.plugins,
+            tooltip: {{
+              ...baseChartOptions.plugins.tooltip,
+              callbacks: {{
+                label: (ctx) => `${{ctx.raw.nome}}: ${{formatoDecimal.format(ctx.raw.x)}} kg, RPE ${{formatoDecimal.format(ctx.raw.y)}}`
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{
+              ...baseChartOptions.scales.x,
+              title: {{ display: true, text: "Carga", color: "#c6c6c6" }},
+              ticks: {{
+                color: "#c6c6c6",
+                callback: (value) => `${{formatoDecimal.format(value)}} kg`
+              }}
+            }},
+            y: {{
+              ...baseChartOptions.scales.y,
+              title: {{ display: true, text: "RPE", color: "#c6c6c6" }},
+              suggestedMin: 6,
+              suggestedMax: 10,
+              ticks: {{ color: "#c6c6c6", stepSize: 1 }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    criarGraficoVolume();
+    criarMinigraficos();
+    criarGraficoCargaRpe();
+
     const linhas = dados.volume_por_sessao.flatMap((sessao) =>
       sessao.logs.map((log) => ({{ ...log, data: sessao.data }}))
     );

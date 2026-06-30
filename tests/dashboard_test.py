@@ -255,13 +255,30 @@ def main():
             assert html.count('role="progressbar"') == 4
             assert "71,0% de proximidade da meta" in html
             assert "82,8% de proximidade da meta" in html
-            assert html.count('class="minigrafico"') == 4
+            assert "chart.js@4.5.1/dist/chart.umd.min.js" in html
+            assert html.count('class="minigrafico grafico-chartjs"') == 4
+            assert 'id="grafico-volume-sessao"' in html
+            assert 'id="grafico-carga-rpe"' in html
             assert "Evolucao historica do peso corporal" in html
             assert "Evolucao historica da cintura" in html
             assert "Evolucao historica do IMC" in html
             assert "Evolucao historica da relacao cintura por altura" in html
+            assert "maxTicksLimit: 3" in html
+            assert 'callback: (value) => formatoDecimal.format(value)' in html
             assert "grade-resumo-treino" in html
             assert "grade-resumo-corporal" in html
+            assert "@carbon/web-components" not in html
+            assert "carbon/web-components/tag/v2/latest/tile.min.js" in html
+            assert "carbon/web-components/tag/v2/latest/theme.min.js" in html
+            assert "carbon/web-components/tag/v2/latest/select.min.js" in html
+            assert "@carbon/styles@1.109.0/css/styles.css" in html
+            assert 'class="cds--g100"' in html
+            assert '<cds-theme theme="g100">' in html
+            assert "<cds-tile class=\"indicador\">" in html
+            assert "<cds-select id=\"filtro-periodo\"" in html
+            assert "<cds-select-item value=\"todos\" text=\"Tudo\">" in html
+            assert "cds--data-table cds--data-table--lg" in html
+            assert "IBM Plex Sans" in html
             assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in html
             assert "grid-template-columns: repeat(4, minmax(0, 1fr))" in html
             assert 'data-grupo="Dorsal superior"' in html

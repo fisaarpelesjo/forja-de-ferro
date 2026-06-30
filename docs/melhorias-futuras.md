@@ -28,10 +28,10 @@ ou manter tarefas ja concluidas como se ainda fizessem parte da fila.
 
 **Estado parcial:** foram entregues painel de equilibrio muscular, PRs
 expandidos, grafico de carga vs. RPE, filtro rapido por segmento anatomico,
-calendario/heatmap de sessoes e relatorio semanal local. Permanecem pendentes
-tendencias semanais por segmento, deteccao automatica de lacunas, fadiga
-acumulada, sugestao de proxima sessao, alvos semanais configuraveis e notas de
-tecnica/dor/amplitude.
+calendario/heatmap de sessoes, relatorio semanal local e renderizacao dos
+graficos de dados com Chart.js. Permanecem pendentes tendencias semanais por
+segmento, deteccao automatica de lacunas, fadiga acumulada, sugestao de proxima
+sessao, alvos semanais configuraveis e notas de tecnica/dor/amplitude.
 
 **Problema observado:** o dashboard ja mostra volume, RPE, mapa muscular e
 comparacoes basicas, mas ainda nao transforma esses dados em uma leitura
@@ -99,8 +99,8 @@ Telegram.
 
 **Riscos e decisoes pendentes:**
 
-- decidir se graficos interativos usam JavaScript puro, Chart.js, Apache ECharts
-  ou outra biblioteca localmente empacotada
+- avaliar se Chart.js deve continuar via CDN com versao fixa ou ser empacotado
+  localmente para uso completamente offline
 - definir configuracao de alvos semanais sem tornar o banco ou o bot complexos
 - escolher uma formula simples e auditavel para fadiga acumulada, deixando claro
   que ela e heuristica

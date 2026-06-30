@@ -38,7 +38,9 @@ Usuario roda python gerar_dashboard.py
   -> calcula volume = series x repeticoes x carga
   -> consolida carga, RPE, 1RM estimado, PRs, grupos musculares e periodos
   -> cruza volume x RPE, carga x RPE e ultima sessao contra media recente
-  -> organiza as secoes em abas com layout escuro e adiciona filtros rapidos
+  -> renderiza graficos de dados com Chart.js, mantendo o mapa anatomico em SVG
+  -> organiza as secoes em pagina unica com layout escuro usando Carbon Web
+     Components oficiais e adiciona filtros rapidos
   -> escreve temp/dashboard-treino.html
 
 Usuario roda python gerar_frames.py --todos --instalar-ffmpeg

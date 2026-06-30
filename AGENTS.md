@@ -29,6 +29,13 @@ da string do comando. Preferir codigo Python entre aspas simples e saida CSV ou
 texto simples. Se o sandbox do Windows falhar com `CreateProcessAsUserW failed:
 1312`, repetir a mesma consulta com permissao escalada em vez de trocar para o
 binario `sqlite3`.
+Neste ambiente Windows, esse erro de sandbox e recorrente tambem em leituras
+locais com PowerShell, especialmente em caminhos do OneDrive, Area de Trabalho
+ou arquivos grandes. Quando um comando necessario falhar com
+`CreateProcessAsUserW failed: 1312`, repetir diretamente o mesmo comando com
+permissao escalada e justificativa curta. Nao interromper o fluxo para explicar
+o erro ao usuario toda vez; mencionar apenas se a permissao for negada ou se o
+bloqueio impedir a tarefa.
 
 ## Padrao De Idioma
 
@@ -239,6 +246,10 @@ Dashboard local de volume de treino.
   a opacidade vermelha conforme o volume relativo da ultima sessao. Ele
   usa pesos por exercicio quando houver regra especifica e representa volume
   atribuido, nao ativacao muscular medida.
+- Graficos de dados do dashboard, como evolucao de volume, minigraficos
+  corporais e carga vs RPE, usam Chart.js carregado por CDN com versao fixa.
+  Nao trocar o mapa anatomico para biblioteca de graficos; ele continua SVG
+  vetorial baseado nos assets anatomicos.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
   `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
   Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
@@ -246,7 +257,12 @@ Dashboard local de volume de treino.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
   e reducao de carga apos RPE 10 aparecem como sinais de acompanhamento.
-- O layout do dashboard deve permanecer escuro, cru e compacto.
+- O layout do dashboard deve permanecer escuro, cru e compacto, usando IBM
+  Carbon Design System oficial via Carbon Web Components. Nao copiar nem
+  reinventar tokens `cds`; os componentes oficiais `cds-*` devem cuidar do tema
+  quando houver componente aplicavel. O HTML gerado nao deve exigir servidor ou
+  build para abrir localmente, mas pode depender da CDN oficial configurada no
+  arquivo para carregar os componentes.
 - `salvar_dashboard()` escreve `temp/dashboard-treino.html`.
 - `gerar_dashboard.py` e o launcher de uso local.
 - O bot chama a mesma funcao em `/dashboard`; o comando nao cria ou altera
