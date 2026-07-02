@@ -195,7 +195,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 8`.
+- Versao atual do esquema: `SCHEMA_VERSION = 9`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -236,7 +236,9 @@ Dashboard local de volume:
   historico de peso; cintura e cintura/altura usam o historico de cintura.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
-  macros com as metas.
+  macros com as metas. Os micros aparecem em uma segunda linha de cards e na
+  tabela por alimento e no total: fibra, omega 3, potassio, magnesio, zinco e
+  vitaminas D e B6.
 - O mapa muscular usa `exercise_muscle_groups`, expande grupos amplos em
   segmentos anatomicos visuais; regioes sem volume ficam transparentes e o
   vermelho ganha opacidade conforme o volume relativo. O dashboard usa pesos por

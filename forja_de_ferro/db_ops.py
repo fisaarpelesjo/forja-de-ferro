@@ -7,7 +7,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 9
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
@@ -310,6 +310,17 @@ SCHEMA_V8_STATEMENTS = (
     """,
 )
 
+SCHEMA_V9_STATEMENTS = (
+    """
+    ALTER TABLE foods
+    ADD COLUMN vitamin_b6_mg REAL NOT NULL DEFAULT 0
+    """,
+    """
+    ALTER TABLE diet_targets
+    ADD COLUMN vitamin_b6_mg REAL
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -319,6 +330,7 @@ MIGRATIONS = {
     6: SCHEMA_V6_STATEMENTS,
     7: SCHEMA_V7_STATEMENTS,
     8: SCHEMA_V8_STATEMENTS,
+    9: SCHEMA_V9_STATEMENTS,
 }
 
 
@@ -1173,7 +1185,8 @@ def import_log_rows(rows):
 
 _NUTRIENT_COLS = (
     "protein_g", "carbo_g", "fat_g", "calories",
-    "fiber_g", "omega3_g", "potassium_mg", "magnesium_mg", "zinc_mg", "vitamin_d_ui",
+    "fiber_g", "omega3_g", "potassium_mg", "magnesium_mg", "zinc_mg",
+    "vitamin_d_ui", "vitamin_b6_mg",
 )
 
 # Nutrients stored per serving_g for unit='g' foods, per 1 unit otherwise.
@@ -1186,27 +1199,31 @@ _NUTRIENT_SELECT = ", ".join(
 
 def upsert_food(name, unit, serving_g, protein_g=0, carbo_g=0, fat_g=0,
                 calories=0, fiber_g=0, omega3_g=0, potassium_mg=0,
-                magnesium_mg=0, zinc_mg=0, vitamin_d_ui=0):
+                magnesium_mg=0, zinc_mg=0, vitamin_d_ui=0,
+                vitamin_b6_mg=0):
     init_db()
     with _connect() as conn:
         conn.execute(
             """
             INSERT INTO foods
                 (name, unit, serving_g, protein_g, carbo_g, fat_g, calories,
-                 fiber_g, omega3_g, potassium_mg, magnesium_mg, zinc_mg, vitamin_d_ui)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 fiber_g, omega3_g, potassium_mg, magnesium_mg, zinc_mg,
+                 vitamin_d_ui, vitamin_b6_mg)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(name) DO UPDATE SET
                 unit=excluded.unit, serving_g=excluded.serving_g,
                 protein_g=excluded.protein_g, carbo_g=excluded.carbo_g,
                 fat_g=excluded.fat_g, calories=excluded.calories,
                 fiber_g=excluded.fiber_g, omega3_g=excluded.omega3_g,
                 potassium_mg=excluded.potassium_mg, magnesium_mg=excluded.magnesium_mg,
-                zinc_mg=excluded.zinc_mg, vitamin_d_ui=excluded.vitamin_d_ui
+                zinc_mg=excluded.zinc_mg, vitamin_d_ui=excluded.vitamin_d_ui,
+                vitamin_b6_mg=excluded.vitamin_b6_mg
             """,
             (name, unit, float(serving_g),
              float(protein_g), float(carbo_g), float(fat_g), float(calories),
              float(fiber_g), float(omega3_g), float(potassium_mg),
-             float(magnesium_mg), float(zinc_mg), float(vitamin_d_ui)),
+             float(magnesium_mg), float(zinc_mg), float(vitamin_d_ui),
+             float(vitamin_b6_mg)),
         )
         conn.commit()
         row = conn.execute("SELECT id FROM foods WHERE name=?", (name,)).fetchone()
@@ -1229,7 +1246,8 @@ def list_foods():
 
 def set_diet_targets(protein_g=None, carbo_g=None, fat_g=None, calories=None,
                      fiber_g=None, omega3_g=None, potassium_mg=None,
-                     magnesium_mg=None, zinc_mg=None, vitamin_d_ui=None):
+                     magnesium_mg=None, zinc_mg=None, vitamin_d_ui=None,
+                     vitamin_b6_mg=None):
     init_db()
     with _connect() as conn:
         conn.execute("DELETE FROM diet_targets")
@@ -1237,11 +1255,11 @@ def set_diet_targets(protein_g=None, carbo_g=None, fat_g=None, calories=None,
             """
             INSERT INTO diet_targets
                 (protein_g, carbo_g, fat_g, calories, fiber_g, omega3_g,
-                 potassium_mg, magnesium_mg, zinc_mg, vitamin_d_ui)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                 potassium_mg, magnesium_mg, zinc_mg, vitamin_d_ui, vitamin_b6_mg)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (protein_g, carbo_g, fat_g, calories, fiber_g, omega3_g,
-             potassium_mg, magnesium_mg, zinc_mg, vitamin_d_ui),
+             potassium_mg, magnesium_mg, zinc_mg, vitamin_d_ui, vitamin_b6_mg),
         )
         conn.commit()
         return cur.lastrowid

@@ -156,6 +156,8 @@ oficial configurada no HTML para carregar os componentes `cds-*`.
 - relatorio semanal local com volume, RPE, segmentos principais e observacoes
 - dieta atual no final da pagina, com alimentos repetidos consolidados
 - totais de calorias e macros comparados com as metas diarias
+- cards e colunas de micronutrientes para fibra, omega 3, potassio, magnesio,
+  zinco e vitaminas D e B6
 
 O mapa muscular renderiza os paths vetoriais de
 [`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,

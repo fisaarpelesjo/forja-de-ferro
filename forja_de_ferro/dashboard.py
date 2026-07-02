@@ -1814,14 +1814,23 @@ def _render_lista_simples(itens):
 def _render_resumo_dieta(dieta):
     totais = dieta["totais"]
     metas = dieta["metas"] or {}
-    nutrientes = (
+    macros = (
         ("Calorias", "calories", "kcal", 0),
         ("Proteina", "protein_g", "g", 1),
         ("Carboidrato", "carbo_g", "g", 1),
         ("Gordura", "fat_g", "g", 1),
     )
-    cards = []
-    for rotulo, chave, unidade, casas in nutrientes:
+    micros = (
+        ("Fibra", "fiber_g", "g", 1),
+        ("Omega 3", "omega3_g", "g", 2),
+        ("Potassio", "potassium_mg", "mg", 0),
+        ("Magnesio", "magnesium_mg", "mg", 0),
+        ("Zinco", "zinc_mg", "mg", 1),
+        ("Vitamina D", "vitamin_d_ui", "UI", 0),
+        ("Vitamina B6", "vitamin_b6_mg", "mg", 1),
+    )
+
+    def renderizar_card(rotulo, chave, unidade, casas):
         total = float(totais.get(chave) or 0)
         meta = metas.get(chave)
         percentual = (total / meta * 100) if meta else None
@@ -1832,24 +1841,55 @@ def _render_resumo_dieta(dieta):
             if meta
             else f"{formatar(total)} {unidade}"
         )
-        cards.append(
-            f"""
-            <div class="dieta-indicador">
-              <span class="rotulo">{rotulo}</span>
-              <strong>{comparacao}</strong>
-              <div class="dieta-progresso" aria-label="{rotulo}: {_fmt_decimal(percentual)}%">
-                <i style="width: {progresso:.1f}%"></i>
-              </div>
-              <small>{_fmt_decimal(percentual)}% da meta</small>
-            </div>
-            """
+        texto_percentual = (
+            f"{_fmt_decimal(percentual)}% da meta"
+            if meta
+            else "sem meta cadastrada"
         )
-    return "\n".join(cards)
+        aria_percentual = (
+            f"{_fmt_decimal(percentual)}%"
+            if meta
+            else "sem meta cadastrada"
+        )
+        return f"""
+        <div class="dieta-indicador">
+          <span class="rotulo">{rotulo}</span>
+          <strong>{comparacao}</strong>
+          <div class="dieta-progresso" aria-label="{rotulo}: {aria_percentual}">
+            <i style="width: {progresso:.1f}%"></i>
+          </div>
+          <small>{texto_percentual}</small>
+        </div>
+        """
+
+    cards_macros = "\n".join(renderizar_card(*nutriente) for nutriente in macros)
+    cards_micros = "\n".join(renderizar_card(*nutriente) for nutriente in micros)
+    return f"""
+    <div class="grade-dieta grade-dieta-macros">
+      {cards_macros}
+    </div>
+    <div class="grade-dieta grade-dieta-micros">
+      {cards_micros}
+    </div>
+    """
 
 
 def _render_itens_dieta(dieta):
     if not dieta["itens"]:
         return '<p class="vazio">Nenhum alimento cadastrado na dieta atual.</p>'
+
+    colunas_micro = (
+        ("Fibra", "fiber_g", "g", 1),
+        ("O. 3", "omega3_g", "g", 2),
+        ("Potassio", "potassium_mg", "mg", 0),
+        ("Magnesio", "magnesium_mg", "mg", 0),
+        ("Zinco", "zinc_mg", "mg", 1),
+        ("V. D", "vitamin_d_ui", "UI", 0),
+        ("V. B6", "vitamin_b6_mg", "mg", 1),
+    )
+
+    def celula_nutriente(item, chave, unidade, casas):
+        return f"<td>{_fmt_decimal(item[chave], casas)} {unidade}</td>"
 
     itens = "".join(
         f"""
@@ -1860,16 +1900,22 @@ def _render_itens_dieta(dieta):
           <td>{_fmt_decimal(item["carbo_g"])} g</td>
           <td>{_fmt_decimal(item["fat_g"])} g</td>
           <td>{_fmt_decimal(item["calories"], 0)} kcal</td>
+          {"".join(celula_nutriente(item, chave, unidade, casas) for _, chave, unidade, casas in colunas_micro)}
         </tr>
         """
         for item in dieta["itens"]
     )
     totais = dieta["totais"]
+    cabecalho_micro = "".join(f"<th>{rotulo}</th>" for rotulo, _, _, _ in colunas_micro)
+    totais_micro = "".join(
+        f"<th>{_fmt_decimal(totais[chave], casas)} {unidade}</th>"
+        for _, chave, unidade, casas in colunas_micro
+    )
     return f"""
     <div class="tabela-rolavel">
       <table class="cds--data-table cds--data-table--lg">
         <thead>
-          <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th></tr>
+          <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th>{cabecalho_micro}</tr>
         </thead>
         <tbody>{itens}</tbody>
         <tfoot>
@@ -1879,6 +1925,7 @@ def _render_itens_dieta(dieta):
             <th>{_fmt_decimal(totais["carbo_g"])} g</th>
             <th>{_fmt_decimal(totais["fat_g"])} g</th>
             <th>{_fmt_decimal(totais["calories"], 0)} kcal</th>
+            {totais_micro}
           </tr>
         </tfoot>
       </table>
@@ -2406,10 +2453,11 @@ def gerar_html(dados):
     }}
     .grade-dieta {{
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 1px;
       margin-bottom: 1rem;
     }}
+    .grade-dieta-macros {{ grid-template-columns: repeat(4, minmax(0, 1fr)); }}
+    .grade-dieta-micros {{ grid-template-columns: repeat(7, minmax(0, 1fr)); }}
     .dieta-indicador {{
       background: var(--forja-layer-02);
       border: 1px solid var(--forja-border-strong);
@@ -2417,6 +2465,16 @@ def gerar_html(dados):
     }}
     .dieta-indicador strong {{ display: block; font-size: var(--tipo-lg); font-weight: 400; }}
     .dieta-indicador small {{ color: var(--forja-text-helper); font-size: var(--tipo-xs); }}
+    .grade-dieta-micros .dieta-indicador {{ padding: 0.85rem 0.75rem; }}
+    .grade-dieta-micros .dieta-indicador strong {{
+      font-size: var(--tipo-md);
+      line-height: 1.25;
+      white-space: nowrap;
+    }}
+    .grade-dieta-micros .dieta-indicador .rotulo {{
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+    }}
     .dieta-progresso {{
       height: 8px;
       background: var(--forja-layer-03);
@@ -2701,13 +2759,16 @@ def gerar_html(dados):
       h1 {{ font-size: 1.75rem; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
       .mapa-resumo {{ grid-template-columns: 1fr; }}
-      .grade-dieta {{ grid-template-columns: 1fr; }}
+      .grade-dieta-macros,
+      .grade-dieta-micros {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .relatorio-semanal {{ grid-template-columns: 1fr 1fr; }}
     }}
     @media (max-width: 560px) {{
       main {{ padding: 1rem 0.5rem 2.5rem; }}
       .grade-resumo-treino,
-      .grade-resumo-corporal {{ grid-template-columns: 1fr; }}
+      .grade-resumo-corporal,
+      .grade-dieta-macros,
+      .grade-dieta-micros {{ grid-template-columns: 1fr; }}
       .valor, .valor-menor {{ font-size: var(--tipo-xl); }}
       th, td {{ font-size: var(--tipo-xs); }}
       .filtros {{ grid-template-columns: 1fr; }}
@@ -2975,9 +3036,7 @@ def gerar_html(dados):
         <h2>Dieta atual</h2>
         <span>alimentos e metas diarias</span>
       </div>
-      <div class="grade-dieta">
-        {resumo_dieta}
-      </div>
+      {resumo_dieta}
       {itens_dieta}
     </cds-tile>
   </main>

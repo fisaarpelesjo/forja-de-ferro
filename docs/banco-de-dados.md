@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 7`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 9`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -28,8 +28,9 @@ logs pendentes por sessao e historico por exercicio. A versao 3 cria
 `exercise_muscle_groups`. A versao 4 cria planos de treino, a versao 5 inclui
 o agachamento sumô com barra à frente no catalogo e no plano ativo, a versao 6
 cria o historico de peso corporal, a versao 7 cria o historico de
-circunferencia da cintura e a versao 8 cria o perfil corporal usado pelos
-indicadores derivados do dashboard. As migracoes usam
+circunferencia da cintura, a versao 8 cria o perfil corporal usado pelos
+indicadores derivados do dashboard e a versao 9 adiciona vitamina B6 aos
+alimentos e metas de dieta. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -172,9 +173,11 @@ PRs expandidos, carga vs RPE, alertas simples, filtros rapidos por segmento,
 relatorio semanal e a dieta atual no final da pagina.
 
 A secao de dieta usa `diet_entries`, `foods` e `diet_targets`. Uma tabela unica
-consolida alimentos repetidos, somando quantidades, calorias e macros; o resumo
-compara os totais diarios de calorias, proteina, carboidrato e gordura com as
-metas cadastradas.
+consolida alimentos repetidos, somando quantidades, calorias, macros e
+micronutrientes. O resumo mostra calorias e macros na primeira linha de cards e
+micros em uma segunda linha; a tabela mostra fibra, omega 3, potassio, magnesio,
+zinco e vitaminas D e B6 por alimento e no total. O resumo compara os totais
+diarios com as metas cadastradas quando elas existem.
 
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
 dos exercicios da ultima sessao para cada grupo associado. No dashboard, grupos

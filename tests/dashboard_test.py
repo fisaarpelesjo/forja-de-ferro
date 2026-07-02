@@ -42,6 +42,11 @@ def main():
                 carbo_g=12,
                 fat_g=3,
                 calories=105,
+                potassium_mg=375,
+                magnesium_mg=25,
+                zinc_mg=1,
+                vitamin_d_ui=100,
+                vitamin_b6_mg=0.1,
             )
             frango_id = db_ops.upsert_food(
                 "Peito de frango",
@@ -50,6 +55,10 @@ def main():
                 protein_g=23,
                 fat_g=1,
                 calories=101,
+                potassium_mg=256,
+                magnesium_mg=29,
+                zinc_mg=1,
+                vitamin_b6_mg=0.6,
             )
             db_ops.add_diet_entry("Cafe", leite_id, 1, 1)
             db_ops.add_diet_entry("Almoco", frango_id, 200, 2)
@@ -59,6 +68,11 @@ def main():
                 carbo_g=150,
                 fat_g=60,
                 calories=2000,
+                potassium_mg=3400,
+                magnesium_mg=400,
+                zinc_mg=11,
+                vitamin_d_ui=1000,
+                vitamin_b6_mg=1.3,
             )
             db_ops.set_body_profile(183, 30)
             db_ops.add_body_weight(
@@ -236,11 +250,26 @@ def main():
             assert "Mapa muscular posterior da ultima sessao" in html
             assert "Dieta atual" in html
             assert "alimentos e metas diarias" in html
+            assert 'class="grade-dieta grade-dieta-macros"' in html
+            assert 'class="grade-dieta grade-dieta-micros"' in html
+            assert html.count('class="dieta-indicador"') == 11
             assert "Leite semidesnatado" in html
             assert "Peito de frango" in html
             assert "46,0 g" in html
             assert "3 copos" in html
             assert "517 / 2.000 kcal" in html
+            assert "Potassio" in html
+            assert "Magnesio" in html
+            assert "Zinco" in html
+            assert "Vitamina D" in html
+            assert "Vitamina B6" in html
+            assert "V. D" in html
+            assert "V. B6" in html
+            assert "1637 mg" in html
+            assert "133 mg" in html
+            assert "5,0 mg" in html
+            assert "300 UI" in html
+            assert "1,5 mg" in html
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert "Peso corporal" in html
             assert "117,5 kg" in html
