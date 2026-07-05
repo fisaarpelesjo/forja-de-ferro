@@ -786,6 +786,7 @@ def carregar_dados():
 
         log = {
             "nome": row["exercise_name"],
+            "nome_exibicao": ods_ops.get_display_name(row["exercise_name"]),
             "data": row["date"],
             "session_id": session_id,
             "volume": volume,
@@ -923,6 +924,7 @@ def _carregar_treino_ativo():
             {
                 "ordem": idx,
                 "nome": exercicio["name"],
+                "nome_exibicao": ods_ops.get_display_name(exercicio["name"]),
                 "series": exercicio["sets"],
                 "reps": exercicio["reps"],
                 "alvo": exercicio.get("target_weight"),
@@ -1520,6 +1522,7 @@ def _calcular_analises(sessoes, exercicios):
         carga_rpe.append(
             {
                 "nome": item["nome"],
+                "nome_exibicao": ods_ops.get_display_name(item["nome"]),
                 "carga": ultimo["carga"],
                 "rpe": ultimo["rpe"],
                 "volume": ultimo["volume"],
@@ -1836,13 +1839,17 @@ def _linhas_tabela(linhas, colunas, vazio="Sem dados suficientes."):
     return "\n".join(html_linhas)
 
 
+def _nome_exercicio(nome):
+    return html.escape(ods_ops.get_display_name(nome))
+
+
 def _render_treino_ativo(treino):
     exercicios = treino.get("exercicios", [])
     linhas = _linhas_tabela(
         exercicios,
         [
             {"valor": lambda item: str(item["ordem"])},
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: html.escape(item["nome_exibicao"])},
             {"valor": lambda item: f"{item['series']}x{item['reps']}"},
             {
                 "valor": lambda item: (
@@ -2008,7 +2015,7 @@ def _render_itens_dieta(dieta):
 def _opcoes_exercicios(exercicios):
     opcoes = ['<cds-select-item value="" text="Todos"></cds-select-item>']
     for item in sorted(exercicios, key=lambda ex: ex["nome"]):
-        nome = html.escape(item["nome"])
+        nome = _nome_exercicio(item["nome"])
         valor = html.escape(item["nome"], quote=True)
         opcoes.append(
             f'<cds-select-item value="{valor}" text="{nome}"></cds-select-item>'
@@ -2069,7 +2076,7 @@ def _render_prs_expandidos(prs):
     return _linhas_tabela(
         prs[:10],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {"valor": lambda item: f"{_fmt_decimal(item['melhor_carga'])} kg em {html.escape(item['data_carga'])}"},
             {"valor": lambda item: f"{_fmt_numero(item['melhor_volume'])} kg em {html.escape(item['data_volume'])}"},
             {"valor": lambda item: f"{_fmt_decimal(item['melhor_1rm'])} kg em {html.escape(item['data_1rm'])}"},
@@ -2273,7 +2280,7 @@ def gerar_html(dados):
     tabela_exercicios = _linhas_tabela(
         exercicios[:12],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {"valor": lambda item: f"{_fmt_decimal(item['ultima_carga'])} kg"},
             {
                 "valor": lambda item: _fmt_delta(item["variacao_carga"]),
@@ -2286,7 +2293,7 @@ def gerar_html(dados):
     tabela_comparacao = _linhas_tabela(
         dados["comparacao_ultima"],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {
                 "valor": lambda item: (
                     f"{_fmt_decimal(item['carga_anterior'])} -> "
@@ -2322,7 +2329,7 @@ def gerar_html(dados):
     tabela_prs = _linhas_tabela(
         dados["prs"][:10],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {
                 "valor": lambda item: (
                     f"{_fmt_decimal(item['melhor_carga'])} kg em "
@@ -2340,7 +2347,7 @@ def gerar_html(dados):
     top_carga = _linhas_tabela(
         dados["top_evolucoes"]["carga"],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {
                 "valor": lambda item: _fmt_delta(item["variacao_carga"]),
                 "classe": lambda item: _classe_delta(item["variacao_carga"]),
@@ -2350,7 +2357,7 @@ def gerar_html(dados):
     top_volume_rows = _linhas_tabela(
         dados["top_evolucoes"]["volume"],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {
                 "valor": lambda item: _fmt_delta(item["variacao"]),
                 "classe": lambda item: _classe_delta(item["variacao"]),
@@ -2360,7 +2367,7 @@ def gerar_html(dados):
     quedas = _linhas_tabela(
         dados["top_evolucoes"]["quedas"],
         [
-            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: _nome_exercicio(item["nome"])},
             {
                 "valor": lambda item: _fmt_delta(item["variacao"]),
                 "classe": lambda item: _classe_delta(item["variacao"]),
@@ -3299,7 +3306,7 @@ def gerar_html(dados):
             data: pontos.map((ponto) => ({{
               x: ponto.carga,
               y: ponto.rpe,
-              nome: ponto.nome
+              nome: ponto.nome_exibicao || ponto.nome
             }})),
             borderColor: "#fa4d56",
             backgroundColor: "rgba(250, 77, 86, 0.72)",
@@ -3377,7 +3384,7 @@ def gerar_html(dados):
       tabelaFiltrada.innerHTML = filtradas.slice(-40).map((linha) => `
         <tr>
           <td>${{linha.data}}</td>
-          <td>${{linha.nome}}</td>
+          <td>${{linha.nome_exibicao || linha.nome}}</td>
           <td>${{fmtDecimal(linha.carga)}} kg</td>
           <td>${{fmtInteiro(linha.volume)}} kg</td>
           <td>${{fmtDecimal(linha.um_rm)}} kg</td>
