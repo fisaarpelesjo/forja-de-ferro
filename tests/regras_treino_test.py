@@ -30,6 +30,8 @@ def _assert_equipamento_e_descanso():
     assert ods_ops.get_initial_target_weight("Rosca martelo (barra H)") == 16
     assert ods_ops.get_initial_target_weight("Supino inclinado (barra)") == 41
     assert ods_ops.get_initial_target_weight("Supino fechado (barra)") == 35
+    assert ods_ops.get_display_name("Supino fechado (barra)") == "Supino fechado"
+    assert ods_ops.get_display_name("Rosca martelo (barra H)") == "Rosca martelo"
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
     assert ods_ops.get_rest_interval("Agachamento Zercher") == "4 min"
     assert ods_ops.get_rest_interval("Remada curvada (barra)") == "3 min"

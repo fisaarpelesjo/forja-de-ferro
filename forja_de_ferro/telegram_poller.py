@@ -166,9 +166,14 @@ def _format_target_suffix(ex):
     return f" - alvo {_format_weight(target_weight)}kg"
 
 
+def _display_exercise_name(name):
+    return ods_ops.get_display_name(name)
+
+
 def _format_current_exercise(ex):
+    display_name = _display_exercise_name(ex["name"])
     msg = (
-        f"▶ <b>{ex['name']}</b> ({ex['sets']}x{ex['reps']})"
+        f"▶ <b>{display_name}</b> ({ex['sets']}x{ex['reps']})"
         f"{_format_target_suffix(ex)} - descanso {ex.get('rest_interval', '2 min')}"
     )
     loading_note = ex.get("loading_note") or ods_ops.format_loading_note(
@@ -183,8 +188,9 @@ def _format_current_exercise(ex):
 def _format_exercise_line(idx, ex):
     target = _format_weight(ex.get("target_weight"))
     rest = ex.get("rest_interval", "2 min")
+    display_name = _display_exercise_name(ex["name"])
     return (
-        f"{idx}. <b>{ex['name']}</b>\n"
+        f"{idx}. <b>{display_name}</b>\n"
             f"   {ex['sets']}x{ex['reps']} | alvo: {target}kg | descanso: {rest}"
     )
 
@@ -196,7 +202,7 @@ def _format_training_msg(exercises):
 
 
 def _format_summary_names(items, limit=4):
-    names = [item["name"] for item in items[:limit]]
+    names = [_display_exercise_name(item["name"]) for item in items[:limit]]
     suffix = f" e mais {len(items) - limit}" if len(items) > limit else ""
     return ", ".join(names) + suffix
 
@@ -243,7 +249,8 @@ def _format_exercises_msg(exercises):
     lines.append(f"{'#':>2} {'Exercicio':<22} {'S':>2} {'R':>3}\n")
     lines.append("-" * 34 + "\n")
     for idx, ex in enumerate(exercises, start=1):
-        lines.append(f"{idx:>2} {ex['name'][:22]:<22} {ex['sets']:>2} {ex['reps']:>3}\n")
+        display_name = _display_exercise_name(ex["name"])
+        lines.append(f"{idx:>2} {display_name[:22]:<22} {ex['sets']:>2} {ex['reps']:>3}\n")
     lines.append("</pre>")
     return "".join(lines)
 
@@ -479,7 +486,10 @@ def handle(text, session):
             send(f"Treino completo. {total}/{total} ✓{weight_line}")
         else:
             ex = exercises[filled]
-            done = "\n".join(f"✓ {exercises[i]['name']}" for i in range(filled))
+            done = "\n".join(
+                f"✓ {_display_exercise_name(exercises[i]['name'])}"
+                for i in range(filled)
+            )
             msg = f"Treino — {filled}/{total}\n"
             if done:
                 msg += done + "\n"
@@ -494,7 +504,7 @@ def handle(text, session):
             return
         last_ex = exercises[filled - 1]
         db_ops.update_log_weight(last_ex["log_id"], None, None)
-        send(f"↩ Desfeito: <b>{last_ex['name']}</b>")
+        send(f"↩ Desfeito: <b>{_display_exercise_name(last_ex['name'])}</b>")
         return
 
     if filled >= total:
@@ -525,13 +535,13 @@ def handle(text, session):
             )
             summary = "Resumo indisponivel. Consulte o terminal."
         send(
-            f"<b>{ex['name']}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n\n"
+            f"<b>{_display_exercise_name(ex['name'])}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n\n"
             f"Treino completo.\n\n{summary}"
         )
     else:
         nxt = exercises[new_filled]
         send(
-            f"<b>{ex['name']}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n"
+            f"<b>{_display_exercise_name(ex['name'])}</b> ✓ {weight}kg{rpe_str} ({new_filled}/{total})\n"
             f"{_format_current_exercise(nxt)}"
         )
 

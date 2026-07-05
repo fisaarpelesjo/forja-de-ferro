@@ -86,6 +86,8 @@ def main():
             assert rosca_martelo["target_weight"] == 16.0
             assert rosca_martelo["loading_note"] == "barra H 9kg + 7kg de anilhas"
             assert "descanso: 4 min" in sent_messages[-3]
+            assert "<b>Supino fechado</b>" in sent_messages[-3]
+            assert "<b>Supino fechado (barra)</b>" not in sent_messages[-3]
             assert "<pre>" not in sent_messages[-3]
             assert "Sessao de treino gerada." in sent_messages[-2]
             assert "<b>Agora faca:</b>" in sent_messages[-1]

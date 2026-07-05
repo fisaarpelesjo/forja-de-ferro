@@ -23,6 +23,21 @@ INITIAL_TARGET_WEIGHTS = {
     "Supino fechado (barra)": 35.0,
 }
 
+DISPLAY_NAMES = {
+    "Supino reto (barra)": "Supino reto",
+    "Supino inclinado (barra)": "Supino inclinado",
+    "Supino fechado (barra)": "Supino fechado",
+    "Remada curvada (barra)": "Remada curvada",
+    "Remada curvada alta no peito (barra)": "Remada curvada alta no peito",
+    "Remada alta (barra)": "Remada alta",
+    "Desenvolvimento (barra em pé)": "Desenvolvimento",
+    "Desenvolvimento (barra em pe)": "Desenvolvimento",
+    "Pullover (barra)": "Pullover",
+    "Rosca martelo (barra H)": "Rosca martelo",
+    "Tríceps testa": "Tríceps testa",
+    "Triceps testa": "Tríceps testa",
+}
+
 REST_INTERVALS = {
     "Agachamento Zercher": "4 min",
     "Supino reto (barra)": "4 min",
@@ -112,6 +127,10 @@ def suggest_next_weight(previous_weight, previous_rpe=None):
 
 def get_initial_target_weight(exercise_name):
     return INITIAL_TARGET_WEIGHTS.get(exercise_name)
+
+
+def get_display_name(exercise_name):
+    return DISPLAY_NAMES.get(exercise_name, exercise_name)
 
 
 def get_rest_interval(exercise_name):
