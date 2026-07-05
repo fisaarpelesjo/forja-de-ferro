@@ -14,10 +14,10 @@ DEFAULT_EXERCISES = [
     {"name": "Agachamento sumô com barra à frente", "sets": 3, "reps": 10},
     {"name": "Supino reto (barra)", "sets": 3, "reps": 5},
     {"name": "Supino reto back-off", "sets": 3, "reps": 8},
+    {"name": "Supino inclinado (barra)", "sets": 3, "reps": 8},
     {"name": "Remada curvada (barra)", "sets": 3, "reps": 8},
     {"name": "Desenvolvimento (barra em pé)", "sets": 3, "reps": 5},
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
-    {"name": "Pullover (barra)", "sets": 3, "reps": 10},
     {"name": "Remada alta (barra)", "sets": 3, "reps": 10},
     {"name": "Remada curvada alta no peito (barra)", "sets": 3, "reps": 10},
     {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
@@ -46,6 +46,11 @@ DEFAULT_MUSCLE_GROUPS = {
     ],
     "Supino reto (barra)": [("Peitoral", "principal")],
     "Supino reto back-off": [("Peitoral", "principal")],
+    "Supino inclinado (barra)": [
+        ("Peitoral", "principal"),
+        ("Deltoide anterior", "secundario"),
+        ("Triceps", "secundario"),
+    ],
     "Remada curvada (barra)": [("Dorsais", "principal")],
     "Desenvolvimento (barra em pé)": [("Deltoide anterior", "principal")],
     "Desenvolvimento (barra em pe)": [("Deltoide anterior", "principal")],
@@ -853,10 +858,14 @@ def get_last_weights():
             SELECT exercise_name, weight
             FROM training_logs
             WHERE weight IS NOT NULL AND weight > 0
+              AND sets > 0
+              AND reps > 0
               AND id IN (
                 SELECT MAX(id)
                 FROM training_logs
                 WHERE weight IS NOT NULL AND weight > 0
+                  AND sets > 0
+                  AND reps > 0
                 GROUP BY exercise_name
               )
             """
@@ -873,10 +882,14 @@ def get_last_performance():
             SELECT exercise_name, weight, rpe
             FROM training_logs
             WHERE weight IS NOT NULL AND weight > 0
+              AND sets > 0
+              AND reps > 0
               AND id IN (
                 SELECT MAX(id)
                 FROM training_logs
                 WHERE weight IS NOT NULL AND weight > 0
+                  AND sets > 0
+                  AND reps > 0
                 GROUP BY exercise_name
               )
             """

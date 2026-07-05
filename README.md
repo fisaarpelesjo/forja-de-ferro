@@ -235,12 +235,13 @@ Se o exercicio ainda nao tiver historico de carga, o alvo aparece como `-`.
 A carga alvo fica em `session.json`; o banco continua guardando apenas a carga
 real registrada pelo usuario.
 
-Excecao atual: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg quando
-ainda nao houver historico proprio. Depois do primeiro registro, ela segue a
-progressao normal por RPE.
+Excecoes atuais: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg e
+`Supino inclinado (barra)` comeca com alvo inicial de 41 kg quando ainda nao
+houver historico proprio. Depois do primeiro registro, seguem a progressao
+normal por RPE.
 
 Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. Os dois supinos, `Agachamento Zercher`, `Remada
+de montagem em `session.json`. Os tres supinos, `Agachamento Zercher`, `Remada
 curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno`
 e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
 `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg.
@@ -298,7 +299,8 @@ O catalogo ativo comeca com:
 ```text
 Agachamento Zercher    3x5
 Agachamento sumô com barra à frente 3x10
-Supino reto back-off   2x8
+Supino reto back-off   3x8
+Supino inclinado (barra) 3x8
 Rosca martelo (barra H) 3x8
 ```
 

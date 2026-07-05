@@ -173,11 +173,13 @@ Regras importantes:
   de RPE 9 como problema isolado. Ela so exige atencao quando vier acompanhada
   de perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
   prolongada de qualquer melhora na execucao.
-- `Rosca martelo (barra H)` tem alvo inicial de 16 kg quando ainda nao houver historico proprio; depois disso usa a progressao por RPE.
+- `Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado
+  (barra)` tem alvo inicial de 41 kg quando ainda nao houver historico proprio;
+  depois disso usam a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
-- `Agachamento Zercher`, os dois supinos, `Remada curvada (barra)`,
+- `Agachamento Zercher`, os tres supinos, `Remada curvada (barra)`,
   `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
   curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
   deve mostrar carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
@@ -190,8 +192,10 @@ Regras importantes:
 - O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
 - O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
+- O quinto exercicio ativo e `Supino inclinado (barra)` (`3x8`), logo depois
+  de `Supino reto back-off`, substituindo `Pullover (barra)` para sessoes futuras.
 - O decimo primeiro exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
-- Logs historicos de `Agachamento (barra)` ou `Zercher squat` podem permanecer como historico.
+- Logs historicos de `Agachamento (barra)`, `Zercher squat` ou `Pullover (barra)` podem permanecer como historico.
 
 ### `forja_de_ferro/db_ops.py`
 

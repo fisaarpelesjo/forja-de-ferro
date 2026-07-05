@@ -28,9 +28,11 @@ def _assert_progressao():
 
 def _assert_equipamento_e_descanso():
     assert ods_ops.get_initial_target_weight("Rosca martelo (barra H)") == 16
+    assert ods_ops.get_initial_target_weight("Supino inclinado (barra)") == 41
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
     assert ods_ops.get_rest_interval("Agachamento Zercher") == "4 min"
     assert ods_ops.get_rest_interval("Remada curvada (barra)") == "3 min"
+    assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "2 min"
     assert ods_ops.get_rest_interval("Tríceps testa") == "2 min"
     assert ods_ops.get_rest_interval("Exercicio desconhecido") == "2 min"
     assert (
@@ -57,6 +59,7 @@ def _assert_equipamento_e_descanso():
         "Agachamento Zercher",
         "Supino reto (barra)",
         "Supino reto back-off",
+        "Supino inclinado (barra)",
         "Remada curvada (barra)",
         "Desenvolvimento (barra em pé)",
         "Levantamento Terra Romeno",

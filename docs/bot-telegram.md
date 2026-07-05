@@ -156,15 +156,15 @@ de melhora na execucao.
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
-`Rosca martelo (barra H)` tem alvo inicial de 16 kg quando ainda nao houver
-historico proprio. Depois do primeiro registro, ela segue a progressao normal
-por RPE.
+`Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado (barra)`
+tem alvo inicial de 41 kg quando ainda nao houver historico proprio. Depois do
+primeiro registro, seguem a progressao normal por RPE.
 
 O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
-o bot tambem mostra a montagem da carga. Nos dois supinos, `Agachamento Zercher`,
+o bot tambem mostra a montagem da carga. Nos tres supinos, `Agachamento Zercher`,
 `Remada curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra
 Romeno` e `Remada curvada alta no peito (barra)`, a barra reta de 2,20 m pesa
 11 kg. Um alvo de 40 kg aparece como:

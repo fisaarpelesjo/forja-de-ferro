@@ -183,6 +183,9 @@ SEGMENTOS_POR_EXERCICIO = {
     "Supino reto back-off": {
         "Peitoral": {"Peitoral superior": 0.35, "Peitoral inferior": 0.65},
     },
+    "Supino inclinado (barra)": {
+        "Peitoral": {"Peitoral superior": 0.65, "Peitoral inferior": 0.35},
+    },
     "Remada curvada (barra)": {
         "Dorsais": {
             "Dorsal superior": 0.30,
@@ -317,6 +320,14 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Triceps cabeca longa": 0.12,
         "Triceps cabeca lateral": 0.08,
         "Serratil anterior": 0.05,
+    },
+    "Supino inclinado (barra)": {
+        "Peitoral superior": 0.40,
+        "Peitoral inferior": 0.20,
+        "Deltoide anterior": 0.18,
+        "Triceps cabeca longa": 0.12,
+        "Triceps cabeca lateral": 0.07,
+        "Serratil anterior": 0.03,
     },
     "Remada curvada (barra)": {
         "Dorsal superior": 0.15,
