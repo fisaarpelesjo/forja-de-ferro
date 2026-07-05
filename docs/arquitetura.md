@@ -19,7 +19,6 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 ├── docs/
 ├── forja_de_ferro/
 │   ├── __init__.py
-│   ├── banner.py
 │   ├── backup_ops.py
 │   ├── dashboard.py
 │   ├── db_ops.py
@@ -44,7 +43,6 @@ Codigo de aplicacao deve ser importado pelo pacote:
 from forja_de_ferro import db_ops
 from forja_de_ferro import ods_ops
 from forja_de_ferro import telegram_poller
-from forja_de_ferro import banner
 ```
 
 Evite novos modulos de aplicacao na raiz. A raiz deve ficar para launchers,
@@ -54,7 +52,6 @@ configuracao, docs e testes.
 
 ```text
 start_bot.py
-  -> forja_de_ferro.banner
   -> forja_de_ferro.telegram_poller
        -> forja_de_ferro.ods_ops
        -> forja_de_ferro.db_ops
@@ -84,11 +81,11 @@ nova que o codigo e rejeitado para evitar alteracoes incompativeis.
 
 `python start_bot.py`:
 
-1. importa o banner
-2. importa o poller Telegram
-3. imprime o banner
-4. imprime mensagem de inicio em PT-BR
-5. chama `telegram_poller.main()`
+1. importa o poller Telegram
+2. chama `telegram_poller.main()`
+
+A saida de terminal do launcher deve ser minimalista. O bot registra apenas logs
+operacionais e erros uteis para diagnostico.
 
 ## Polling
 
@@ -138,7 +135,7 @@ pendentes. Sessoes completas nao sao reabertas.
 
 ## Por Que O Pacote Chama `forja_de_ferro`
 
-O app se chama Forja de Ferro no README, no banner e no banco `forja_de_ferro.db`.
+O app se chama Forja de Ferro no README e no banco `forja_de_ferro.db`.
 `forja_de_ferro` tambem e um nome valido e limpo para pacote Python.
 
 ## O Que Evitar

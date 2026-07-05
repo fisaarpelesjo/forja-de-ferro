@@ -73,8 +73,6 @@ start_bot.bat
 
 `gerar_frames.py`: extrai frames de videos locais usando `ffmpeg`.
 
-`forja_de_ferro/banner.py`: banner colorido do terminal.
-
 `forja_de_ferro/telegram_poller.py`: comandos, polling e mensagens Telegram.
 
 `forja_de_ferro/ods_ops.py`: gera sessoes e escreve `session.json`.

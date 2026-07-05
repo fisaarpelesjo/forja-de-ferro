@@ -8,7 +8,6 @@ Runtime:
 Python 3.10+
 SQLite
 requests
-rich
 ffmpeg (para extracao de frames de video)
 internet de saida
 ```
@@ -32,7 +31,6 @@ Pode dar trabalho em:
 - sistema sem Python 3.10+
 - maquina sem internet
 - ambiente sem permissao para instalar pacote
-- terminal sem suporte ANSI
 - pasta sincronizada com lock agressivo
 
 ## Comandos Python
@@ -93,11 +91,6 @@ Fluxo completo:
 ```bash
 python gerar_frames.py --todos --instalar-ffmpeg
 ```
-
-## Cor No Terminal
-
-O banner usa `rich`. Se o terminal nao renderizar cor, o bot ainda funciona. Cor
-e cosmetica.
 
 ## Maquina Fraca
 

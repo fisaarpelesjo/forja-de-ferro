@@ -7,6 +7,8 @@ A Forja de Ferro e um diario de treino e dieta com bot do Telegram e banco SQLit
 Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
+O launcher do bot deve manter saida minimalista no terminal: sem banner, ASCII
+art ou mensagens cosmeticas; preservar apenas logs operacionais e erros uteis.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 Extracao de frames de video: `gerar_frames.py --todos --instalar-ffmpeg`
 verifica a dependencia, processa os videos de `videos/entrada/` e grava cada
@@ -73,6 +75,8 @@ descartado ou repriorizado.
 ### `start_bot.py`
 
 Launcher principal para iniciar o bot.
+Nao imprime banner nem texto cosmetico; a saida deve ficar restrita aos logs
+operacionais e erros uteis.
 
 ### `start_bot.bat`
 

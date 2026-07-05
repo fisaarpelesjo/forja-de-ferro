@@ -85,9 +85,11 @@ Fluxo normal:
 
 ```text
 start_bot.py
-  -> banner.print_banner()
   -> telegram_poller.main()
 ```
+
+O launcher nao imprime banner. A saida de terminal fica restrita aos logs do
+polling e a erros de configuracao.
 
 Se o token estiver ausente, o bot imprime:
 

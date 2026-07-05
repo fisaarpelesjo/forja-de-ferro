@@ -2,6 +2,9 @@
 
 A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLite.
 
+Launcher do bot: `start_bot.py`, com saida minimalista no terminal. Nao adicionar
+banner, ASCII art ou mensagens cosmeticas; preservar apenas logs operacionais e
+erros uteis.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html` com a
 evolucao do volume de treino.
 Extracao de frames de video: `gerar_frames.py --todos --instalar-ffmpeg`

@@ -7,6 +7,8 @@ Este projeto e um diario de treino com bot do Telegram e banco SQLite versionado
 Banco principal: `data/forja_de_ferro.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
+O launcher do bot deve manter saida minimalista no terminal: sem banner, ASCII
+art ou mensagens cosmeticas; preservar apenas logs operacionais e erros uteis.
 Dashboard local: `gerar_dashboard.py` gera `temp/dashboard-treino.html`.
 Extracao de frames de video: `gerar_frames.py --todos --instalar-ffmpeg`
 verifica a dependencia, processa os videos de `videos/entrada/` e grava cada

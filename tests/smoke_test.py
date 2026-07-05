@@ -10,13 +10,11 @@ if str(ROOT_DIR) not in sys.path:
 
 REQUIRED_MODULES = [
     "requests",
-    "rich",
     "forja_de_ferro.db_ops",
     "forja_de_ferro.ods_ops",
     "forja_de_ferro.video_ops",
     "forja_de_ferro.dashboard",
     "forja_de_ferro.telegram_poller",
-    "forja_de_ferro.banner",
     "gerar_frames",
     "start_bot",
 ]

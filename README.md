@@ -55,7 +55,6 @@ forja_de_ferro/
 │   └── saida/               # frames gerados por arquivo
 ├── gerenciar_dados.py       # backup, exportacao e restauracao
 ├── forja_de_ferro/
-│   ├── banner.py            # banner do terminal
 │   ├── backup_ops.py        # gestao segura dos dados SQLite
 │   ├── telegram_poller.py   # bot Telegram com long polling
 │   ├── ods_ops.py           # operacoes de sessao de treino
