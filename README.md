@@ -141,6 +141,7 @@ oficial configurada no HTML para carregar os componentes `cds-*`.
 - metas corporais de referencia calculadas pela altura cadastrada
 - barras de proximidade das metas, recalculadas com as medicoes mais recentes
 - minigraficos de evolucao dentro dos quatro cards corporais, renderizados com Chart.js
+- treino ativo com series, reps, alvo, descanso e montagem da carga
 - grafico de evolucao do volume por sessao, renderizado com Chart.js
 - mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
 - equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes
@@ -235,13 +236,13 @@ Se o exercicio ainda nao tiver historico de carga, o alvo aparece como `-`.
 A carga alvo fica em `session.json`; o banco continua guardando apenas a carga
 real registrada pelo usuario.
 
-Excecoes atuais: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg e
-`Supino inclinado (barra)` comeca com alvo inicial de 41 kg quando ainda nao
-houver historico proprio. Depois do primeiro registro, seguem a progressao
-normal por RPE.
+Excecoes atuais: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg,
+`Supino inclinado (barra)` comeca com alvo inicial de 41 kg e `Supino fechado
+(barra)` comeca com alvo inicial de 35 kg quando ainda nao houver historico
+proprio. Depois do primeiro registro, seguem a progressao normal por RPE.
 
 Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. Os tres supinos, `Agachamento Zercher`, `Remada
+de montagem em `session.json`. Os supinos com barra, `Agachamento Zercher`, `Remada
 curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno`
 e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
 `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg.
@@ -256,9 +257,10 @@ O `/gerar` tambem mostra o descanso sugerido por exercicio:
 
 ```text
 Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
+Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
 Remada curvada, Desenvolvimento, Remada alta: 3 min
-Acessorios e supino reto back-off: 2 min
-Rosca martelo (barra H), Triceps testa: 2 min
+Acessorios restantes: 2 min
+Rosca martelo (barra H): 2 min
 ```
 
 Esses tempos fixos ajudam a manter a qualidade das series e deixam o RPE mais
@@ -301,7 +303,10 @@ Agachamento Zercher    3x5
 Agachamento sumô com barra à frente 3x10
 Supino reto back-off   3x8
 Supino inclinado (barra) 3x8
+Remada curvada (barra) 3x8
+Remada curvada alta no peito (barra) 3x10
 Rosca martelo (barra H) 3x8
+Supino fechado (barra) 3x8
 ```
 
 Ele substituiu o agachamento com barra para sessoes futuras porque o setup atual

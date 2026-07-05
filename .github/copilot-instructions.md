@@ -172,13 +172,14 @@ Regras importantes:
   sequencia de RPE 9 um problema isolado. Ela so exige atencao quando houver
   perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
   prolongada de melhora na execucao.
-- `Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado
-  (barra)` tem alvo inicial de 41 kg quando ainda nao houver historico proprio;
-  depois disso usam a progressao por RPE.
+- `Rosca martelo (barra H)` tem alvo inicial de 16 kg, `Supino inclinado
+  (barra)` tem alvo inicial de 41 kg e `Supino fechado (barra)` tem alvo
+  inicial de 35 kg quando ainda nao houver historico proprio; depois disso usam
+  a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
-- `Agachamento Zercher`, os tres supinos, `Remada curvada (barra)`,
+- `Agachamento Zercher`, os supinos com barra, `Remada curvada (barra)`,
   `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
   curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
   mostra a carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
@@ -221,8 +222,8 @@ Dashboard local de volume:
 - `carregar_dados()` le `training_sessions` e `training_logs`.
 - Volume de cada log: `sets x reps x weight`.
 - Entram apenas logs com `weight IS NOT NULL` e carga maior que zero.
-- O HTML exibe uma pagina unica rolavel com indicadores de resumo, grafico de
-  evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
+- O HTML exibe uma pagina unica rolavel com indicadores de resumo, treino ativo
+  do plano selecionado, grafico de evolucao do volume, mapa muscular anterior e posterior da ultima sessao,
   carga e RPE e 1RM estimado por exercicio, comparacao da ultima sessao com a
   anterior, equilibrio muscular, calendario de carga, grupos musculares, volume
   semanal, maiores evolucoes, recordes pessoais, PRs expandidos, carga vs RPE,
@@ -312,12 +313,12 @@ Ordem ativa atual:
 4. Supino reto back-off - 3x8
 5. Supino inclinado (barra) - 3x8
 6. Remada curvada (barra) - 3x8
-7. Desenvolvimento (barra em pe) - 3x5
-8. Levantamento Terra Romeno - 3x8
-9. Remada alta (barra) - 3x10
-10. Remada curvada alta no peito (barra) - 3x10
+7. Remada curvada alta no peito (barra) - 3x10
+8. Desenvolvimento (barra em pe) - 3x5
+9. Levantamento Terra Romeno - 3x8
+10. Remada alta (barra) - 3x10
 11. Rosca martelo (barra H) - 3x8
-12. Triceps testa - 3x8
+12. Supino fechado (barra) - 3x8
 
 ## Documentacao
 

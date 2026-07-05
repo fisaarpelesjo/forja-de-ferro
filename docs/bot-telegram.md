@@ -156,15 +156,16 @@ de melhora na execucao.
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
-`Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado (barra)`
-tem alvo inicial de 41 kg quando ainda nao houver historico proprio. Depois do
-primeiro registro, seguem a progressao normal por RPE.
+`Rosca martelo (barra H)` tem alvo inicial de 16 kg, `Supino inclinado (barra)`
+tem alvo inicial de 41 kg e `Supino fechado (barra)` tem alvo inicial de 35 kg
+quando ainda nao houver historico proprio. Depois do primeiro registro, seguem
+a progressao normal por RPE.
 
 O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
-o bot tambem mostra a montagem da carga. Nos tres supinos, `Agachamento Zercher`,
+o bot tambem mostra a montagem da carga. Nos supinos com barra, `Agachamento Zercher`,
 `Remada curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra
 Romeno` e `Remada curvada alta no peito (barra)`, a barra reta de 2,20 m pesa
 11 kg. Um alvo de 40 kg aparece como:
@@ -219,9 +220,10 @@ Intervalos atuais:
 
 ```text
 Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
+Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
 Remada curvada, Desenvolvimento: 3 min
-Acessorios de tronco/ombro e supino reto back-off: 2 min
-Rosca martelo (barra H), Triceps testa: 2 min
+Acessorios restantes: 2 min
+Rosca martelo (barra H): 2 min
 ```
 
 ## `/exercicios`

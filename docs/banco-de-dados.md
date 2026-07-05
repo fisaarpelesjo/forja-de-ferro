@@ -166,7 +166,7 @@ volume = sets x reps x weight
 
 `python gerar_dashboard.py` consolida esse volume por sessao, exercicio, semana
 e grupo muscular. O HTML exibe uma pagina unica rolavel com indicadores de resumo,
-grafico de evolucao, mapa muscular, carga e RPE e 1RM estimado por exercicio,
+treino ativo do plano selecionado, grafico de evolucao, mapa muscular, carga e RPE e 1RM estimado por exercicio,
 comparacao da ultima sessao com a anterior, equilibrio muscular, calendario de
 carga, grupos musculares, volume semanal, maiores evolucoes, recordes pessoais,
 PRs expandidos, carga vs RPE, alertas simples, filtros rapidos por segmento,
@@ -252,9 +252,12 @@ Historico antigo deve permanecer como historico salvo no SQLite.
 O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
 com foco principal nos adutores. O quinto e `Supino inclinado (barra)` (`3x8`),
 logo depois de `Supino reto back-off`, substituindo `Pullover (barra)` para
-sessoes futuras. O decimo primeiro e `Rosca martelo (barra H)` (`3x8`),
-substituindo `Rosca direta` para sessoes futuras. Historico antigo de
-`Rosca direta` e `Pullover (barra)` permanece como historico salvo no SQLite.
+sessoes futuras. O setimo e `Remada curvada alta no peito (barra)` (`3x10`),
+logo depois de `Remada curvada (barra)`. O decimo primeiro e `Rosca martelo (barra H)` (`3x8`),
+substituindo `Rosca direta` para sessoes futuras. O decimo segundo e `Supino
+fechado (barra)` (`3x8`), substituindo `Tríceps testa` para sessoes futuras.
+Historico antigo de `Rosca direta`, `Pullover (barra)` e `Tríceps testa`
+permanece como historico salvo no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
@@ -311,10 +314,10 @@ amplitude, o valor isolado nao comprova falta de evolucao.
 Se nao houver historico de carga para o exercicio, `target_weight` fica `None` e
 a tabela do bot mostra `-`.
 
-Excecoes atuais: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg e
-`Supino inclinado (barra)` recebe alvo inicial de 41 kg quando ainda nao houver
-historico proprio. Depois do primeiro registro real, a funcao usa o historico e
-a progressao por RPE.
+Excecoes atuais: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg,
+`Supino inclinado (barra)` recebe alvo inicial de 41 kg e `Supino fechado
+(barra)` recebe alvo inicial de 35 kg quando ainda nao houver historico proprio.
+Depois do primeiro registro real, a funcao usa o historico e a progressao por RPE.
 
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
@@ -331,7 +334,7 @@ Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`,
 `target_weight - 6`. Exemplo: `target_weight = 18` gera
 `barra W 6kg + 12kg de anilhas`.
 
-Para os tres supinos, `Agachamento Zercher`, `Remada curvada (barra)`,
+Para os supinos com barra, `Agachamento Zercher`, `Remada curvada (barra)`,
 `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada curvada
 alta no peito (barra)`, a funcao usa a barra reta de 2,20 m e 11 kg. Exemplo:
 `target_weight = 40` gera `barra reta 2,20 m 11kg + 29kg de anilhas`.
