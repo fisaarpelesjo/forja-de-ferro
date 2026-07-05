@@ -190,6 +190,10 @@ barra W 6kg + 12kg de anilhas
 
 Essa observacao nao aparece na lista `/exercicios`.
 
+Os nomes exibidos podem omitir qualificadores de equipamento, como `(barra)`,
+`(barra H)` e `(barra em pé)`. Essa limpeza e apenas visual; o SQLite conserva
+os nomes completos para historico e progressao.
+
 Para `Rosca martelo (barra H)`, a barra H pesa 9 kg. Um alvo de 18 kg aparece
 como:
 

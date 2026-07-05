@@ -251,6 +251,10 @@ e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
 no `/status` e na indicacao do proximo exercicio, mas nao na lista
 `/exercicios`.
 
+Na interface, o bot e o dashboard podem mostrar nomes mais curtos, como
+`Supino inclinado` em vez de `Supino inclinado (barra)`. Os nomes completos
+continuam no SQLite para preservar historico, progressao e mapeamentos.
+
 ## Descanso Entre Series
 
 O `/gerar` tambem mostra o descanso sugerido por exercicio:

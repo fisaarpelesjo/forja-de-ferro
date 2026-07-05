@@ -322,6 +322,11 @@ Depois do primeiro registro real, a funcao usa o historico e a progressao por RP
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
 
+Nomes exibidos no bot e no dashboard podem ser simplificados por
+`ods_ops.get_display_name()`, mas os nomes salvos em `training_logs`,
+`training_plan_exercises` e `exercises` permanecem canonicos para preservar
+historico, progressao e relacoes musculares.
+
 ## Resumo Pos-Treino
 
 `db_ops.get_session_summary(session_id)` calcula volume, RPE medio, mudancas de
