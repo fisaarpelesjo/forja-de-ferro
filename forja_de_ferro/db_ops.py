@@ -16,12 +16,12 @@ DEFAULT_EXERCISES = [
     {"name": "Supino reto back-off", "sets": 3, "reps": 8},
     {"name": "Supino inclinado (barra)", "sets": 3, "reps": 8},
     {"name": "Remada curvada (barra)", "sets": 3, "reps": 8},
+    {"name": "Remada curvada alta no peito (barra)", "sets": 3, "reps": 10},
     {"name": "Desenvolvimento (barra em pé)", "sets": 3, "reps": 5},
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
     {"name": "Remada alta (barra)", "sets": 3, "reps": 10},
-    {"name": "Remada curvada alta no peito (barra)", "sets": 3, "reps": 10},
     {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
-    {"name": "Tríceps testa", "sets": 3, "reps": 8},
+    {"name": "Supino fechado (barra)", "sets": 3, "reps": 8},
 ]
 
 DEFAULT_MUSCLE_GROUPS = {
@@ -50,6 +50,11 @@ DEFAULT_MUSCLE_GROUPS = {
         ("Peitoral", "principal"),
         ("Deltoide anterior", "secundario"),
         ("Triceps", "secundario"),
+    ],
+    "Supino fechado (barra)": [
+        ("Triceps", "principal"),
+        ("Peitoral", "secundario"),
+        ("Deltoide anterior", "secundario"),
     ],
     "Remada curvada (barra)": [("Dorsais", "principal")],
     "Desenvolvimento (barra em pé)": [("Deltoide anterior", "principal")],

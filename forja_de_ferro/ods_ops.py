@@ -20,13 +20,15 @@ RPE_PROGRESSION_KG = {
 INITIAL_TARGET_WEIGHTS = {
     "Rosca martelo (barra H)": 16.0,
     "Supino inclinado (barra)": 41.0,
+    "Supino fechado (barra)": 35.0,
 }
 
 REST_INTERVALS = {
     "Agachamento Zercher": "4 min",
     "Supino reto (barra)": "4 min",
-    "Supino reto back-off": "2 min",
-    "Supino inclinado (barra)": "2 min",
+    "Supino reto back-off": "3 min",
+    "Supino inclinado (barra)": "3 min",
+    "Supino fechado (barra)": "3 min",
     "Remada curvada (barra)": "3 min",
     "Desenvolvimento (barra em pé)": "3 min",
     "Desenvolvimento (barra em pe)": "3 min",
@@ -49,6 +51,7 @@ LOAD_EQUIPMENT = {
     "Supino reto (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Supino reto back-off": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Supino inclinado (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
+    "Supino fechado (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Remada curvada (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Desenvolvimento (barra em pé)": {
         "name": "barra reta 2,20 m",
