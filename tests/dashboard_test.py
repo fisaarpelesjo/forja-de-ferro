@@ -231,6 +231,9 @@ def main():
             html = caminho.read_text(encoding="utf-8")
             assert "Dashboard de treino" in html
             assert "Volume por sessao" in html
+            assert "Treino ativo" in html
+            assert "Supino fechado (barra)" in html
+            assert "barra reta 2,20 m 11kg + 24kg de anilhas" in html
             assert "Carga, RPE e 1RM" in html
             assert "Ultima vs anterior" in html
             assert "Recordes pessoais" in html

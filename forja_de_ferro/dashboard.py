@@ -10,6 +10,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from forja_de_ferro import db_ops
+from forja_de_ferro import ods_ops
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
@@ -186,6 +187,10 @@ SEGMENTOS_POR_EXERCICIO = {
     "Supino inclinado (barra)": {
         "Peitoral": {"Peitoral superior": 0.65, "Peitoral inferior": 0.35},
     },
+    "Supino fechado (barra)": {
+        "Triceps": {"Triceps cabeca longa": 0.55, "Triceps cabeca lateral": 0.45},
+        "Peitoral": {"Peitoral superior": 0.30, "Peitoral inferior": 0.70},
+    },
     "Remada curvada (barra)": {
         "Dorsais": {
             "Dorsal superior": 0.30,
@@ -328,6 +333,14 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Triceps cabeca longa": 0.12,
         "Triceps cabeca lateral": 0.07,
         "Serratil anterior": 0.03,
+    },
+    "Supino fechado (barra)": {
+        "Triceps cabeca longa": 0.35,
+        "Triceps cabeca lateral": 0.25,
+        "Peitoral inferior": 0.18,
+        "Peitoral superior": 0.08,
+        "Deltoide anterior": 0.10,
+        "Serratil anterior": 0.04,
     },
     "Remada curvada (barra)": {
         "Dorsal superior": 0.15,
@@ -870,6 +883,7 @@ def carregar_dados():
             ),
         },
         "volume_por_sessao": volume_por_sessao,
+        "treino_ativo": _carregar_treino_ativo(),
         "volume_por_exercicio": volume_por_exercicio,
         "comparacao_ultima": _comparar_ultimas_sessoes(volume_por_sessao),
         "volume_semanal": _agrupar_periodo(volume_por_sessao, "semana"),
@@ -897,6 +911,26 @@ def carregar_dados():
             peso_corporal["atual"],
             cintura["atual"],
         ),
+    }
+
+
+def _carregar_treino_ativo():
+    plan = db_ops.get_active_training_plan()
+    exercicios = ods_ops.preview_training()
+    return {
+        "nome": plan["name"] if plan else "-",
+        "exercicios": [
+            {
+                "ordem": idx,
+                "nome": exercicio["name"],
+                "series": exercicio["sets"],
+                "reps": exercicio["reps"],
+                "alvo": exercicio.get("target_weight"),
+                "descanso": exercicio.get("rest_interval") or "-",
+                "montagem": exercicio.get("loading_note") or "-",
+            }
+            for idx, exercicio in enumerate(exercicios, start=1)
+        ],
     }
 
 
@@ -1802,6 +1836,33 @@ def _linhas_tabela(linhas, colunas, vazio="Sem dados suficientes."):
     return "\n".join(html_linhas)
 
 
+def _render_treino_ativo(treino):
+    exercicios = treino.get("exercicios", [])
+    linhas = _linhas_tabela(
+        exercicios,
+        [
+            {"valor": lambda item: str(item["ordem"])},
+            {"valor": lambda item: html.escape(item["nome"])},
+            {"valor": lambda item: f"{item['series']}x{item['reps']}"},
+            {
+                "valor": lambda item: (
+                    "-"
+                    if item["alvo"] is None
+                    else f"{_fmt_decimal(item['alvo'])} kg"
+                )
+            },
+            {"valor": lambda item: html.escape(item["descanso"])},
+            {"valor": lambda item: html.escape(item["montagem"])},
+        ],
+    )
+    return f"""
+      <table class="cds--data-table cds--data-table--lg tabela-treino-ativo">
+        <thead><tr><th>#</th><th>Exercicio</th><th>Series</th><th>Alvo</th><th>Descanso</th><th>Montagem</th></tr></thead>
+        <tbody>{linhas}</tbody>
+      </table>
+    """
+
+
 def _render_periodos(periodos):
     return _linhas_tabela(
         periodos[-8:],
@@ -2310,6 +2371,7 @@ def gerar_html(dados):
     carga_rpe = _render_carga_rpe(dados["analises"]["carga_rpe_exercicio"])
     heatmap_sessoes = _render_heatmap_sessoes(dados["heatmap_sessoes"])
     relatorio_semanal = _render_relatorio_semanal(dados["relatorio_semanal"])
+    treino_ativo = _render_treino_ativo(dados["treino_ativo"])
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -2498,6 +2560,19 @@ def gerar_html(dados):
       background: var(--forja-success);
     }}
     .tabela-rolavel {{ overflow-x: auto; }}
+    .tabela-treino-ativo th:first-child,
+    .tabela-treino-ativo td:first-child {{
+      text-align: right;
+      width: 44px;
+      white-space: nowrap;
+    }}
+    .tabela-treino-ativo th:nth-child(2),
+    .tabela-treino-ativo td:nth-child(2),
+    .tabela-treino-ativo th:nth-child(6),
+    .tabela-treino-ativo td:nth-child(6) {{
+      text-align: left;
+      white-space: normal;
+    }}
     tfoot th {{ color: var(--texto); }}
     .duas-colunas {{
       display: grid;
@@ -2877,6 +2952,16 @@ def gerar_html(dados):
         <span>volume atribuido por grupo</span>
       </div>
       {mapa_muscular}
+    </cds-tile>
+
+    <cds-tile class="painel">
+      <div class="linha-topo">
+        <h2>Treino ativo</h2>
+        <span>plano {html.escape(str(dados["treino_ativo"]["nome"]))}</span>
+      </div>
+      <div class="tabela-rolavel">
+        {treino_ativo}
+      </div>
     </cds-tile>
 
     <section class="duas-colunas">
