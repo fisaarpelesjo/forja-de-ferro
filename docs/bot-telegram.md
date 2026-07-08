@@ -225,9 +225,9 @@ nao existir, porque le os exercicios ativos.
 Intervalos atuais:
 
 ```text
-Agachamento com barra nas costas, Supino reto principal, Levantamento Terra Romeno: 4 min
+Agachamento com barra nas costas, Supino reto principal, Desenvolvimento, Levantamento Terra Romeno: 4 min
 Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
-Remada curvada, Desenvolvimento: 3 min
+Remada curvada: 3 min
 Acessorios restantes: 2 min
 Rosca martelo (barra H): 2 min
 ```

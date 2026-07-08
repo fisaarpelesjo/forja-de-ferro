@@ -259,9 +259,9 @@ continuam no SQLite para preservar historico, progressao e mapeamentos.
 O `/gerar` tambem mostra o descanso sugerido por exercicio:
 
 ```text
-Agachamento com barra nas costas, Supino reto principal, Levantamento Terra Romeno: 4 min
+Agachamento com barra nas costas, Supino reto principal, Desenvolvimento, Levantamento Terra Romeno: 4 min
 Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
-Remada curvada, Desenvolvimento, Remada alta: 3 min
+Remada curvada, Remada alta: 3 min
 Acessorios restantes: 2 min
 Rosca martelo (barra H): 2 min
 ```

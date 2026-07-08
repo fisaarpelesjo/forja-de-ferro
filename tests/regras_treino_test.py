@@ -35,6 +35,7 @@ def _assert_equipamento_e_descanso():
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
     assert ods_ops.get_rest_interval("Agachamento com barra nas costas") == "4 min"
     assert ods_ops.get_rest_interval("Remada curvada (barra)") == "3 min"
+    assert ods_ops.get_rest_interval("Desenvolvimento (barra em pé)") == "4 min"
     assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Supino fechado (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Tríceps testa") == "2 min"
