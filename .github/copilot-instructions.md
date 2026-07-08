@@ -41,6 +41,19 @@ permissao escalada e justificativa curta. Nao interromper o fluxo para explicar
 o erro ao usuario toda vez; mencionar apenas se a permissao for negada ou se o
 bloqueio impedir a tarefa.
 
+## Memoria Operacional Do Projeto
+
+Quando uma tarefa revelar um detalhe estavel sobre estrutura, caminhos, esquema
+do banco, comandos, fluxos locais, arquivos de estado ou convencoes do projeto,
+registrar essa descoberta nos arquivos de agente antes de finalizar, desde que a
+informacao ajude manutencoes futuras e nao contenha segredo. Sincronizar a mesma
+nota em `AGENTS.md`, `CLAUDE.md` e `.github/copilot-instructions.md` quando ela
+se aplicar aos tres.
+
+Nao depender apenas da memoria da conversa para fatos recorrentes do projeto.
+Preferir consolidar no proprio repositorio onde ficam os arquivos, nomes de
+tabelas, colunas, comandos e particularidades do ambiente local.
+
 ## Padrao De Idioma
 
 O projeto deve ser o mais PT-BR possivel. Use portugues brasileiro como padrao
@@ -221,6 +234,9 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
   corporal e circunferencia da cintura.
 - `body_profile` armazena altura e idade em um registro unico para os calculos
   corporais do dashboard.
+- No schema atual, `body_weights` usa `weight_kg` e `recorded_at`; nao assumir
+  colunas `weight` ou `date`. `body_profile` usa `height_cm` e `age_years`; nao
+  assumir coluna `age`.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 - Mudancas que devem valer no banco atual precisam atualizar `data/forja_de_ferro.db`.
 
