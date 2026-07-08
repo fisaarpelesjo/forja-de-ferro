@@ -186,7 +186,7 @@ Regras importantes:
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
   renomear os nomes canonicos no SQLite para isso, pois eles sao usados no
   historico e na progressao.
-- `Agachamento Zercher`, os supinos com barra, `Remada curvada (barra)`,
+- `Agachamento com barra nas costas`, os supinos com barra, `Remada curvada (barra)`,
   `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
   curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
   deve mostrar carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
@@ -196,7 +196,7 @@ Regras importantes:
 - `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao deve mostrar carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao deve mostrar carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
-- O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
+- O primeiro exercicio ativo e `Agachamento com barra nas costas` (`3x5`).
 - O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
 - O quinto exercicio ativo e `Supino inclinado (barra)` (`3x8`), logo depois
@@ -206,14 +206,14 @@ Regras importantes:
 - O decimo primeiro exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
 - O decimo segundo exercicio ativo e `Supino fechado (barra)` (`3x8`),
   substituindo `Tríceps testa` para sessoes futuras.
-- Logs historicos de `Agachamento (barra)`, `Zercher squat`, `Pullover (barra)` ou `Tríceps testa` podem permanecer como historico.
+- Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)` ou `Tríceps testa` podem permanecer como historico.
 
 ### `forja_de_ferro/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 9`.
+- Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao

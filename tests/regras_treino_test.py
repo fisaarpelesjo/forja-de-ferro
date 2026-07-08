@@ -33,7 +33,7 @@ def _assert_equipamento_e_descanso():
     assert ods_ops.get_display_name("Supino fechado (barra)") == "Supino fechado"
     assert ods_ops.get_display_name("Rosca martelo (barra H)") == "Rosca martelo"
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
-    assert ods_ops.get_rest_interval("Agachamento Zercher") == "4 min"
+    assert ods_ops.get_rest_interval("Agachamento com barra nas costas") == "4 min"
     assert ods_ops.get_rest_interval("Remada curvada (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Supino fechado (barra)") == "3 min"
@@ -60,7 +60,7 @@ def _assert_equipamento_e_descanso():
         == "barra oca 1,50 m 1kg + 39kg de anilhas"
     )
     for exercise_name in (
-        "Agachamento Zercher",
+        "Agachamento com barra nas costas",
         "Supino reto (barra)",
         "Supino reto back-off",
         "Supino inclinado (barra)",
@@ -176,13 +176,15 @@ def main():
             active_exercises = db_ops.get_or_seed_exercises()
             muscle_groups = db_ops.list_muscle_groups()
             assert all(ex["name"] in muscle_groups for ex in active_exercises)
-            zercher_groups = db_ops.get_muscle_groups("Agachamento Zercher")
-            assert zercher_groups[0] == {
+            agachamento_groups = db_ops.get_muscle_groups(
+                "Agachamento com barra nas costas"
+            )
+            assert agachamento_groups[0] == {
                 "muscle_group": "Quadriceps",
                 "role": "principal",
             }
             assert any(
-                group["role"] == "secundario" for group in zercher_groups
+                group["role"] == "secundario" for group in agachamento_groups
             )
             sumo_groups = db_ops.get_muscle_groups(
                 "Agachamento sumô com barra à frente"
@@ -271,20 +273,26 @@ def main():
 
             telegram_poller.handle_exercises()
             assert "Lista de exercicios" in mensagens[-1]
-            assert "Agachamento Zercher" in mensagens[-1]
+            assert "Agachamento com barra nas costas" in mensagens[-1]
 
             telegram_poller.handle_volume()
             assert "Volume por musculo" in mensagens[-1]
             assert "Quadriceps" in mensagens[-1]
 
             session_id = db_ops.create_session("2026-06-09")
-            log_id = db_ops.log_exercise(session_id, "Agachamento Zercher", 3, 5, 0)
+            log_id = db_ops.log_exercise(
+                session_id,
+                "Agachamento com barra nas costas",
+                3,
+                5,
+                0,
+            )
             session = {
                 "session_id": session_id,
                 "exercises": [
                     {
                         "log_id": log_id,
-                        "name": "Agachamento Zercher",
+                        "name": "Agachamento com barra nas costas",
                         "sets": 3,
                         "reps": 5,
                         "target_weight": None,

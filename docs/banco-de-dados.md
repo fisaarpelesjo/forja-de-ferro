@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 9`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 10`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -29,8 +29,9 @@ logs pendentes por sessao e historico por exercicio. A versao 3 cria
 o agachamento sumô com barra à frente no catalogo e no plano ativo, a versao 6
 cria o historico de peso corporal, a versao 7 cria o historico de
 circunferencia da cintura, a versao 8 cria o perfil corporal usado pelos
-indicadores derivados do dashboard e a versao 9 adiciona vitamina B6 aos
-alimentos e metas de dieta. As migracoes usam
+indicadores derivados do dashboard, a versao 9 adiciona vitamina B6 aos
+alimentos e metas de dieta e a versao 10 troca o primeiro exercicio ativo de
+`Agachamento Zercher` para `Agachamento com barra nas costas`. As migracoes usam
 `IF NOT EXISTS`, portanto tambem reconhecem bancos antigos que ja possuam as
 tabelas, mas ainda nao tenham `schema_migrations`.
 
@@ -241,13 +242,13 @@ Primeiro exercicio ativo:
 
 ```text
 sort_order 1
-name       Agachamento Zercher
+name       Agachamento com barra nas costas
 sets       3
 reps       5
 ```
 
-Ele substituiu o agachamento com barra para sessoes futuras por falta de rack.
-Historico antigo deve permanecer como historico salvo no SQLite.
+Ele usa a barra apoiada no trapezio/ombro. Historico antigo de `Agachamento
+Zercher` deve permanecer como historico salvo no SQLite.
 
 O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
 com foco principal nos adutores. O quinto e `Supino inclinado (barra)` (`3x8`),
@@ -256,8 +257,8 @@ sessoes futuras. O setimo e `Remada curvada alta no peito (barra)` (`3x10`),
 logo depois de `Remada curvada (barra)`. O decimo primeiro e `Rosca martelo (barra H)` (`3x8`),
 substituindo `Rosca direta` para sessoes futuras. O decimo segundo e `Supino
 fechado (barra)` (`3x8`), substituindo `Tríceps testa` para sessoes futuras.
-Historico antigo de `Rosca direta`, `Pullover (barra)` e `Tríceps testa`
-permanece como historico salvo no SQLite.
+Historico antigo de `Agachamento Zercher`, `Rosca direta`, `Pullover (barra)` e
+`Tríceps testa` permanece como historico salvo no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
@@ -339,7 +340,7 @@ Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`,
 `target_weight - 6`. Exemplo: `target_weight = 18` gera
 `barra W 6kg + 12kg de anilhas`.
 
-Para os supinos com barra, `Agachamento Zercher`, `Remada curvada (barra)`,
+Para os supinos com barra, `Agachamento com barra nas costas`, `Remada curvada (barra)`,
 `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada curvada
 alta no peito (barra)`, a funcao usa a barra reta de 2,20 m e 11 kg. Exemplo:
 `target_weight = 40` gera `barra reta 2,20 m 11kg + 29kg de anilhas`.

@@ -144,6 +144,19 @@ SEGMENTOS_POR_EXERCICIO = {
         },
         "Gluteos": {"Gluteo medio": 0.25, "Gluteo maximo": 0.75},
     },
+    "Agachamento com barra nas costas": {
+        "Quadriceps": {
+            "Quadriceps lateral": 0.30,
+            "Quadriceps central": 0.35,
+            "Quadriceps medial": 0.35,
+        },
+        "Gluteos": {"Gluteo medio": 0.25, "Gluteo maximo": 0.75},
+        "Core": {
+            "Abdomen superior": 0.25,
+            "Abdomen inferior": 0.25,
+            "Obliquos": 0.50,
+        },
+    },
     "Agachamento Zercher": {
         "Quadriceps": {
             "Quadriceps lateral": 0.30,
@@ -263,6 +276,19 @@ SEGMENTOS_POR_EXERCICIO = {
 
 SEGMENTOS_DIRETOS_POR_EXERCICIO = {
     "Agachamento (barra)": {
+        "Quadriceps lateral": 0.18,
+        "Quadriceps central": 0.21,
+        "Quadriceps medial": 0.21,
+        "Gluteo maximo": 0.20,
+        "Gluteo medio": 0.07,
+        "Adutores proximais": 0.035,
+        "Adutores distais": 0.025,
+        "Eretores lombares": 0.04,
+        "Abdomen superior": 0.01,
+        "Abdomen inferior": 0.01,
+        "Obliquos": 0.01,
+    },
+    "Agachamento com barra nas costas": {
         "Quadriceps lateral": 0.18,
         "Quadriceps central": 0.21,
         "Quadriceps medial": 0.21,

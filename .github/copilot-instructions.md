@@ -187,7 +187,7 @@ Regras importantes:
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
   renomear os nomes canonicos no SQLite para isso, pois eles sao usados no
   historico e na progressao.
-- `Agachamento Zercher`, os supinos com barra, `Remada curvada (barra)`,
+- `Agachamento com barra nas costas`, os supinos com barra, `Remada curvada (barra)`,
   `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
   curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
   mostra a carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
@@ -197,16 +197,17 @@ Regras importantes:
 - `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
-- O primeiro exercicio ativo e `Agachamento Zercher` (`3x5`).
+- O primeiro exercicio ativo e `Agachamento com barra nas costas` (`3x5`).
 - O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
+- Logs historicos podem permanecer com nomes antigos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)` e `Tríceps testa`.
 
 ### `forja_de_ferro/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 9`.
+- Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -315,7 +316,7 @@ Fonte unica: tabela `exercises` em `data/forja_de_ferro.db`.
 
 Ordem ativa atual:
 
-1. Agachamento Zercher - 3x5
+1. Agachamento com barra nas costas - 3x5
 2. Agachamento sumô com barra à frente - 3x10
 3. Supino reto (barra) - 3x5
 4. Supino reto back-off - 3x8

@@ -241,7 +241,7 @@ Excecoes atuais: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg,
 proprio. Depois do primeiro registro, seguem a progressao normal por RPE.
 
 Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. Os supinos com barra, `Agachamento Zercher`, `Remada
+de montagem em `session.json`. Os supinos com barra, `Agachamento com barra nas costas`, `Remada
 curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno`
 e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
 `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg.
@@ -259,7 +259,7 @@ continuam no SQLite para preservar historico, progressao e mapeamentos.
 O `/gerar` tambem mostra o descanso sugerido por exercicio:
 
 ```text
-Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
+Agachamento com barra nas costas, Supino reto principal, Levantamento Terra Romeno: 4 min
 Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
 Remada curvada, Desenvolvimento, Remada alta: 3 min
 Acessorios restantes: 2 min
@@ -302,7 +302,7 @@ confiavel para calcular a proxima carga.
 O catalogo ativo comeca com:
 
 ```text
-Agachamento Zercher    3x5
+Agachamento com barra nas costas    3x5
 Agachamento sumô com barra à frente 3x10
 Supino reto back-off   3x8
 Supino inclinado (barra) 3x8

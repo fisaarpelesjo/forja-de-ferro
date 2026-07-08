@@ -97,18 +97,18 @@ pendentes. Uma sessao completa nao e recuperada como ativa.
 ## Catalogo Atual
 
 ```text
-Agachamento Zercher - 3x5
+Agachamento com barra nas costas - 3x5
 Agachamento sumô com barra à frente - 3x10
 Supino inclinado (barra) - 3x8
 Remada curvada alta no peito (barra) - 3x10
 Supino fechado (barra) - 3x8
 ```
 
-O Zercher substitui o agachamento com barra para sessoes futuras porque o setup
-atual nao tem rack adequado. O agachamento sumô com barra à frente complementa
-o treino com foco principal nos adutores. O supino inclinado substitui o
-`Pullover (barra)` e o supino fechado substitui `Tríceps testa` para sessoes
-futuras. Historico antigo permanece como
+O agachamento com barra nas costas voltou a ser o primeiro exercicio para
+sessoes futuras, com a barra apoiada no trapezio/ombro. O agachamento sumô com
+barra à frente complementa o treino com foco principal nos adutores. O supino
+inclinado substitui o `Pullover (barra)` e o supino fechado substitui
+`Tríceps testa` para sessoes futuras. Historico antigo permanece como
 historico.
 
 ## Idioma

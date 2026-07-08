@@ -245,12 +245,18 @@ def _format_training_summary(session_id):
 
 
 def _format_exercises_msg(exercises):
+    display_names = [_display_exercise_name(ex["name"]) for ex in exercises]
+    name_width = max([22, *(len(name) for name in display_names)])
     lines = ["<pre>Lista de exercicios\n"]
-    lines.append(f"{'#':>2} {'Exercicio':<22} {'S':>2} {'R':>3}\n")
-    lines.append("-" * 34 + "\n")
-    for idx, ex in enumerate(exercises, start=1):
-        display_name = _display_exercise_name(ex["name"])
-        lines.append(f"{idx:>2} {display_name[:22]:<22} {ex['sets']:>2} {ex['reps']:>3}\n")
+    lines.append(f"{'#':>2} {'Exercicio':<{name_width}} {'S':>2} {'R':>3}\n")
+    lines.append("-" * (name_width + 12) + "\n")
+    for idx, (ex, display_name) in enumerate(
+        zip(exercises, display_names),
+        start=1,
+    ):
+        lines.append(
+            f"{idx:>2} {display_name:<{name_width}} {ex['sets']:>2} {ex['reps']:>3}\n"
+        )
     lines.append("</pre>")
     return "".join(lines)
 

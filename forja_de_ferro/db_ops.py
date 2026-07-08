@@ -7,10 +7,10 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "forja_de_ferro.db"
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 10
 
 DEFAULT_EXERCISES = [
-    {"name": "Agachamento Zercher", "sets": 3, "reps": 5},
+    {"name": "Agachamento com barra nas costas", "sets": 3, "reps": 5},
     {"name": "Agachamento sumô com barra à frente", "sets": 3, "reps": 10},
     {"name": "Supino reto (barra)", "sets": 3, "reps": 5},
     {"name": "Supino reto back-off", "sets": 3, "reps": 8},
@@ -28,6 +28,11 @@ DEFAULT_MUSCLE_GROUPS = {
     "Agachamento (barra)": [
         ("Quadriceps", "principal"),
         ("Gluteos", "secundario"),
+    ],
+    "Agachamento com barra nas costas": [
+        ("Quadriceps", "principal"),
+        ("Gluteos", "secundario"),
+        ("Core", "secundario"),
     ],
     "Agachamento Zercher": [
         ("Quadriceps", "principal"),
@@ -331,6 +336,19 @@ SCHEMA_V9_STATEMENTS = (
     """,
 )
 
+SCHEMA_V10_STATEMENTS = (
+    """
+    UPDATE exercises
+    SET name = 'Agachamento com barra nas costas'
+    WHERE name = 'Agachamento Zercher'
+    """,
+    """
+    UPDATE training_plan_exercises
+    SET exercise_name = 'Agachamento com barra nas costas'
+    WHERE exercise_name = 'Agachamento Zercher'
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -341,6 +359,7 @@ MIGRATIONS = {
     7: SCHEMA_V7_STATEMENTS,
     8: SCHEMA_V8_STATEMENTS,
     9: SCHEMA_V9_STATEMENTS,
+    10: SCHEMA_V10_STATEMENTS,
 }
 
 

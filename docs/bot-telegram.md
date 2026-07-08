@@ -128,7 +128,7 @@ handle_generate()
   -> send("Agora faca..." com o primeiro exercicio)
 ```
 
-O primeiro exercicio gerado atualmente e `Agachamento Zercher` (`3x5`).
+O primeiro exercicio gerado atualmente e `Agachamento com barra nas costas` (`3x5`).
 O segundo e `Agachamento sumô com barra à frente` (`3x10`), com foco principal
 nos adutores.
 
@@ -167,7 +167,7 @@ O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
-o bot tambem mostra a montagem da carga. Nos supinos com barra, `Agachamento Zercher`,
+o bot tambem mostra a montagem da carga. Nos supinos com barra, `Agachamento com barra nas costas`,
 `Remada curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra
 Romeno` e `Remada curvada alta no peito (barra)`, a barra reta de 2,20 m pesa
 11 kg. Um alvo de 40 kg aparece como:
@@ -225,7 +225,7 @@ nao existir, porque le os exercicios ativos.
 Intervalos atuais:
 
 ```text
-Agachamento Zercher, Supino reto principal, Levantamento Terra Romeno: 4 min
+Agachamento com barra nas costas, Supino reto principal, Levantamento Terra Romeno: 4 min
 Supino reto back-off, Supino inclinado (barra), Supino fechado (barra): 3 min
 Remada curvada, Desenvolvimento: 3 min
 Acessorios restantes: 2 min

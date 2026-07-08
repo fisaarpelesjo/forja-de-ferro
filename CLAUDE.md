@@ -154,7 +154,7 @@ Catalogo atual:
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
   renomear os nomes canonicos no SQLite para isso, pois eles sao usados no
   historico e na progressao.
-- `Agachamento Zercher`, os supinos com barra, `Remada curvada (barra)`,
+- `Agachamento com barra nas costas`, os supinos com barra, `Remada curvada (barra)`,
   `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
   curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
   mostra a carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
@@ -163,7 +163,7 @@ Catalogo atual:
   `barra oca 1,50 m 1kg + Xkg de anilhas`.
 - `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
-- Primeiro exercicio ativo: `Agachamento Zercher` (`3x5`).
+- Primeiro exercicio ativo: `Agachamento com barra nas costas` (`3x5`).
 - Segundo exercicio ativo: `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
 - Quinto exercicio ativo: `Supino inclinado (barra)` (`3x8`), logo depois de
@@ -172,8 +172,8 @@ Catalogo atual:
   logo depois de `Remada curvada (barra)`.
 - Decimo primeiro exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
 - Decimo segundo exercicio ativo: `Supino fechado (barra)` (`3x8`), substituindo `Tríceps testa` para sessoes futuras.
-- Substitui o agachamento com barra para sessoes futuras por falta de rack adequado.
-- Logs historicos podem permanecer com nomes antigos, incluindo `Pullover (barra)` e `Tríceps testa`.
+- O agachamento com barra nas costas usa a barra apoiada no trapezio/ombro.
+- Logs historicos podem permanecer com nomes antigos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)` e `Tríceps testa`.
 
 ### `forja_de_ferro/db_ops.py`
 
@@ -263,7 +263,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/forja_de_ferro.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 9`.
+- Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume

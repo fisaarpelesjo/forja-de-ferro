@@ -39,6 +39,7 @@ DISPLAY_NAMES = {
 }
 
 REST_INTERVALS = {
+    "Agachamento com barra nas costas": "4 min",
     "Agachamento Zercher": "4 min",
     "Supino reto (barra)": "4 min",
     "Supino reto back-off": "3 min",
@@ -58,6 +59,10 @@ REST_INTERVALS = {
 }
 
 LOAD_EQUIPMENT = {
+    "Agachamento com barra nas costas": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
     "Agachamento Zercher": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Agachamento sumô com barra à frente": {
         "name": "barra oca 1,50 m",

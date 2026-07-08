@@ -91,7 +91,10 @@ def main():
             assert "<pre>" not in sent_messages[-3]
             assert "Sessao de treino gerada." in sent_messages[-2]
             assert "<b>Agora faca:</b>" in sent_messages[-1]
-            assert "▶ <b>Agachamento Zercher</b> (3x5)" in sent_messages[-1]
+            assert (
+                "▶ <b>Agachamento com barra nas costas</b> (3x5)"
+                in sent_messages[-1]
+            )
 
             first_log_id = exercises[0]["log_id"]
 
@@ -173,7 +176,7 @@ def main():
             summary_session = db_ops.create_session("2026-06-10")
             summary_log = db_ops.log_exercise(
                 summary_session,
-                "Agachamento Zercher",
+                "Agachamento com barra nas costas",
                 3,
                 5,
                 0,
@@ -181,7 +184,10 @@ def main():
             db_ops.update_log_weight(summary_log, 80.5, 8)
             summary = db_ops.get_session_summary(summary_session)
             assert summary["volume"] == 1207.5
-            assert summary["consolidations"][0]["name"] == "Agachamento Zercher"
+            assert (
+                summary["consolidations"][0]["name"]
+                == "Agachamento com barra nas costas"
+            )
             assert summary["volume_delta"] is not None
 
             print("Teste ponta a ponta do fluxo de treino passou.")

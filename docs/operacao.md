@@ -257,8 +257,8 @@ Nao substituir a fonte da verdade SQLite por planilha.
 
 Catalogo atual:
 
-- `Agachamento Zercher` e o primeiro exercicio e esta como `3x5`.
-- Ele substitui o agachamento com barra em sessoes futuras por falta de rack.
+- `Agachamento com barra nas costas` e o primeiro exercicio e esta como `3x5`.
+- Ele usa a barra apoiada no trapezio/ombro.
 - `Agachamento sumô com barra à frente` e o segundo exercicio e esta como `3x10`.
 - `Remada curvada alta no peito (barra)` e o setimo exercicio e esta como `3x10`.
 - `Rosca martelo (barra H)` e o decimo primeiro exercicio e esta como `3x8`.
