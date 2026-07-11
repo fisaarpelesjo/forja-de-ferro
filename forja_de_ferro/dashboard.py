@@ -888,6 +888,8 @@ def carregar_dados():
     peso_corporal = _carregar_peso_corporal()
     cintura = _carregar_cintura()
     perfil_corporal = db_ops.get_body_profile()
+    treino_ativo = _carregar_treino_ativo()
+    exercicios_ativos = {exercicio["nome"] for exercicio in treino_ativo["exercicios"]}
 
     return {
         "resumo": {
@@ -910,7 +912,7 @@ def carregar_dados():
             ),
         },
         "volume_por_sessao": volume_por_sessao,
-        "treino_ativo": _carregar_treino_ativo(),
+        "treino_ativo": treino_ativo,
         "volume_por_exercicio": volume_por_exercicio,
         "comparacao_ultima": _comparar_ultimas_sessoes(volume_por_sessao),
         "volume_semanal": _agrupar_periodo(volume_por_sessao, "semana"),
@@ -921,8 +923,15 @@ def carregar_dados():
         "mapa_ultima_sessao": mapa_ultima_sessao,
         "prs": _calcular_prs(volume_por_exercicio),
         "prs_expandidos": _calcular_prs_expandidos(volume_por_exercicio),
-        "alertas": _calcular_alertas(volume_por_sessao, volume_por_exercicio),
-        "top_evolucoes": _calcular_top_evolucoes(volume_por_exercicio),
+        "alertas": _calcular_alertas(
+            volume_por_sessao,
+            volume_por_exercicio,
+            exercicios_ativos,
+        ),
+        "top_evolucoes": _calcular_top_evolucoes(
+            volume_por_exercicio,
+            exercicios_ativos,
+        ),
         "media_movel": _calcular_media_movel(volume_por_sessao),
         "consistencia": _calcular_consistencia(volume_por_sessao),
         "analises": _calcular_analises(volume_por_sessao, volume_por_exercicio),
@@ -1460,7 +1469,15 @@ def _calcular_relatorio_semanal(sessoes, mapa):
     }
 
 
-def _calcular_top_evolucoes(exercicios):
+def _calcular_top_evolucoes(exercicios, exercicios_ativos=None):
+    exercicios_ativos = (
+        set(exercicios_ativos) if exercicios_ativos is not None else None
+    )
+    if exercicios_ativos is not None:
+        exercicios = [
+            item for item in exercicios
+            if item["nome"] in exercicios_ativos
+        ]
     por_carga = sorted(exercicios, key=lambda item: item["variacao_carga"], reverse=True)
     por_volume = sorted(exercicios, key=lambda item: item["variacao"], reverse=True)
     quedas = sorted(exercicios, key=lambda item: item["variacao"])
@@ -1471,8 +1488,11 @@ def _calcular_top_evolucoes(exercicios):
     }
 
 
-def _calcular_alertas(sessoes, exercicios):
+def _calcular_alertas(sessoes, exercicios, exercicios_ativos=None):
     alertas = []
+    exercicios_ativos = (
+        set(exercicios_ativos) if exercicios_ativos is not None else None
+    )
     if len(sessoes) >= 2:
         anterior = sessoes[-2]["volume"]
         atual = sessoes[-1]["volume"]
@@ -1484,6 +1504,9 @@ def _calcular_alertas(sessoes, exercicios):
     if len(ultimos_rpes) >= 3 and all(rpe >= 10 for rpe in ultimos_rpes):
         alertas.append("RPE medio chegou a 10 nas ultimas 3 sessoes; acompanhe a recuperacao.")
     for item in exercicios:
+        if exercicios_ativos is not None and item["nome"] not in exercicios_ativos:
+            continue
+
         pontos = item["pontos"][-3:]
         if len(pontos) < 2:
             continue
@@ -1983,57 +2006,20 @@ def _render_itens_dieta(dieta):
     if not dieta["itens"]:
         return '<p class="vazio">Nenhum alimento cadastrado na dieta atual.</p>'
 
-    colunas_micro = (
-        ("Fibra", "fiber_g", "g", 1),
-        ("O. 3", "omega3_g", "g", 2),
-        ("Potassio", "potassium_mg", "mg", 0),
-        ("Magnesio", "magnesium_mg", "mg", 0),
-        ("Zinco", "zinc_mg", "mg", 1),
-        ("V. D", "vitamin_d_ui", "UI", 0),
-        ("V. B6", "vitamin_b6_mg", "mg", 1),
-    )
-
-    def celula_nutriente(item, chave, unidade, casas):
-        return f"<td>{_fmt_decimal(item[chave], casas)} {unidade}</td>"
-
-    itens = "".join(
-        f"""
-        <tr>
-          <td>{html.escape(item["name"])}</td>
-          <td>{_fmt_quantidade(item["quantity"], item["unit"])}</td>
-          <td>{_fmt_decimal(item["protein_g"])} g</td>
-          <td>{_fmt_decimal(item["carbo_g"])} g</td>
-          <td>{_fmt_decimal(item["fat_g"])} g</td>
-          <td>{_fmt_decimal(item["calories"], 0)} kcal</td>
-          {"".join(celula_nutriente(item, chave, unidade, casas) for _, chave, unidade, casas in colunas_micro)}
-        </tr>
-        """
-        for item in dieta["itens"]
-    )
-    totais = dieta["totais"]
-    cabecalho_micro = "".join(f"<th>{rotulo}</th>" for rotulo, _, _, _ in colunas_micro)
-    totais_micro = "".join(
-        f"<th>{_fmt_decimal(totais[chave], casas)} {unidade}</th>"
-        for _, chave, unidade, casas in colunas_micro
-    )
     return f"""
-    <div class="tabela-rolavel">
-      <table class="cds--data-table cds--data-table--lg">
-        <thead>
-          <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th>{cabecalho_micro}</tr>
-        </thead>
-        <tbody>{itens}</tbody>
-        <tfoot>
-          <tr>
-            <th>Total</th><th></th>
-            <th>{_fmt_decimal(totais["protein_g"])} g</th>
-            <th>{_fmt_decimal(totais["carbo_g"])} g</th>
-            <th>{_fmt_decimal(totais["fat_g"])} g</th>
-            <th>{_fmt_decimal(totais["calories"], 0)} kcal</th>
-            {totais_micro}
-          </tr>
-        </tfoot>
-      </table>
+    <div class="grade-graficos-dieta">
+      <div>
+        <h3>Macros por alimento</h3>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-dieta-macros" width="760" height="360" aria-label="Macros por alimento" role="img"></canvas>
+        </div>
+      </div>
+      <div>
+        <h3>Micros totais</h3>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-dieta-micros" width="760" height="360" aria-label="Micronutrientes totais" role="img"></canvas>
+        </div>
+      </div>
     </div>
     """
 
@@ -2592,6 +2578,11 @@ def gerar_html(dados):
       height: 100%;
       background: var(--forja-success);
     }}
+    .grade-graficos-dieta {{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }}
     .tabela-rolavel {{ overflow-x: auto; }}
     .tabela-treino-ativo th:first-child,
     .tabela-treino-ativo td:first-child {{
@@ -2655,6 +2646,11 @@ def gerar_html(dados):
       height: 300px;
       min-height: 300px;
       max-height: 300px;
+    }}
+    .grafico-alto {{
+      height: 360px;
+      min-height: 360px;
+      max-height: 360px;
     }}
     .barra-horizontal {{
       display: grid;
@@ -2875,6 +2871,7 @@ def gerar_html(dados):
       .grade-resumo-treino,
       .grade-resumo-corporal {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .duas-colunas {{ grid-template-columns: 1fr; }}
+      .grade-graficos-dieta {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 1.75rem; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
       .mapa-resumo {{ grid-template-columns: 1fr; }}
@@ -3020,20 +3017,18 @@ def gerar_html(dados):
           <h2>Carga, RPE e 1RM</h2>
           <span>top 12</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Exercicio</th><th>Ultima</th><th>Variacao</th><th>RPE</th><th>1RM est.</th></tr></thead>
-          <tbody>{tabela_exercicios}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-exercicios" width="760" height="360" aria-label="Carga, RPE e 1RM por exercicio" role="img"></canvas>
+        </div>
       </cds-tile>
       <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Ultima vs anterior</h2>
           <span>mesmos exercicios</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Exercicio</th><th>Carga</th><th>Delta carga</th><th>Delta volume</th><th>RPE</th></tr></thead>
-          <tbody>{tabela_comparacao}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-comparacao" width="760" height="360" aria-label="Comparacao da ultima sessao com a anterior" role="img"></canvas>
+        </div>
       </cds-tile>
     </section>
 
@@ -3043,20 +3038,18 @@ def gerar_html(dados):
           <h2>Grupos musculares</h2>
           <span>volume e series</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Grupo</th><th>Volume</th><th>Series</th></tr></thead>
-          <tbody>{tabela_grupos}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-grupos" width="760" height="360" aria-label="Volume por grupo muscular" role="img"></canvas>
+        </div>
       </cds-tile>
       <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Volume semanal</h2>
           <span>ultimas 8 semanas</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Periodo</th><th>Volume</th><th>Sessoes</th><th>Series</th></tr></thead>
-          <tbody>{tabela_semanal}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-semanal" width="760" height="360" aria-label="Volume semanal" role="img"></canvas>
+        </div>
       </cds-tile>
     </section>
 
@@ -3066,22 +3059,18 @@ def gerar_html(dados):
           <h2>Maiores evolucoes</h2>
           <span>carga e volume</span>
         </div>
-        <h3>Carga</h3>
-        <table class="cds--data-table cds--data-table--lg"><tbody>{top_carga}</tbody></table>
-        <h3>Volume</h3>
-        <table class="cds--data-table cds--data-table--lg"><tbody>{top_volume_rows}</tbody></table>
-        <h3>Quedas</h3>
-        <table class="cds--data-table cds--data-table--lg"><tbody>{quedas}</tbody></table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-evolucoes" width="760" height="360" aria-label="Maiores evolucoes de carga e volume" role="img"></canvas>
+        </div>
       </cds-tile>
       <cds-tile class="painel">
         <div class="linha-topo">
           <h2>Recordes pessoais</h2>
           <span>carga e volume</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Exercicio</th><th>Maior carga</th><th>Maior volume</th></tr></thead>
-          <tbody>{tabela_prs}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-prs" width="760" height="360" aria-label="Recordes pessoais por exercicio" role="img"></canvas>
+        </div>
       </cds-tile>
     </section>
 
@@ -3091,10 +3080,9 @@ def gerar_html(dados):
           <h2>PRs expandidos</h2>
           <span>carga, volume, 1RM e eficiencia</span>
         </div>
-        <table class="cds--data-table cds--data-table--lg">
-          <thead><tr><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM est.</th><th>Eficiencia</th></tr></thead>
-          <tbody>{tabela_prs_expandidos}</tbody>
-        </table>
+        <div class="grafico-container grafico-alto">
+          <canvas id="grafico-prs-expandidos" width="760" height="360" aria-label="PRs expandidos" role="img"></canvas>
+        </div>
       </cds-tile>
       <cds-tile class="painel">
         <div class="linha-topo">
@@ -3146,10 +3134,9 @@ def gerar_html(dados):
           </cds-select>
         </label>
       </div>
-      <table class="cds--data-table cds--data-table--lg">
-        <thead><tr><th>Data</th><th>Exercicio</th><th>Carga</th><th>Volume</th><th>1RM</th><th>RPE</th></tr></thead>
-        <tbody id="tabela-filtrada"></tbody>
-      </table>
+      <div class="grafico-container grafico-alto">
+        <canvas id="grafico-filtrado" width="980" height="380" aria-label="Registros filtrados" role="img"></canvas>
+      </div>
     </cds-tile>
 
     <cds-tile class="painel">
@@ -3372,9 +3359,299 @@ def gerar_html(dados):
       }});
     }}
 
+    function nomeCurto(nome) {{
+      return String(nome || "").replace(/\\s*\\([^)]*\\)/g, "");
+    }}
+
+    function limitarRotulo(rotulo, tamanho = 22) {{
+      const texto = nomeCurto(rotulo);
+      return texto.length > tamanho ? `${{texto.slice(0, tamanho - 1)}}...` : texto;
+    }}
+
+    function criarGraficoHorizontal(canvasId, itens, opcoes) {{
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !itens.length) return;
+      new Chart(canvas, {{
+        type: "bar",
+        data: {{
+          labels: itens.map((item) => limitarRotulo(opcoes.rotulo(item), opcoes.tamanhoRotulo || 24)),
+          datasets: opcoes.datasets.map((dataset) => ({{
+            ...dataset,
+            data: itens.map(dataset.valor)
+          }}))
+        }},
+        options: {{
+          ...baseChartOptions,
+          indexAxis: "y",
+          plugins: {{
+            ...baseChartOptions.plugins,
+            legend: {{ display: opcoes.datasets.length > 1, labels: {{ color: "#c6c6c6" }} }},
+            tooltip: {{
+              ...baseChartOptions.plugins.tooltip,
+              callbacks: {{
+                title: (ctx) => opcoes.rotulo(itens[ctx[0].dataIndex]),
+                label: (ctx) => `${{ctx.dataset.label}}: ${{opcoes.formatar ? opcoes.formatar(ctx.parsed.x, ctx.dataset) : formatoDecimal.format(ctx.parsed.x)}}`
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{
+              ...baseChartOptions.scales.x,
+              ticks: {{
+                color: "#c6c6c6",
+                callback: (value) => opcoes.formatar ? opcoes.formatar(value) : formatoDecimal.format(value)
+              }}
+            }},
+            y: {{
+              ...baseChartOptions.scales.y,
+              ticks: {{ color: "#c6c6c6", autoSkip: false }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    function criarGraficoExercicios() {{
+      const canvas = document.getElementById("grafico-exercicios");
+      const itens = (dados.volume_por_exercicio || []).slice(0, 12);
+      if (!canvas || !itens.length) return;
+      new Chart(canvas, {{
+        data: {{
+          labels: itens.map((item) => limitarRotulo(item.nome)),
+          datasets: [
+            {{
+              type: "bar",
+              label: "Ultima carga",
+              data: itens.map((item) => item.ultima_carga),
+              backgroundColor: "rgba(120, 169, 255, 0.72)",
+              borderColor: "#78a9ff",
+              yAxisID: "y"
+            }},
+            {{
+              type: "line",
+              label: "1RM est.",
+              data: itens.map((item) => item.pontos.at(-1).um_rm),
+              borderColor: "#42be65",
+              backgroundColor: "#42be65",
+              tension: 0.25,
+              yAxisID: "y"
+            }},
+            {{
+              type: "line",
+              label: "RPE medio",
+              data: itens.map((item) => item.rpe_medio),
+              borderColor: "#f1c21b",
+              backgroundColor: "#f1c21b",
+              tension: 0.25,
+              yAxisID: "rpe"
+            }}
+          ]
+        }},
+        options: {{
+          ...baseChartOptions,
+          plugins: {{
+            ...baseChartOptions.plugins,
+            legend: {{ display: true, labels: {{ color: "#c6c6c6" }} }},
+            tooltip: {{
+              ...baseChartOptions.plugins.tooltip,
+              callbacks: {{
+                title: (ctx) => itens[ctx[0].dataIndex].nome,
+                label: (ctx) => ctx.dataset.yAxisID === "rpe"
+                  ? `${{ctx.dataset.label}}: ${{formatoDecimal.format(ctx.parsed.y)}}`
+                  : `${{ctx.dataset.label}}: ${{formatoDecimal.format(ctx.parsed.y)}} kg`
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{ ...baseChartOptions.scales.x, ticks: {{ color: "#c6c6c6", maxRotation: 45, minRotation: 0 }} }},
+            y: {{
+              ...baseChartOptions.scales.y,
+              title: {{ display: true, text: "kg", color: "#c6c6c6" }},
+              ticks: {{ color: "#c6c6c6", callback: (value) => `${{formatoDecimal.format(value)}} kg` }}
+            }},
+            rpe: {{
+              position: "right",
+              min: 0,
+              suggestedMax: 10,
+              grid: {{ drawOnChartArea: false }},
+              ticks: {{ color: "#f1c21b", stepSize: 2 }}
+            }}
+          }}
+        }}
+      }});
+    }}
+
+    function criarGraficoComparacao() {{
+      const itens = (dados.comparacao_ultima || []).slice(0, 12);
+      criarGraficoHorizontal("grafico-comparacao", itens, {{
+        rotulo: (item) => item.nome,
+        formatar: (value, dataset) => dataset && dataset.label.includes("volume")
+          ? `${{formatoInteiro.format(value)}} kg`
+          : `${{formatoDecimal.format(value)}} kg`,
+        datasets: [
+          {{ label: "Delta carga", valor: (item) => item.delta_carga, backgroundColor: "rgba(120, 169, 255, 0.72)", borderColor: "#78a9ff" }},
+          {{ label: "Delta volume", valor: (item) => item.delta_volume, backgroundColor: "rgba(66, 190, 101, 0.68)", borderColor: "#42be65" }}
+        ]
+      }});
+    }}
+
+    function criarGraficoGrupos() {{
+      criarGraficoHorizontal("grafico-grupos", (dados.grupos_musculares || []).slice(0, 14), {{
+        rotulo: (item) => item.grupo,
+        formatar: (value) => `${{formatoInteiro.format(value)}} kg`,
+        datasets: [
+          {{ label: "Volume", valor: (item) => item.volume, backgroundColor: "rgba(250, 77, 86, 0.68)", borderColor: "#fa4d56" }}
+        ]
+      }});
+    }}
+
+    function criarGraficoSemanal() {{
+      const canvas = document.getElementById("grafico-semanal");
+      const itens = (dados.volume_semanal || []).slice(-8);
+      if (!canvas || !itens.length) return;
+      new Chart(canvas, {{
+        data: {{
+          labels: itens.map((item) => item.periodo),
+          datasets: [
+            {{ type: "bar", label: "Volume", data: itens.map((item) => item.volume), backgroundColor: "rgba(120, 169, 255, 0.72)", yAxisID: "y" }},
+            {{ type: "line", label: "Sessoes", data: itens.map((item) => item.sessoes), borderColor: "#f1c21b", backgroundColor: "#f1c21b", tension: 0.25, yAxisID: "sessoes" }}
+          ]
+        }},
+        options: {{
+          ...baseChartOptions,
+          plugins: {{
+            ...baseChartOptions.plugins,
+            legend: {{ display: true, labels: {{ color: "#c6c6c6" }} }}
+          }},
+          scales: {{
+            x: {{ ...baseChartOptions.scales.x, ticks: {{ color: "#c6c6c6", maxRotation: 35 }} }},
+            y: {{ ...baseChartOptions.scales.y, ticks: {{ color: "#c6c6c6", callback: (value) => `${{formatoInteiro.format(value)}} kg` }} }},
+            sessoes: {{ position: "right", grid: {{ drawOnChartArea: false }}, ticks: {{ color: "#f1c21b", stepSize: 1 }} }}
+          }}
+        }}
+      }});
+    }}
+
+    function criarGraficoEvolucoes() {{
+      const porNome = new Map();
+      [...(dados.top_evolucoes.carga || []), ...(dados.top_evolucoes.volume || []), ...(dados.top_evolucoes.quedas || [])]
+        .forEach((item) => porNome.set(item.nome, item));
+      const itens = Array.from(porNome.values()).slice(0, 12);
+      criarGraficoHorizontal("grafico-evolucoes", itens, {{
+        rotulo: (item) => item.nome,
+        formatar: (value, dataset) => dataset && dataset.label.includes("volume")
+          ? `${{formatoInteiro.format(value)}} kg`
+          : `${{formatoDecimal.format(value)}} kg`,
+        datasets: [
+          {{ label: "Delta carga", valor: (item) => item.variacao_carga, backgroundColor: "rgba(120, 169, 255, 0.72)", borderColor: "#78a9ff" }},
+          {{ label: "Delta volume", valor: (item) => item.variacao, backgroundColor: "rgba(66, 190, 101, 0.68)", borderColor: "#42be65" }}
+        ]
+      }});
+    }}
+
+    function criarGraficoPrs() {{
+      const itens = (dados.prs || []).slice(0, 10);
+      criarGraficoHorizontal("grafico-prs", itens, {{
+        rotulo: (item) => item.nome,
+        formatar: (value) => `${{formatoDecimal.format(value)}} kg`,
+        datasets: [
+          {{ label: "Maior carga", valor: (item) => item.melhor_carga, backgroundColor: "rgba(120, 169, 255, 0.72)", borderColor: "#78a9ff" }},
+          {{ label: "1RM est.", valor: (item) => item.melhor_1rm || item.melhor_carga, backgroundColor: "rgba(66, 190, 101, 0.68)", borderColor: "#42be65" }}
+        ]
+      }});
+    }}
+
+    function criarGraficoPrsExpandidos() {{
+      const itens = (dados.prs_expandidos || []).slice(0, 10);
+      criarGraficoHorizontal("grafico-prs-expandidos", itens, {{
+        rotulo: (item) => item.nome,
+        formatar: (value) => `${{formatoDecimal.format(value)}} kg`,
+        datasets: [
+          {{ label: "Carga", valor: (item) => item.melhor_carga, backgroundColor: "rgba(120, 169, 255, 0.72)", borderColor: "#78a9ff" }},
+          {{ label: "1RM est.", valor: (item) => item.melhor_1rm, backgroundColor: "rgba(66, 190, 101, 0.68)", borderColor: "#42be65" }}
+        ]
+      }});
+    }}
+
+    function criarGraficosDieta() {{
+      const itens = (dados.dieta.itens || []).slice(0, 14);
+      const canvasMacros = document.getElementById("grafico-dieta-macros");
+      if (canvasMacros && itens.length) {{
+        new Chart(canvasMacros, {{
+          type: "bar",
+          data: {{
+            labels: itens.map((item) => limitarRotulo(item.name, 18)),
+            datasets: [
+              {{ label: "Proteina", data: itens.map((item) => item.protein_g), backgroundColor: "rgba(120, 169, 255, 0.72)" }},
+              {{ label: "Carbo", data: itens.map((item) => item.carbo_g), backgroundColor: "rgba(66, 190, 101, 0.68)" }},
+              {{ label: "Gordura", data: itens.map((item) => item.fat_g), backgroundColor: "rgba(241, 194, 27, 0.72)" }}
+            ]
+          }},
+          options: {{
+            ...baseChartOptions,
+            plugins: {{ ...baseChartOptions.plugins, legend: {{ display: true, labels: {{ color: "#c6c6c6" }} }} }},
+            scales: {{
+              x: {{ stacked: true, ticks: {{ color: "#c6c6c6", maxRotation: 45 }} }},
+              y: {{ stacked: true, ticks: {{ color: "#c6c6c6", callback: (value) => `${{formatoDecimal.format(value)}} g` }} }}
+            }}
+          }}
+        }});
+      }}
+
+      const canvasMicros = document.getElementById("grafico-dieta-micros");
+      const totais = dados.dieta.totais || {{}};
+      const micros = [
+        ["Fibra", totais.fiber_g || 0, "g"],
+        ["Omega 3", totais.omega3_g || 0, "g"],
+        ["Potassio", totais.potassium_mg || 0, "mg"],
+        ["Magnesio", totais.magnesium_mg || 0, "mg"],
+        ["Zinco", totais.zinc_mg || 0, "mg"],
+        ["Vit. D", totais.vitamin_d_ui || 0, "UI"],
+        ["Vit. B6", totais.vitamin_b6_mg || 0, "mg"]
+      ];
+      if (canvasMicros && micros.some((item) => item[1] > 0)) {{
+        new Chart(canvasMicros, {{
+          type: "bar",
+          data: {{
+            labels: micros.map((item) => item[0]),
+            datasets: [{{
+              label: "Total",
+              data: micros.map((item) => item[1]),
+              unidades: micros.map((item) => item[2]),
+              backgroundColor: "rgba(190, 149, 255, 0.72)"
+            }}]
+          }},
+          options: {{
+            ...baseChartOptions,
+            plugins: {{
+              ...baseChartOptions.plugins,
+              tooltip: {{
+                ...baseChartOptions.plugins.tooltip,
+                callbacks: {{
+                  label: (ctx) => `${{formatoDecimal.format(ctx.parsed.y)}} ${{ctx.dataset.unidades[ctx.dataIndex]}}`
+                }}
+              }}
+            }},
+            scales: {{
+              x: {{ ticks: {{ color: "#c6c6c6" }} }},
+              y: {{ ticks: {{ color: "#c6c6c6" }} }}
+            }}
+          }}
+        }});
+      }}
+    }}
+
     criarGraficoVolume();
     criarMinigraficos();
     criarGraficoCargaRpe();
+    criarGraficoExercicios();
+    criarGraficoComparacao();
+    criarGraficoGrupos();
+    criarGraficoSemanal();
+    criarGraficoEvolucoes();
+    criarGraficoPrs();
+    criarGraficoPrsExpandidos();
+    criarGraficosDieta();
 
     const linhas = dados.volume_por_sessao.flatMap((sessao) =>
       sessao.logs.map((log) => ({{ ...log, data: sessao.data }}))
@@ -3385,7 +3662,7 @@ def gerar_html(dados):
     const filtroExercicio = document.getElementById("filtro-exercicio");
     const filtroGrupo = document.getElementById("filtro-grupo");
     const filtroOrdem = document.getElementById("filtro-ordem");
-    const tabelaFiltrada = document.getElementById("tabela-filtrada");
+    let graficoFiltrado = null;
 
     function renderFiltrada() {{
       const dias = filtroPeriodo.value;
@@ -3407,16 +3684,44 @@ def gerar_html(dados):
         if (ordem === "rpe") return (b.rpe ?? -1) - (a.rpe ?? -1);
         return a.data.localeCompare(b.data);
       }});
-      tabelaFiltrada.innerHTML = filtradas.slice(-40).map((linha) => `
-        <tr>
-          <td>${{linha.data}}</td>
-          <td>${{linha.nome_exibicao || linha.nome}}</td>
-          <td>${{fmtDecimal(linha.carga)}} kg</td>
-          <td>${{fmtInteiro(linha.volume)}} kg</td>
-          <td>${{fmtDecimal(linha.um_rm)}} kg</td>
-          <td>${{fmtDecimal(linha.rpe)}}</td>
-        </tr>
-      `).join("") || "<tr><td colspan=\\"6\\">Sem registros nesse filtro.</td></tr>";
+      const canvas = document.getElementById("grafico-filtrado");
+      if (!canvas) return;
+      const serie = filtradas.slice(-18);
+      if (graficoFiltrado) graficoFiltrado.destroy();
+      graficoFiltrado = new Chart(canvas, {{
+        data: {{
+          labels: serie.map((linha) => `${{linha.data.slice(5)}} | ${{limitarRotulo(linha.nome_exibicao || linha.nome, 16)}}`),
+          datasets: [
+            {{ type: "bar", label: "Volume", data: serie.map((linha) => linha.volume), backgroundColor: "rgba(120, 169, 255, 0.72)", yAxisID: "volume" }},
+            {{ type: "line", label: "Carga", data: serie.map((linha) => linha.carga), borderColor: "#42be65", backgroundColor: "#42be65", tension: 0.25, yAxisID: "carga" }},
+            {{ type: "line", label: "RPE", data: serie.map((linha) => linha.rpe), borderColor: "#f1c21b", backgroundColor: "#f1c21b", tension: 0.25, yAxisID: "rpe" }}
+          ]
+        }},
+        options: {{
+          ...baseChartOptions,
+          plugins: {{
+            ...baseChartOptions.plugins,
+            legend: {{ display: true, labels: {{ color: "#c6c6c6" }} }},
+            tooltip: {{
+              ...baseChartOptions.plugins.tooltip,
+              callbacks: {{
+                title: (ctx) => serie[ctx[0].dataIndex]
+                  ? `${{serie[ctx[0].dataIndex].data}} - ${{serie[ctx[0].dataIndex].nome_exibicao || serie[ctx[0].dataIndex].nome}}`
+                  : "",
+                label: (ctx) => ctx.dataset.yAxisID === "rpe"
+                  ? `${{ctx.dataset.label}}: ${{fmtDecimal(ctx.parsed.y)}}`
+                  : `${{ctx.dataset.label}}: ${{fmtDecimal(ctx.parsed.y)}} kg`
+              }}
+            }}
+          }},
+          scales: {{
+            x: {{ ticks: {{ color: "#c6c6c6", maxRotation: 45 }} }},
+            volume: {{ position: "left", ticks: {{ color: "#c6c6c6", callback: (value) => `${{fmtInteiro(value)}} kg` }} }},
+            carga: {{ position: "right", grid: {{ drawOnChartArea: false }}, ticks: {{ color: "#42be65", callback: (value) => `${{fmtDecimal(value)}} kg` }} }},
+            rpe: {{ display: false, min: 0, suggestedMax: 10 }}
+          }}
+        }}
+      }});
     }}
     [filtroPeriodo, filtroExercicio, filtroGrupo, filtroOrdem].forEach((controle) =>
       controle.addEventListener("change", renderFiltrada)

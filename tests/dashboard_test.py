@@ -227,6 +227,58 @@ def main():
             )
             assert "reducao de carga apos RPE 10" in alertas_reducao[0]
 
+            alertas_exercicio_inativo = dashboard._calcular_alertas(
+                [],
+                [
+                    {
+                        "nome": "Triceps testa",
+                        "pontos": [
+                            {"carga": 20, "rpe": 10},
+                            {"carga": 18, "rpe": 9},
+                        ],
+                    },
+                    {
+                        "nome": "Supino fechado (barra)",
+                        "pontos": [
+                            {"carga": 34, "rpe": 9},
+                            {"carga": 34, "rpe": 8},
+                        ],
+                    },
+                ],
+                {"Supino fechado (barra)"},
+            )
+            assert len(alertas_exercicio_inativo) == 1
+            assert "Supino fechado (barra)" in alertas_exercicio_inativo[0]
+            assert "Triceps testa" not in alertas_exercicio_inativo[0]
+
+            top_evolucoes_ativas = dashboard._calcular_top_evolucoes(
+                [
+                    {
+                        "nome": "Triceps testa",
+                        "variacao_carga": 12,
+                        "variacao": 500,
+                    },
+                    {
+                        "nome": "Supino fechado (barra)",
+                        "variacao_carga": 2,
+                        "variacao": 90,
+                    },
+                    {
+                        "nome": "Pullover (barra)",
+                        "variacao_carga": -4,
+                        "variacao": -120,
+                    },
+                ],
+                {"Supino fechado (barra)"},
+            )
+            assert [item["nome"] for item in top_evolucoes_ativas["carga"]] == [
+                "Supino fechado (barra)"
+            ]
+            assert [item["nome"] for item in top_evolucoes_ativas["volume"]] == [
+                "Supino fechado (barra)"
+            ]
+            assert top_evolucoes_ativas["quedas"] == []
+
             caminho = dashboard.salvar_dashboard(output)
             html = caminho.read_text(encoding="utf-8")
             assert "Dashboard de treino" in html
@@ -258,21 +310,16 @@ def main():
             assert html.count('class="dieta-indicador"') == 11
             assert "Leite semidesnatado" in html
             assert "Peito de frango" in html
-            assert "46,0 g" in html
-            assert "3 copos" in html
             assert "517 / 2.000 kcal" in html
             assert "Potassio" in html
             assert "Magnesio" in html
             assert "Zinco" in html
             assert "Vitamina D" in html
             assert "Vitamina B6" in html
-            assert "V. D" in html
-            assert "V. B6" in html
-            assert "1637 mg" in html
-            assert "133 mg" in html
-            assert "5,0 mg" in html
-            assert "300 UI" in html
-            assert "1,5 mg" in html
+            assert 'id="grafico-dieta-macros"' in html
+            assert 'id="grafico-dieta-micros"' in html
+            assert "Macros por alimento" in html
+            assert "Micros totais" in html
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert "Peso corporal" in html
             assert "117,5 kg" in html
