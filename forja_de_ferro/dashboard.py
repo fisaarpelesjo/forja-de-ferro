@@ -2006,20 +2006,57 @@ def _render_itens_dieta(dieta):
     if not dieta["itens"]:
         return '<p class="vazio">Nenhum alimento cadastrado na dieta atual.</p>'
 
+    colunas_micro = (
+        ("Fibra", "fiber_g", "g", 1),
+        ("O. 3", "omega3_g", "g", 2),
+        ("Potassio", "potassium_mg", "mg", 0),
+        ("Magnesio", "magnesium_mg", "mg", 0),
+        ("Zinco", "zinc_mg", "mg", 1),
+        ("V. D", "vitamin_d_ui", "UI", 0),
+        ("V. B6", "vitamin_b6_mg", "mg", 1),
+    )
+
+    def celula_nutriente(item, chave, unidade, casas):
+        return f"<td>{_fmt_decimal(item[chave], casas)} {unidade}</td>"
+
+    itens = "".join(
+        f"""
+        <tr>
+          <td>{html.escape(item["name"])}</td>
+          <td>{_fmt_quantidade(item["quantity"], item["unit"])}</td>
+          <td>{_fmt_decimal(item["protein_g"])} g</td>
+          <td>{_fmt_decimal(item["carbo_g"])} g</td>
+          <td>{_fmt_decimal(item["fat_g"])} g</td>
+          <td>{_fmt_decimal(item["calories"], 0)} kcal</td>
+          {"".join(celula_nutriente(item, chave, unidade, casas) for _, chave, unidade, casas in colunas_micro)}
+        </tr>
+        """
+        for item in dieta["itens"]
+    )
+    totais = dieta["totais"]
+    cabecalho_micro = "".join(f"<th>{rotulo}</th>" for rotulo, _, _, _ in colunas_micro)
+    totais_micro = "".join(
+        f"<th>{_fmt_decimal(totais[chave], casas)} {unidade}</th>"
+        for _, chave, unidade, casas in colunas_micro
+    )
     return f"""
-    <div class="grade-graficos-dieta">
-      <div>
-        <h3>Macros por alimento</h3>
-        <div class="grafico-container grafico-alto">
-          <canvas id="grafico-dieta-macros" width="760" height="360" aria-label="Macros por alimento" role="img"></canvas>
-        </div>
-      </div>
-      <div>
-        <h3>Micros totais</h3>
-        <div class="grafico-container grafico-alto">
-          <canvas id="grafico-dieta-micros" width="760" height="360" aria-label="Micronutrientes totais" role="img"></canvas>
-        </div>
-      </div>
+    <div class="tabela-rolavel">
+      <table class="cds--data-table cds--data-table--lg">
+        <thead>
+          <tr><th>Alimento</th><th>Quantidade</th><th>Proteina</th><th>Carbo</th><th>Gordura</th><th>Calorias</th>{cabecalho_micro}</tr>
+        </thead>
+        <tbody>{itens}</tbody>
+        <tfoot>
+          <tr>
+            <th>Total</th><th></th>
+            <th>{_fmt_decimal(totais["protein_g"])} g</th>
+            <th>{_fmt_decimal(totais["carbo_g"])} g</th>
+            <th>{_fmt_decimal(totais["fat_g"])} g</th>
+            <th>{_fmt_decimal(totais["calories"], 0)} kcal</th>
+            {totais_micro}
+          </tr>
+        </tfoot>
+      </table>
     </div>
     """
 
@@ -2582,11 +2619,6 @@ def gerar_html(dados):
       height: 100%;
       background: var(--forja-success);
     }}
-    .grade-graficos-dieta {{
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }}
     .tabela-rolavel {{ overflow-x: auto; }}
     .tabela-treino-ativo th:first-child,
     .tabela-treino-ativo td:first-child {{
@@ -2875,7 +2907,6 @@ def gerar_html(dados):
       .grade-resumo-treino,
       .grade-resumo-corporal {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
       .duas-colunas {{ grid-template-columns: 1fr; }}
-      .grade-graficos-dieta {{ grid-template-columns: 1fr; }}
       h1 {{ font-size: 1.75rem; }}
       .mapa-muscular-layout {{ grid-template-columns: 1fr; }}
       .mapa-resumo {{ grid-template-columns: 1fr; }}
@@ -3578,74 +3609,6 @@ def gerar_html(dados):
       }});
     }}
 
-    function criarGraficosDieta() {{
-      const itens = (dados.dieta.itens || []).slice(0, 14);
-      const canvasMacros = document.getElementById("grafico-dieta-macros");
-      if (canvasMacros && itens.length) {{
-        new Chart(canvasMacros, {{
-          type: "bar",
-          data: {{
-            labels: itens.map((item) => limitarRotulo(item.name, 18)),
-            datasets: [
-              {{ label: "Proteina", data: itens.map((item) => item.protein_g), backgroundColor: "rgba(120, 169, 255, 0.72)" }},
-              {{ label: "Carbo", data: itens.map((item) => item.carbo_g), backgroundColor: "rgba(66, 190, 101, 0.68)" }},
-              {{ label: "Gordura", data: itens.map((item) => item.fat_g), backgroundColor: "rgba(241, 194, 27, 0.72)" }}
-            ]
-          }},
-          options: {{
-            ...baseChartOptions,
-            plugins: {{ ...baseChartOptions.plugins, legend: {{ display: true, labels: {{ color: "#c6c6c6" }} }} }},
-            scales: {{
-              x: {{ stacked: true, ticks: {{ color: "#c6c6c6", maxRotation: 45 }} }},
-              y: {{ stacked: true, ticks: {{ color: "#c6c6c6", callback: (value) => `${{formatoDecimal.format(value)}} g` }} }}
-            }}
-          }}
-        }});
-      }}
-
-      const canvasMicros = document.getElementById("grafico-dieta-micros");
-      const totais = dados.dieta.totais || {{}};
-      const micros = [
-        ["Fibra", totais.fiber_g || 0, "g"],
-        ["Omega 3", totais.omega3_g || 0, "g"],
-        ["Potassio", totais.potassium_mg || 0, "mg"],
-        ["Magnesio", totais.magnesium_mg || 0, "mg"],
-        ["Zinco", totais.zinc_mg || 0, "mg"],
-        ["Vit. D", totais.vitamin_d_ui || 0, "UI"],
-        ["Vit. B6", totais.vitamin_b6_mg || 0, "mg"]
-      ];
-      if (canvasMicros && micros.some((item) => item[1] > 0)) {{
-        new Chart(canvasMicros, {{
-          type: "bar",
-          data: {{
-            labels: micros.map((item) => item[0]),
-            datasets: [{{
-              label: "Total",
-              data: micros.map((item) => item[1]),
-              unidades: micros.map((item) => item[2]),
-              backgroundColor: "rgba(190, 149, 255, 0.72)"
-            }}]
-          }},
-          options: {{
-            ...baseChartOptions,
-            plugins: {{
-              ...baseChartOptions.plugins,
-              tooltip: {{
-                ...baseChartOptions.plugins.tooltip,
-                callbacks: {{
-                  label: (ctx) => `${{formatoDecimal.format(ctx.parsed.y)}} ${{ctx.dataset.unidades[ctx.dataIndex]}}`
-                }}
-              }}
-            }},
-            scales: {{
-              x: {{ ticks: {{ color: "#c6c6c6" }} }},
-              y: {{ ticks: {{ color: "#c6c6c6" }} }}
-            }}
-          }}
-        }});
-      }}
-    }}
-
     criarGraficoVolume();
     criarMinigraficos();
     criarGraficoCargaRpe();
@@ -3656,7 +3619,6 @@ def gerar_html(dados):
     criarGraficoEvolucoes();
     criarGraficoPrs();
     criarGraficoPrsExpandidos();
-    criarGraficosDieta();
 
     const linhas = dados.volume_por_sessao.flatMap((sessao) =>
       sessao.logs.map((log) => ({{ ...log, data: sessao.data }}))

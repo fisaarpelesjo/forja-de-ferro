@@ -316,10 +316,12 @@ def main():
             assert "Zinco" in html
             assert "Vitamina D" in html
             assert "Vitamina B6" in html
-            assert 'id="grafico-dieta-macros"' in html
-            assert 'id="grafico-dieta-micros"' in html
-            assert "Macros por alimento" in html
-            assert "Micros totais" in html
+            assert 'id="grafico-dieta-macros"' not in html
+            assert 'id="grafico-dieta-micros"' not in html
+            assert "<th>Alimento</th><th>Quantidade</th><th>Proteina</th>" in html
+            assert "46,0 g" in html
+            assert "V. D" in html
+            assert "V. B6" in html
             assert html.index("Filtros rapidos") < html.index("Dieta atual")
             assert "Peso corporal" in html
             assert "117,5 kg" in html

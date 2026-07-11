@@ -173,12 +173,12 @@ carga, grupos musculares, volume semanal, maiores evolucoes, recordes pessoais,
 PRs expandidos, carga vs RPE, alertas simples, filtros rapidos por segmento,
 relatorio semanal e a dieta atual no final da pagina.
 
-A secao de dieta usa `diet_entries`, `foods` e `diet_targets`. Os alimentos
-repetidos sao consolidados antes da visualizacao. O resumo mostra calorias e
-macros na primeira linha de cards e micros em uma segunda linha; os graficos
-mostram macros por alimento e os micros totais: fibra, omega 3, potassio,
-magnesio, zinco e vitaminas D e B6. O resumo compara os totais diarios com as
-metas cadastradas quando elas existem.
+A secao de dieta usa `diet_entries`, `foods` e `diet_targets`. Uma tabela unica
+consolida alimentos repetidos, somando quantidades, calorias, macros e
+micronutrientes. O resumo mostra calorias e macros na primeira linha de cards e
+micros em uma segunda linha; a tabela mostra fibra, omega 3, potassio, magnesio,
+zinco e vitaminas D e B6 por alimento e no total. O resumo compara os totais
+diarios com as metas cadastradas quando elas existem.
 
 O mapa muscular usa a classificacao de `exercise_muscle_groups` e soma o volume
 dos exercicios da ultima sessao para cada grupo associado. No dashboard, grupos

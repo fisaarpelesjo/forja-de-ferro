@@ -274,16 +274,16 @@ Dashboard local de volume de treino.
 - A secao de dieta le `diet_entries`, `foods` e `diet_targets`, mostra uma lista
   unica de alimentos, consolida itens repetidos e compara os totais diarios de
   macros com as metas. Os micros aparecem em uma segunda linha de cards e na
-  visualizacao grafica de micros totais: fibra, omega 3, potassio, magnesio,
-  zinco e vitaminas D e B6.
+  tabela por alimento e no total: fibra, omega 3, potassio, magnesio, zinco e
+  vitaminas D e B6.
 - O mapa muscular usa `exercise_muscle_groups`, expande grupos amplos em
   segmentos anatomicos visuais, deixa regioes sem treino transparentes e aumenta
   a opacidade vermelha conforme o volume relativo da ultima sessao. Ele
   usa pesos por exercicio quando houver regra especifica e representa volume
   atribuido, nao ativacao muscular medida.
 - Graficos de dados do dashboard, como evolucao de volume, minigraficos
-  corporais, carga vs RPE, comparacoes, PRs, filtros rapidos e dieta, usam
-  Chart.js carregado por CDN com versao fixa.
+  corporais, carga vs RPE, comparacoes, PRs e filtros rapidos, usam Chart.js
+  carregado por CDN com versao fixa.
   Nao trocar o mapa anatomico para biblioteca de graficos; ele continua SVG
   vetorial baseado nos assets anatomicos.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
