@@ -357,7 +357,8 @@ anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera
 
 O descanso sugerido fica em `session.json`, nao em uma tabela SQLite. Ele e
 derivado do nome do exercicio por `ods_ops.get_rest_interval()` durante a geracao
-da sessao.
+da sessao. `Supino reto back-off` e `Supino inclinado (barra)` usam 4 min;
+`Supino fechado (barra)` usa 3 min.
 
 ## Progresso
 

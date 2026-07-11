@@ -163,8 +163,8 @@ O `/gerar` mostra descanso fixo sugerido por exercicio. Use esses tempos como
 base para preservar a qualidade tecnica:
 
 ```text
-Compostos pesados: 4 min
-Compostos medios: 3 min
+Compostos pesados, Supino reto back-off e Supino inclinado (barra): 4 min
+Compostos medios e Supino fechado (barra): 3 min
 Acessorios: 2 min
 Bracos: 2 min
 ```

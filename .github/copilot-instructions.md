@@ -195,6 +195,8 @@ Regras importantes:
   a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
+- `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min;
+  `Supino fechado (barra)` usa 3 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
