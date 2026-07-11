@@ -2024,14 +2024,20 @@ def _render_itens_dieta(dieta):
     """
 
 
+def _cds_select_item(valor, texto):
+    valor_html = html.escape(str(valor), quote=True)
+    texto_html = html.escape(str(texto))
+    return (
+        f'<cds-select-item value="{valor_html}" text="{texto_html}">'
+        f"{texto_html}</cds-select-item>"
+    )
+
+
 def _opcoes_exercicios(exercicios):
-    opcoes = ['<cds-select-item value="" text="Todos"></cds-select-item>']
+    opcoes = [_cds_select_item("", "Todos")]
     for item in sorted(exercicios, key=lambda ex: ex["nome"]):
-        nome = _nome_exercicio(item["nome"])
-        valor = html.escape(item["nome"], quote=True)
-        opcoes.append(
-            f'<cds-select-item value="{valor}" text="{nome}"></cds-select-item>'
-        )
+        nome = ods_ops.get_display_name(item["nome"])
+        opcoes.append(_cds_select_item(item["nome"], nome))
     return "\n".join(opcoes)
 
 
@@ -2168,10 +2174,8 @@ def gerar_html(dados):
     consistencia = dados["consistencia"]
     opcoes_exercicios = _opcoes_exercicios(exercicios)
     grupos_filtro = sorted({item["grupo"] for item in dados["grupos_musculares"]})
-    opcoes_grupos = '<cds-select-item value="" text="Todos"></cds-select-item>' + "".join(
-        f'<cds-select-item value="{html.escape(grupo, quote=True)}" '
-        f'text="{html.escape(grupo, quote=True)}"></cds-select-item>'
-        for grupo in grupos_filtro
+    opcoes_grupos = _cds_select_item("", "Todos") + "".join(
+        _cds_select_item(grupo, grupo) for grupo in grupos_filtro
     )
     mapa_muscular = _render_mapa_muscular(dados["mapa_ultima_sessao"])
     resumo_dieta = _render_resumo_dieta(dados["dieta"])
@@ -3109,10 +3113,10 @@ def gerar_html(dados):
       <div class="filtros">
         <label>Periodo
           <cds-select id="filtro-periodo" value="todos">
-            <cds-select-item value="todos" text="Tudo"></cds-select-item>
-            <cds-select-item value="7" text="7 dias"></cds-select-item>
-            <cds-select-item value="30" text="30 dias"></cds-select-item>
-            <cds-select-item value="90" text="90 dias"></cds-select-item>
+            {_cds_select_item("todos", "Tudo")}
+            {_cds_select_item("7", "7 dias")}
+            {_cds_select_item("30", "30 dias")}
+            {_cds_select_item("90", "90 dias")}
           </cds-select>
         </label>
         <label>Exercicio
@@ -3127,16 +3131,17 @@ def gerar_html(dados):
         </label>
         <label>Ordenar
           <cds-select id="filtro-ordem" value="data">
-            <cds-select-item value="data" text="Data"></cds-select-item>
-            <cds-select-item value="volume" text="Volume"></cds-select-item>
-            <cds-select-item value="carga" text="Carga"></cds-select-item>
-            <cds-select-item value="rpe" text="RPE"></cds-select-item>
+            {_cds_select_item("data", "Data")}
+            {_cds_select_item("volume", "Volume")}
+            {_cds_select_item("carga", "Carga")}
+            {_cds_select_item("rpe", "RPE")}
           </cds-select>
         </label>
       </div>
       <div class="grafico-container grafico-alto">
         <canvas id="grafico-filtrado" width="980" height="380" aria-label="Registros filtrados" role="img"></canvas>
       </div>
+      <p id="filtro-vazio" class="vazio filtro-vazio" hidden>Sem registros nesse filtro.</p>
     </cds-tile>
 
     <cds-tile class="painel">
@@ -3664,11 +3669,22 @@ def gerar_html(dados):
     const filtroOrdem = document.getElementById("filtro-ordem");
     let graficoFiltrado = null;
 
+    function valorSelect(controle) {{
+      if (!controle) return "";
+      const selectInterno = controle.shadowRoot?.querySelector("select");
+      if (selectInterno) return selectInterno.value || "";
+      if (controle.value !== undefined && controle.value !== null) return controle.value;
+      const selecionado = controle.querySelector(
+        "cds-select-item[selected], cds-select-item[aria-selected='true']"
+      );
+      return selecionado?.getAttribute("value") || "";
+    }}
+
     function renderFiltrada() {{
-      const dias = filtroPeriodo.value;
-      const exercicio = filtroExercicio.value;
-      const grupo = filtroGrupo.value;
-      const ordem = filtroOrdem.value;
+      const dias = valorSelect(filtroPeriodo) || "todos";
+      const exercicio = valorSelect(filtroExercicio);
+      const grupo = valorSelect(filtroGrupo);
+      const ordem = valorSelect(filtroOrdem) || "data";
       const datas = linhas.map((linha) => new Date(linha.data + "T00:00:00"));
       const dataMax = datas.length ? new Date(Math.max(...datas)) : null;
       let filtradas = linhas.filter((linha) => {{
@@ -3686,7 +3702,9 @@ def gerar_html(dados):
       }});
       const canvas = document.getElementById("grafico-filtrado");
       if (!canvas) return;
-      const serie = filtradas.slice(-18);
+      const avisoVazio = document.getElementById("filtro-vazio");
+      if (avisoVazio) avisoVazio.hidden = Boolean(filtradas.length);
+      const serie = ordem === "data" ? filtradas.slice(-18) : filtradas.slice(0, 18);
       if (graficoFiltrado) graficoFiltrado.destroy();
       graficoFiltrado = new Chart(canvas, {{
         data: {{
@@ -3723,9 +3741,11 @@ def gerar_html(dados):
         }}
       }});
     }}
-    [filtroPeriodo, filtroExercicio, filtroGrupo, filtroOrdem].forEach((controle) =>
-      controle.addEventListener("change", renderFiltrada)
-    );
+    [filtroPeriodo, filtroExercicio, filtroGrupo, filtroOrdem].forEach((controle) => {{
+      ["change", "input", "cds-select-selected"].forEach((evento) =>
+        controle.addEventListener(evento, renderFiltrada)
+      );
+    }});
     renderFiltrada();
   </script>
 </body>

@@ -357,7 +357,12 @@ def main():
             assert '<cds-theme theme="g100">' in html
             assert "<cds-tile class=\"indicador\">" in html
             assert "<cds-select id=\"filtro-periodo\"" in html
-            assert "<cds-select-item value=\"todos\" text=\"Tudo\">" in html
+            assert '<cds-select-item value="todos" text="Tudo">Tudo</cds-select-item>' in html
+            assert '<cds-select-item value="" text="Todos">Todos</cds-select-item>' in html
+            assert "function valorSelect" in html
+            assert "cds-select-selected" in html
+            assert 'id="filtro-vazio"' in html
+            assert 'ordem === "data" ? filtradas.slice(-18) : filtradas.slice(0, 18)' in html
             assert "cds--data-table cds--data-table--lg" in html
             assert "IBM Plex Sans" in html
             assert "grid-template-columns: repeat(6, minmax(0, 1fr))" in html
