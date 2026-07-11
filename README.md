@@ -1,211 +1,270 @@
 # Forja de Ferro
 
-Diario de treino e dieta com bot do Telegram e banco SQLite local.
+Diario tecnico de treino e dieta com bot do Telegram, banco SQLite versionado,
+dashboard HTML local, backup/exportacao de dados e utilitarios para analise de
+video.
 
-## Visao Geral
+Este README e a referencia tecnica principal da raiz do projeto. A documentacao
+expandida fica em [`docs/index.md`](docs/index.md), e o catalogo unico de
+comandos fica em [`docs/comandos.md`](docs/comandos.md).
 
-A Forja de Ferro permite controlar uma sessao de treino pelo Telegram:
+## Sumario Tecnico
 
-- `/gerar` cria uma nova sessao de treino no SQLite.
-- `/prever` mostra o treino no mesmo formato, mas sem salvar sessao ou logs.
-- O treino gerado lista carga alvo e descanso sugerido por exercicio.
-- Quando o exercicio atual usa equipamento de peso fixo, o bot mostra como
-  montar a carga, por exemplo `barra W 6kg + 12kg de anilhas`.
-- Enviar `80` registra 80 kg no proximo exercicio pendente.
-- Enviar `80 8` registra 80 kg com RPE 8.
-- `/status` mostra o progresso da sessao ativa.
-- `/desfazer` apaga o ultimo exercicio registrado.
-- `/planos` lista os modelos cadastrados e `/plano NOME` seleciona o ativo.
-- `/dashboard` atualiza o HTML local e responde com um resumo curto.
-- Ao concluir o ultimo exercicio, o bot envia resumo da sessao com volume, RPE,
-  comparacao, mudancas de carga, consolidacoes e recordes.
-- `python gerar_dashboard.py` gera um dashboard HTML local com a evolucao do
-  volume de treino.
-- `python gerar_frames.py --todos --instalar-ffmpeg` verifica a dependencia e
-  gera todos os frames dos videos de `videos/entrada/`.
-- `python gerenciar_dados.py backup` cria uma copia consistente do SQLite.
-- `python gerenciar_dados.py exportar` exporta os dados para JSON.
+- Runtime principal: pacote Python [`forja_de_ferro/`](forja_de_ferro/).
+- Banco principal: [`data/forja_de_ferro.db`](data/forja_de_ferro.db).
+- Estado local de sessao ativa: `session.json`, nao versionado.
+- Variaveis locais: `.env`, nao versionado, com `TELEGRAM_TOKEN=...`.
+- Launcher multiplataforma: [`start_bot.py`](start_bot.py).
+- Wrapper Windows: [`start_bot.bat`](start_bot.bat).
+- Dashboard local: [`gerar_dashboard.py`](gerar_dashboard.py) gera
+  `temp/dashboard-treino.html`.
+- Backup/exportacao/restauracao: [`gerenciar_dados.py`](gerenciar_dados.py).
+- Extracao de frames: [`gerar_frames.py`](gerar_frames.py).
+- Schema SQLite atual: `SCHEMA_VERSION = 10`, em
+  [`forja_de_ferro/db_ops.py`](forja_de_ferro/db_ops.py).
+- Fonte da verdade do treino: SQLite, especialmente `training_plans` e
+  `training_plan_exercises`.
 
-O catalogo completo e centralizado em
-[`docs/comandos.md`](docs/comandos.md).
+O projeto foi desenhado para uso local: o bot escreve no SQLite, o dashboard le o
+mesmo banco, e os arquivos auxiliares ficam fora do versionamento quando sao
+estado de maquina.
 
-O banco principal e `data/forja_de_ferro.db`. A sessao ativa fica em `session.json`,
-que e estado local e nao deve ser versionado.
-
-`session.json` funciona como cache. Se for apagado, corrompido ou apontar para
-uma sessao antiga, o bot tenta reconstruir a sessao SQLite mais recente que
-ainda possui exercicios pendentes. Sessoes completas nao sao reabertas.
-
-O esquema SQLite possui versao propria em `schema_migrations`. Ao iniciar, o
-projeto aplica migracoes pendentes em ordem e preserva os dados existentes.
-
-Os grupos musculares ficam em `exercise_muscle_groups`, com classificacao
-principal ou secundaria. `/volume` e dashboard consultam a mesma tabela.
-
-## Estrutura
+## Arquitetura
 
 ```text
-forja_de_ferro/
-├── start_bot.py             # launcher multiplataforma
-├── start_bot.bat            # wrapper Windows
-├── gerar_dashboard.py       # gera temp/dashboard-treino.html
-├── gerar_frames.py          # gera frames de video com ffmpeg
-├── videos/
-│   ├── entrada/             # videos de entrada
-│   └── saida/               # frames gerados por arquivo
-├── gerenciar_dados.py       # backup, exportacao e restauracao
+.
+├── start_bot.py                  # launcher multiplataforma do bot
+├── start_bot.bat                 # wrapper Windows
+├── gerar_dashboard.py            # gera temp/dashboard-treino.html
+├── gerar_frames.py               # CLI de extracao de frames com ffmpeg
+├── gerenciar_dados.py            # CLI de backup, exportacao e restauracao
 ├── forja_de_ferro/
-│   ├── backup_ops.py        # gestao segura dos dados SQLite
-│   ├── telegram_poller.py   # bot Telegram com long polling
-│   ├── ods_ops.py           # operacoes de sessao de treino
-│   ├── dashboard.py         # dashboard HTML de volume de treino
-│   └── db_ops.py            # operacoes SQLite
-├── tests/
-│   ├── smoke_test.py        # checagem basica do ambiente
-│   ├── regras_treino_test.py # regras de progressao e comandos
-│   ├── dashboard_test.py    # calculos e HTML do dashboard
-│   ├── backup_export_test.py # backup, exportacao e restauracao
-│   ├── telegram_falhas_test.py # rede, token e repeticao gradual
-│   └── e2e_training_flow_test.py # teste ponta a ponta local
+│   ├── db_ops.py                 # schema, migracoes, consultas e escrita SQLite
+│   ├── ods_ops.py                # montagem de treino, progressao e session.json
+│   ├── telegram_poller.py        # bot Telegram via long polling
+│   ├── dashboard.py              # carga de dados e HTML do dashboard
+│   ├── backup_ops.py             # backup SQLite, exportacao JSON e restauracao
+│   ├── video_ops.py              # wrapper ffmpeg para frames
+│   └── assets/                   # assets anatomicos e mapa muscular
+├── data/
+│   └── forja_de_ferro.db         # banco SQLite versionado
 ├── docs/
-│   └── index.md             # indice da documentacao detalhada
-├── session.json             # estado local, nao versionado
-├── .env.example             # modelo de ambiente
-├── .env                     # TELEGRAM_TOKEN=..., nao versionado
-└── data/
-    └── forja_de_ferro.db         # banco SQLite versionado
+│   ├── index.md                  # indice da documentacao detalhada
+│   ├── comandos.md               # catalogo unico de comandos
+│   ├── banco-de-dados.md         # detalhes de SQLite e fonte da verdade
+│   ├── bot-telegram.md           # fluxo do bot e falhas comuns
+│   ├── operacao.md               # rotina local e troubleshooting
+│   └── melhorias-futuras.md      # roadmap tecnico
+├── tests/
+│   ├── smoke_test.py
+│   ├── regras_treino_test.py
+│   ├── dashboard_test.py
+│   ├── backup_export_test.py
+│   ├── telegram_falhas_test.py
+│   ├── video_ops_test.py
+│   └── e2e_training_flow_test.py
+├── videos/
+│   ├── entrada/                  # videos a processar
+│   └── saida/                    # frames gerados por video
+├── backups/                      # local, nao versionado
+├── exportacoes/                  # local, nao versionado
+├── temp/                         # dashboard e saidas locais
+├── session.json                  # cache local da sessao ativa, nao versionado
+├── .env.example                  # modelo de variaveis
+└── .env                          # segredo local, nao versionado
 ```
 
-## Comandos Do Telegram
+## Fluxo De Dados
+
+1. O usuario envia comandos pelo Telegram.
+2. [`telegram_poller.py`](forja_de_ferro/telegram_poller.py) interpreta a entrada
+   e chama funcoes de treino, banco, dashboard ou medicoes corporais.
+3. [`ods_ops.py`](forja_de_ferro/ods_ops.py) monta o treino do plano ativo,
+   calcula carga alvo por RPE, adiciona descanso e observacoes de montagem.
+4. [`db_ops.py`](forja_de_ferro/db_ops.py) cria sessoes, logs, planos, medicoes,
+   dieta e resumo pos-treino no SQLite.
+5. `session.json` guarda um cache da sessao ativa para o bot saber qual exercicio
+   esta pendente.
+6. [`dashboard.py`](forja_de_ferro/dashboard.py) le o SQLite e gera um HTML unico
+   em `temp/dashboard-treino.html`.
+7. [`backup_ops.py`](forja_de_ferro/backup_ops.py) usa a API nativa de backup do
+   SQLite para criar copias consistentes e exportar JSON.
+
+O SQLite e a fonte da verdade. `session.json` e apenas cache recuperavel.
+
+## Instalar E Verificar
+
+Requisitos:
+
+- Python 3.10 ou superior.
+- Dependencias de [`requirements.txt`](requirements.txt).
+- Token do Telegram em `.env` para rodar o bot.
+- `ffmpeg` apenas para extracao de frames.
+
+Instalacao:
+
+```bash
+python -m pip install -r requirements.txt
+copy .env.example .env
+```
+
+No Linux/macOS:
+
+```bash
+python3 -m pip install -r requirements.txt
+cp .env.example .env
+```
+
+Configure `.env`:
 
 ```text
-/gerar          Cria uma sessao de treino SQLite e mostra o treino em texto
-/prever         Mostra uma previa do treino sem salvar nada
-/exercicios     Lista exercicios atuais, series e repeticoes
-/aquecimento    Mostra o aquecimento
-/volume         Mostra series por grupo muscular e estimativa semanal
-/dashboard      Atualiza o dashboard local e mostra um resumo
-/planos         Lista planos de treino cadastrados
-/plano NOME     Seleciona o plano ativo
-/peso 118,5     Registra o peso corporal em quilogramas
-/peso           Mostra o peso atual e as ultimas medicoes
-/cintura 110,5  Registra a circunferencia da cintura em centimetros
-/cintura        Mostra a cintura atual e as ultimas medicoes
-/status         Mostra exercicio atual e progresso da sessao
-/desfazer       Limpa o ultimo registro de carga
-/ajuda          Mostra ajuda
+TELEGRAM_TOKEN=seu_token_aqui
 ```
 
-Todos os comandos textuais do Telegram exigem `/` e usam somente os nomes
-oficiais em PT-BR. Entradas numericas como `80` e `80 8` registram carga e RPE.
+Verificacao basica:
 
-## Registro De Carga
-
-```text
-80        Registra 80 kg no proximo exercicio pendente
-80 8      Registra 80 kg e RPE 8
-80,5 8    Virgula decimal e aceita e salva como 80.5 kg
+```bash
+python tests/smoke_test.py
+python tests/regras_treino_test.py
+python tests/dashboard_test.py
+python tests/backup_export_test.py
+python tests/telegram_falhas_test.py
+python tests/video_ops_test.py
+python tests/e2e_training_flow_test.py
 ```
 
-No ultimo registro, a resposta inclui o resumo automatico. A comparacao de
-volume usa a sessao anterior com a mesma sequencia de exercicios. Carga mantida
-em RPE 9 e mostrada separadamente de consolidacao confirmada, que ocorre quando
-a mesma carga passa de RPE 9 para RPE 8 ou menor.
+No Linux/macOS, use `python3` se `python` apontar para Python 2.
 
-## Dashboard De Treino
+## Operacao Rapida
 
-O dashboard local mostra a evolucao do volume usando:
+Iniciar o bot:
 
-```text
-volume = series x repeticoes x carga
+```bash
+python start_bot.py
 ```
 
-Para gerar:
+No Windows:
+
+```powershell
+.\start_bot.bat
+```
+
+Gerar dashboard:
 
 ```bash
 python gerar_dashboard.py
 ```
 
-Pelo Telegram, `/dashboard` executa a mesma geracao e responde com horario,
-ultima sessao, volume e RPE medio geral. O arquivo permanece local e nenhum
-caminho do computador e enviado.
+Criar backup:
 
-O arquivo e criado em `temp/dashboard-treino.html`. Abra esse HTML no navegador
-para ver um layout escuro, cru e compacto com IBM Carbon Design System oficial
-via Carbon Web Components. O arquivo abre sem servidor ou build, mas usa a CDN
-oficial configurada no HTML para carregar os componentes `cds-*`.
+```bash
+python gerenciar_dados.py backup
+```
 
-- 10 indicadores de resumo, incluindo peso corporal, cintura, IMC, relacao
-  cintura/altura e variacoes recentes
-- metas corporais de referencia calculadas pela altura cadastrada
-- barras de proximidade das metas, recalculadas com as medicoes mais recentes
-- minigraficos de evolucao dentro dos quatro cards corporais, renderizados com Chart.js
-- treino ativo com series, reps, alvo, descanso e montagem da carga
-- grafico de evolucao do volume por sessao, renderizado com Chart.js
-- mapa muscular anterior e posterior da ultima sessao com segmentos anatomicos e gradiente azul-amarelo-vermelho proporcional ao volume
-- equilibrio muscular com relacoes anterior/posterior, empurrar/puxar e outras comparacoes
-- calendario de carga das ultimas sessoes
-- carga, RPE e 1RM estimado (Epley) por exercicio
-- comparacao da ultima sessao com a anterior
-- grupos musculares por volume e series
-- volume semanal
-- maiores evolucoes de carga e volume, quedas, recordes pessoais e PRs expandidos
-- grafico de carga vs. RPE por exercicio, renderizado com Chart.js
-- alertas simples com sinais de consolidacao
-- filtros rapidos por periodo, exercicio, segmento anatomico e ordenacao
-- relatorio semanal local com volume, RPE, segmentos principais e observacoes
-- dieta atual no final da pagina, com alimentos repetidos consolidados
-- totais de calorias e macros comparados com as metas diarias
-- cards e colunas de micronutrientes para fibra, omega 3, potassio, magnesio,
-  zinco e vitaminas D e B6
+Exportar JSON:
 
-O mapa muscular renderiza os paths vetoriais de
-[`body-muscles`](https://github.com/vulovix/body-muscles), de Ivan Vulovic,
-sob Apache-2.0, numa SVG unica por vista. Grupos amplos do catalogo, como
-peitoral, dorsais, trapezio, biceps, triceps, antebraco, core, quadriceps,
-adutores, gluteos e posteriores, sao distribuidos em segmentos anatomicos para
-o desenho e a legenda lateral. Quando houver regra especifica para o exercicio, o
-dashboard usa pesos por segmento em vez de dividir tudo igualmente. Os
-SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em
-`forja_de_ferro/assets/`. A atribuicao e as licencas ficam em `docs/licencas/`.
+```bash
+python gerenciar_dados.py exportar
+```
 
-## Extrair Frames De Video
+Restaurar backup validado:
 
-Use o launcher local quando quiser analisar videos de execucao quadro a quadro:
+```bash
+python gerenciar_dados.py restaurar backups/arquivo.db --confirmar
+```
 
-1. coloque o video em `videos/entrada/`
-2. rode o comando abaixo
+Extrair frames de todos os videos:
 
 ```bash
 python gerar_frames.py --todos --instalar-ffmpeg
 ```
 
-O comando verifica se o `ffmpeg` esta disponivel e tenta instala-lo quando
-necessario. No Windows, a instalacao usa o `winget`. Cada video recebe sua
-propria pasta em `videos/saida/<nome-do-video>/`, e o terminal mostra quantos
-frames foram gerados.
+## Bot Do Telegram
 
-Sem `--fps`, todos os frames sao extraidos. Para reduzir a quantidade:
+Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao usam
+barra.
 
-```bash
-python gerar_frames.py --todos --instalar-ffmpeg --fps 1
+```text
+/gerar          Cria uma sessao de treino no SQLite
+/prever         Mostra o treino sem salvar sessao, logs ou session.json
+/exercicios     Lista exercicios do plano ativo
+/aquecimento    Mostra aquecimento curto de corpo todo
+/volume         Mostra series e volume por grupo muscular
+/dashboard      Atualiza temp/dashboard-treino.html e envia resumo curto
+/planos         Lista modelos cadastrados
+/plano NOME     Seleciona o plano ativo
+/peso VALOR     Registra peso corporal em kg
+/peso           Consulta peso atual, variacao e ultimas medicoes
+/cintura VALOR  Registra cintura em cm
+/cintura        Consulta cintura atual, variacao e ultimas medicoes
+/status         Mostra exercicio atual e progresso
+/desfazer       Remove carga e RPE do ultimo exercicio preenchido
+/ajuda          Mostra ajuda principal
+80              Registra 80 kg no proximo exercicio pendente
+80 8            Registra 80 kg com RPE 8
+80,5 8          Aceita virgula decimal e salva 80.5 kg
 ```
 
-Tambem e possivel processar apenas um arquivo:
+O polling registra logs operacionais com horario, nivel, comando e `session_id`.
+Token e URL completa da API nao devem aparecer nos logs. Falhas temporarias usam
+espera gradual; token invalido encerra o polling com erro claro.
 
-```bash
-python gerar_frames.py video.mp4 --instalar-ffmpeg
-python gerar_frames.py video.mp4 --fps 1
-python gerar_frames.py video.mp4 --saida temp/frames
-```
+O launcher deve manter saida minimalista no terminal: sem banner, ASCII art ou
+mensagens cosmeticas.
 
-JPG, JPEG, PNG, WebP e BMP sao aceitos. Antes de processar um video, os frames
-anteriores com o mesmo nome sao removidos para manter a contagem correta.
+## Fluxo De Sessao De Treino
 
-## Progressao De Carga Por RPE
+`/gerar`:
 
-Ao gerar uma nova sessao, o bot busca a ultima carga registrada de cada
-exercicio e sugere a proxima carga conforme o RPE registrado:
+1. Chama `db_ops.get_or_seed_exercises()`.
+2. Busca o plano ativo em `training_plans` e `training_plan_exercises`.
+3. Consulta desempenho anterior por exercicio.
+4. Cria linha em `training_sessions` com `date` e `training_type`.
+5. Cria um `training_logs` pendente para cada exercicio do plano ativo.
+6. Calcula `target_weight` pela carga anterior e RPE anterior.
+7. Adiciona `rest_interval` por exercicio.
+8. Adiciona `loading_note` quando o exercicio usa barra/equipamento fixo.
+9. Escreve `session.json` com `date`, `session_id` e exercicios.
+10. Envia a lista do treino e indica o primeiro exercicio pendente.
+
+`/prever` usa a mesma montagem de treino, mas nao cria `training_sessions`, nao
+cria `training_logs` e nao escreve `session.json`.
+
+Registro numerico:
+
+1. O bot carrega `session.json`.
+2. Valida o cache contra o SQLite.
+3. Encontra o proximo exercicio sem carga.
+4. Atualiza `training_logs.weight` e `training_logs.rpe`.
+5. Envia o proximo exercicio com alvo, descanso e montagem de carga quando houver.
+6. No ultimo exercicio, envia resumo pos-treino.
+
+`/desfazer` encontra o ultimo log preenchido da sessao ativa e limpa `weight` e
+`rpe`.
+
+Se `session.json` estiver ausente, corrompido ou antigo, o bot tenta reconstruir
+a sessao mais recente ainda incompleta a partir do SQLite. Sessoes completas nao
+sao reabertas.
+
+## Resumo Pos-Treino
+
+Ao concluir a sessao, `db_ops.get_session_summary(session_id)` calcula:
+
+- volume total da sessao;
+- RPE medio geral;
+- comparacao com a sessao anterior compativel;
+- mudancas de carga por exercicio;
+- consolidacoes, quando a mesma carga fica mais facil;
+- cargas mantidas em RPE 9;
+- recordes e sinais relevantes.
+
+A comparacao usa a sessao anterior com a mesma sequencia de exercicios. Isso
+evita comparar planos diferentes como se fossem equivalentes.
+
+## Progressao De Carga
+
+A regra atual fica em `ods_ops.suggest_next_weight(previous_weight,
+previous_rpe)`:
 
 ```text
 RPE 7 ou menor  -> +4 kg
@@ -215,222 +274,552 @@ RPE 10 ou maior -> -2 kg
 Sem RPE         -> manter
 ```
 
-Neste metodo, repetir a mesma carga em RPE 9 nao significa automaticamente
-estagnacao. A manutencao da carga serve para consolidar tecnica, amplitude,
-controle e qualidade das repeticoes. Quando essa mesma carga passar a ser
-percebida como RPE 8 ou menor, o bot sugere o aumento correspondente.
-
-Uma sequencia de RPE 9 deve ser interpretada junto com a execucao. Ela merece
-atencao quando houver perda tecnica, repeticoes incompletas, piora de amplitude
-ou ausencia prolongada de melhora, e nao apenas porque a carga permaneceu igual.
-
-Exemplo:
+Se nao houver historico, o alvo aparece como `-`, exceto nos exercicios com alvo
+inicial configurado:
 
 ```text
-Treino anterior: 40 kg RPE 8
-Proximo /gerar: alvo 42 kg
+Rosca martelo (barra H)  -> 16 kg
+Supino inclinado (barra) -> 41 kg
+Supino fechado (barra)   -> 35 kg
 ```
 
-Se o exercicio ainda nao tiver historico de carga, o alvo aparece como `-`.
-A carga alvo fica em `session.json`; o banco continua guardando apenas a carga
-real registrada pelo usuario.
+RPE 9 repetido nao e tratado como estagnacao automaticamente. Nesse metodo,
+manter carga em RPE 9 serve para consolidar tecnica, amplitude, controle e
+qualidade. O aumento volta a acontecer quando a mesma carga passa a ser
+registrada como RPE 8 ou menor.
 
-Excecoes atuais: `Rosca martelo (barra H)` comeca com alvo inicial de 16 kg,
-`Supino inclinado (barra)` comeca com alvo inicial de 41 kg e `Supino fechado
-(barra)` comeca com alvo inicial de 35 kg quando ainda nao houver historico
-proprio. Depois do primeiro registro, seguem a progressao normal por RPE.
+Alertas e dashboard nao devem considerar carga mantida em RPE 9 como problema
+isolado. Sinais de acompanhamento sao RPE 10 persistente, reducao apos RPE 10,
+perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia prolongada
+de melhora na execucao.
 
-Para exercicios com equipamento de peso fixo, o bot tambem guarda uma observacao
-de montagem em `session.json`. Os supinos com barra, `Agachamento com barra nas costas`, `Remada
-curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno`
-e `Remada curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg.
-`Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg.
-`Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de
-6 kg; `Rosca martelo (barra H)` usa barra H de 9 kg. Essa observacao aparece
-no `/status` e na indicacao do proximo exercicio, mas nao na lista
-`/exercicios`.
+## Plano Ativo E Catalogo
 
-Na interface, o bot e o dashboard podem mostrar nomes mais curtos, como
-`Supino inclinado` em vez de `Supino inclinado (barra)`. Os nomes completos
-continuam no SQLite para preservar historico, progressao e mapeamentos.
+O treino ativo vem de `training_plan_exercises`, ligado ao plano ativo em
+`training_plans`. `DEFAULT_EXERCISES` define o seed para bancos novos, mas o
+SQLite permanece a fonte da verdade em runtime.
 
-## Descanso Entre Series
-
-O `/gerar` tambem mostra o descanso sugerido por exercicio:
+Catalogo ativo atual:
 
 ```text
-Agachamento com barra nas costas, Supino reto principal, Supino reto back-off, Supino inclinado (barra), Desenvolvimento, Levantamento Terra Romeno: 4 min
-Supino fechado (barra): 3 min
-Remada curvada, Remada alta: 3 min
-Acessorios restantes: 2 min
-Rosca martelo (barra H): 2 min
+1.  Agachamento com barra nas costas           3x5
+2.  Agachamento sumô com barra à frente        3x10
+3.  Supino reto (barra)                        3x5
+4.  Supino reto back-off                       3x8
+5.  Supino inclinado (barra)                   3x8
+6.  Remada curvada (barra)                     3x8
+7.  Remada curvada alta no peito (barra)       3x10
+8.  Desenvolvimento (barra em pé)              3x5
+9.  Levantamento Terra Romeno                  3x8
+10. Remada alta (barra)                        3x10
+11. Rosca martelo (barra H)                    3x8
+12. Supino fechado (barra)                     3x8
 ```
 
-Esses tempos fixos ajudam a manter a qualidade das series e deixam o RPE mais
-confiavel para calcular a proxima carga.
+Nomes canonicos devem permanecer no SQLite porque sao usados no historico,
+progressao, grupos musculares e dashboard. A interface pode usar
+`ods_ops.get_display_name()` para ocultar qualificadores como `(barra)`,
+`(barra H)` e `(barra em pé)`.
 
-## Fluxo Do Treino
+Logs historicos de exercicios substituidos ou renomeados podem permanecer no
+banco como historico. Exemplos: `Agachamento (barra)`, `Agachamento Zercher`,
+`Zercher squat`, `Pullover (barra)` e `Tríceps testa`.
+
+## Descanso E Montagem De Carga
+
+`ods_ops.get_rest_interval(exercise_name)` define descanso sugerido:
 
 ```text
-/gerar
-  -> db_ops.get_or_seed_exercises()
-  -> db_ops.get_last_performance()
-  -> db_ops.create_session(date)
-  -> db_ops.log_exercise(...) para cada exercicio ativo, com alvo calculado por carga + RPE
-  -> adiciona descanso sugerido por exercicio
-  -> adiciona observacao de montagem quando houver equipamento fixo
-  -> ods_ops.write_session(...) escreve session.json
-
-/prever
-  -> monta o mesmo treino com alvo e descanso
-  -> nao cria training_sessions
-  -> nao cria training_logs
-  -> nao escreve session.json
-
-"80 8"
-  -> carrega a sessao ativa
-  -> encontra o proximo exercicio sem carga
-  -> db_ops.update_log_weight(log_id, 80.0, 8)
-
-/desfazer
-  -> encontra o ultimo exercicio preenchido
-  -> db_ops.update_log_weight(log_id, None, None)
+Agachamento com barra nas costas       4 min
+Agachamento Zercher                    4 min
+Supino reto (barra)                    4 min
+Supino reto back-off                   4 min
+Supino inclinado (barra)               4 min
+Supino fechado (barra)                 3 min
+Remada curvada (barra)                 3 min
+Desenvolvimento (barra em pé)          4 min
+Levantamento Terra Romeno              4 min
+Pullover (barra)                       2 min
+Remada alta (barra)                    2 min
+Remada curvada alta no peito (barra)   2 min
+Rosca direta                           2 min
+Rosca martelo (barra H)                2 min
+Tríceps testa                          2 min
+Padrao para demais exercicios          2 min
 ```
 
-## Catalogo Atual
-
-O catalogo ativo comeca com:
+`ods_ops.format_loading_note()` gera observacoes de montagem quando ha
+equipamento fixo:
 
 ```text
-Agachamento com barra nas costas    3x5
-Agachamento sumô com barra à frente 3x10
-Supino reto back-off   3x8
-Supino inclinado (barra) 3x8
-Remada curvada (barra) 3x8
-Remada curvada alta no peito (barra) 3x10
-Rosca martelo (barra H) 3x8
-Supino fechado (barra) 3x8
+barra reta 2,20 m 11kg + Xkg de anilhas
+barra oca 1,50 m 1kg + Xkg de anilhas
+barra W 6kg + Xkg de anilhas
+barra H 9kg + Xkg de anilhas
 ```
 
-Ele substituiu o agachamento com barra para sessoes futuras porque o setup atual
-nao tem rack de agachamento adequado. Logs historicos com nomes antigos continuam
-como historico.
+Mapeamento atual:
 
-## Setup
+- barra reta de 2,20 m e 11 kg: agachamento com barra nas costas, supinos com
+  barra, remada curvada, desenvolvimento, levantamento terra romeno e remada
+  curvada alta no peito;
+- barra oca de 1,50 m e 1 kg: agachamento sumô com barra à frente;
+- barra W de 6 kg: tríceps testa, pullover e remada alta;
+- barra H de 9 kg: rosca martelo.
 
-1. Instale Python 3.10+.
-2. Instale dependencias:
+A observacao aparece no exercicio atual/proximo e no `/status`; nao aparece na
+lista simples de `/exercicios`.
+
+## Banco De Dados
+
+O banco fica em `data/forja_de_ferro.db`. O schema e migrado por
+`db_ops.init_db()`, que:
+
+1. garante a tabela `schema_migrations`;
+2. descobre a maior versao aplicada;
+3. rejeita bancos com versao futura;
+4. executa migracoes pendentes em ordem;
+5. registra cada versao aplicada;
+6. semeia grupos musculares padrao;
+7. semeia o plano de treino padrao quando necessario.
+
+Versao atual: `SCHEMA_VERSION = 10`.
+
+Tabelas principais:
+
+```text
+exercises
+training_sessions
+training_logs
+foods
+diet_targets
+diet_entries
+exercise_muscle_groups
+training_plans
+training_plan_exercises
+body_weights
+waist_measurements
+body_profile
+schema_migrations
+```
+
+Colunas importantes:
+
+- `training_sessions`: `id`, `date`, `training_type`.
+- `training_logs`: `id`, `session_id`, `exercise_name`, `sets`, `reps`,
+  `weight`, `rpe`, `sort_order`.
+- `exercises`: `name`, `sets`, `reps`, `sort_order`, `active`.
+- `training_plans`: `name`, `active`, `sort_order`.
+- `training_plan_exercises`: `plan_id`, `exercise_name`, `sets`, `reps`,
+  `sort_order`.
+- `exercise_muscle_groups`: `exercise_name`, `muscle_group`, `role`,
+  `sort_order`.
+- `body_weights`: `weight_kg`, `recorded_at`, `source`.
+- `waist_measurements`: `circumference_cm`, `recorded_at`, `source`.
+- `body_profile`: `height_cm`, `age_years`, `updated_at`.
+
+Nao assumir colunas que nao existem, como `started_at`, `completed_at`,
+`plan_name`, `exercise`, `logged_at`, `weight`, `date` em `body_weights`, ou
+`age` em `body_profile`.
+
+Indices relevantes:
+
+- `idx_training_logs_session_pending` em `training_logs`;
+- `idx_training_logs_exercise_history` em `training_logs`;
+- `idx_exercise_muscle_groups_exercise`;
+- `idx_training_plan_exercises_plan`;
+- `idx_body_weights_recorded_at`;
+- `idx_waist_measurements_recorded_at`.
+
+Para manutencao, prefira scripts Python com `sqlite3` ou os helpers de
+`forja_de_ferro.db_ops`. Nao dependa do binario externo `sqlite3` estar no PATH.
+
+## Migracoes
+
+Resumo das versoes:
+
+```text
+1   Cria tabelas iniciais de exercicios, sessoes, logs e dieta
+2   Adiciona indices de logs por sessao pendente e historico por exercicio
+3   Cria exercise_muscle_groups
+4   Cria training_plans e training_plan_exercises
+5   Insere Agachamento sumô com barra à frente no catalogo/plano ativo
+6   Cria body_weights
+7   Cria waist_measurements
+8   Cria body_profile
+9   Adiciona vitamina B6 em foods e diet_targets
+10  Renomeia Agachamento Zercher para Agachamento com barra nas costas
+```
+
+Mudancas de catalogo que precisam valer para bancos novos devem atualizar
+`DEFAULT_EXERCISES`. Mudancas que precisam afetar bancos existentes devem virar
+migracao.
+
+## Dashboard
+
+`gerar_dashboard.py` chama `dashboard.salvar_dashboard()` e escreve
+`temp/dashboard-treino.html`.
+
+O dashboard:
+
+- le `training_sessions` e `training_logs`;
+- considera apenas logs com `weight IS NOT NULL` e carga maior que zero;
+- calcula volume como `sets x reps x weight`;
+- usa `exercise_muscle_groups` como fonte unica de grupos musculares;
+- consulta plano ativo, cargas, RPE, peso, cintura, perfil corporal e dieta;
+- gera HTML local sem servidor ou build.
+
+O layout deve permanecer escuro, cru e compacto, usando IBM Carbon Design System
+oficial via Carbon Web Components. O HTML pode depender da CDN oficial ja
+configurada para carregar componentes `cds-*`.
+
+Graficos de dados usam Chart.js por CDN com versao fixa. O mapa anatomico
+continua SVG vetorial baseado nos assets locais; nao deve ser trocado por
+biblioteca de graficos.
+
+Secoes principais:
+
+- indicadores de resumo;
+- treino ativo com series, repeticoes, alvo, descanso e montagem de carga;
+- evolucao de volume por sessao;
+- mapa muscular anterior e posterior da ultima sessao;
+- equilibrio muscular;
+- calendario de carga;
+- carga, RPE e 1RM estimado por exercicio;
+- comparacao da ultima sessao com a anterior;
+- grupos musculares por volume e series;
+- volume semanal;
+- maiores evolucoes, quedas, recordes e PRs expandidos;
+- carga vs. RPE;
+- alertas;
+- filtros rapidos;
+- relatorio semanal;
+- peso corporal, cintura, IMC e cintura/altura;
+- dieta atual, macros, metas e micronutrientes.
+
+Indicadores corporais:
+
+- peso e IMC usam historico de `body_weights`;
+- cintura e cintura/altura usam historico de `waist_measurements`;
+- IMC e cintura/altura sao indicadores derivados, nao diagnosticos;
+- metas de referencia usam IMC entre 18,5 e 24,9 e cintura/altura abaixo de
+  0,50;
+- barras de proximidade usam `limite da meta / valor atual`, limitadas a 100%.
+
+Dieta:
+
+- le `diet_entries`, `foods` e `diet_targets`;
+- consolida alimentos repetidos;
+- compara totais diarios com metas;
+- mostra calorias, proteina, carboidrato, gordura, fibra, omega 3, potassio,
+  magnesio, zinco, vitamina D e vitamina B6.
+
+Mapa muscular:
+
+- usa `forja_de_ferro/assets/mapa_muscular_body_muscles.json`;
+- renderiza paths do projeto `body-muscles` em uma SVG por vista;
+- expande grupos amplos em segmentos anatomicos visuais;
+- deixa regioes sem treino transparentes;
+- aumenta opacidade conforme volume relativo da ultima sessao;
+- representa volume atribuido, nao ativacao muscular medida.
+
+Licencas dos assets ficam em `docs/licencas/`. Os SVGs anatomicos de Termininja
+ficam preservados em `forja_de_ferro/assets/`.
+
+## Peso, Cintura E Perfil Corporal
+
+`/peso VALOR` grava em `body_weights`:
+
+- `weight_kg`;
+- `recorded_at`;
+- `source`.
+
+`/peso` mostra:
+
+- peso atual;
+- variacao em relacao a medicao anterior;
+- ultimas medicoes.
+
+`/cintura VALOR` grava em `waist_measurements`:
+
+- `circumference_cm`;
+- `recorded_at`;
+- `source`.
+
+`/cintura` mostra:
+
+- cintura atual;
+- variacao em relacao a medicao anterior;
+- ultimas medicoes.
+
+`body_profile` guarda altura e idade em um registro unico, usado pelos calculos
+corporais do dashboard.
+
+## Dieta
+
+As tabelas de dieta sao:
+
+- `foods`: cadastro de alimentos por unidade/porcao e nutrientes;
+- `diet_targets`: metas diarias de calorias, macros e micros;
+- `diet_entries`: itens consumidos, refeicao, alimento, quantidade e ordem.
+
+Nutrientes suportados:
+
+```text
+protein_g
+carbo_g
+fat_g
+calories
+fiber_g
+omega3_g
+potassium_mg
+magnesium_mg
+zinc_mg
+vitamin_d_ui
+vitamin_b6_mg
+```
+
+O dashboard calcula totais a partir de `diet_entries.quantity`, dados por porcao
+em `foods` e metas em `diet_targets`.
+
+## Backup, Exportacao E Restauracao
+
+`backup_ops.validar_banco()` executa `PRAGMA integrity_check` e exige pelo menos
+as tabelas `training_sessions`, `training_logs` e `exercises`.
+
+`criar_backup()`:
+
+1. valida o banco de origem;
+2. cria a pasta de destino;
+3. usa `sqlite3.Connection.backup()` para copiar;
+4. valida o backup gerado.
+
+`exportar_dados()`:
+
+1. valida o banco;
+2. cria JSON com `exported_at`, `schema_version` e tabelas do projeto;
+3. exporta apenas tabelas conhecidas em `EXPORT_TABLES`.
+
+`restaurar_backup()`:
+
+1. valida o backup de origem;
+2. cria backup de seguranca do banco atual quando ele existe;
+3. copia para arquivo temporario no diretorio do destino;
+4. valida o temporario;
+5. substitui o banco com `os.replace()`;
+6. remove temporarios em caso de falha.
+
+Pare o bot antes de restaurar para evitar escrita concorrente no SQLite.
+
+## Videos E Frames
+
+`video_ops.extrair_frames(video_path, saida=None, fps=None, formato="jpg")` usa
+`ffmpeg` para gerar frames.
+
+Formatos aceitos:
+
+```text
+bmp
+jpeg
+jpg
+png
+webp
+```
+
+Comportamento:
+
+- sem `fps`, extrai todos os frames;
+- com `fps`, aplica filtro `fps=N`;
+- a numeracao comeca em 1;
+- arquivos anteriores do mesmo video e formato suportado sao removidos antes de
+  processar;
+- `ffmpeg` roda com `-hide_banner`, `-loglevel error`, `-nostdin` e `-y`.
+
+CLI:
 
 ```bash
-pip install -r requirements.txt
+python gerar_frames.py --todos --instalar-ffmpeg
+python gerar_frames.py --todos --instalar-ffmpeg --fps 1
+python gerar_frames.py video.mp4 --instalar-ffmpeg
+python gerar_frames.py video.mp4 --fps 1
+python gerar_frames.py video.mp4 --saida temp/frames
+python gerar_frames.py video.mp4 --formato png
 ```
 
-3. Crie `.env`:
+`--instalar-ffmpeg` tenta usar:
 
-```bash
-copy .env.example .env
+- Windows: `winget`;
+- macOS: Homebrew;
+- Linux: `apt-get`, com `sudo` quando necessario.
+
+## Testes
+
+```text
+tests/smoke_test.py              Checagem basica de importacao/ambiente
+tests/regras_treino_test.py      Progressao, comandos e regras do treino
+tests/dashboard_test.py          Calculos, secoes e HTML do dashboard
+tests/backup_export_test.py      Backup, exportacao e restauracao
+tests/telegram_falhas_test.py    Rede, token e espera gradual do polling
+tests/video_ops_test.py          ffmpeg, formatos, limpeza e comandos
+tests/e2e_training_flow_test.py  Fluxo local completo de treino
 ```
 
-No Linux/macOS:
-
-```bash
-cp .env.example .env
-```
-
-4. Rode a checagem basica:
+Comando completo:
 
 ```bash
 python tests/smoke_test.py
-```
-
-5. Rode o teste ponta a ponta local:
-
-```bash
 python tests/regras_treino_test.py
 python tests/dashboard_test.py
 python tests/backup_export_test.py
 python tests/telegram_falhas_test.py
+python tests/video_ops_test.py
 python tests/e2e_training_flow_test.py
 ```
 
-6. Gere o dashboard local:
+Para mudancas pequenas, rode no minimo o teste mais proximo da area alterada e
+`tests/smoke_test.py`. Para mudancas em schema, treino, bot ou dashboard, rode a
+suite completa listada acima.
 
-```bash
-python gerar_dashboard.py
-```
+## API Interna Principal
 
-7. Inicie o bot:
-
-```bash
-python start_bot.py
-```
-
-No Linux/macOS, use `python3 start_bot.py` se `python` apontar para Python 2.
-No Windows, tambem pode rodar `start_bot.bat`.
-
-## Banco De Dados
-
-Tabelas principais:
-
-- `exercises`
-- `training_sessions`
-- `training_logs`
-- `foods`
-- `diet_targets`
-- `diet_entries`
-- `exercise_muscle_groups`
-- `training_plans`
-- `training_plan_exercises`
-
-O catalogo de exercicios fica no SQLite. Nao substituir por ODS.
-
-Operacoes locais:
-
-```bash
-python gerenciar_dados.py backup
-python gerenciar_dados.py exportar
-python gerenciar_dados.py restaurar backups/arquivo.db --confirmar
-```
-
-Backups ficam em `backups/` e exportacoes em `exportacoes/`. Ambos sao locais e
-nao versionados. A restauracao valida a integridade do arquivo e cria um backup
-de seguranca do banco atual antes da substituicao. Pare o bot antes de restaurar.
-
-## API Interna
+`db_ops`:
 
 ```python
-from forja_de_ferro import db_ops, ods_ops
+from forja_de_ferro import db_ops
 
+db_ops.init_db()
 db_ops.get_or_seed_exercises()
+db_ops.list_muscle_groups()
+db_ops.list_training_plans()
+db_ops.get_active_training_plan()
 db_ops.create_session(date_iso, training_type="TREINO")
-db_ops.log_exercise(session_id, name, sets, reps, sort_order)
+db_ops.log_exercise(session_id, exercise_name, sets, reps, sort_order)
 db_ops.update_log_weight(log_id, weight, rpe=None)
 db_ops.get_last_weights()
 db_ops.get_last_performance()
-db_ops.count_filled(log_ids)
+db_ops.get_latest_incomplete_session()
+db_ops.get_session_summary(session_id)
+db_ops.add_body_weight(weight_kg)
+db_ops.list_body_weights(limit=10)
+db_ops.add_waist_measurement(circumference_cm)
+db_ops.list_waist_measurements(limit=10)
+db_ops.set_diet_targets(...)
+db_ops.get_diet_targets()
+db_ops.add_diet_entry(meal, food_id, quantity, sort_order=0)
+db_ops.list_diet_entries()
+db_ops.get_diet_totals()
+```
+
+`ods_ops`:
+
+```python
+from forja_de_ferro import ods_ops
 
 ods_ops.generate_training()
 ods_ops.preview_training()
-ods_ops.suggest_next_weight(previous_weight, previous_rpe=None)
-ods_ops.get_rest_interval(exercise_name)
-ods_ops.write_session(exercises, session_id)
+ods_ops.gerar_treino()
 ods_ops.read_exercises()
 ods_ops.read_previous_weights()
+ods_ops.read_previous_performance()
+ods_ops.suggest_next_weight(previous_weight, previous_rpe=None)
+ods_ops.get_initial_target_weight(exercise_name)
+ods_ops.get_display_name(exercise_name)
+ods_ops.get_rest_interval(exercise_name)
+ods_ops.format_loading_note(exercise_name, target_weight)
+ods_ops.write_session(exercises, session_id)
+ods_ops.recover_active_session()
+```
+
+`dashboard`:
+
+```python
+from forja_de_ferro import dashboard
 
 dashboard.carregar_dados()
 dashboard.salvar_dashboard()
 ```
 
-`forja_de_ferro.ods_ops.gerar_treino()` existe como alias de compatibilidade.
+`backup_ops`:
+
+```python
+from forja_de_ferro import backup_ops
+
+backup_ops.validar_banco("data/forja_de_ferro.db")
+backup_ops.criar_backup()
+backup_ops.exportar_dados()
+backup_ops.restaurar_backup("backups/arquivo.db")
+```
+
+`video_ops`:
+
+```python
+from forja_de_ferro import video_ops
+
+video_ops.ffmpeg_disponivel()
+video_ops.instalar_ffmpeg()
+video_ops.extrair_frames("videos/entrada/video.mp4")
+video_ops.contar_frames("videos/saida/video", "video")
+```
+
+## Estado Local E Versionamento
+
+Nao versionar:
+
+```text
+session.json
+.env
+data/*.db-shm
+data/*.db-wal
+temp/dashboard-treino.html
+backups/
+exportacoes/
+```
+
+O banco principal `data/forja_de_ferro.db` e versionado. Arquivos `-wal` e
+`-shm` sao auxiliares do SQLite e continuam locais.
+
+Antes de alterar arquivos de estado local, confirme que a mudanca e realmente
+necessaria. Nunca grave segredos na documentacao, nos testes ou nos commits.
+
+## Convencoes De Manutencao
+
+- Usar portugues brasileiro para textos visiveis ao usuario, comandos,
+  documentacao e mensagens do bot.
+- Comandos textuais do Telegram devem ser oficiais, em PT-BR e com `/`.
+- Nao adicionar aliases em ingles nem comandos sem barra.
+- Preferir helpers existentes de `db_ops`, `ods_ops`, `dashboard`, `backup_ops`
+  e `video_ops`.
+- Manter SQLite como fonte da verdade para catalogo e historico.
+- Preservar separacao entre dados versionados e estado local.
+- Atualizar `docs/comandos.md` quando comando ou launcher mudar.
+- Atualizar `docs/melhorias-futuras.md` quando item do roadmap for entregue,
+  descartado ou repriorizado.
+- Revisar `AGENTS.md`, `CLAUDE.md` e `.github/copilot-instructions.md` quando a
+  mudanca alterar comportamento, comandos, fluxo, schema, paths ou padrao de
+  idioma.
+
+## Commits
+
+Use Conventional Commits no titulo:
+
+```text
+feat: add sync command
+fix: correct dashboard volume filter
+docs: expand technical README
+```
+
+O corpo do commit e obrigatorio e deve explicar contexto tecnico, escopo e
+motivo da decisao.
 
 ## Documentacao Detalhada
 
-A documentacao detalhada fica em [`docs/index.md`](docs/index.md):
+Consulte [`docs/index.md`](docs/index.md) para:
 
-- arquitetura e fronteiras dos modulos
-- schema SQLite e regras de fonte da verdade
-- fluxo dos comandos Telegram
-- testes smoke e ponta a ponta
-- portabilidade entre Windows, Linux, macOS e maquinas fracas
-- operacao e troubleshooting
-- roadmap priorizado de melhorias futuras
+- visao geral do sistema;
+- arquitetura e fronteiras de modulos;
+- schema SQLite e fonte da verdade;
+- bot Telegram e parsing de comandos;
+- testes e estrategia de verificacao;
+- portabilidade entre Windows, Linux, macOS e WSL;
+- operacao diaria e troubleshooting;
+- roadmap tecnico.
