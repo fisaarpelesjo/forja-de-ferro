@@ -200,14 +200,12 @@ Regras importantes:
   sequencia de RPE 9 um problema isolado. Ela so exige atencao quando houver
   perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
   prolongada de melhora na execucao.
-- `Rosca martelo (barra H)` tem alvo inicial de 16 kg, `Supino inclinado
-  (barra)` tem alvo inicial de 41 kg e `Supino fechado (barra)` tem alvo
-  inicial de 35 kg quando ainda nao houver historico proprio; depois disso usam
-  a progressao por RPE.
+- `Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado
+  (barra)` tem alvo inicial de 41 kg quando ainda nao houver historico proprio;
+  depois disso usam a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
-- `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min;
-  `Supino fechado (barra)` usa 3 min.
+- `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
@@ -226,7 +224,7 @@ Regras importantes:
 - O primeiro exercicio ativo e `Agachamento com barra nas costas` (`3x5`).
 - O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
-- Logs historicos podem permanecer com nomes antigos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)` e `Tríceps testa`.
+- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa` e `Supino fechado (barra)`.
 
 ### `forja_de_ferro/db_ops.py`
 
@@ -361,7 +359,8 @@ Ordem ativa atual:
 9. Levantamento Terra Romeno - 3x8
 10. Remada alta (barra) - 3x10
 11. Rosca martelo (barra H) - 3x8
-12. Supino fechado (barra) - 3x8
+
+`Supino fechado (barra)` esta inativo para sessoes futuras.
 
 ## Documentacao
 

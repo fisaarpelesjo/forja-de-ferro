@@ -291,7 +291,6 @@ inicial configurado:
 ```text
 Rosca martelo (barra H)  -> 16 kg
 Supino inclinado (barra) -> 41 kg
-Supino fechado (barra)   -> 35 kg
 ```
 
 RPE 9 repetido nao e tratado como estagnacao automaticamente. Nesse metodo,
@@ -324,7 +323,6 @@ Catalogo ativo atual:
 9.  Levantamento Terra Romeno                  3x8
 10. Remada alta (barra)                        3x10
 11. Rosca martelo (barra H)                    3x8
-12. Supino fechado (barra)                     3x8
 ```
 
 Nomes canonicos devem permanecer no SQLite porque sao usados no historico,
@@ -334,7 +332,7 @@ progressao, grupos musculares e dashboard. A interface pode usar
 
 Logs historicos de exercicios substituidos ou renomeados podem permanecer no
 banco como historico. Exemplos: `Agachamento (barra)`, `Agachamento Zercher`,
-`Zercher squat`, `Pullover (barra)` e `Tríceps testa`.
+`Zercher squat`, `Pullover (barra)`, `Tríceps testa` e `Supino fechado (barra)`.
 
 ## Descanso E Montagem De Carga
 
@@ -346,7 +344,6 @@ Agachamento Zercher                    4 min
 Supino reto (barra)                    4 min
 Supino reto back-off                   4 min
 Supino inclinado (barra)               4 min
-Supino fechado (barra)                 3 min
 Remada curvada (barra)                 3 min
 Desenvolvimento (barra em pé)          4 min
 Levantamento Terra Romeno              4 min

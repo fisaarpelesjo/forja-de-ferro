@@ -199,14 +199,12 @@ Regras importantes:
   de RPE 9 como problema isolado. Ela so exige atencao quando vier acompanhada
   de perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
   prolongada de qualquer melhora na execucao.
-- `Rosca martelo (barra H)` tem alvo inicial de 16 kg, `Supino inclinado
-  (barra)` tem alvo inicial de 41 kg e `Supino fechado (barra)` tem alvo
-  inicial de 35 kg quando ainda nao houver historico proprio; depois disso usam
-  a progressao por RPE.
+- `Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado
+  (barra)` tem alvo inicial de 41 kg quando ainda nao houver historico proprio;
+  depois disso usam a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
-- `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min;
-  `Supino fechado (barra)` usa 3 min.
+- `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
@@ -230,9 +228,8 @@ Regras importantes:
 - O setimo exercicio ativo e `Remada curvada alta no peito (barra)` (`3x10`),
   logo depois de `Remada curvada (barra)`.
 - O decimo primeiro exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
-- O decimo segundo exercicio ativo e `Supino fechado (barra)` (`3x8`),
-  substituindo `Tríceps testa` para sessoes futuras.
-- Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)` ou `Tríceps testa` podem permanecer como historico.
+- `Supino fechado (barra)` esta inativo para sessoes futuras.
+- Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa` ou `Supino fechado (barra)` podem permanecer como historico.
 
 ### `forja_de_ferro/db_ops.py`
 

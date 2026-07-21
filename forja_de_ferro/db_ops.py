@@ -21,7 +21,6 @@ DEFAULT_EXERCISES = [
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
     {"name": "Remada alta (barra)", "sets": 3, "reps": 10},
     {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
-    {"name": "Supino fechado (barra)", "sets": 3, "reps": 8},
 ]
 
 DEFAULT_MUSCLE_GROUPS = {

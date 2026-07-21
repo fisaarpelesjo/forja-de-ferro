@@ -29,7 +29,7 @@ def _assert_progressao():
 def _assert_equipamento_e_descanso():
     assert ods_ops.get_initial_target_weight("Rosca martelo (barra H)") == 16
     assert ods_ops.get_initial_target_weight("Supino inclinado (barra)") == 41
-    assert ods_ops.get_initial_target_weight("Supino fechado (barra)") == 35
+    assert ods_ops.get_initial_target_weight("Supino fechado (barra)") is None
     assert ods_ops.get_display_name("Supino fechado (barra)") == "Supino fechado"
     assert ods_ops.get_display_name("Rosca martelo (barra H)") == "Rosca martelo"
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
@@ -38,7 +38,6 @@ def _assert_equipamento_e_descanso():
     assert ods_ops.get_rest_interval("Desenvolvimento (barra em pé)") == "4 min"
     assert ods_ops.get_rest_interval("Supino reto back-off") == "4 min"
     assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "4 min"
-    assert ods_ops.get_rest_interval("Supino fechado (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Tríceps testa") == "2 min"
     assert ods_ops.get_rest_interval("Exercicio desconhecido") == "2 min"
     assert (
@@ -66,7 +65,6 @@ def _assert_equipamento_e_descanso():
         "Supino reto (barra)",
         "Supino reto back-off",
         "Supino inclinado (barra)",
-        "Supino fechado (barra)",
         "Remada curvada (barra)",
         "Desenvolvimento (barra em pé)",
         "Levantamento Terra Romeno",
@@ -178,6 +176,10 @@ def main():
             active_exercises = db_ops.get_or_seed_exercises()
             muscle_groups = db_ops.list_muscle_groups()
             assert all(ex["name"] in muscle_groups for ex in active_exercises)
+            assert all(
+                ex["name"] != "Supino fechado (barra)"
+                for ex in active_exercises
+            )
             agachamento_groups = db_ops.get_muscle_groups(
                 "Agachamento com barra nas costas"
             )

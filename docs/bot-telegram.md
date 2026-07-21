@@ -159,10 +159,9 @@ de melhora na execucao.
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
-`Rosca martelo (barra H)` tem alvo inicial de 16 kg, `Supino inclinado (barra)`
-tem alvo inicial de 41 kg e `Supino fechado (barra)` tem alvo inicial de 35 kg
-quando ainda nao houver historico proprio. Depois do primeiro registro, seguem
-a progressao normal por RPE.
+`Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado (barra)`
+tem alvo inicial de 41 kg quando ainda nao houver historico proprio. Depois do
+primeiro registro, seguem a progressao normal por RPE.
 
 O descanso sugerido tambem vai em `session.json` como `rest_interval` e aparece
 no `/status` e na indicacao do proximo exercicio.
@@ -254,7 +253,6 @@ Intervalos atuais:
 
 ```text
 Agachamento com barra nas costas, Supino reto principal, Supino reto back-off, Supino inclinado (barra), Desenvolvimento, Levantamento Terra Romeno: 4 min
-Supino fechado (barra): 3 min
 Remada curvada: 3 min
 Acessorios restantes: 2 min
 Rosca martelo (barra H): 2 min

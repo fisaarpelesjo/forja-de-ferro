@@ -170,7 +170,7 @@ base para preservar a qualidade tecnica:
 
 ```text
 Compostos pesados, Supino reto back-off e Supino inclinado (barra): 4 min
-Compostos medios e Supino fechado (barra): 3 min
+Compostos medios, como Remada curvada: 3 min
 Acessorios: 2 min
 Bracos: 2 min
 ```
@@ -269,8 +269,8 @@ Catalogo atual:
 - `Remada curvada alta no peito (barra)` e o setimo exercicio e esta como `3x10`.
 - `Rosca martelo (barra H)` e o decimo primeiro exercicio e esta como `3x8`.
 - Ela substitui `Rosca direta` em sessoes futuras para usar a barra H de 9 kg.
-- `Supino fechado (barra)` e o decimo segundo exercicio e esta como `3x8`.
-- Historico antigo pode continuar com nomes antigos.
+- `Supino fechado (barra)` esta inativo para sessoes futuras.
+- Historico antigo pode continuar com nomes antigos ou inativos.
 - Se o catalogo mudar de novo, atualizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`.
 
 ## Problemas Comuns

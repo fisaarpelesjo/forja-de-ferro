@@ -257,11 +257,11 @@ O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
 com foco principal nos adutores. O quinto e `Supino inclinado (barra)` (`3x8`),
 logo depois de `Supino reto back-off`, substituindo `Pullover (barra)` para
 sessoes futuras. O setimo e `Remada curvada alta no peito (barra)` (`3x10`),
-logo depois de `Remada curvada (barra)`. O decimo primeiro e `Rosca martelo (barra H)` (`3x8`),
-substituindo `Rosca direta` para sessoes futuras. O decimo segundo e `Supino
-fechado (barra)` (`3x8`), substituindo `Tríceps testa` para sessoes futuras.
-Historico antigo de `Agachamento Zercher`, `Rosca direta`, `Pullover (barra)` e
-`Tríceps testa` permanece como historico salvo no SQLite.
+logo depois de `Remada curvada (barra)`. O decimo primeiro e `Rosca martelo
+(barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras. `Supino
+fechado (barra)` esta inativo para sessoes futuras. Historico antigo de
+`Agachamento Zercher`, `Rosca direta`, `Pullover (barra)`, `Tríceps testa` e
+`Supino fechado (barra)` permanece como historico salvo no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
@@ -318,10 +318,10 @@ amplitude, o valor isolado nao comprova falta de evolucao.
 Se nao houver historico de carga para o exercicio, `target_weight` fica `None` e
 a tabela do bot mostra `-`.
 
-Excecoes atuais: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg,
-`Supino inclinado (barra)` recebe alvo inicial de 41 kg e `Supino fechado
-(barra)` recebe alvo inicial de 35 kg quando ainda nao houver historico proprio.
-Depois do primeiro registro real, a funcao usa o historico e a progressao por RPE.
+Excecoes atuais: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg e
+`Supino inclinado (barra)` recebe alvo inicial de 41 kg quando ainda nao houver
+historico proprio. Depois do primeiro registro real, a funcao usa o historico e
+a progressao por RPE.
 
 A carga alvo nao altera `training_logs.weight` ao gerar a sessao. `weight`
 continua `NULL` ate o usuario registrar a carga real pelo Telegram.
@@ -361,7 +361,7 @@ anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera
 O descanso sugerido fica em `session.json`, nao em uma tabela SQLite. Ele e
 derivado do nome do exercicio por `ods_ops.get_rest_interval()` durante a geracao
 da sessao. `Supino reto back-off` e `Supino inclinado (barra)` usam 4 min;
-`Supino fechado (barra)` usa 3 min.
+`Remada curvada (barra)` usa 3 min.
 
 ## Progresso
 
