@@ -1,6 +1,7 @@
 """Operacoes de treino da Forja de Ferro."""
 
 import json
+import math
 from datetime import date
 from pathlib import Path
 
@@ -22,6 +23,57 @@ INITIAL_TARGET_WEIGHTS = {
     "Supino inclinado (barra)": 41.0,
     "Supino fechado (barra)": 35.0,
 }
+
+TRAINING_B_RULES = (
+    {
+        "name": "Farmer walk ida e volta",
+        "work": "45s",
+        "source": "Levantamento Terra Romeno",
+        "percent": 0.45,
+        "rounding": "ceil",
+        "equipment": "loose_pair",
+    },
+    {
+        "name": "Marcha forte no lugar com joelho alto",
+        "work": "45s",
+        "source": None,
+        "percent": None,
+        "rounding": None,
+        "equipment": None,
+    },
+    {
+        "name": "Agachamento com pausa",
+        "work": "15 a 20 reps",
+        "source": None,
+        "percent": None,
+        "rounding": None,
+        "equipment": None,
+    },
+    {
+        "name": "Remada leve com barra",
+        "work": "12 a 15 reps",
+        "source": "Remada curvada (barra)",
+        "percent": 0.60,
+        "rounding": "ceil",
+        "equipment": "straight_bar_250",
+    },
+    {
+        "name": "Flexão",
+        "work": "8 a 15 reps",
+        "source": None,
+        "percent": None,
+        "rounding": None,
+        "equipment": None,
+    },
+    {
+        "name": "Sombra de boxe ou corda sem corda",
+        "work": "45s",
+        "source": None,
+        "percent": None,
+        "rounding": None,
+        "equipment": None,
+    },
+)
 
 DISPLAY_NAMES = {
     "Supino reto (barra)": "Supino reto",
@@ -159,6 +211,43 @@ def format_loading_note(exercise_name, target_weight):
     )
 
 
+def round_training_b_weight(weight, mode="nearest", increment=2):
+    if weight is None:
+        return None
+
+    value = float(weight)
+    step = float(increment)
+    if mode == "ceil":
+        rounded = math.ceil(value / step) * step
+    else:
+        rounded = math.floor((value / step) + 0.5) * step
+    return float(rounded)
+
+
+def format_training_b_loading_note(equipment, target_weight):
+    if target_weight is None or equipment is None:
+        return None
+
+    if equipment == "straight_bar_250":
+        bar_weight = 9.0
+        plates_weight = max(float(target_weight) - bar_weight, 0.0)
+        return (
+            f"barra reta 2,50 m {format_weight(bar_weight)}kg"
+            f" + {format_weight(plates_weight)}kg de anilhas"
+        )
+    if equipment == "loose_pair":
+        per_hand = float(target_weight) / 2
+        return (
+            "2 barras de 40 cm"
+            f" + {format_weight(per_hand)}kg por mao"
+        )
+    if equipment == "loose_single":
+        return f"barra de 40 cm + {format_weight(target_weight)}kg de anilhas"
+    if equipment == "loose_load":
+        return f"anilha de {format_weight(target_weight)}kg abracada no peito"
+    return None
+
+
 def build_training_plan(persist=True):
     """
     Monta o treino atual com carga alvo e descanso.
@@ -200,6 +289,39 @@ def build_training_plan(persist=True):
         session_exercises.append(item)
 
     return session_exercises, session_id
+
+
+def build_training_b():
+    """
+    Monta o Treino B de garagem a partir dos alvos atuais do treino principal.
+    Nao cria sessao, logs nem session.json.
+    """
+    main_exercises = preview_training()
+    targets = {ex["name"]: ex.get("target_weight") for ex in main_exercises}
+
+    training_b = []
+    for rule in TRAINING_B_RULES:
+        target_weight = None
+        if rule["source"]:
+            source_target = targets.get(rule["source"])
+            if source_target is not None:
+                target_weight = round_training_b_weight(
+                    source_target * rule["percent"],
+                    rule["rounding"],
+                )
+        training_b.append(
+            {
+                "name": rule["name"],
+                "work": rule["work"],
+                "target_weight": target_weight,
+                "source": rule["source"],
+                "loading_note": format_training_b_loading_note(
+                    rule["equipment"],
+                    target_weight,
+                ),
+            }
+        )
+    return training_b
 
 
 def generate_training():

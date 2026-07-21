@@ -81,6 +81,7 @@ estado de maquina.
    e chama funcoes de treino, banco, dashboard ou medicoes corporais.
 3. [`ods_ops.py`](forja_de_ferro/ods_ops.py) monta o treino do plano ativo,
    calcula carga alvo por RPE, adiciona descanso e observacoes de montagem.
+   Tambem calcula o Treino B de garagem a partir dos alvos do treino principal.
 4. [`db_ops.py`](forja_de_ferro/db_ops.py) cria sessoes, logs, planos, medicoes,
    dieta e resumo pos-treino no SQLite.
 5. `session.json` guarda um cache da sessao ativa para o bot saber qual exercicio
@@ -187,6 +188,7 @@ barra.
 ```text
 /gerar          Cria uma sessao de treino no SQLite
 /prever         Mostra o treino sem salvar sessao, logs ou session.json
+/treinob        Mostra o Treino B de garagem com pesos do treino principal
 /exercicios     Lista exercicios do plano ativo
 /aquecimento    Mostra aquecimento curto de corpo todo
 /volume         Mostra series e volume por grupo muscular
@@ -229,6 +231,15 @@ mensagens cosmeticas.
 
 `/prever` usa a mesma montagem de treino, mas nao cria `training_sessions`, nao
 cria `training_logs` e nao escreve `session.json`.
+
+`/treinob` nao cria sessao, logs nem `session.json`. Ele mostra um treino de
+garagem de 10 voltas para dias sem treino principal, com peso unico por
+exercicio. Os pesos sao calculados a partir dos alvos atuais do treino principal:
+farmer walk usa 45% do terra romeno e remada leve com barra usa 60% da remada
+curvada.
+O comando nao pede nem registra RPE. Quando houver carga, ele tambem mostra a
+montagem: barra reta de 2,50 m com 9 kg para remada com barra, e barra de
+40 cm para farmer walk.
 
 Registro numerico:
 

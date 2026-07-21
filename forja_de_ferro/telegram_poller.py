@@ -201,6 +201,24 @@ def _format_training_msg(exercises):
     return "\n\n".join(lines)
 
 
+def _format_training_b_msg(exercises):
+    lines = ["10 voltas | descanso 60s no fim da volta"]
+    for idx, ex in enumerate(exercises, start=1):
+        target = ex.get("target_weight")
+        weight_line = (
+            "peso corporal"
+            if target is None
+            else f"peso: {_format_weight(target)}kg"
+        )
+        lines.append(
+            f"{idx}. <b>{ex['name']}</b>\n"
+            f"   {ex['work']} | {weight_line}"
+        )
+        if ex.get("loading_note"):
+            lines.append(f"   {ex['loading_note']}")
+    return "\n\n".join(lines)
+
+
 def _format_summary_names(items, limit=4):
     names = [_display_exercise_name(item["name"]) for item in items[:limit]]
     suffix = f" e mais {len(items) - limit}" if len(items) > limit else ""
@@ -295,6 +313,20 @@ def handle_preview():
     msg = _format_training_msg(exercises)
     send(msg)
     send("Previa do treino. Nada foi salvo. Use /gerar para iniciar uma sessao real.")
+
+
+def handle_training_b():
+    try:
+        exercises = ods_ops.build_training_b()
+    except Exception as e:
+        LOGGER.error(
+            "Falha ao gerar treino B tipo=%s",
+            type(e).__name__,
+        )
+        send(f"Erro ao gerar treino B: {e}")
+        return
+
+    send(_format_training_b_msg(exercises))
 
 
 def handle_exercises():
@@ -598,6 +630,7 @@ def main():
                         "<b>Forja de Ferro — Comandos</b>\n\n"
                         "/gerar — cria uma sessao de treino\n"
                         "/prever — mostra uma previa sem salvar\n"
+                        "/treinob — mostra o treino B de garagem\n"
                         "/exercicios — lista os exercicios atuais\n"
                         "/aquecimento — mostra o aquecimento\n"
                         "/volume — volume por grupo muscular\n"
@@ -666,6 +699,10 @@ def main():
 
                 if lower == "/prever":
                     handle_preview()
+                    continue
+
+                if lower == "/treinob":
+                    handle_training_b()
                     continue
 
                 if not _is_session_input(text):

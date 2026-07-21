@@ -112,6 +112,7 @@ Comandos principais:
 
 - `/gerar`
 - `/prever`
+- `/treinob`
 - `/exercicios`
 - `/aquecimento`
 - `/volume`
@@ -139,21 +140,24 @@ Fluxo:
    executar.
 2. O texto gerado mostra `alvo`, calculado pela ultima carga registrada e pelo RPE, e `descanso`.
 3. `/prever` mostra o mesmo formato sem criar sessao, logs ou `session.json`.
-4. Entrada de carga e escrita diretamente no SQLite.
-5. `/desfazer` limpa o ultimo exercicio registrado.
-6. `session.json` e validado contra o SQLite ao ser carregado. Se estiver
+4. `/treinob` mostra um Treino B de garagem sem criar sessao, logs ou
+   `session.json`; os pesos unicos sao calculados pelos alvos atuais do treino
+   principal, sem pedir nem registrar RPE.
+5. Entrada de carga e escrita diretamente no SQLite.
+6. `/desfazer` limpa o ultimo exercicio registrado.
+7. `session.json` e validado contra o SQLite ao ser carregado. Se estiver
    ausente, corrompido ou antigo, o bot reconstrui a sessao mais recente com
    logs pendentes; sessoes completas nao sao reabertas.
-7. Ao registrar o ultimo exercicio, o bot envia resumo com volume, RPE medio,
+8. Ao registrar o ultimo exercicio, o bot envia resumo com volume, RPE medio,
    comparacao com sessao compativel, mudancas de carga, consolidacoes, cargas
    mantidas em RPE 9 e recordes.
-8. `/planos` lista modelos cadastrados e `/plano NOME` seleciona o plano usado
+9. `/planos` lista modelos cadastrados e `/plano NOME` seleciona o plano usado
    por `/gerar`, `/prever`, `/exercicios` e `/volume`.
-9. `/dashboard` atualiza `temp/dashboard-treino.html` e responde com horario,
+10. `/dashboard` atualiza `temp/dashboard-treino.html` e responde com horario,
    ultima sessao, volume e RPE medio geral, sem expor caminho local.
-10. `/peso VALOR` registra o peso corporal com data e `/peso` consulta o valor
+11. `/peso VALOR` registra o peso corporal com data e `/peso` consulta o valor
     atual, a variacao anterior e as ultimas medicoes.
-11. `/cintura VALOR` registra a circunferencia da cintura em centimetros e
+12. `/cintura VALOR` registra a circunferencia da cintura em centimetros e
     `/cintura` consulta o valor atual, a variacao e as ultimas medicoes.
 
 ### `forja_de_ferro/ods_ops.py`
@@ -164,6 +168,8 @@ Funcoes importantes:
 
 - `generate_training()` cria uma sessao SQLite e retorna `(exercises, session_id)`.
 - `preview_training()` monta o treino sem persistir sessao, logs ou `session.json`.
+- `build_training_b()` monta o Treino B de garagem sem persistir sessao, logs ou
+  `session.json`, aplicando percentuais dos alvos atuais do treino principal.
 - `gerar_treino()` e alias de compatibilidade para scripts locais antigos.
 - `read_exercises()` le do SQLite.
 - `read_previous_weights()` retorna a carga mais recente por exercicio.
@@ -180,6 +186,11 @@ Regras importantes:
 - A sequencia ativa vem de `training_plan_exercises`; `TRAINING_EXERCISES` e
   `TREINO_EXERCISES` permanecem apenas como aliases legados.
 - Progressao por RPE: RPE 7 ou menor `+4 kg`, RPE 8 `+2 kg`, RPE 9 mantem, RPE 10 ou maior `-2 kg`, sem RPE mantem.
+- Treino B de garagem: farmer walk usa 45% do Terra Romeno e remada leve com
+  barra usa 60% da remada curvada; o comando `/treinob` exibe peso unico
+  arredondado, 10 voltas fixas,
+  montagem com barra reta 2,50 m de 9 kg para remada com barra e barra de 40 cm
+  para farmer walk, e nao registra RPE.
 - RPE 9 nao representa estagnacao automaticamente. Nesse nivel, manter a carga
   faz parte do metodo para consolidar tecnica, amplitude, controle e qualidade
   das repeticoes. Quando a mesma carga passar a ser registrada como RPE 8 ou

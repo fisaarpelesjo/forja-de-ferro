@@ -97,6 +97,8 @@ Comandos principais em PT-BR:
 - `/gerar` cria uma sessao de treino, envia a lista do treino e em seguida
   indica o primeiro exercicio a executar.
 - `/prever` mostra o treino em texto sem salvar sessao ou logs.
+- `/treinob` mostra o Treino B de garagem com pesos calculados pelos alvos do
+  treino principal, sem criar sessao ou logs.
 - `/exercicios` lista exercicios atuais.
 - `/aquecimento` mostra o aquecimento.
 - `/volume` mostra series por grupo muscular.
@@ -120,6 +122,10 @@ Comandos principais em PT-BR:
   comparacao compativel, mudancas de carga, consolidacoes, cargas mantidas em
   RPE 9 e recordes.
 - `/gerar`, `/prever`, `/exercicios` e `/volume` usam o plano ativo no SQLite.
+- `/treinob` nao registra RPE; farmer walk usa 45% do Terra Romeno,
+  remada leve com barra usa 60% da remada curvada. O comando usa 10 voltas
+  fixas. A montagem usa barra reta 2,50 m de 9 kg para remada com barra e
+  barra de 40 cm para farmer walk.
 - `/dashboard` reutiliza `dashboard.salvar_dashboard()`, nao altera sessoes e
   nao expoe caminho local.
 
@@ -132,6 +138,8 @@ Helpers de operacao de treino:
 
 - `generate_training()` cria sessao e linhas de treino no SQLite.
 - `preview_training()` monta o treino sem persistir sessao, logs ou `session.json`.
+- `build_training_b()` monta o Treino B de garagem sem persistir sessao, logs ou
+  `session.json`.
 - `gerar_treino()` permanece como alias de compatibilidade.
 - `read_exercises()` le exercicios do SQLite.
 - `read_previous_weights()` retorna cargas recentes do SQLite.

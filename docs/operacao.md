@@ -62,6 +62,7 @@ TELEGRAM_TOKEN=seu_token_real
 ```text
 /gerar          Cria uma nova sessao de treino
 /prever         Mostra o treino sem salvar sessao ou logs
+/treinob        Mostra o Treino B de garagem com pesos calculados
 /exercicios     Lista exercicios ativos
 /aquecimento    Mostra aquecimento
 /volume         Mostra estimativa de volume
@@ -81,6 +82,11 @@ Entrada de carga:
 
 Use `/prever` quando quiser conferir formato, alvo e descanso sem iniciar uma
 sessao real.
+
+Use `/treinob` nos dias sem treino principal para receber o treino de garagem
+com 10 voltas e peso unico por exercicio. Ele calcula os pesos a partir dos alvos atuais do
+treino principal, mostra a montagem da carga e nao cria sessao, logs,
+`session.json` nem registros de RPE.
 
 Ao registrar o ultimo exercicio, o bot envia automaticamente o resumo da sessao.
 Nao e necessario executar outro comando.

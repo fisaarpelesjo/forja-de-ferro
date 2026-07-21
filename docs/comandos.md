@@ -10,6 +10,7 @@ Todos os comandos textuais devem ser enviados com `/`.
 | --- | --- |
 | `/gerar` | Cria uma sessao de treino no SQLite. |
 | `/prever` | Mostra o proximo treino sem salvar sessao ou logs. |
+| `/treinob` | Mostra o Treino B de garagem com pesos calculados pelo treino principal. |
 | `/exercicios` | Lista os exercicios do plano ativo. |
 | `/aquecimento` | Mostra a sequencia de aquecimento. |
 | `/volume` | Mostra o volume por grupo muscular. |

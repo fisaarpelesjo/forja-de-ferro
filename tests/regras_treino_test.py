@@ -223,6 +223,50 @@ def main():
             assert "Plano ativo: <b>A</b>" in mensagens[-1]
             assert db_ops.get_active_training_plan()["name"] == "A"
 
+            treino_a = db_ops.create_session("2026-06-08", "A")
+            for sort_order, (name, weight, rpe) in enumerate(
+                [
+                    ("Agachamento com barra nas costas", 67, 8),
+                    ("Levantamento Terra Romeno", 73, 9),
+                    ("Remada curvada (barra)", 61, 9),
+                ]
+            ):
+                treino_a_log = db_ops.log_exercise(treino_a, name, 3, 8, sort_order)
+                db_ops.update_log_weight(treino_a_log, weight, rpe)
+
+            treino_b = ods_ops.build_training_b()
+            treino_b_pesos = {
+                item["name"]: item["target_weight"]
+                for item in treino_b
+            }
+            assert treino_b_pesos["Farmer walk ida e volta"] == 34
+            assert treino_b_pesos["Marcha forte no lugar com joelho alto"] is None
+            assert treino_b_pesos["Agachamento com pausa"] is None
+            assert treino_b_pesos["Remada leve com barra"] == 38
+            assert treino_b_pesos["Flexão"] is None
+            assert (
+                treino_b[0]["loading_note"]
+                == "2 barras de 40 cm + 17kg por mao"
+            )
+            assert (
+                treino_b[1]["loading_note"]
+                is None
+            )
+            assert (
+                treino_b[2]["loading_note"]
+                is None
+            )
+            assert (
+                treino_b[3]["loading_note"]
+                == "barra reta 2,50 m 9kg + 29kg de anilhas"
+            )
+            telegram_poller.handle_training_b()
+            assert "10 voltas | descanso 60s" in mensagens[-1]
+            assert "Treino B - garagem" not in mensagens[-1]
+            assert "Farmer walk ida e volta" in mensagens[-1]
+            assert "peso: 34kg" in mensagens[-1]
+            assert "2 barras de 40 cm + 17kg por mao" in mensagens[-1]
+
             legacy_db = temp_path / "legado.db"
             conn = sqlite3.connect(legacy_db)
             try:

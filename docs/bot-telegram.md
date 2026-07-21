@@ -43,6 +43,7 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 ```text
 /gerar          cria uma sessao de treino
 /prever         mostra uma previa sem salvar
+/treinob        mostra o treino B de garagem
 /exercicios     lista exercicios atuais
 /aquecimento    mostra o aquecimento
 /volume         mostra volume por musculo
@@ -219,6 +220,33 @@ handle_preview()
 Esse comando nao cria linhas em `training_sessions`, nao cria `training_logs` e
 nao escreve `session.json`. Ele pode inicializar o SQLite se o catalogo ainda
 nao existir, porque le os exercicios ativos.
+
+## `/treinob`
+
+Mostra o Treino B de garagem com 10 voltas fixas, sem criar sessao, logs ou
+`session.json`.
+
+Fluxo:
+
+```text
+handle_training_b()
+  -> ods_ops.build_training_b()
+  -> _format_training_b_msg(exercises)
+  -> send(texto do treino B)
+```
+
+O Treino B usa pesos unicos calculados pelos alvos atuais do treino principal,
+sem pedir nem registrar RPE:
+
+```text
+Farmer walk ida e volta             -> 45% do Levantamento Terra Romeno
+Remada leve com barra               -> 60% da Remada curvada
+```
+
+Os pesos sao arredondados para carga montavel. Quando houver carga, o bot
+mostra a montagem: barra reta de 2,50 m com 9 kg para remada com barra, e barra
+de 40 cm para farmer walk. Marcha forte no lugar, agachamento com pausa,
+flexao e sombra de boxe ou corda sem corda usam peso corporal.
 
 ## Descanso Entre Series
 
