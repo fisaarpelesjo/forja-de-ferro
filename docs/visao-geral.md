@@ -108,8 +108,8 @@ O agachamento com barra nas costas voltou a ser o primeiro exercicio para
 sessoes futuras, com a barra apoiada no trapezio/ombro. O agachamento sumô com
 barra à frente complementa o treino com foco principal nos adutores. O supino
 inclinado substitui o `Pullover (barra)` e a rosca martelo substitui `Rosca
-direta` para sessoes futuras. `Supino fechado (barra)` esta inativo; historico
-antigo permanece como historico.
+direta` para sessoes futuras. `Supino fechado (barra)` e `Remada alta (barra)`
+estao inativos; historico antigo permanece como historico.
 
 ## Idioma
 

@@ -19,7 +19,6 @@ DEFAULT_EXERCISES = [
     {"name": "Remada curvada alta no peito (barra)", "sets": 3, "reps": 10},
     {"name": "Desenvolvimento (barra em pé)", "sets": 3, "reps": 5},
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
-    {"name": "Remada alta (barra)", "sets": 3, "reps": 10},
     {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
 ]
 

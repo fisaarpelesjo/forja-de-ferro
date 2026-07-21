@@ -321,8 +321,7 @@ Catalogo ativo atual:
 7.  Remada curvada alta no peito (barra)       3x10
 8.  Desenvolvimento (barra em pé)              3x5
 9.  Levantamento Terra Romeno                  3x8
-10. Remada alta (barra)                        3x10
-11. Rosca martelo (barra H)                    3x8
+10. Rosca martelo (barra H)                    3x8
 ```
 
 Nomes canonicos devem permanecer no SQLite porque sao usados no historico,
@@ -332,7 +331,8 @@ progressao, grupos musculares e dashboard. A interface pode usar
 
 Logs historicos de exercicios substituidos ou renomeados podem permanecer no
 banco como historico. Exemplos: `Agachamento (barra)`, `Agachamento Zercher`,
-`Zercher squat`, `Pullover (barra)`, `Tríceps testa` e `Supino fechado (barra)`.
+`Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)`
+e `Remada alta (barra)`.
 
 ## Descanso E Montagem De Carga
 
@@ -348,7 +348,6 @@ Remada curvada (barra)                 3 min
 Desenvolvimento (barra em pé)          4 min
 Levantamento Terra Romeno              4 min
 Pullover (barra)                       2 min
-Remada alta (barra)                    2 min
 Remada curvada alta no peito (barra)   2 min
 Rosca direta                           2 min
 Rosca martelo (barra H)                2 min
@@ -372,7 +371,7 @@ Mapeamento atual:
   barra, remada curvada, desenvolvimento, levantamento terra romeno e remada
   curvada alta no peito;
 - barra oca de 1,50 m e 1 kg: agachamento sumô com barra à frente;
-- barra W de 6 kg: tríceps testa, pullover e remada alta;
+- barra W de 6 kg: tríceps testa e pullover;
 - barra H de 9 kg: rosca martelo.
 
 A observacao aparece no exercicio atual/proximo e no `/status`; nao aparece na

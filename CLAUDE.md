@@ -182,7 +182,7 @@ Catalogo atual:
 - `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg; a
   observacao mostra a carga total como
   `barra oca 1,50 m 1kg + Xkg de anilhas`.
-- `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
+- `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Primeiro exercicio ativo: `Agachamento com barra nas costas` (`3x5`).
 - Segundo exercicio ativo: `Agachamento sumô com barra à frente` (`3x10`),
@@ -191,10 +191,10 @@ Catalogo atual:
   `Supino reto back-off`, substituindo `Pullover (barra)` para sessoes futuras.
 - Setimo exercicio ativo: `Remada curvada alta no peito (barra)` (`3x10`),
   logo depois de `Remada curvada (barra)`.
-- Decimo primeiro exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
-- `Supino fechado (barra)` esta inativo para sessoes futuras.
+- Decimo exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
+- `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - O agachamento com barra nas costas usa a barra apoiada no trapezio/ombro.
-- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa` e `Supino fechado (barra)`.
+- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` e `Remada alta (barra)`.
 
 ### `forja_de_ferro/db_ops.py`
 

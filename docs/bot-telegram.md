@@ -183,8 +183,8 @@ Um alvo de 40 kg aparece como:
 barra oca 1,50 m 1kg + 39kg de anilhas
 ```
 
-Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`, a barra W
-pesa 6 kg, entao um alvo de 18 kg aparece como:
+Para `Tríceps testa` e `Pullover (barra)`, a barra W pesa 6 kg, entao um alvo
+de 18 kg aparece como:
 
 ```text
 barra W 6kg + 12kg de anilhas

@@ -49,10 +49,6 @@ def _assert_equipamento_e_descanso():
         == "barra W 6kg + 10kg de anilhas"
     )
     assert (
-        ods_ops.format_loading_note("Remada alta (barra)", 18)
-        == "barra W 6kg + 12kg de anilhas"
-    )
-    assert (
         ods_ops.format_loading_note("Rosca martelo (barra H)", 18)
         == "barra H 9kg + 9kg de anilhas"
     )
@@ -178,6 +174,10 @@ def main():
             assert all(ex["name"] in muscle_groups for ex in active_exercises)
             assert all(
                 ex["name"] != "Supino fechado (barra)"
+                for ex in active_exercises
+            )
+            assert all(
+                ex["name"] != "Remada alta (barra)"
                 for ex in active_exercises
             )
             agachamento_groups = db_ops.get_muscle_groups(

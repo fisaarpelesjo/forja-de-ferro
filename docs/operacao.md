@@ -267,9 +267,9 @@ Catalogo atual:
 - Ele usa a barra apoiada no trapezio/ombro.
 - `Agachamento sumô com barra à frente` e o segundo exercicio e esta como `3x10`.
 - `Remada curvada alta no peito (barra)` e o setimo exercicio e esta como `3x10`.
-- `Rosca martelo (barra H)` e o decimo primeiro exercicio e esta como `3x8`.
+- `Rosca martelo (barra H)` e o decimo exercicio e esta como `3x8`.
 - Ela substitui `Rosca direta` em sessoes futuras para usar a barra H de 9 kg.
-- `Supino fechado (barra)` esta inativo para sessoes futuras.
+- `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - Historico antigo pode continuar com nomes antigos ou inativos.
 - Se o catalogo mudar de novo, atualizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`.
 

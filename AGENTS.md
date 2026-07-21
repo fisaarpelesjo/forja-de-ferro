@@ -217,7 +217,7 @@ Regras importantes:
 - `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg; a
   observacao deve mostrar carga total como
   `barra oca 1,50 m 1kg + Xkg de anilhas`.
-- `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao deve mostrar carga total como `barra W 6kg + Xkg de anilhas`.
+- `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao deve mostrar carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao deve mostrar carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento com barra nas costas` (`3x5`).
@@ -227,9 +227,9 @@ Regras importantes:
   de `Supino reto back-off`, substituindo `Pullover (barra)` para sessoes futuras.
 - O setimo exercicio ativo e `Remada curvada alta no peito (barra)` (`3x10`),
   logo depois de `Remada curvada (barra)`.
-- O decimo primeiro exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
-- `Supino fechado (barra)` esta inativo para sessoes futuras.
-- Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa` ou `Supino fechado (barra)` podem permanecer como historico.
+- O decimo exercicio ativo e `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
+- `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
+- Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` ou `Remada alta (barra)` podem permanecer como historico.
 
 ### `forja_de_ferro/db_ops.py`
 

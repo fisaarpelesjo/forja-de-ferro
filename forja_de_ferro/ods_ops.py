@@ -9,7 +9,7 @@ from . import db_ops
 
 SESSION_FILE = Path(__file__).resolve().parents[1] / "session.json"
 
-TRAINING_EXERCISES = range(0, 11)
+TRAINING_EXERCISES = range(0, 10)
 TREINO_EXERCISES = TRAINING_EXERCISES
 RPE_PROGRESSION_KG = {
     7: 4.0,
@@ -100,7 +100,6 @@ REST_INTERVALS = {
     "Desenvolvimento (barra em pe)": "4 min",
     "Levantamento Terra Romeno": "4 min",
     "Pullover (barra)": "2 min",
-    "Remada alta (barra)": "2 min",
     "Remada curvada alta no peito (barra)": "2 min",
     "Rosca direta": "2 min",
     "Rosca martelo (barra H)": "2 min",
@@ -135,7 +134,6 @@ LOAD_EQUIPMENT = {
         "weight": 11.0,
     },
     "Pullover (barra)": {"name": "barra W", "weight": 6.0},
-    "Remada alta (barra)": {"name": "barra W", "weight": 6.0},
     "Remada curvada alta no peito (barra)": {
         "name": "barra reta 2,20 m",
         "weight": 11.0,

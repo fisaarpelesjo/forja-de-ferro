@@ -218,13 +218,13 @@ Regras importantes:
 - `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg; a
   observacao mostra a carga total como
   `barra oca 1,50 m 1kg + Xkg de anilhas`.
-- `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
+- `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Manter `TREINO_EXERCISES` apenas como alias de compatibilidade.
 - O primeiro exercicio ativo e `Agachamento com barra nas costas` (`3x5`).
 - O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
-- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa` e `Supino fechado (barra)`.
+- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` e `Remada alta (barra)`.
 
 ### `forja_de_ferro/db_ops.py`
 
@@ -357,10 +357,9 @@ Ordem ativa atual:
 7. Remada curvada alta no peito (barra) - 3x10
 8. Desenvolvimento (barra em pe) - 3x5
 9. Levantamento Terra Romeno - 3x8
-10. Remada alta (barra) - 3x10
-11. Rosca martelo (barra H) - 3x8
+10. Rosca martelo (barra H) - 3x8
 
-`Supino fechado (barra)` esta inativo para sessoes futuras.
+`Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 
 ## Documentacao
 

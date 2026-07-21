@@ -257,11 +257,13 @@ O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
 com foco principal nos adutores. O quinto e `Supino inclinado (barra)` (`3x8`),
 logo depois de `Supino reto back-off`, substituindo `Pullover (barra)` para
 sessoes futuras. O setimo e `Remada curvada alta no peito (barra)` (`3x10`),
-logo depois de `Remada curvada (barra)`. O decimo primeiro e `Rosca martelo
+logo depois de `Remada curvada (barra)`. O decimo e `Rosca martelo
 (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras. `Supino
-fechado (barra)` esta inativo para sessoes futuras. Historico antigo de
+fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
+Historico antigo de
 `Agachamento Zercher`, `Rosca direta`, `Pullover (barra)`, `Tríceps testa` e
-`Supino fechado (barra)` permanece como historico salvo no SQLite.
+`Supino fechado (barra)` e `Remada alta (barra)` permanece como historico salvo
+no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
@@ -338,8 +340,8 @@ carga, consolidacoes e recordes. Para comparar volume, procura a sessao anterior
 com a mesma sequencia de exercicios preenchidos. Isso evita comparar diretamente
 modelos de treino diferentes.
 
-Para `Tríceps testa`, `Pullover (barra)` e `Remada alta (barra)`,
-`ods_ops.format_loading_note()` usa barra W de 6 kg e calcula as anilhas como
+Para `Tríceps testa` e `Pullover (barra)`, `ods_ops.format_loading_note()` usa
+barra W de 6 kg e calcula as anilhas como
 `target_weight - 6`. Exemplo: `target_weight = 18` gera
 `barra W 6kg + 12kg de anilhas`.
 

@@ -156,7 +156,6 @@ def main():
             assert maintained_first["target_weight"] == 80.5
             assert ods_ops.format_loading_note("Tríceps testa", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Pullover (barra)", 16.0) == "barra W 6kg + 10kg de anilhas"
-            assert ods_ops.format_loading_note("Remada alta (barra)", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Rosca martelo (barra H)", 18.0) == "barra H 9kg + 9kg de anilhas"
             assert ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40.0) == "barra oca 1,50 m 1kg + 39kg de anilhas"
             assert ods_ops.format_loading_note("Supino reto (barra)", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
