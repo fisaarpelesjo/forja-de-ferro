@@ -168,19 +168,13 @@ no `/status` e na indicacao do proximo exercicio.
 
 Quando o exercicio atual ou o proximo exercicio tiver equipamento de peso fixo,
 o bot tambem mostra a montagem da carga. Nos supinos com barra, `Agachamento com barra nas costas`,
-`Remada curvada (barra)`, `Desenvolvimento (barra em pé)`, `Levantamento Terra
-Romeno` e `Remada curvada alta no peito (barra)`, a barra reta de 2,20 m pesa
-11 kg. Um alvo de 40 kg aparece como:
+`Agachamento sumô com barra à frente`, `Remada curvada (barra)`,
+`Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada curvada
+alta no peito (barra)`, a barra reta de 2,20 m pesa 11 kg. Um alvo de 40 kg
+aparece como:
 
 ```text
 barra reta 2,20 m 11kg + 29kg de anilhas
-```
-
-No `Agachamento sumô com barra à frente`, a barra oca de 1,50 m pesa 1 kg.
-Um alvo de 40 kg aparece como:
-
-```text
-barra oca 1,50 m 1kg + 39kg de anilhas
 ```
 
 Para `Tríceps testa` e `Pullover (barra)`, a barra W pesa 6 kg, entao um alvo
@@ -253,9 +247,8 @@ Intervalos atuais:
 
 ```text
 Agachamento com barra nas costas, Supino reto principal, Supino reto back-off, Supino inclinado (barra), Desenvolvimento, Levantamento Terra Romeno: 4 min
-Remada curvada: 3 min
+Remada curvada, Rosca martelo (barra H): 3 min
 Acessorios restantes: 2 min
-Rosca martelo (barra H): 2 min
 ```
 
 ## `/exercicios`

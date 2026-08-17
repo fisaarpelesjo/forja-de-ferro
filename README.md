@@ -350,7 +350,7 @@ Levantamento Terra Romeno              4 min
 Pullover (barra)                       2 min
 Remada curvada alta no peito (barra)   2 min
 Rosca direta                           2 min
-Rosca martelo (barra H)                2 min
+Rosca martelo (barra H)                3 min
 Tríceps testa                          2 min
 Padrao para demais exercicios          2 min
 ```
@@ -360,7 +360,6 @@ equipamento fixo:
 
 ```text
 barra reta 2,20 m 11kg + Xkg de anilhas
-barra oca 1,50 m 1kg + Xkg de anilhas
 barra W 6kg + Xkg de anilhas
 barra H 9kg + Xkg de anilhas
 ```
@@ -368,9 +367,8 @@ barra H 9kg + Xkg de anilhas
 Mapeamento atual:
 
 - barra reta de 2,20 m e 11 kg: agachamento com barra nas costas, supinos com
-  barra, remada curvada, desenvolvimento, levantamento terra romeno e remada
-  curvada alta no peito;
-- barra oca de 1,50 m e 1 kg: agachamento sumô com barra à frente;
+  barra, agachamento sumô com barra à frente, remada curvada, desenvolvimento,
+  levantamento terra romeno e remada curvada alta no peito;
 - barra W de 6 kg: tríceps testa e pullover;
 - barra H de 9 kg: rosca martelo.
 

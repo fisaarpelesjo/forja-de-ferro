@@ -38,6 +38,7 @@ def _assert_equipamento_e_descanso():
     assert ods_ops.get_rest_interval("Desenvolvimento (barra em pé)") == "4 min"
     assert ods_ops.get_rest_interval("Supino reto back-off") == "4 min"
     assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "4 min"
+    assert ods_ops.get_rest_interval("Rosca martelo (barra H)") == "3 min"
     assert ods_ops.get_rest_interval("Tríceps testa") == "2 min"
     assert ods_ops.get_rest_interval("Exercicio desconhecido") == "2 min"
     assert (
@@ -54,10 +55,11 @@ def _assert_equipamento_e_descanso():
     )
     assert (
         ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40)
-        == "barra oca 1,50 m 1kg + 39kg de anilhas"
+        == "barra reta 2,20 m 11kg + 29kg de anilhas"
     )
     for exercise_name in (
         "Agachamento com barra nas costas",
+        "Agachamento sumô com barra à frente",
         "Supino reto (barra)",
         "Supino reto back-off",
         "Supino inclinado (barra)",

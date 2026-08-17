@@ -84,6 +84,7 @@ def main():
             )
             assert rosca_martelo["name"] == "Rosca martelo (barra H)"
             assert rosca_martelo["target_weight"] == 16.0
+            assert rosca_martelo["rest_interval"] == "3 min"
             assert rosca_martelo["loading_note"] == "barra H 9kg + 7kg de anilhas"
             assert "descanso: 4 min" in sent_messages[-3]
             assert "<b>Supino fechado</b>" not in sent_messages[-3]
@@ -157,7 +158,7 @@ def main():
             assert ods_ops.format_loading_note("Tríceps testa", 18.0) == "barra W 6kg + 12kg de anilhas"
             assert ods_ops.format_loading_note("Pullover (barra)", 16.0) == "barra W 6kg + 10kg de anilhas"
             assert ods_ops.format_loading_note("Rosca martelo (barra H)", 18.0) == "barra H 9kg + 9kg de anilhas"
-            assert ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40.0) == "barra oca 1,50 m 1kg + 39kg de anilhas"
+            assert ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
             assert ods_ops.format_loading_note("Supino reto (barra)", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
             assert ods_ops.format_loading_note("Remada curvada (barra)", 40.0) == "barra reta 2,20 m 11kg + 29kg de anilhas"
             triceps = {"name": "Tríceps testa", "sets": 3, "reps": 8, "target_weight": 18.0}

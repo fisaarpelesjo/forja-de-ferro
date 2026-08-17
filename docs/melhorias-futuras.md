@@ -484,14 +484,14 @@ Antes de adicionar um item:
 - perfil corporal persistido com altura e idade
 - calculo de IMC e relacao cintura/altura no dashboard usando as medicoes mais
   recentes
+- Agachamento sumô com barra à frente passou a usar barra reta de 2,20 m e
+  11 kg na montagem, preservando a carga total registrada
 
 ### 2026-06-24
 
 - configuracao da barra reta de 2,20 m e 11 kg nos supinos, Agachamento
   Zercher, Remada curvada, Desenvolvimento em pe, Levantamento Terra Romeno e
   Remada curvada alta no peito
-- configuracao da barra oca de 1,50 m e 1 kg no Agachamento sumô com barra à
-  frente
 
 ### 2026-06-23
 

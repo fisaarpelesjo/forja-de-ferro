@@ -170,18 +170,17 @@ Catalogo atual:
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
+- `Rosca martelo (barra H)` usa descanso de 3 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
   renomear os nomes canonicos no SQLite para isso, pois eles sao usados no
   historico e na progressao.
-- `Agachamento com barra nas costas`, os supinos com barra, `Remada curvada (barra)`,
-  `Desenvolvimento (barra em pé)`, `Levantamento Terra Romeno` e `Remada
-  curvada alta no peito (barra)` usam barra reta de 2,20 m e 11 kg; a observacao
-  mostra a carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
-- `Agachamento sumô com barra à frente` usa barra oca de 1,50 m e 1 kg; a
-  observacao mostra a carga total como
-  `barra oca 1,50 m 1kg + Xkg de anilhas`.
+- `Agachamento com barra nas costas`, `Agachamento sumô com barra à frente`, os
+  supinos com barra, `Remada curvada (barra)`, `Desenvolvimento (barra em pé)`,
+  `Levantamento Terra Romeno` e `Remada curvada alta no peito (barra)` usam
+  barra reta de 2,20 m e 11 kg; a observacao mostra a carga total como
+  `barra reta 2,20 m 11kg + Xkg de anilhas`.
 - `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
 - `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
 - Primeiro exercicio ativo: `Agachamento com barra nas costas` (`3x5`).

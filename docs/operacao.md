@@ -170,9 +170,8 @@ base para preservar a qualidade tecnica:
 
 ```text
 Compostos pesados, Supino reto back-off e Supino inclinado (barra): 4 min
-Compostos medios, como Remada curvada: 3 min
+Compostos medios e Rosca martelo (barra H): 3 min
 Acessorios: 2 min
-Bracos: 2 min
 ```
 
 ## Arquivos Para Backup

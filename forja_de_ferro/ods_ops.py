@@ -102,7 +102,7 @@ REST_INTERVALS = {
     "Pullover (barra)": "2 min",
     "Remada curvada alta no peito (barra)": "2 min",
     "Rosca direta": "2 min",
-    "Rosca martelo (barra H)": "2 min",
+    "Rosca martelo (barra H)": "3 min",
     "Tríceps testa": "2 min",
     "Triceps testa": "2 min",
 }
@@ -114,8 +114,8 @@ LOAD_EQUIPMENT = {
     },
     "Agachamento Zercher": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Agachamento sumô com barra à frente": {
-        "name": "barra oca 1,50 m",
-        "weight": 1.0,
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
     },
     "Supino reto (barra)": {"name": "barra reta 2,20 m", "weight": 11.0},
     "Supino reto back-off": {"name": "barra reta 2,20 m", "weight": 11.0},
