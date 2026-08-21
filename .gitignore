@@ -12,6 +12,17 @@ pending_log.csv
 temp/
 backups/
 exportacoes/
+# Banco vivo NAO versionado: o bot roda 24/7 na VPS e escreve nele
+# continuamente. Versionar um SQLite que muda sozinho gera conflito binario a
+# cada pull, e conflito de binario significa perder um dos lados -- a VPS e a
+# fonte da verdade do banco.
+#
+# Backup: `gerenciar_dados.py backup` (SQLite) e `gerenciar_dados.py exportar`
+# (JSON) gravam em backups/ e exportacoes/, ambos ignorados de proposito --
+# este repositorio e PUBLICO e o banco contem dados pessoais de saude (peso,
+# medidas corporais, idade, historico de treino/dieta). Backup off-site, se
+# desejado, deve sair por um canal privado, nao por commit aqui.
+data/*.db
 data/*.db-shm
 data/*.db-wal
 temp
