@@ -322,8 +322,12 @@ TECNICAS = {
             "Assim que a mao voltar a guarda, de 1 ou 2 passos laterais.",
             "Use a mecanica normal de deslocamento: sai primeiro o pe do lado "
             "para onde voce vai.",
+            "Prefira sair para FORA do lado do golpe mais forte do adversario. "
+            "Contra um destro, sair para a sua esquerda te tira da linha do direto dele.",
             "Guarda alta durante todo o deslocamento — ela nao desce nem por um instante.",
-            "Os olhos continuam no alvo enquanto os pes se movem.",
+            "Os olhos continuam no alvo enquanto os pes se movem; nao olhe para o chao.",
+            "A saida acontece IMEDIATAMENTE apos o golpe, no mesmo folego. Se voce "
+            "parar meio segundo antes de sair, o proposito se perdeu.",
             "Recomponha a base antes de pensar no proximo golpe.",
         ],
         "giro": [
@@ -334,6 +338,9 @@ TECNICAS = {
         "checagem": [
             "Filme de frente: a guarda nao pode oscilar durante os passos.",
             "Voce deve terminar em base montada, pronto para bater de novo.",
+            "Marque uma linha no chao: voce saiu dela, ou so recuou em cima dela?",
+            "Assista em camera lenta: existe uma pausa entre o golpe e a saida? "
+            "Se existe, os dois ainda sao dois movimentos, nao um.",
         ],
         "erros": [
             "Parar para admirar o proprio golpe.",
@@ -623,7 +630,10 @@ TECNICAS = {
             "Contraia o gluteo com forca — e ele que impede o quadril de cair.",
             "Contraia o abdomen como se fosse levar um soco na barriga.",
             "Olhe para o chao, um palmo a frente das maos, mantendo o pescoco neutro.",
+            "Empurre o chao com os antebracos, afastando as escapulas — nao deixe "
+            "o peito afundar entre os ombros.",
             "Respire normalmente durante todo o tempo.",
+            "Para descer, apoie os joelhos primeiro; nao desabe de uma vez.",
         ],
         "checagem": [
             "Filme de lado: uma linha reta deve passar por calcanhar, quadril e ombro.",
@@ -672,21 +682,42 @@ TECNICAS = {
         "resumo": "Preparar as articulacoes que vao girar. Movimento, nao "
                   "alongamento parado.",
         "inicio": [
-            "Em pe, espaco livre ao redor.",
+            "Em pe, espaco livre ao redor, pes na largura do quadril.",
+            "Sem pressa: mobilidade feita rapido nao chega ao fim da amplitude "
+            "e por isso nao prepara nada.",
         ],
         "execucao": [
-            "Ombros: 10 circulos grandes para tras, 10 para frente.",
-            "Quadril: joelho elevado a frente, 10 circulos por lado, abrindo "
-            "para fora e fechando para dentro.",
-            "Tornozelo: 10 circulos em cada lado, depois um agachamento "
-            "profundo mantido por 20 s.",
-            "Coluna toracica: maos na nuca, 10 rotacoes de tronco para cada lado.",
-            "Punhos: 10 circulos em cada sentido, com a mao fechada.",
+            "OMBROS:",
+            "10 circulos grandes para tras, levando o braco o mais longe que "
+            "conseguir sem forcar. Depois 10 para frente.",
+            "10 aberturas: bracos a frente, abre ate sentir o peito esticar, fecha.",
+            "QUADRIL:",
+            "Joelho elevado a frente, 10 circulos por lado: abre para fora, "
+            "desce, fecha para dentro.",
+            "10 balancos da perna para frente e para tras, solta, apoiando-se "
+            "na parede se precisar.",
+            "TORNOZELO:",
+            "10 circulos em cada sentido, com a ponta do pe apoiada no chao.",
+            "Agachamento profundo mantido por 20 s, com os calcanhares no chao. "
+            "Se o calcanhar subir, apoie-se em algo e desca ate onde der.",
+            "COLUNA TORACICA:",
+            "Maos na nuca, 10 rotacoes de tronco para cada lado, mantendo o "
+            "quadril parado de frente.",
+            "PUNHOS:",
+            "10 circulos em cada sentido com a mao fechada, para o punho chegar "
+            "aquecido no primeiro soco.",
         ],
         "giro": [
             "Esta e a preparacao especifica dos giros que voce vai usar depois: "
             "quadril e tornozelo sao as duas articulacoes que giram no chute baixo.",
             "Se o tornozelo estiver rigido, o pe de apoio nao gira o suficiente.",
+        ],
+        "checagem": [
+            "No agachamento profundo, os calcanhares ficam no chao? Se nao, o "
+            "tornozelo esta rigido e o chute baixo vai sofrer.",
+            "Na rotacao de tronco, o quadril continuou de frente? Se ele girou "
+            "junto, voce nao mobilizou a coluna, so girou o corpo inteiro.",
+            "Ao terminar, voce deve estar levemente aquecido e sem falta de ar.",
         ],
         "erros": [
             "Alongamento estatico longo antes do treino: reduz forca e nao previne lesao.",
@@ -701,11 +732,15 @@ TECNICAS = {
             "Em pe, guarda alta, como se fosse bater.",
         ],
         "execucao": [
-            "Levante o joelho direito ate a altura do quadril.",
-            "No topo, ESTENDA o quadril a frente, como faria na joelhada.",
-            "Desca controlado e repita do outro lado.",
+            "Levante o joelho direito ate a altura do quadril, na diagonal e a frente.",
+            "No topo, ESTENDA o quadril a frente, como faria na joelhada. Este e "
+            "o ponto do exercicio; sem isso e so levantar a perna.",
+            "Segure meio segundo no topo, sentindo o gluteo do lado que sustenta.",
+            "Desca controlado, sem deixar o pe bater no chao.",
+            "Repita do outro lado, alternando.",
             "Ritmo controlado: nao e corrida no lugar.",
-            "Abdomen contraido, tronco vertical.",
+            "Abdomen contraido e tronco vertical do inicio ao fim.",
+            "Maos na guarda, como se estivesse pronto para bater.",
         ],
         "giro": [
             "Sem giro nesta versao. O objetivo aqui e isolar a EXTENSAO do quadril, "
@@ -713,8 +748,12 @@ TECNICAS = {
             "O pivo do pe so entra depois, em /como joelho.",
         ],
         "checagem": [
-            "Filme de lado: o quadril avanca no topo do movimento?",
-            "O joelho passa da linha do quadril?",
+            "Filme de lado: o quadril avanca no topo do movimento? Se o tronco "
+            "so balanca e o quadril fica parado, voce nao esta treinando a joelhada.",
+            "O joelho chega a altura do quadril ou para antes?",
+            "O tronco continuou vertical, ou voce se inclinou para tras para "
+            "'ajudar' a perna a subir?",
+            "Voce consegue manter a guarda alta durante as 20 repeticoes?",
         ],
         "erros": [
             "Correr no lugar sem realmente levantar o joelho.",
@@ -732,15 +771,27 @@ TECNICAS = {
             "Cotovelos proximos ao corpo, maos na altura do quadril.",
         ],
         "execucao": [
+            "Comece sem a corda: 30 s saltando no lugar, baixo, so para achar o ritmo.",
+            "Pegue a corda com as maos na altura do quadril, um palmo afastadas do corpo.",
             "Saltos baixos, de 2 a 3 cm do chao. O objetivo e ritmo, nao altura.",
             "Aterrisse na ponta dos pes, com o joelho levemente flexionado para absorver.",
+            "Os pes saem e voltam juntos, sem alternar, enquanto voce aprende.",
             "O giro da corda vem do PUNHO, nao do ombro nem do cotovelo.",
-            "Mantenha o tronco ereto e o olhar a frente.",
-            "Se errar, recomece sem parar o ritmo do corpo.",
+            "Mantenha o tronco ereto e o olhar a frente, nao na corda.",
+            "Se errar, recomece sem parar o ritmo do corpo — a pausa longa e o "
+            "que quebra o condicionamento.",
+            "Comece com blocos de 30 s e va aumentando conforme a panturrilha aguentar.",
         ],
         "giro": [
             "O QUE GIRA: apenas os punhos, em circulos pequenos.",
             "Se o braco inteiro esta girando, voce vai cansar o ombro antes das pernas.",
+        ],
+        "checagem": [
+            "OUCA: deve haver UM som por salto. Dois sons seguidos significam que "
+            "voce esta dando um salto extra entre as passagens da corda.",
+            "Os calcanhares nao devem encostar no chao em nenhum salto.",
+            "Se a panturrilha queimar antes de 1 min, os saltos estao altos demais.",
+            "Filme de frente: os cotovelos devem ficar praticamente parados.",
         ],
         "erros": [
             "Saltos altos: sobrecarrega panturrilha e tendao de aquiles, a lesao "
@@ -757,16 +808,30 @@ TECNICAS = {
             "Base montada, a uma distancia em que o jab estendido alcance o saco.",
         ],
         "execucao": [
-            "Acompanhe o saco com passos curtos, sem sair da base.",
+            "Acompanhe o saco com passos curtos, sem sair da base nem cruzar os pes.",
+            "Leia o balanco: o saco tem um ponto mais proximo e um mais distante. "
+            "Voce trabalha quando ele esta indo embora, nao quando esta vindo.",
             "Espere o saco passar o ponto mais proximo antes de voltar a bater.",
-            "Use jabs leves para amortecer e reposicionar o saco.",
-            "Se precisar para-lo, use a palma aberta na LATERAL do saco.",
-            "Mantenha a guarda alta enquanto controla — e o momento em que "
-            "todo mundo relaxa a mao.",
+            "Use jabs leves para amortecer e reposicionar o saco em vez de segura-lo.",
+            "Se precisar realmente para-lo, use a palma aberta na LATERAL do saco, "
+            "acompanhando o movimento dele por um instante antes de frear.",
+            "Mantenha a guarda alta enquanto controla — e exatamente o momento em "
+            "que todo mundo relaxa a mao.",
+            "Continue respirando no ritmo do round; controlar nao e descansar.",
         ],
         "giro": [
             "Sem giro proprio. Voce usa o deslocamento normal, mantendo os angulos "
             "dos pes da base.",
+            "Se precisar mudar de angulo em relacao ao saco, faca com passos "
+            "laterais, circulando, nao girando os pes no lugar.",
+        ],
+        "checagem": [
+            "Filme de lado: voce esta batendo no saco quando ele volta? Isso e o "
+            "erro que mais machuca punho de iniciante.",
+            "Ao fim do round de controle, seus pes devem estar em base montada, "
+            "nao esparramados.",
+            "Se voce precisou agarrar a corrente alguma vez, o balanco esta maior "
+            "do que voce consegue controlar — bata mais leve.",
         ],
         "erros": [
             "Agarrar o topo do saco ou a corrente com violencia — quem paga e o ombro.",
