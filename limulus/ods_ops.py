@@ -1,4 +1,4 @@
-"""Operacoes de treino da Forja de Ferro."""
+"""Operacoes de treino do Limulus."""
 
 import json
 import math

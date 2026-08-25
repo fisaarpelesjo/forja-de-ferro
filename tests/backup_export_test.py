@@ -10,8 +10,8 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from forja_de_ferro import backup_ops
-from forja_de_ferro import db_ops
+from limulus import backup_ops
+from limulus import db_ops
 
 
 def _session_count(database_path):
@@ -26,7 +26,7 @@ def main():
     original_db_path = db_ops.DB_PATH
     original_data_dir = db_ops.DATA_DIR
 
-    with tempfile.TemporaryDirectory(prefix="forja-de-ferro-backup-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="limulus-backup-") as temp_dir:
         temp_path = Path(temp_dir)
         source_db = temp_path / "origem.db"
         restored_db = temp_path / "restaurado.db"

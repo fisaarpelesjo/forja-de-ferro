@@ -1,10 +1,10 @@
 # Visao Geral Do Sistema
 
-A Forja de Ferro e um diario de treino controlado pelo Telegram.
+O Limulus e um diario de treino controlado pelo Telegram.
 
 Responsabilidades principais:
 
-1. manter o SQLite versionado em `data/forja_de_ferro.db`
+1. manter o SQLite versionado em `data/limulus.db`
 2. rodar um bot Telegram com long polling
 3. guardar a sessao ativa em `session.json`
 4. gerar um dashboard HTML local com a evolucao do volume de treino
@@ -73,15 +73,15 @@ start_bot.bat
 
 `gerar_frames.py`: extrai frames de videos locais usando `ffmpeg`.
 
-`forja_de_ferro/telegram_poller.py`: comandos, polling e mensagens Telegram.
+`limulus/telegram_poller.py`: comandos, polling e mensagens Telegram.
 
-`forja_de_ferro/ods_ops.py`: gera sessoes e escreve `session.json`.
+`limulus/ods_ops.py`: gera sessoes e escreve `session.json`.
 
-`forja_de_ferro/video_ops.py`: valida e executa a extracao de frames.
+`limulus/video_ops.py`: valida e executa a extracao de frames.
 
-`forja_de_ferro/dashboard.py`: consolida logs de treino e renderiza HTML local.
+`limulus/dashboard.py`: consolida logs de treino e renderiza HTML local.
 
-`forja_de_ferro/db_ops.py`: acesso SQLite.
+`limulus/db_ops.py`: acesso SQLite.
 
 `tests/`: testes locais.
 

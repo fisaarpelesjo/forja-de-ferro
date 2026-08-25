@@ -3,7 +3,7 @@
 import argparse
 from pathlib import Path
 
-from forja_de_ferro import video_ops
+from limulus import video_ops
 
 
 ROOT_DIR = Path(__file__).resolve().parent

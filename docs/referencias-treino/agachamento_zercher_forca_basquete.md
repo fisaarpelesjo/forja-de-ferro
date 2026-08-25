@@ -12,7 +12,7 @@
 
 **ISSN:** 1548-7741
 
-## Por Que Importa Para A Forja de Ferro
+## Por Que Importa Para O Limulus
 
 O treino atual usa:
 
@@ -88,7 +88,7 @@ O grupo controle nao apresentou melhora significativa.
 
 ## Interpretacao Pratica
 
-Para a Forja de Ferro, o artigo reforca que o Zercher pode ser um movimento util para
+Para a Limulus, o artigo reforca que o Zercher pode ser um movimento util para
 pernas e tronco. Ainda assim, a aplicacao deve ser conservadora:
 
 ```text

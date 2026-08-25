@@ -10,7 +10,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 import gerar_frames
-from forja_de_ferro import video_ops
+from limulus import video_ops
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
     original_run = video_ops.subprocess.run
     original_system = video_ops.platform.system
 
-    with tempfile.TemporaryDirectory(prefix="forja-de-ferro-video-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="limulus-video-") as temp_dir:
         temp_path = Path(temp_dir)
         videos_dir = temp_path / "videos"
         input_dir = videos_dir / "entrada"

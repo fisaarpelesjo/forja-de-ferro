@@ -2,9 +2,9 @@
 
 ## Contexto Do Projeto
 
-A Forja de Ferro e um diario de treino e dieta com bot do Telegram e banco SQLite local.
+O Limulus e um diario de treino e dieta com bot do Telegram e banco SQLite local.
 
-Banco principal: `data/forja_de_ferro.db`.
+Banco principal: `data/limulus.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 O launcher do bot deve manter saida minimalista no terminal: sem banner, ASCII
@@ -22,7 +22,7 @@ Catalogo unico de comandos: `docs/comandos.md`.
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
-modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
+modulo padrao `sqlite3` ou helpers de `limulus/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
 No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
 assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
@@ -100,7 +100,7 @@ Wrapper Windows para iniciar o bot com duplo clique ou pelo terminal.
 Launcher local que gera o dashboard HTML de volume de treino em
 `temp/dashboard-treino.html`.
 
-### `forja_de_ferro/telegram_poller.py`
+### `limulus/telegram_poller.py`
 
 Bot Telegram com long polling.
 
@@ -134,7 +134,7 @@ Comandos principais:
 
 Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
-Os comandos de Muay Thai (`forja_de_ferro/muaythai.py`) entregam o roteiro do
+Os comandos de Muay Thai (`limulus/muaythai.py`) entregam o roteiro do
 dia bloco a bloco e nao gravam nada no banco; o estado fica em
 `mt_session.json`, separado de `session.json`. `/como` devolve posicao inicial, execucao numerada, o que gira/quanto/quando,
 retorno, checagem e erros comuns de cada movimento, com a busca normalizando acento, espaco e alias
@@ -152,7 +152,7 @@ Fluxo principal:
 5. `/treinob` mostra o Treino B de garagem sem criar sessao, logs ou
    `session.json`; os pesos unicos sao calculados pelos alvos atuais do treino
    principal, sem pedir nem registrar RPE.
-6. Entrada de carga atualiza diretamente o log correspondente em `data/forja_de_ferro.db`.
+6. Entrada de carga atualiza diretamente o log correspondente em `data/limulus.db`.
 7. `/desfazer` limpa o ultimo registro preenchido.
 8. `session.json` e validado contra o SQLite ao ser carregado. Se estiver
    ausente, corrompido ou antigo, o bot reconstrui a sessao mais recente com
@@ -169,7 +169,7 @@ Fluxo principal:
 13. `/cintura VALOR` registra a circunferencia da cintura em centimetros e
     `/cintura` consulta o valor atual, a variacao e as ultimas medicoes.
 
-### `forja_de_ferro/ods_ops.py`
+### `limulus/ods_ops.py`
 
 Camada auxiliar de sessao de treino. O nome e historico, mas o fluxo atual usa
 SQLite e `session.json`.
@@ -234,11 +234,11 @@ Regras importantes:
   com foco principal nos adutores.
 - Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` e `Remada alta (barra)`.
 
-### `forja_de_ferro/db_ops.py`
+### `limulus/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
-- Banco versionado: `data/forja_de_ferro.db`.
+- Banco versionado: `data/limulus.db`.
 - Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
@@ -257,9 +257,9 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
   colunas `weight` ou `date`. `body_profile` usa `height_cm` e `age_years`; nao
   assumir coluna `age`.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
-- Mudancas que devem valer no banco atual precisam atualizar `data/forja_de_ferro.db`.
+- Mudancas que devem valer no banco atual precisam atualizar `data/limulus.db`.
 
-### `forja_de_ferro/dashboard.py`
+### `limulus/dashboard.py`
 
 Dashboard local de volume:
 
@@ -298,7 +298,7 @@ Dashboard local de volume:
   vetorial baseado nos assets anatomicos.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
   `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
-  Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
+  Termininja (CC BY-SA 3.0) ficam preservados em `limulus/assets/`.
   Manter os ativos e os textos das licencas em `docs/licencas/`.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
@@ -317,7 +317,7 @@ Dashboard local de volume:
 - O bot chama a mesma funcao em `/dashboard`; o comando nao cria ou altera
   sessoes e nao envia o arquivo HTML.
 
-### `forja_de_ferro/video_ops.py`
+### `limulus/video_ops.py`
 
 - `extrair_frames(video_path, saida=None, fps=None, formato="jpg")` usa
   `ffmpeg` para gerar frames em uma pasta local.
@@ -327,7 +327,7 @@ Dashboard local de volume:
   todos os frames.
 - `--instalar-ffmpeg` tenta instalar com winget, Homebrew ou apt-get.
 
-### `forja_de_ferro/backup_ops.py`
+### `limulus/backup_ops.py`
 
 - `criar_backup()` usa a API de backup do SQLite.
 - `exportar_dados()` gera JSON com versao de esquema e tabelas do projeto.
@@ -352,7 +352,7 @@ necessaria.
 
 ## Catalogo Ativo
 
-Fonte unica: tabela `exercises` em `data/forja_de_ferro.db`.
+Fonte unica: tabela `exercises` em `data/limulus.db`.
 
 Ordem ativa atual:
 

@@ -2,12 +2,12 @@
 
 import argparse
 
-from forja_de_ferro import backup_ops
+from limulus import backup_ops
 
 
 def _build_parser():
     parser = argparse.ArgumentParser(
-        description="Gerencia backup, exportacao e restauracao da Forja de Ferro."
+        description="Gerencia backup, exportacao e restauracao do Limulus."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 

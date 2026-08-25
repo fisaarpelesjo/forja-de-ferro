@@ -1,7 +1,7 @@
 # Melhorias Futuras
 
 Este documento registra somente melhorias que ainda precisam ser avaliadas ou
-implementadas na Forja de Ferro.
+implementadas no Limulus.
 
 ## Estado Atual
 

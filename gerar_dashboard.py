@@ -1,6 +1,6 @@
 """Gera o dashboard local de treino em HTML."""
 
-from forja_de_ferro.dashboard import salvar_dashboard
+from limulus.dashboard import salvar_dashboard
 
 
 def main():

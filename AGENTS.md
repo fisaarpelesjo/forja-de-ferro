@@ -4,7 +4,7 @@
 
 Este projeto e um diario de treino com bot do Telegram e banco SQLite versionado.
 
-Banco principal: `data/forja_de_ferro.db`.
+Banco principal: `data/limulus.db`.
 Launcher multiplataforma: `start_bot.py`.
 Wrapper Windows: `start_bot.bat`.
 O launcher do bot deve manter saida minimalista no terminal: sem banner, ASCII
@@ -20,7 +20,7 @@ Teste direto das regras: `python tests/regras_treino_test.py`.
 Catalogo unico de comandos: `docs/comandos.md`.
 
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
-modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
+modulo padrao `sqlite3` ou helpers de `limulus/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
 No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
 assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
@@ -97,10 +97,10 @@ descartado ou repriorizado.
 
 ## Modulos Principais
 
-Os modulos de runtime ficam no pacote `forja_de_ferro/`. Importe codigo de aplicacao
-a partir desse pacote, por exemplo `from forja_de_ferro import db_ops`.
+Os modulos de runtime ficam no pacote `limulus/`. Importe codigo de aplicacao
+a partir desse pacote, por exemplo `from limulus import db_ops`.
 
-### `forja_de_ferro/telegram_poller.py`
+### `limulus/telegram_poller.py`
 
 Bot Telegram usado para controlar o treino pelo celular.
 
@@ -167,7 +167,7 @@ Fluxo:
 12. `/cintura VALOR` registra a circunferencia da cintura em centimetros e
     `/cintura` consulta o valor atual, a variacao e as ultimas medicoes.
 
-### `forja_de_ferro/ods_ops.py`
+### `limulus/ods_ops.py`
 
 Camada auxiliar de sessao de treino.
 
@@ -237,11 +237,11 @@ Regras importantes:
 - `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - Logs historicos de `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` ou `Remada alta (barra)` podem permanecer como historico.
 
-### `forja_de_ferro/db_ops.py`
+### `limulus/db_ops.py`
 
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
-- Banco versionado: `data/forja_de_ferro.db`.
+- Banco versionado: `data/limulus.db`.
 - Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra cada migracao aplicada. `init_db()` executa
   migracoes pendentes em ordem e rejeita bancos com versao futura.
@@ -262,7 +262,7 @@ Modulo SQLite para exercicios, logs de treino e dados de dieta.
 - SQLite e a fonte da verdade para exercicios.
 - Mudancas de catalogo que devem valer para bancos novos tambem precisam atualizar `DEFAULT_EXERCISES`.
 
-### `forja_de_ferro/dashboard.py`
+### `limulus/dashboard.py`
 
 Dashboard local de volume de treino.
 
@@ -302,7 +302,7 @@ Dashboard local de volume de treino.
   vetorial baseado nos assets anatomicos.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
   `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
-  Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
+  Termininja (CC BY-SA 3.0) ficam preservados em `limulus/assets/`.
   Manter os ativos e os textos das licencas em `docs/licencas/`.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
@@ -322,7 +322,7 @@ Dashboard local de volume de treino.
 - O bot chama a mesma funcao em `/dashboard`; o comando nao cria ou altera
   sessoes e nao envia o arquivo HTML.
 
-### `forja_de_ferro/video_ops.py`
+### `limulus/video_ops.py`
 
 - `extrair_frames(video_path, saida=None, fps=None, formato="jpg")` usa
   `ffmpeg` para gerar frames em uma pasta local.
@@ -332,7 +332,7 @@ Dashboard local de volume de treino.
   todos os frames.
 - `--instalar-ffmpeg` tenta instalar com winget, Homebrew ou apt-get.
 
-### `forja_de_ferro/backup_ops.py`
+### `limulus/backup_ops.py`
 
 - `criar_backup()` usa a API de backup do SQLite.
 - `exportar_dados()` gera JSON com versao de esquema e tabelas do projeto.

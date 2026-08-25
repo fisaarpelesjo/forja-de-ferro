@@ -10,9 +10,9 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from forja_de_ferro import db_ops
-from forja_de_ferro import ods_ops
-from forja_de_ferro import telegram_poller
+from limulus import db_ops
+from limulus import ods_ops
+from limulus import telegram_poller
 
 
 def _fetch_log(db_path, log_id):
@@ -41,9 +41,9 @@ def main():
 
     sent_messages = []
 
-    with tempfile.TemporaryDirectory(prefix="forja-de-ferro-e2e-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="limulus-e2e-") as temp_dir:
         temp_path = Path(temp_dir)
-        test_db = temp_path / "forja_de_ferro.db"
+        test_db = temp_path / "limulus.db"
         test_session = temp_path / "session.json"
 
         try:

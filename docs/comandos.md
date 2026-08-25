@@ -1,6 +1,6 @@
 # Catalogo De Comandos
 
-Este arquivo e a referencia unica dos comandos da Forja de Ferro.
+Este arquivo e a referencia unica dos comandos do Limulus.
 
 ## Bot Do Telegram
 

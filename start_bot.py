@@ -1,6 +1,6 @@
 import sys
 
-from forja_de_ferro import telegram_poller
+from limulus import telegram_poller
 
 
 def main():

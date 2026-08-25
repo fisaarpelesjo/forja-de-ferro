@@ -9,13 +9,13 @@ from collections import defaultdict
 from datetime import date, datetime
 from pathlib import Path
 
-from forja_de_ferro import db_ops
-from forja_de_ferro import ods_ops
+from limulus import db_ops
+from limulus import ods_ops
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT_DIR / "temp" / "dashboard-treino.html"
 MUSCLE_MAP_ASSET = (
-    ROOT_DIR / "forja_de_ferro" / "assets" / "mapa_muscular_body_muscles.json"
+    ROOT_DIR / "limulus" / "assets" / "mapa_muscular_body_muscles.json"
 )
 
 MUSCLE_IDS_BY_GROUP = {
@@ -2438,7 +2438,7 @@ def gerar_html(dados):
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard de treino - Forja de Ferro</title>
+  <title>Dashboard de treino - Limulus</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@carbon/styles@1.109.0/css/styles.css">
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/tile.min.js"></script>
   <script type="module" src="https://1.www.s81c.com/common/carbon/web-components/tag/v2/latest/theme.min.js"></script>
@@ -2449,18 +2449,18 @@ def gerar_html(dados):
   <style>
     :root {{
       color-scheme: dark;
-      --forja-background: #161616;
-      --forja-layer-01: #262626;
-      --forja-layer-02: #393939;
-      --forja-layer-03: #525252;
-      --forja-border: #393939;
-      --forja-border-strong: #525252;
-      --forja-text-primary: #f4f4f4;
-      --forja-text-secondary: #c6c6c6;
-      --forja-text-helper: #a8a8a8;
-      --forja-blue: #78a9ff;
-      --forja-success: #42be65;
-      --forja-error: #fa4d56;
+      --limulus-background: #161616;
+      --limulus-layer-01: #262626;
+      --limulus-layer-02: #393939;
+      --limulus-layer-03: #525252;
+      --limulus-border: #393939;
+      --limulus-border-strong: #525252;
+      --limulus-text-primary: #f4f4f4;
+      --limulus-text-secondary: #c6c6c6;
+      --limulus-text-helper: #a8a8a8;
+      --limulus-blue: #78a9ff;
+      --limulus-success: #42be65;
+      --limulus-error: #fa4d56;
       --tipo-xs: 0.75rem;
       --tipo-sm: 0.875rem;
       --tipo-md: 1rem;
@@ -2469,12 +2469,12 @@ def gerar_html(dados):
       --tipo-2xl: 2rem;
     }}
     * {{ box-sizing: border-box; }}
-    html {{ background: var(--forja-background); }}
+    html {{ background: var(--limulus-background); }}
     body {{
       margin: 0;
       font-family: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
-      background: var(--forja-background);
-      color: var(--forja-text-primary);
+      background: var(--limulus-background);
+      color: var(--limulus-text-primary);
       font-size: var(--tipo-sm);
       line-height: 1.45;
     }}
@@ -2488,7 +2488,7 @@ def gerar_html(dados):
       align-items: end;
       justify-content: space-between;
       gap: 1.5rem;
-      border-bottom: 1px solid var(--forja-border-strong);
+      border-bottom: 1px solid var(--limulus-border-strong);
       margin-bottom: 1rem;
       padding-bottom: 1rem;
     }}
@@ -2496,14 +2496,14 @@ def gerar_html(dados):
     h1 {{ font-size: 2.625rem; line-height: 1.05; }}
     h2 {{ font-size: var(--tipo-lg); line-height: 1.3; }}
     h3 {{
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-sm);
       line-height: 1.3;
       margin: 1.5rem 0 0.5rem;
       font-weight: 600;
     }}
     .subtitulo {{
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       margin: 0.5rem 0 0;
     }}
     .grade-resumo {{
@@ -2525,7 +2525,7 @@ def gerar_html(dados):
     .indicador, .painel {{ position: relative; }}
     .rotulo {{
       display: block;
-      color: var(--forja-text-helper);
+      color: var(--limulus-text-helper);
       font-size: var(--tipo-xs);
       font-weight: 600;
       letter-spacing: 0;
@@ -2540,14 +2540,14 @@ def gerar_html(dados):
     }}
     .meta-indicador {{
       display: block;
-      color: var(--forja-success);
+      color: var(--limulus-success);
       font-size: var(--tipo-xs);
       line-height: 1.35;
       margin-top: 0.5rem;
     }}
     .meta-progresso {{
       height: 8px;
-      background: var(--forja-layer-03);
+      background: var(--limulus-layer-03);
       border: 0;
       margin-top: 0.5rem;
       overflow: hidden;
@@ -2555,11 +2555,11 @@ def gerar_html(dados):
     .meta-progresso i {{
       display: block;
       height: 100%;
-      background: var(--forja-success);
+      background: var(--limulus-success);
     }}
     .meta-percentual {{
       display: block;
-      color: var(--forja-text-helper);
+      color: var(--limulus-text-helper);
       font-size: var(--tipo-xs);
       margin-top: 0.25rem;
     }}
@@ -2569,17 +2569,17 @@ def gerar_html(dados):
       height: 92px;
       max-height: 92px;
       margin-top: 0.75rem;
-      background: var(--forja-layer-02);
-      border: 1px solid var(--forja-border-strong);
+      background: var(--limulus-layer-02);
+      border: 1px solid var(--limulus-border-strong);
     }}
     .minigrafico-vazio {{
       display: block;
-      color: var(--forja-text-helper);
+      color: var(--limulus-text-helper);
       font-size: var(--tipo-xs);
       margin-top: 0.75rem;
     }}
-    .positivo {{ color: var(--forja-success); }}
-    .negativo {{ color: var(--forja-error); }}
+    .positivo {{ color: var(--limulus-success); }}
+    .negativo {{ color: var(--limulus-error); }}
     .painel {{
       margin-top: 1rem;
       padding: 1.5rem;
@@ -2592,12 +2592,12 @@ def gerar_html(dados):
     .grade-dieta-macros {{ grid-template-columns: repeat(4, minmax(0, 1fr)); }}
     .grade-dieta-micros {{ grid-template-columns: repeat(7, minmax(0, 1fr)); }}
     .dieta-indicador {{
-      background: var(--forja-layer-02);
-      border: 1px solid var(--forja-border-strong);
+      background: var(--limulus-layer-02);
+      border: 1px solid var(--limulus-border-strong);
       padding: 1rem;
     }}
     .dieta-indicador strong {{ display: block; font-size: var(--tipo-lg); font-weight: 400; }}
-    .dieta-indicador small {{ color: var(--forja-text-helper); font-size: var(--tipo-xs); }}
+    .dieta-indicador small {{ color: var(--limulus-text-helper); font-size: var(--tipo-xs); }}
     .grade-dieta-micros .dieta-indicador {{ padding: 0.85rem 0.75rem; }}
     .grade-dieta-micros .dieta-indicador strong {{
       font-size: var(--tipo-md);
@@ -2610,14 +2610,14 @@ def gerar_html(dados):
     }}
     .dieta-progresso {{
       height: 8px;
-      background: var(--forja-layer-03);
+      background: var(--limulus-layer-03);
       border: 0;
       margin: 0.75rem 0 0.5rem;
     }}
     .dieta-progresso i {{
       display: block;
       height: 100%;
-      background: var(--forja-success);
+      background: var(--limulus-success);
     }}
     .tabela-rolavel {{ overflow-x: auto; }}
     .tabela-treino-ativo th:first-child,
@@ -2650,7 +2650,7 @@ def gerar_html(dados):
     label {{
       display: grid;
       gap: 0.5rem;
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-xs);
       font-weight: 600;
     }}
@@ -2660,11 +2660,11 @@ def gerar_html(dados):
       align-items: baseline;
       justify-content: space-between;
       gap: 1rem;
-      border-bottom: 1px solid var(--forja-border-strong);
+      border-bottom: 1px solid var(--limulus-border-strong);
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
     }}
-    .linha-topo span {{ color: var(--forja-text-helper); font-size: var(--tipo-xs); }}
+    .linha-topo span {{ color: var(--limulus-text-helper); font-size: var(--tipo-xs); }}
     svg {{ width: 100%; height: auto; display: block; }}
     .grafico-container {{
       height: 320px;
@@ -2693,44 +2693,44 @@ def gerar_html(dados):
       grid-template-columns: 120px minmax(0, 1fr) 90px;
       gap: 0.75rem;
       align-items: center;
-      border-bottom: 1px solid var(--forja-border);
+      border-bottom: 1px solid var(--limulus-border);
       padding: 0.75rem 0;
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-sm);
     }}
     .barra-horizontal div {{
       height: 10px;
-      background: var(--forja-layer-02);
+      background: var(--limulus-layer-02);
       border: 0;
     }}
     .barra-horizontal i {{
       display: block;
       height: 100%;
-      background: var(--forja-blue);
+      background: var(--limulus-blue);
     }}
     .barra-horizontal strong {{
-      color: var(--forja-text-primary);
+      color: var(--limulus-text-primary);
       font-weight: 600;
       text-align: right;
     }}
     .equilibrio-item {{
       display: grid;
       gap: 0.5rem;
-      border-bottom: 1px solid var(--forja-border);
+      border-bottom: 1px solid var(--limulus-border);
       padding: 0.75rem 0;
       font-size: var(--tipo-xs);
     }}
-    .equilibrio-item strong {{ display: block; color: var(--forja-text-primary); }}
-    .equilibrio-item span {{ color: var(--forja-text-secondary); }}
+    .equilibrio-item strong {{ display: block; color: var(--limulus-text-primary); }}
+    .equilibrio-item span {{ color: var(--limulus-text-secondary); }}
     .equilibrio-barra {{
       display: flex;
       height: 10px;
-      background: var(--forja-layer-03);
+      background: var(--limulus-layer-03);
       border: 0;
     }}
     .equilibrio-barra i, .equilibrio-barra b {{ display: block; height: 100%; }}
-    .equilibrio-barra i {{ background: var(--forja-error); }}
-    .equilibrio-barra b {{ background: var(--forja-blue); }}
+    .equilibrio-barra i {{ background: var(--limulus-error); }}
+    .equilibrio-barra b {{ background: var(--limulus-blue); }}
     .heatmap-sessoes {{
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
@@ -2738,7 +2738,7 @@ def gerar_html(dados):
     }}
     .heatmap-dia {{
       min-height: 40px;
-      border: 1px solid var(--forja-border);
+      border: 1px solid var(--limulus-border);
       display: grid;
       place-items: center;
       color: #161616;
@@ -2752,11 +2752,11 @@ def gerar_html(dados):
       margin-bottom: 1rem;
     }}
     .relatorio-card {{
-      background: var(--forja-layer-02);
-      border: 1px solid var(--forja-border-strong);
+      background: var(--limulus-layer-02);
+      border: 1px solid var(--limulus-border-strong);
       padding: 1rem;
     }}
-    .relatorio-card strong {{ display: block; color: var(--forja-text-primary); font-size: var(--tipo-md); font-weight: 400; }}
+    .relatorio-card strong {{ display: block; color: var(--limulus-text-primary); font-size: var(--tipo-md); font-weight: 400; }}
     .oculto {{ display: none; }}
     table {{ width: 100%; }}
     th, td {{ text-align: right; white-space: nowrap; }}
@@ -2764,8 +2764,8 @@ def gerar_html(dados):
       text-align: left;
       white-space: normal;
     }}
-    .vazio {{ color: var(--forja-text-helper); }}
-    .lista {{ margin: 0; padding-left: 18px; color: var(--forja-text-primary); }}
+    .vazio {{ color: var(--limulus-text-helper); }}
+    .lista {{ margin: 0; padding-left: 18px; color: var(--limulus-text-primary); }}
     .lista li {{ margin: 0.5rem 0; }}
     .mapa-muscular-layout {{
       display: grid;
@@ -2781,7 +2781,7 @@ def gerar_html(dados):
       margin-bottom: 1rem;
     }}
     .mapa-resumo > p {{
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-xs);
       line-height: 1.5;
       margin: 0;
@@ -2798,7 +2798,7 @@ def gerar_html(dados):
       text-align: center;
     }}
     .mapa-vistas figcaption {{
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-xs);
       margin-top: 0.5rem;
     }}
@@ -2834,13 +2834,13 @@ def gerar_html(dados):
       overflow: visible;
     }}
     .mapa-legenda h3 {{
-      border-bottom: 1px solid var(--forja-border-strong);
-      color: var(--forja-text-primary);
+      border-bottom: 1px solid var(--limulus-border-strong);
+      color: var(--limulus-text-primary);
       margin: 0;
       padding-bottom: 0.5rem;
     }}
     .mapa-legenda > p {{
-      color: var(--forja-text-secondary);
+      color: var(--limulus-text-secondary);
       font-size: var(--tipo-xs);
       line-height: 1.5;
       margin: 0 0 0.5rem;
@@ -2850,7 +2850,7 @@ def gerar_html(dados):
       grid-template-columns: 14px minmax(120px, 1fr) minmax(58px, auto);
       gap: 0.5rem;
       align-items: center;
-      border-bottom: 1px solid var(--forja-border);
+      border-bottom: 1px solid var(--limulus-border);
       padding: 0.5rem 0;
       font-size: var(--tipo-xs);
     }}
@@ -2859,7 +2859,7 @@ def gerar_html(dados):
       overflow-wrap: anywhere;
     }}
     .mapa-legenda-item strong {{
-      color: var(--forja-text-primary);
+      color: var(--limulus-text-primary);
       text-align: right;
       white-space: nowrap;
     }}
@@ -2871,8 +2871,8 @@ def gerar_html(dados):
       max-width: 370px;
     }}
     .mapa-plano {{
-      background: var(--forja-layer-02);
-      border: 1px solid var(--forja-border-strong);
+      background: var(--limulus-layer-02);
+      border: 1px solid var(--limulus-border-strong);
       border-radius: 0;
       padding: 0.75rem 1rem;
       display: flex;
@@ -2882,9 +2882,9 @@ def gerar_html(dados):
     }}
     .mapa-plano-label {{
       font-size: var(--tipo-xs);
-      color: var(--forja-text-helper);
+      color: var(--limulus-text-helper);
     }}
-    .mapa-plano strong {{ font-size: var(--tipo-lg); color: var(--forja-text-primary); font-weight: 400; }}
+    .mapa-plano strong {{ font-size: var(--tipo-lg); color: var(--limulus-text-primary); font-weight: 400; }}
     .mapa-cor {{
       width: 12px;
       height: 12px;
@@ -2892,7 +2892,7 @@ def gerar_html(dados):
       border-radius: 0;
     }}
     .mapa-fonte {{
-      color: var(--forja-text-helper);
+      color: var(--limulus-text-helper);
       font-size: var(--tipo-xs);
       margin: 1rem 0 0;
       text-align: right;

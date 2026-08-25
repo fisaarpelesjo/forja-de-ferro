@@ -3,7 +3,7 @@
 O bot Telegram fica em:
 
 ```text
-forja_de_ferro/telegram_poller.py
+limulus/telegram_poller.py
 ```
 
 Ele usa long polling pela API HTTP do Telegram. Nao ha webhook nem servidor web.
@@ -71,7 +71,7 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 Todos os comandos textuais exigem `/` e usam somente os nomes oficiais em
 PT-BR. Entradas numericas continuam reservadas para carga e RPE.
 
-Os comandos de Muay Thai vivem em `forja_de_ferro/muaythai.py` e nao tocam o
+Os comandos de Muay Thai vivem em `limulus/muaythai.py` e nao tocam o
 SQLite. Detalhes de uso e da biblioteca de execucao em
 [Catalogo de comandos](comandos.md).
 

@@ -1,11 +1,11 @@
 # Banco De Dados
 
-A Forja de Ferro usa SQLite.
+O Limulus usa SQLite.
 
 Arquivo principal:
 
 ```text
-data/forja_de_ferro.db
+data/limulus.db
 ```
 
 Esse banco e versionado e e a fonte da verdade para exercicios, sessoes, logs e
@@ -66,10 +66,10 @@ criado antes da substituicao.
 Todo acesso direto ao banco fica em:
 
 ```text
-forja_de_ferro/db_ops.py
+limulus/db_ops.py
 ```
 
-`DB_PATH` aponta para `data/forja_de_ferro.db` na raiz do repositorio.
+`DB_PATH` aponta para `data/limulus.db` na raiz do repositorio.
 
 ## Tabelas
 
@@ -193,7 +193,7 @@ recrutamento por EMG ou estimativa de hipertrofia.
 As regioes musculares sao renderizadas diretamente dos paths vetoriais de
 `body-muscles`, de Ivan Vulovic, sob Apache-2.0, numa SVG unica por vista.
 Os SVGs anatomicos de Termininja (CC BY-SA 3.0) ficam preservados em
-`forja_de_ferro/assets/`. Os ativos e os textos das licencas ficam em
+`limulus/assets/`. Os ativos e os textos das licencas ficam em
 `docs/licencas/`.
 
 Os alertas consideram RPE 9 uma fase valida de consolidacao. O dashboard destaca
@@ -267,8 +267,8 @@ no SQLite.
 
 Ao mudar o catalogo para frente, atualize:
 
-- `data/forja_de_ferro.db`
-- `forja_de_ferro/db_ops.py`, em `DEFAULT_EXERCISES`
+- `data/limulus.db`
+- `limulus/db_ops.py`, em `DEFAULT_EXERCISES`
 
 ## Criacao De Sessao
 
@@ -375,9 +375,9 @@ filled = 11 -> treino completo
 ## Inspecao Segura
 
 ```bash
-sqlite3 data/forja_de_ferro.db ".tables"
-sqlite3 data/forja_de_ferro.db ".schema exercises"
-sqlite3 data/forja_de_ferro.db "SELECT name, sets, reps FROM exercises ORDER BY sort_order;"
+sqlite3 data/limulus.db ".tables"
+sqlite3 data/limulus.db ".schema exercises"
+sqlite3 data/limulus.db "SELECT name, sets, reps FROM exercises ORDER BY sort_order;"
 python gerar_dashboard.py
 ```
 

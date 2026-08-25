@@ -1,4 +1,4 @@
-"""Operacoes SQLite para os dados da Forja de Ferro."""
+"""Operacoes SQLite para os dados do Limulus."""
 
 import sqlite3
 from datetime import datetime
@@ -6,7 +6,7 @@ from itertools import groupby
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-DB_PATH = DATA_DIR / "forja_de_ferro.db"
+DB_PATH = DATA_DIR / "limulus.db"
 SCHEMA_VERSION = 10
 
 DEFAULT_EXERCISES = [

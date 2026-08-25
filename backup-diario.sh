@@ -1,10 +1,10 @@
 #!/bin/bash
-# Backup diario da Forja de Ferro: SQLite consistente + exportacao JSON,
+# Backup diario do Limulus: SQLite consistente + exportacao JSON,
 # com rotacao (mantem os N mais recentes de cada tipo).
 # Chamado pelo cron; ver 'crontab -l'.
 set -euo pipefail
 
-PROJETO=/root/forja-de-ferro
+PROJETO=/root/limulus
 MANTER=14
 
 cd "$PROJETO"

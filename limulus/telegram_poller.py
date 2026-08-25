@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 SESSION_FILE = BASE_DIR / "session.json"
 CHAT_ID = "6575275306"
 DASHBOARD_OUTPUT = dashboard.DEFAULT_OUTPUT
-LOGGER = logging.getLogger("forja_de_ferro.telegram")
+LOGGER = logging.getLogger("limulus.telegram")
 SEND_RETRY_DELAYS = (1, 2)
 POLL_RETRY_INITIAL = 3
 POLL_RETRY_MAX = 60
@@ -691,7 +691,7 @@ def main():
 
     offset = 0
     retry_delay = POLL_RETRY_INITIAL
-    LOGGER.info("Bot Forja de Ferro em polling. Use Ctrl+C para parar.")
+    LOGGER.info("Bot Limulus em polling. Use Ctrl+C para parar.")
 
     try:
         while True:
@@ -726,7 +726,7 @@ def main():
 
                 if lower == "/ajuda":
                     send(
-                        "<b>Forja de Ferro — Comandos</b>\n\n"
+                        "<b>Limulus — Comandos</b>\n\n"
                         "/gerar — cria uma sessao de treino\n"
                         "/prever — mostra uma previa sem salvar\n"
                         "/treinob — mostra o treino B de garagem\n"

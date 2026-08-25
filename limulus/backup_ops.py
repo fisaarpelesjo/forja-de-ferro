@@ -1,4 +1,4 @@
-"""Backup, exportacao e restauracao dos dados da Forja de Ferro."""
+"""Backup, exportacao e restauracao dos dados do Limulus."""
 
 import json
 import os
@@ -68,7 +68,7 @@ def criar_backup(destination_dir=None, database_path=None):
     validar_banco(source_path)
     destination = Path(destination_dir or DEFAULT_BACKUP_DIR)
     destination.mkdir(parents=True, exist_ok=True)
-    output = destination / f"forja-de-ferro-{_timestamp()}.db"
+    output = destination / f"limulus-{_timestamp()}.db"
 
     with closing(sqlite3.connect(source_path)) as source:
         with closing(sqlite3.connect(output)) as target:
@@ -82,7 +82,7 @@ def exportar_dados(destination_dir=None, database_path=None):
     validar_banco(source_path)
     destination = Path(destination_dir or DEFAULT_EXPORT_DIR)
     destination.mkdir(parents=True, exist_ok=True)
-    output = destination / f"forja-de-ferro-{_timestamp()}.json"
+    output = destination / f"limulus-{_timestamp()}.json"
 
     with closing(sqlite3.connect(source_path)) as conn:
         conn.row_factory = sqlite3.Row

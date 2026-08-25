@@ -10,11 +10,11 @@ if str(ROOT_DIR) not in sys.path:
 
 REQUIRED_MODULES = [
     "requests",
-    "forja_de_ferro.db_ops",
-    "forja_de_ferro.ods_ops",
-    "forja_de_ferro.video_ops",
-    "forja_de_ferro.dashboard",
-    "forja_de_ferro.telegram_poller",
+    "limulus.db_ops",
+    "limulus.ods_ops",
+    "limulus.video_ops",
+    "limulus.dashboard",
+    "limulus.telegram_poller",
     "gerar_frames",
     "start_bot",
 ]
@@ -27,7 +27,7 @@ def main():
     for module_name in REQUIRED_MODULES:
         importlib.import_module(module_name)
 
-    db_path = ROOT_DIR / "data" / "forja_de_ferro.db"
+    db_path = ROOT_DIR / "data" / "limulus.db"
     if not db_path.exists():
         raise FileNotFoundError(f"Missing database: {db_path}")
 

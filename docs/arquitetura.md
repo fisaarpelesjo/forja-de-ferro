@@ -1,6 +1,6 @@
 # Arquitetura
 
-A Forja de Ferro e um pacote Python pequeno com entry points de script. A ideia e
+O Limulus e um pacote Python pequeno com entry points de script. A ideia e
 manter tudo simples: Python, SQLite e API HTTP do Telegram.
 
 ## Estrutura
@@ -15,9 +15,9 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 │   ├── entrada/
 │   └── saida/
 ├── data/
-│   └── forja_de_ferro.db
+│   └── limulus.db
 ├── docs/
-├── forja_de_ferro/
+├── limulus/
 │   ├── __init__.py
 │   ├── backup_ops.py
 │   ├── dashboard.py
@@ -40,9 +40,9 @@ manter tudo simples: Python, SQLite e API HTTP do Telegram.
 Codigo de aplicacao deve ser importado pelo pacote:
 
 ```python
-from forja_de_ferro import db_ops
-from forja_de_ferro import ods_ops
-from forja_de_ferro import telegram_poller
+from limulus import db_ops
+from limulus import ods_ops
+from limulus import telegram_poller
 ```
 
 Evite novos modulos de aplicacao na raiz. A raiz deve ficar para launchers,
@@ -52,22 +52,22 @@ configuracao, docs e testes.
 
 ```text
 start_bot.py
-  -> forja_de_ferro.telegram_poller
-       -> forja_de_ferro.ods_ops
-       -> forja_de_ferro.db_ops
-  -> forja_de_ferro.ods_ops
-       -> forja_de_ferro.db_ops
+  -> limulus.telegram_poller
+       -> limulus.ods_ops
+       -> limulus.db_ops
+  -> limulus.ods_ops
+       -> limulus.db_ops
 
 gerar_dashboard.py
-  -> forja_de_ferro.dashboard
+  -> limulus.dashboard
        -> SQLite
 
 gerenciar_dados.py
-  -> forja_de_ferro.backup_ops
+  -> limulus.backup_ops
        -> SQLite
 
 gerar_frames.py
-  -> forja_de_ferro.video_ops
+  -> limulus.video_ops
        -> ffmpeg
 ```
 
@@ -108,7 +108,7 @@ Versionado:
 - docs
 - testes
 - `requirements.txt`
-- `data/forja_de_ferro.db`
+- `data/limulus.db`
 
 Nao versionado:
 
@@ -133,10 +133,10 @@ O arquivo funciona como cache recuperavel. O carregamento valida `session_id` e
 `ods_ops.recover_active_session()` reconstrui a sessao mais recente com logs
 pendentes. Sessoes completas nao sao reabertas.
 
-## Por Que O Pacote Chama `forja_de_ferro`
+## Por Que O Pacote Chama `limulus`
 
-O app se chama Forja de Ferro no README e no banco `forja_de_ferro.db`.
-`forja_de_ferro` tambem e um nome valido e limpo para pacote Python.
+O app se chama Limulus no README e no banco `limulus.db`.
+`limulus` tambem e um nome valido e limpo para pacote Python.
 
 ## O Que Evitar
 

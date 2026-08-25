@@ -1,6 +1,6 @@
 # Notas Do Repositorio
 
-A Forja de Ferro e um diario de treino com bot do Telegram e armazenamento SQLite.
+O Limulus e um diario de treino com bot do Telegram e armazenamento SQLite.
 
 Launcher do bot: `start_bot.py`, com saida minimalista no terminal. Nao adicionar
 banner, ASCII art ou mensagens cosmeticas; preservar apenas logs operacionais e
@@ -17,7 +17,7 @@ Catalogo unico de comandos: `docs/comandos.md`.
 Teste direto das regras: `python tests/regras_treino_test.py`.
 
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o
-modulo padrao `sqlite3` ou helpers de `forja_de_ferro/db_ops.py`. Nao depender
+modulo padrao `sqlite3` ou helpers de `limulus/db_ops.py`. Nao depender
 do binario externo `sqlite3`, pois ele pode nao estar disponivel no PATH local.
 No schema atual, `training_sessions` usa `id`, `date` e `training_type`; nao
 assumir colunas como `started_at`, `completed_at` ou `plan_name`. `training_logs`
@@ -81,10 +81,10 @@ descartado ou repriorizado.
 
 ## Modulos Principais
 
-Os modulos de runtime ficam no pacote `forja_de_ferro/`. Importe codigo de aplicacao
-com `from forja_de_ferro import db_ops`, `ods_ops` ou `telegram_poller`.
+Os modulos de runtime ficam no pacote `limulus/`. Importe codigo de aplicacao
+com `from limulus import db_ops`, `ods_ops` ou `telegram_poller`.
 
-### `forja_de_ferro/telegram_poller.py`
+### `limulus/telegram_poller.py`
 
 Bot Telegram com long polling.
 
@@ -145,7 +145,7 @@ Comandos principais em PT-BR:
 Aliases em ingles e comandos textuais sem `/` nao sao aceitos. Entradas
 numericas de carga e RPE continuam sem barra.
 
-### `forja_de_ferro/ods_ops.py`
+### `limulus/ods_ops.py`
 
 Helpers de operacao de treino:
 
@@ -208,7 +208,7 @@ Catalogo atual:
 - O agachamento com barra nas costas usa a barra apoiada no trapezio/ombro.
 - Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` e `Remada alta (barra)`.
 
-### `forja_de_ferro/db_ops.py`
+### `limulus/db_ops.py`
 
 Operacoes SQLite:
 
@@ -226,7 +226,7 @@ Operacoes SQLite:
   colunas `weight` ou `date`. `body_profile` usa `height_cm` e `age_years`; nao
   assumir coluna `age`.
 
-### `forja_de_ferro/dashboard.py`
+### `limulus/dashboard.py`
 
 Dashboard local de volume:
 
@@ -265,7 +265,7 @@ Dashboard local de volume:
   vetorial baseado nos assets anatomicos.
 - As regioes musculares sao renderizadas diretamente dos paths vetoriais de
   `body-muscles` (Apache-2.0), numa SVG unica por vista. Os SVGs anatomicos de
-  Termininja (CC BY-SA 3.0) ficam preservados em `forja_de_ferro/assets/`.
+  Termininja (CC BY-SA 3.0) ficam preservados em `limulus/assets/`.
   Manter os ativos e os textos das licencas em `docs/licencas/`.
 - Os alertas nao tratam RPE 9 repetido ou carga mantida como problema isolado.
   Queda de RPE com a mesma carga aparece como consolidacao; RPE 10 persistente
@@ -284,7 +284,7 @@ Dashboard local de volume:
 - Launcher local: `python gerar_dashboard.py`.
 - O bot usa a mesma funcao no comando `/dashboard`.
 
-### `forja_de_ferro/video_ops.py`
+### `limulus/video_ops.py`
 
 - `extrair_frames(video_path, saida=None, fps=None, formato="jpg")` usa
   `ffmpeg` para gerar frames em uma pasta local.
@@ -294,7 +294,7 @@ Dashboard local de volume:
   todos os frames.
 - `--instalar-ffmpeg` tenta instalar com winget, Homebrew ou apt-get.
 
-### `forja_de_ferro/backup_ops.py`
+### `limulus/backup_ops.py`
 
 - `criar_backup()` usa a API de backup do SQLite.
 - `exportar_dados()` gera JSON com a versao do esquema e as tabelas do projeto.
@@ -303,7 +303,7 @@ Dashboard local de volume:
 
 ## Dados E Estado
 
-- Banco versionado: `data/forja_de_ferro.db`.
+- Banco versionado: `data/limulus.db`.
 - Versao atual do esquema: `SCHEMA_VERSION = 10`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
@@ -320,7 +320,7 @@ SQLite e a fonte da verdade dos exercicios. Nao mover a gestao de exercicios de 
 pelo dashboard.
 `training_plans` e `training_plan_exercises` armazenam modelos A/B; apenas um
 plano nao vazio fica ativo por vez.
-Mudancas de catalogo devem sincronizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`
+Mudancas de catalogo devem sincronizar `data/limulus.db` e `limulus/db_ops.py`
 quando tambem precisarem valer para bancos novos.
 
 ## Estilo De Commit

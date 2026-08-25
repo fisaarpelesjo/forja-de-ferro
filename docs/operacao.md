@@ -1,6 +1,6 @@
 # Operacao
 
-Este documento explica como rodar, manter e depurar a Forja de Ferro.
+Este documento explica como rodar, manter e depurar a Limulus.
 
 ## Uso Diario
 
@@ -179,7 +179,7 @@ Acessorios: 2 min
 Principal:
 
 ```text
-data/forja_de_ferro.db
+data/limulus.db
 ```
 
 Criar backup consistente:
@@ -245,14 +245,14 @@ O catalogo de exercicios fica no SQLite.
 Codigo:
 
 ```text
-forja_de_ferro/db_ops.py
+limulus/db_ops.py
   -> tabela exercises
 ```
 
 Use os helpers quando possivel:
 
 ```python
-from forja_de_ferro import db_ops
+from limulus import db_ops
 
 db_ops.list_exercises()
 db_ops.replace_exercises([...])
@@ -270,7 +270,7 @@ Catalogo atual:
 - Ela substitui `Rosca direta` em sessoes futuras para usar a barra H de 9 kg.
 - `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - Historico antigo pode continuar com nomes antigos ou inativos.
-- Se o catalogo mudar de novo, atualizar `data/forja_de_ferro.db` e `forja_de_ferro/db_ops.py`.
+- Se o catalogo mudar de novo, atualizar `data/limulus.db` e `limulus/db_ops.py`.
 
 ## Problemas Comuns
 
@@ -317,7 +317,7 @@ python tests/e2e_training_flow_test.py
 Checagem de sintaxe:
 
 ```bash
-python -m py_compile start_bot.py forja_de_ferro/*.py tests/*.py
+python -m py_compile start_bot.py limulus/*.py tests/*.py
 ```
 
 Antes de commitar:

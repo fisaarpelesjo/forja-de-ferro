@@ -24,9 +24,9 @@ O achado geral foi que deadlifts e variacoes nao treinam apenas posteriores e gl
 
 ---
 
-## Por Que Importa Para A Forja de Ferro
+## Por Que Importa Para O Limulus
 
-A Forja de Ferro usa o RDL como exercicio de cadeia posterior:
+O Limulus usa o RDL como exercicio de cadeia posterior:
 
 ```text
 Levantamento Terra Romeno - 3x8
@@ -111,7 +111,7 @@ Para posteriores, exercicios com joelhos mais fixos e estendidos, como RDL e sti
 
 ## Aplicacao No Treino
 
-Para a Forja de Ferro:
+Para a Limulus:
 
 ```text
 Levantamento Terra Romeno
@@ -139,5 +139,5 @@ O diario deve preservar nomes especificos. Isso melhora a leitura de progressao 
 
 ```text
 Deadlift e uma familia de movimentos, nao um exercicio unico. Para acompanhar
-progresso na Forja de Ferro, o nome especifico da variacao importa.
+progresso no Limulus, o nome especifico da variacao importa.
 ```

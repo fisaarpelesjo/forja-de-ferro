@@ -1,8 +1,13 @@
-# Forja de Ferro
+# Limulus
 
 Diario tecnico de treino e dieta com bot do Telegram, banco SQLite versionado,
 dashboard HTML local, backup/exportacao de dados e utilitarios para analise de
 video.
+
+> *Limulus polyphemus*, o caranguejo-ferradura: 450 milhoes de anos, cinco
+> extincoes em massa, e a mesma forma. Nao venceu por ser o mais forte nem o
+> mais rapido — venceu por continuar aparecendo. E disso que trata um diario de
+> treino.
 
 Este README e a referencia tecnica principal da raiz do projeto. A documentacao
 expandida fica em [`docs/index.md`](docs/index.md), e o catalogo unico de
@@ -10,8 +15,8 @@ comandos fica em [`docs/comandos.md`](docs/comandos.md).
 
 ## Sumario Tecnico
 
-- Runtime principal: pacote Python [`forja_de_ferro/`](forja_de_ferro/).
-- Banco principal: [`data/forja_de_ferro.db`](data/forja_de_ferro.db).
+- Runtime principal: pacote Python [`limulus/`](limulus/).
+- Banco principal: [`data/limulus.db`](data/limulus.db).
 - Estado local de sessao ativa: `session.json`, nao versionado.
 - Variaveis locais: `.env`, nao versionado, com `TELEGRAM_TOKEN=...`.
 - Launcher multiplataforma: [`start_bot.py`](start_bot.py).
@@ -21,7 +26,7 @@ comandos fica em [`docs/comandos.md`](docs/comandos.md).
 - Backup/exportacao/restauracao: [`gerenciar_dados.py`](gerenciar_dados.py).
 - Extracao de frames: [`gerar_frames.py`](gerar_frames.py).
 - Schema SQLite atual: `SCHEMA_VERSION = 10`, em
-  [`forja_de_ferro/db_ops.py`](forja_de_ferro/db_ops.py).
+  [`limulus/db_ops.py`](limulus/db_ops.py).
 - Fonte da verdade do treino: SQLite, especialmente `training_plans` e
   `training_plan_exercises`.
 
@@ -38,7 +43,7 @@ estado de maquina.
 ├── gerar_dashboard.py            # gera temp/dashboard-treino.html
 ├── gerar_frames.py               # CLI de extracao de frames com ffmpeg
 ├── gerenciar_dados.py            # CLI de backup, exportacao e restauracao
-├── forja_de_ferro/
+├── limulus/
 │   ├── db_ops.py                 # schema, migracoes, consultas e escrita SQLite
 │   ├── ods_ops.py                # montagem de treino, progressao e session.json
 │   ├── telegram_poller.py        # bot Telegram via long polling
@@ -47,7 +52,7 @@ estado de maquina.
 │   ├── video_ops.py              # wrapper ffmpeg para frames
 │   └── assets/                   # assets anatomicos e mapa muscular
 ├── data/
-│   └── forja_de_ferro.db         # banco SQLite versionado
+│   └── limulus.db         # banco SQLite versionado
 ├── docs/
 │   ├── index.md                  # indice da documentacao detalhada
 │   ├── comandos.md               # catalogo unico de comandos
@@ -77,18 +82,18 @@ estado de maquina.
 ## Fluxo De Dados
 
 1. O usuario envia comandos pelo Telegram.
-2. [`telegram_poller.py`](forja_de_ferro/telegram_poller.py) interpreta a entrada
+2. [`telegram_poller.py`](limulus/telegram_poller.py) interpreta a entrada
    e chama funcoes de treino, banco, dashboard ou medicoes corporais.
-3. [`ods_ops.py`](forja_de_ferro/ods_ops.py) monta o treino do plano ativo,
+3. [`ods_ops.py`](limulus/ods_ops.py) monta o treino do plano ativo,
    calcula carga alvo por RPE, adiciona descanso e observacoes de montagem.
    Tambem calcula o Treino B de garagem a partir dos alvos do treino principal.
-4. [`db_ops.py`](forja_de_ferro/db_ops.py) cria sessoes, logs, planos, medicoes,
+4. [`db_ops.py`](limulus/db_ops.py) cria sessoes, logs, planos, medicoes,
    dieta e resumo pos-treino no SQLite.
 5. `session.json` guarda um cache da sessao ativa para o bot saber qual exercicio
    esta pendente.
-6. [`dashboard.py`](forja_de_ferro/dashboard.py) le o SQLite e gera um HTML unico
+6. [`dashboard.py`](limulus/dashboard.py) le o SQLite e gera um HTML unico
    em `temp/dashboard-treino.html`.
-7. [`backup_ops.py`](forja_de_ferro/backup_ops.py) usa a API nativa de backup do
+7. [`backup_ops.py`](limulus/backup_ops.py) usa a API nativa de backup do
    SQLite para criar copias consistentes e exportar JSON.
 
 O SQLite e a fonte da verdade. `session.json` e apenas cache recuperavel.
@@ -412,7 +417,7 @@ lista simples de `/exercicios`.
 
 ## Banco De Dados
 
-O banco fica em `data/forja_de_ferro.db`. O schema e migrado por
+O banco fica em `data/limulus.db`. O schema e migrado por
 `db_ops.init_db()`, que:
 
 1. garante a tabela `schema_migrations`;
@@ -472,7 +477,7 @@ Indices relevantes:
 - `idx_waist_measurements_recorded_at`.
 
 Para manutencao, prefira scripts Python com `sqlite3` ou os helpers de
-`forja_de_ferro.db_ops`. Nao dependa do binario externo `sqlite3` estar no PATH.
+`limulus.db_ops`. Nao dependa do binario externo `sqlite3` estar no PATH.
 
 ## Migracoes
 
@@ -556,7 +561,7 @@ Dieta:
 
 Mapa muscular:
 
-- usa `forja_de_ferro/assets/mapa_muscular_body_muscles.json`;
+- usa `limulus/assets/mapa_muscular_body_muscles.json`;
 - renderiza paths do projeto `body-muscles` em uma SVG por vista;
 - expande grupos amplos em segmentos anatomicos visuais;
 - deixa regioes sem treino transparentes;
@@ -564,7 +569,7 @@ Mapa muscular:
 - representa volume atribuido, nao ativacao muscular medida.
 
 Licencas dos assets ficam em `docs/licencas/`. Os SVGs anatomicos de Termininja
-ficam preservados em `forja_de_ferro/assets/`.
+ficam preservados em `limulus/assets/`.
 
 ## Peso, Cintura E Perfil Corporal
 
@@ -725,7 +730,7 @@ suite completa listada acima.
 `db_ops`:
 
 ```python
-from forja_de_ferro import db_ops
+from limulus import db_ops
 
 db_ops.init_db()
 db_ops.get_or_seed_exercises()
@@ -753,7 +758,7 @@ db_ops.get_diet_totals()
 `ods_ops`:
 
 ```python
-from forja_de_ferro import ods_ops
+from limulus import ods_ops
 
 ods_ops.generate_training()
 ods_ops.preview_training()
@@ -773,7 +778,7 @@ ods_ops.recover_active_session()
 `dashboard`:
 
 ```python
-from forja_de_ferro import dashboard
+from limulus import dashboard
 
 dashboard.carregar_dados()
 dashboard.salvar_dashboard()
@@ -782,9 +787,9 @@ dashboard.salvar_dashboard()
 `backup_ops`:
 
 ```python
-from forja_de_ferro import backup_ops
+from limulus import backup_ops
 
-backup_ops.validar_banco("data/forja_de_ferro.db")
+backup_ops.validar_banco("data/limulus.db")
 backup_ops.criar_backup()
 backup_ops.exportar_dados()
 backup_ops.restaurar_backup("backups/arquivo.db")
@@ -793,7 +798,7 @@ backup_ops.restaurar_backup("backups/arquivo.db")
 `video_ops`:
 
 ```python
-from forja_de_ferro import video_ops
+from limulus import video_ops
 
 video_ops.ffmpeg_disponivel()
 video_ops.instalar_ffmpeg()
@@ -815,7 +820,7 @@ backups/
 exportacoes/
 ```
 
-O banco principal `data/forja_de_ferro.db` e versionado. Arquivos `-wal` e
+O banco principal `data/limulus.db` e versionado. Arquivos `-wal` e
 `-shm` sao auxiliares do SQLite e continuam locais.
 
 Antes de alterar arquivos de estado local, confirme que a mudanca e realmente

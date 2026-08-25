@@ -18,11 +18,11 @@
 
 O estudo comparou a forca e o alongamento dos isquiotibiais em exercicios de treino resistido e em velocidades progressivas de corrida. A pergunta central era: quais exercicios geram demandas parecidas, menores ou maiores que correr em alta velocidade?
 
-O principal achado para a Forja de Ferro e direto: o **Levantamento Terra Romeno (RDL)** gerou a maior forca de pico no biceps femoral cabeca longa e no semimembranoso, alem de grande alongamento dos isquiotibiais.
+O principal achado para a Limulus e direto: o **Levantamento Terra Romeno (RDL)** gerou a maior forca de pico no biceps femoral cabeca longa e no semimembranoso, alem de grande alongamento dos isquiotibiais.
 
 ---
 
-## Por Que Importa Para A Forja de Ferro
+## Por Que Importa Para O Limulus
 
 O treino atual usa:
 
@@ -106,7 +106,7 @@ Para treino de forca e hipertrofia, o estudo apoia o RDL como uma escolha forte 
 
 ## Aplicacao No Treino
 
-Para a Forja de Ferro:
+Para a Limulus:
 
 ```text
 Levantamento Terra Romeno
@@ -136,6 +136,6 @@ O exercicio deve ser tratado como movimento principal de posterior, nao como sim
 
 ```text
 O Levantamento Terra Romeno e uma das opcoes mais fortes para carregar e alongar
-os isquiotibiais. Na Forja de Ferro, faz sentido manter historico proprio e progredir
+os isquiotibiais. Na Limulus, faz sentido manter historico proprio e progredir
 com criterio.
 ```

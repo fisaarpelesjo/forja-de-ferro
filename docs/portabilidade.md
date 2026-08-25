@@ -1,6 +1,6 @@
 # Portabilidade
 
-A Forja de Ferro foi feito para rodar em maquinas comuns e fracas.
+O Limulus foi feito para rodar em maquinas comuns e fracas.
 
 Runtime:
 
