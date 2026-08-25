@@ -112,7 +112,8 @@ Comandos principais em PT-BR:
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
 - `80` ou `80 8` registra carga e RPE opcional.
-- `/fundamentos` mostra a fase preparatoria sem saco, com a sessao de hoje
+- `/fundamentos` mostra a fase preparatoria sem nenhum equipamento (sem
+  saco, luva, bandagem ou corda), com a sessao de hoje
   marcada; `/fundamentos a|b|c` inicia uma das tres sessoes. Roteiros com
   `usa_progressao: False` nao exibem semana nem potencia, porque sem impacto
   nao ha o que dosar.

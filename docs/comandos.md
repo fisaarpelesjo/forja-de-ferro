@@ -30,11 +30,18 @@ Todos os comandos textuais devem ser enviados com `/`.
 Entradas numericas como `80` e `80 8` nao usam `/`, pois registram carga e RPE
 em vez de acionar um comando textual.
 
-## Muay Thai — Fundamentos (Sem Saco)
+## Muay Thai — Fundamentos (Sem Equipamento)
 
 Fase anterior ao ciclo com saco: aprender cada movimento isolado, sem impacto e
 sem combinacao. Conta repeticao em vez de round, porque sem impacto nao existe
 intensidade para dosar por tempo.
+
+**Equipamento: nenhum.** Sem saco, sem luva, sem bandagem e sem corda — so o
+corpo e um espelho ou o celular filmando. Nao ha impacto, entao nao ha o que
+proteger, e a mao nua deixa o punho visivel para correcao. Por isso as tecnicas
+`bandagem`, `corda` e `controlarsaco` nao aparecem em nenhum bloco desta fase:
+todas dependem de equipamento. Elas continuam no ciclo com saco e acessiveis
+por `/como`.
 
 | Comando | Acao |
 | --- | --- |

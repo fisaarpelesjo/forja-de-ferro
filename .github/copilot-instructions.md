@@ -127,7 +127,7 @@ Comandos principais:
 - `/desfazer`
 - `/ajuda`
 - `80` ou `80 8` para registrar carga e RPE opcional
-- `/fundamentos`, `/fundamentos a|b|c` (fase sem saco, um movimento por vez)
+- `/fundamentos`, `/fundamentos a|b|c` (fase sem equipamento algum, um movimento por vez)
 - `/mt`, `/mtterca`, `/mtquinta`, `/mtsabado` (semana opcional: `/mtterca 3`)
 - `/proximo`, `/mtparar`, `/mtregras`
 - `/tecnicas`, `/como NOME` (ex.: `/como chute baixo`, `/como bandagem`)

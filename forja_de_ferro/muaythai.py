@@ -580,17 +580,23 @@ SABADO = {
 SEM_COMBO = ("Um movimento por vez. Nao emende com nenhum outro golpe nesta "
              "fase — combinacao so depois que cada movimento sair sozinho.")
 
+# Sem impacto nao ha o que proteger, e mao nua deixa o punho visivel para
+# correcao. Bandagem, luva e corda so entram junto com o saco.
+SEM_ACESSORIO = ("Nada nas maos e nada no chao: sem bandagem, sem luva, sem "
+                 "corda, sem saco. So o corpo e um espelho ou o celular filmando.")
+
 FUNDAMENTOS_A = {
     "nome": "Fundamentos A — postura, guarda e socos retos",
     "intensidade": "leve (aprendizado, sem impacto)",
     "usa_progressao": False,
     "blocos": [
         _bloco("Preparacao", "6 min", [
-            "Pratique enfaixar as duas maos uma vez, depois retire",
             "3 min de mobilidade de ombros, quadril e tornozelos",
-        ], nota="Treine sem luva nesta fase: voce precisa enxergar a propria mao "
-                "para corrigir punho e trajetoria.",
-           tecnicas=("bandagem", "mobilidade")),
+            "2 min de caminhada leve pela sala",
+            "1 min so respirando, decidindo em que voce vai prestar atencao hoje",
+        ], nota=f"{SEM_ACESSORIO} Voce precisa enxergar a propria mao para "
+                "corrigir punho e trajetoria.",
+           tecnicas=("mobilidade", "respiracao")),
         _bloco("Base e guarda", "10 min", [
             "Monte a base do zero 20 vezes: pes juntos, recue o direito, ajuste os angulos",
             "Segure a guarda por 3 x 30 s de frente para o espelho",
@@ -634,7 +640,7 @@ FUNDAMENTOS_B = {
             "3 min de mobilidade de ombros, quadril e tornozelos",
             "Remonte a base 10 vezes",
             "20 jabs e depois 20 diretos lentos, so para reaquecer o padrao",
-        ], nota="Jab e direto aqui sao revisao, ainda um de cada vez.",
+        ], nota=f"Jab e direto aqui sao revisao, ainda um de cada vez. {SEM_ACESSORIO}",
            tecnicas=("mobilidade", "base", "jab", "direto")),
         _bloco("Gancho isolado", "9 min", [
             "20 rotacoes de tronco com os bracos soltos, sem golpe",
@@ -674,10 +680,8 @@ FUNDAMENTOS_C = {
             "3 min de mobilidade de tornozelo e quadril",
             "2 min de elevacao alternada dos joelhos",
             "20 agachamentos livres lentos",
-            "2 min de corda, saltos baixos (opcional, para aprender o ritmo)",
-        ], nota="A corda entra aqui so para voce chegar em sabado ja sabendo "
-                "saltar baixo. Se cansar as panturrilhas, pule esta linha.",
-           tecnicas=("mobilidade", "elevacaojoelhos", "corda")),
+        ], nota=SEM_ACESSORIO,
+           tecnicas=("mobilidade", "elevacaojoelhos")),
         _bloco("Giro do pe de apoio", "8 min", [
             "30 giros lentos por lado, SEM chutar",
             "20 giros por lado em ritmo medio",
@@ -727,6 +731,15 @@ CRITERIO_DE_PASSAGEM = [
     "O pe de apoio gira sozinho no chute baixo.",
     "Voce consegue se ver filmado sem enxergar punho dobrado ou guarda caida.",
     "Nenhum movimento causa dor em punho, ombro, joelho ou tornozelo.",
+]
+
+# O que so aparece quando o saco entra. Fica explicito para a fase de
+# fundamentos poder ser feita em qualquer lugar, sem comprar nada.
+ENTRA_COM_O_SACO = [
+    "Bandagem de 5 m — pratique com /como bandagem no dia anterior.",
+    "Luvas de 16 oz.",
+    "Corda, se quiser usar no aquecimento de sabado — veja /como corda.",
+    "O saco propriamente dito, inspecionado antes da primeira sessao.",
 ]
 
 # Dia da semana (segunda=0) -> roteiro. Segunda/quarta/sexta sao musculacao,
@@ -810,7 +823,7 @@ def formatar_bloco(estado):
     duracao = bloco["duracao"] or f"{rounds} de {duracao_round}"
 
     subtitulo = (f"semana {estado['semana']} · bloco {idx + 1} de {total}"
-                 if progride else f"bloco {idx + 1} de {total} · sem saco, sem combo")
+                 if progride else f"bloco {idx + 1} de {total} · sem equipamento, sem combo")
 
     linhas = [
         f"<b>{roteiro['nome']}</b>",
@@ -854,7 +867,7 @@ def formatar_resumo(chave, semana=1):
         linhas.append(
             f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>")
     else:
-        linhas.append("<i>sem saco, sem combinacao — um movimento por vez</i>")
+        linhas.append("<i>sem equipamento, sem combinacao — um movimento por vez</i>")
     linhas.append("")
 
     for i, bloco in enumerate(roteiro["blocos"], 1):
@@ -907,11 +920,13 @@ def resolver_fundamentos(termo):
 def formatar_indice_fundamentos(hoje=None):
     sugerida = fundamentos_do_dia(hoje)
     linhas = [
-        "<b>Fase de fundamentos — sem saco</b>",
+        "<b>Fase de fundamentos — sem equipamento</b>",
         "",
         "Aprender cada movimento isolado antes de bater. Bater no saco antes de "
         "o padrao estar formado grava o padrao errado com impacto junto, e chute "
         "baixo sem giro do pe de apoio machuca o joelho logo na primeira sessao.",
+        "",
+        f"<b>Equipamento: nenhum.</b> {SEM_ACESSORIO}",
         "",
         "<b>Sessoes</b>",
     ]
@@ -926,6 +941,8 @@ def formatar_indice_fundamentos(hoje=None):
         "<b>Quando passar para o saco</b>",
     ]
     linhas += [f"• {c}" for c in CRITERIO_DE_PASSAGEM]
+    linhas += ["", "<b>So entao entra o equipamento</b>"]
+    linhas += [f"• {e}" for e in ENTRA_COM_O_SACO]
     linhas += ["", "<i>Nao ha pressa aqui. Uma semana a mais de fundamento custa "
                    "uma semana; um padrao errado gravado custa meses para desfazer.</i>"]
     return "\n".join(linhas)

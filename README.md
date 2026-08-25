@@ -210,7 +210,8 @@ barra.
 ### Muay Thai (saco)
 
 Antes do saco existe uma fase de fundamentos (`/fundamentos`): tres sessoes
-que ensinam cada movimento isolado, sem impacto e sem combinacao. Bater no saco
+que ensinam cada movimento isolado, sem impacto, sem combinacao e sem nenhum
+equipamento — sem saco, luva, bandagem ou corda. Bater no saco
 antes de o padrao estar formado grava o padrao errado com impacto junto, e
 chute baixo sem giro do pe de apoio machuca o joelho na primeira sessao.
 
@@ -222,7 +223,7 @@ percentual de potencia — encaixar um no outro faria o volume do dashboard
 mentir.
 
 ```
-/fundamentos    Fase sem saco: aprender cada movimento isolado, sem combo
+/fundamentos    Fase sem equipamento: cada movimento isolado, sem combo
 /fundamentos a  Sessao de fundamentos (a, b ou c)
 /mt             Roteiro de hoje (ter/qui/sab); nos outros dias avisa e nao inicia
 /mtterca        Forca o roteiro de terca (idem /mtquinta e /mtsabado)
