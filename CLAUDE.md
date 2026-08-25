@@ -112,6 +112,14 @@ Comandos principais em PT-BR:
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
 - `80` ou `80 8` registra carga e RPE opcional.
+- `/mt` entrega o roteiro de Muay Thai de hoje (terca/quinta/sabado);
+  `/mtterca`, `/mtquinta` e `/mtsabado` forcam um dia especifico e aceitam a
+  semana como argumento (`/mtterca 3`).
+- `/proximo` avanca o roteiro bloco a bloco, `/mtparar` encerra e `/mtregras`
+  mostra as regras de seguranca do ciclo.
+- `/tecnicas` lista a biblioteca de execucao; `/como NOME` devolve o passo a
+  passo e os erros comuns de um golpe (`/como chute baixo`, `/como bandagem`).
+  A busca normaliza acento, espaco e alias em `muaythai.buscar_tecnica`.
 - `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca
   de 5 minutos, sem prescrever um segundo treino.
 - O texto de `/gerar` mostra `alvo`, calculado pela ultima carga do exercicio e pelo RPE, e `descanso`.

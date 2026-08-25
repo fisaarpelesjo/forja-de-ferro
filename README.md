@@ -207,6 +207,33 @@ barra.
 80,5 8          Aceita virgula decimal e salva 80.5 kg
 ```
 
+### Muay Thai (saco)
+
+Ciclo de 8 semanas para iniciante, treinando saco em terca, quinta e sabado,
+complementando a musculacao de segunda, quarta e sexta. Quinta e leve de
+proposito, para nao prejudicar a sexta. Nada e gravado no banco: o modelo de
+treino existente e serie x repeticao x carga, e Muay Thai e round x tempo x
+percentual de potencia — encaixar um no outro faria o volume do dashboard
+mentir.
+
+```
+/mt             Roteiro de hoje (ter/qui/sab); nos outros dias avisa e nao inicia
+/mtterca        Forca o roteiro de terca (idem /mtquinta e /mtsabado)
+/mtterca 3      Mesma coisa, na semana 3 da progressao
+/proximo        Avanca um bloco do roteiro; no ultimo, encerra
+/mtparar        Encerra o roteiro em andamento
+/mtregras       Regras de seguranca do ciclo
+/tecnicas       Indice da biblioteca de execucao
+/como jab       Passo a passo e erros comuns de um golpe
+/como chute baixo   A busca aceita acento, espaco, alias e numeracao (1, 2, 3)
+```
+
+Cada bloco termina com os atalhos `/como` das tecnicas que ele usa, em vez de
+embutir o passo a passo inteiro — o Telegram corta mensagem em 4096 caracteres.
+O estado do roteiro vive em `mt_session.json`, arquivo separado de
+`session.json`, para que uma sessao de musculacao ativa e um roteiro de Muay
+Thai em andamento nao se atropelem.
+
 O polling registra logs operacionais com horario, nivel, comando e `session_id`.
 Token e URL completa da API nao devem aparecer nos logs. Falhas temporarias usam
 espera gradual; token invalido encerra o polling com erro claro.

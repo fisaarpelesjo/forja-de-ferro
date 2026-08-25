@@ -375,6 +375,20 @@ def handle_mt_parar():
     send("Roteiro encerrado.")
 
 
+def handle_como(text):
+    """/como <tecnica>. Sem argumento, mostra o indice em vez de erro -- o
+    operador que digita so /como esta pedindo para ver o que existe."""
+    termo = text.strip()[len("/como"):].strip()
+    if not termo:
+        send(muaythai.formatar_indice_tecnicas())
+        return
+    chave = muaythai.buscar_tecnica(termo)
+    if chave is None:
+        send(muaythai.formatar_tecnica_nao_encontrada(termo))
+        return
+    send(muaythai.formatar_tecnica(chave))
+
+
 def handle_training_b():
     try:
         exercises = ods_ops.build_training_b()
@@ -710,6 +724,8 @@ def main():
                         "/proximo — proximo bloco do roteiro\n"
                         "/mtparar — encerra o roteiro\n"
                         "/mtregras — regras do ciclo\n"
+                        "/tecnicas — todas as tecnicas\n"
+                        "/como &lt;tecnica&gt; — passo a passo (ex: /como chute baixo)\n"
                         "<i>semana opcional: /mtterca 3</i>\n\n"
                         "<b>Registrar carga:</b>\n"
                         "<code>80</code> — somente carga\n"
@@ -786,6 +802,14 @@ def main():
 
                 if lower == "/mtregras":
                     send(muaythai.formatar_regras())
+                    continue
+
+                if lower == "/tecnicas":
+                    send(muaythai.formatar_indice_tecnicas())
+                    continue
+
+                if lower == "/como" or lower.startswith("/como "):
+                    handle_como(text)
                     continue
 
                 if lower == "/gerar":

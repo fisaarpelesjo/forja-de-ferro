@@ -127,9 +127,15 @@ Comandos principais:
 - `/desfazer`
 - `/ajuda`
 - `80` ou `80 8` para registrar carga e RPE opcional
+- `/mt`, `/mtterca`, `/mtquinta`, `/mtsabado` (semana opcional: `/mtterca 3`)
+- `/proximo`, `/mtparar`, `/mtregras`
+- `/tecnicas`, `/como NOME` (ex.: `/como chute baixo`, `/como bandagem`)
 
 Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
+Os comandos de Muay Thai entregam o roteiro do dia bloco a bloco e nao gravam
+nada no banco; `/como` devolve passo a passo e erros comuns de cada golpe, com
+a busca normalizando acento, espaco e alias em `muaythai.buscar_tecnica`.
 `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca de
 5 minutos, sem prescrever um segundo treino.
 

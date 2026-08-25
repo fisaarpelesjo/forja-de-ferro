@@ -16,6 +16,7 @@ musculacao em segunda/quarta/sexta. Quinta e propositalmente leve para nao
 prejudicar a musculacao de sexta.
 """
 import json
+import unicodedata
 from datetime import date
 from pathlib import Path
 
@@ -34,6 +35,310 @@ PROGRESSAO = {
 # Numeracao usada nas combinacoes.
 NUMERACAO = "1 = jab (mao da frente) · 2 = direto (mao de tras) · 3 = gancho da frente"
 
+# Todas as instrucoes assumem destro (guarda esquerda a frente). Canhoto inverte
+# tudo: onde se le "esquerda" leia "direita".
+LATERALIDADE = ("Instrucoes escritas para destro (pe e mao esquerdos a frente). "
+                "Se voce for canhoto, inverta todos os lados.")
+
+# Biblioteca de execucao. Cada bloco do roteiro aponta para as chaves usadas nele,
+# e /como <chave> devolve o passo a passo. Fica separado dos roteiros de proposito:
+# a mesma tecnica aparece em terca, quinta e sabado -- descrever em cada lugar
+# geraria tres versoes que divergem na primeira correcao.
+TECNICAS = {
+    "base": {
+        "nome": "Base e guarda",
+        "passos": [
+            "Pes na largura dos ombros; recue o pe direito cerca de um passo e meio.",
+            "Pe da frente apontando ~45 graus para dentro; pe de tras ~45 a 70 graus para fora.",
+            "Calcanhar de tras levemente levantado. Peso 50/50 entre as pernas.",
+            "Joelhos levemente flexionados — nunca travados.",
+            "Queixo para baixo, olhando por cima das sobrancelhas.",
+            "Mao esquerda na altura da bochecha, um palmo a frente do rosto.",
+            "Mao direita colada na bochecha direita, nao encostada no queixo.",
+            "Cotovelos fechados para dentro, cobrindo costelas e figado.",
+            "Ombros levemente elevados, protegendo a lateral do queixo.",
+        ],
+        "erros": [
+            "Pes na mesma linha: perde equilibrio lateral e cai com qualquer empurrao.",
+            "Base larga demais: fica estavel mas nao consegue se mover.",
+            "Queixo levantado.",
+            "Cotovelos abertos, deixando o tronco descoberto.",
+        ],
+    },
+    "passos": {
+        "nome": "Deslocamento",
+        "passos": [
+            "Para frente: pe da frente sai primeiro, pe de tras acompanha na mesma medida.",
+            "Para tras: pe de tras sai primeiro, pe da frente acompanha.",
+            "Para a direita: pe direito primeiro. Para a esquerda: pe esquerdo primeiro.",
+            "Passos curtos, de 10 a 20 cm, deslizando pelo chao.",
+            "A base recompoe imediatamente depois de cada passo.",
+            "A guarda nao se mexe enquanto os pes trabalham.",
+        ],
+        "erros": [
+            "Cruzar os pes: e o momento em que voce esta mais vulneravel.",
+            "Saltar em vez de deslizar.",
+            "Passos largos que desmontam a base.",
+            "Deixar as maos cairem enquanto anda.",
+        ],
+    },
+    "jab": {
+        "nome": "Jab (1) — soco reto da mao da frente",
+        "passos": [
+            "Sai direto da guarda, sem puxar a mao para tras antes.",
+            "Empurre o punho esquerdo em linha reta a partir da altura do queixo.",
+            "Gire o punho no trajeto: a palma termina virada para baixo.",
+            "O ombro esquerdo sobe e cobre o queixo no momento do impacto.",
+            "Pequeno giro de tronco e quadril; o pe da frente pivota de leve.",
+            "Contato com os dois primeiros nos (indicador e medio), punho reto.",
+            "Recolha pelo mesmo caminho, mais rapido do que foi.",
+        ],
+        "erros": [
+            "Telegrafar: puxar a mao para tras antes de bater.",
+            "Punho dobrado no impacto — e assim que se machuca o pulso.",
+            "Deixar a mao direita cair enquanto o jab sai.",
+            "Estender o cotovelo ate travar.",
+        ],
+    },
+    "direto": {
+        "nome": "Direto (2) — soco reto da mao de tras",
+        "passos": [
+            "Comeca no chao: gire o pe direito para dentro como se esmagasse um cigarro.",
+            "A forca sobe em ordem: pe, quadril, tronco, ombro e so entao o braco.",
+            "O punho sai do queixo em linha reta; palma vira para baixo no impacto.",
+            "A mao esquerda fica colada no rosto o tempo todo.",
+            "O peso transfere para a perna da frente, sem passar a linha do pe da frente.",
+            "Recolha girando de volta para a base, nao apenas puxando o braco.",
+        ],
+        "erros": [
+            "Bater so com o braco, sem girar quadril: e o erro que tira toda a potencia.",
+            "Manter o calcanhar de tras plantado no chao.",
+            "Inclinar o tronco a frente e expor o queixo.",
+            "Esquecer a guarda esquerda no caminho de volta.",
+        ],
+    },
+    "gancho": {
+        "nome": "Gancho (3) — soco circular da mao da frente",
+        "passos": [
+            "Cotovelo travado em ~90 graus, na mesma altura do alvo.",
+            "O golpe vem da rotacao do corpo: pe da frente, quadril e tronco giram juntos.",
+            "Punho, cotovelo e ombro permanecem na mesma linha horizontal.",
+            "Palma pode ficar virada para dentro ou para baixo — escolha uma e mantenha.",
+            "Contato com os nos, punho reto e firme.",
+            "Volte a guarda desfazendo a rotacao.",
+        ],
+        "erros": [
+            "Abrir o braco: vira tapa e machuca o ombro.",
+            "Baixar o ombro do lado que bate.",
+            "Perder completamente a guarda do outro lado.",
+        ],
+    },
+    "jabcorpo": {
+        "nome": "Jab no corpo",
+        "passos": [
+            "Mesma mecanica do jab, mas voce desce flexionando os JOELHOS.",
+            "A coluna permanece reta; quem desce sao as pernas.",
+            "A cabeca sai da linha central ao descer.",
+            "Alvo na altura do plexo solar / figado.",
+            "Suba imediatamente de volta a guarda alta.",
+        ],
+        "erros": [
+            "Curvar as costas em vez de dobrar os joelhos.",
+            "Olhar para o chao ao descer.",
+            "Ficar embaixo depois do golpe.",
+        ],
+    },
+    "saidalateral": {
+        "nome": "Saida lateral",
+        "passos": [
+            "Termine a combinacao e imediatamente de 1 ou 2 passos para o lado.",
+            "Nunca recue em linha reta — e a trajetoria que o adversario ja esta seguindo.",
+            "Guarda alta durante todo o deslocamento.",
+            "Recomponha a base antes de pensar no proximo golpe.",
+        ],
+        "erros": [
+            "Parar para admirar o saco depois de bater.",
+            "Sair de guarda baixa.",
+        ],
+    },
+    "teep": {
+        "nome": "Teep — chute frontal de empurrao",
+        "passos": [
+            "Levante o joelho ate a altura do quadril, bem a frente do corpo.",
+            "Puxe a ponta do pe para cima: o contato e com a SOLA do pe.",
+            "Estenda o quadril a frente — e um empurrao, nao um chute de impacto.",
+            "Recolha o pe pela mesma trajetoria, de volta a base.",
+            "As maos ficam em guarda do inicio ao fim.",
+        ],
+        "erros": [
+            "Bater com os dedos do pe.",
+            "Jogar a perna sem levantar o joelho primeiro.",
+            "Deixar o pe cair no chao a frente, virando um passo.",
+        ],
+    },
+    "joelho": {
+        "nome": "Joelhada frontal",
+        "passos": [
+            "Levante o joelho na diagonal, de baixo para cima e a frente.",
+            "Estenda o quadril a frente; a ponta do pe aponta para baixo.",
+            "Contato com a parte de cima da canela, logo abaixo do joelho.",
+            "Os bracos descem em oposicao, como se puxassem o alvo para baixo.",
+            "O pe de apoio pivota de leve, acompanhando o quadril.",
+            "Recolha e recomponha a base.",
+        ],
+        "erros": [
+            "Bater com a rotula (patela) — dano articular direto.",
+            "Nao avancar o quadril: vira levantamento de perna sem forca.",
+            "Segurar as correntes ou o topo do saco com violencia.",
+        ],
+    },
+    "chutebaixo": {
+        "nome": "Chute baixo (low kick)",
+        "passos": [
+            "Passo curto de abertura com o pe da frente, ligeiramente para fora da linha.",
+            "GIRE o pe de apoio ate o calcanhar apontar para o alvo — sem isso nao ha potencia e o joelho sofre.",
+            "A perna vem como um taco de beisebol, joelho levemente flexionado.",
+            "Contato com o terco inferior da CANELA, na coxa do alvo.",
+            "O braco do mesmo lado desce e vai para tras, como contrapeso.",
+            "Recolha pelo mesmo caminho ou complete o giro — nunca deixe a perna morta.",
+        ],
+        "erros": [
+            "Nao girar o pe de apoio: principal causa de lesao de joelho em iniciante.",
+            "Bater com o peito do pe em vez da canela.",
+            "Chutar como chute de futebol, com a perna estendida.",
+            "Ficar de costas para o saco depois do chute.",
+        ],
+    },
+    "girodope": {
+        "nome": "Giro do pe de apoio (drill isolado)",
+        "passos": [
+            "Sem chutar: apenas levante o calcanhar do pe de apoio e gire ate ele apontar para o alvo.",
+            "Os bracos acompanham a rotacao naturalmente.",
+            "20 a 30 repeticoes lentas por lado.",
+            "So depois que o giro sair automatico voce adiciona a perna que chuta.",
+        ],
+        "erros": [
+            "Girar o joelho em vez do pe — e exatamente o movimento que lesiona.",
+        ],
+    },
+    "bloqueio": {
+        "nome": "Bloqueio e resposta",
+        "passos": [
+            "Contra soco alto: o cotovelo sobe, a luva encosta na tempora, voce olha por cima.",
+            "Contra chute baixo: levante a canela, joelho apontando um pouco para fora, pe flexionado.",
+            "Estrutura firme — nunca receba com o braco solto.",
+            "Imediatamente apos bloquear, responda com um jab. Bloqueio sem resposta e so apanhar organizado.",
+        ],
+        "erros": [
+            "Fechar os olhos.",
+            "Afastar a mao do rosto para 'ir buscar' o golpe.",
+            "Ficar so bloqueando, sem devolver.",
+        ],
+    },
+    "sombra": {
+        "nome": "Boxe-sombra",
+        "passos": [
+            "Sem saco, de frente para um espelho ou gravando com o celular.",
+            "Comece so com base e passos; depois adicione jab; depois combinacoes.",
+            "Prioridade e forma perfeita, nao velocidade.",
+            "Toda mao que sai volta para a guarda antes da proxima.",
+        ],
+        "erros": [
+            "Acelerar antes de a forma estar limpa.",
+            "Bater no ar travando o cotovelo.",
+        ],
+    },
+    "prancha": {
+        "nome": "Prancha",
+        "passos": [
+            "Antebracos no chao, cotovelos exatamente sob os ombros.",
+            "Corpo em linha reta: calcanhar, quadril, ombro e cabeca alinhados.",
+            "Contraia gluteo e abdomen como se fosse levar um soco na barriga.",
+            "Respire normalmente durante os 30 s.",
+        ],
+        "erros": [
+            "Quadril subindo (virou triangulo) ou afundando (lombar sofre).",
+            "Prender a respiracao.",
+            "Olhar para frente em vez de para o chao.",
+        ],
+    },
+    "bandagem": {
+        "nome": "Bandagem de 5 m",
+        "passos": [
+            "Polegar na alca, bandagem passando pelo DORSO da mao.",
+            "3 voltas no punho.",
+            "3 voltas na palma, subindo em direcao aos dedos.",
+            "Entre os dedos: mindinho/anelar, anelar/medio, medio/indicador — subindo pelo dorso, voltando pela palma.",
+            "Volte ao punho e cruze pelo dorso em X, 2 ou 3 vezes.",
+            "3 voltas cobrindo os nos dos dedos.",
+            "Termine no punho e feche o velcro.",
+            "Teste: feche o punho. Firme, sem formigar.",
+        ],
+        "erros": [
+            "Apertada demais: mao esfria, formiga ou perde cor — refaca mais folgada.",
+            "Frouxa no punho: nao protege exatamente onde a lesao acontece.",
+            "Pular a passagem entre os dedos, deixando os nos sem colchao.",
+        ],
+    },
+    "mobilidade": {
+        "nome": "Mobilidade de aquecimento",
+        "passos": [
+            "Ombros: 10 circulos grandes para tras e 10 para frente.",
+            "Quadril: joelho elevado, 10 circulos por lado.",
+            "Tornozelo: circulos em cada lado e um agachamento profundo mantido por 20 s.",
+            "Coluna toracica: maos na nuca, 10 rotacoes para cada lado.",
+            "Tudo em movimento — sem alongamento estatico longo antes de bater.",
+        ],
+        "erros": [
+            "Alongar parado por muito tempo antes do treino: reduz forca e nao previne lesao.",
+        ],
+    },
+}
+
+# Como o operador pode digitar cada tecnica.
+ALIASES = {
+    "guarda": "base", "postura": "base",
+    "deslocamento": "passos", "passo": "passos", "movimentacao": "passos",
+    "1": "jab",
+    "2": "direto", "cross": "direto",
+    "3": "gancho", "hook": "gancho",
+    "jabnocorpo": "jabcorpo", "soconocorpo": "jabcorpo", "corpo": "jabcorpo",
+    "saida": "saidalateral", "sair": "saidalateral",
+    "pushkick": "teep", "chutefrontal": "teep",
+    "joelhada": "joelho",
+    "lowkick": "chutebaixo", "chute": "chutebaixo", "chutebaixodaperna": "chutebaixo",
+    "giro": "girodope", "pedeapoio": "girodope",
+    "defesa": "bloqueio", "bloquear": "bloqueio",
+    "shadow": "sombra", "boxesombra": "sombra",
+    "core": "prancha", "abdomen": "prancha",
+    "bandagens": "bandagem", "enfaixar": "bandagem", "atadura": "bandagem",
+    "aquecimento": "mobilidade", "alongamento": "mobilidade",
+}
+
+
+def _normalizar(texto):
+    """Minusculo, sem acento e sem espaco/pontuacao -- '/como Chute Baixo',
+    '/como chute-baixo' e '/como CHUTEBAIXO' precisam cair na mesma chave."""
+    texto = unicodedata.normalize("NFKD", str(texto))
+    texto = "".join(c for c in texto if not unicodedata.combining(c))
+    return "".join(c for c in texto.lower() if c.isalnum())
+
+
+def buscar_tecnica(termo):
+    """Chave da tecnica, ou None. Aceita nome exato, alias e prefixo."""
+    chave = _normalizar(termo)
+    if not chave:
+        return None
+    if chave in TECNICAS:
+        return chave
+    if chave in ALIASES:
+        return ALIASES[chave]
+    # Prefixo so resolve se for inequivoco -- 'j' nao pode virar jab por sorte.
+    candidatos = [k for k in TECNICAS if k.startswith(chave)]
+    if len(candidatos) == 1:
+        return candidatos[0]
+    return None
+
 
 def parametros_da_semana(semana):
     """Rounds, duracao, potencia e objetivo da semana. Fora de 1-8, usa a faixa
@@ -45,8 +350,15 @@ def parametros_da_semana(semana):
     return PROGRESSAO[(1, 2)]
 
 
-def _bloco(titulo, duracao, itens, nota=None):
-    return {"titulo": titulo, "duracao": duracao, "itens": itens, "nota": nota}
+def _bloco(titulo, duracao, itens, nota=None, tecnicas=()):
+    """`tecnicas`: chaves de TECNICAS usadas neste bloco. Viram atalhos /como no
+    fim da mensagem, em vez de inflar o bloco com o passo a passo inteiro (o
+    Telegram corta mensagem em 4096 caracteres)."""
+    faltando = [t for t in tecnicas if t not in TECNICAS]
+    if faltando:
+        raise KeyError(f"bloco '{titulo}' referencia tecnica inexistente: {faltando}")
+    return {"titulo": titulo, "duracao": duracao, "itens": itens, "nota": nota,
+            "tecnicas": list(tecnicas)}
 
 
 # ----------------------------------------------------------------- TERCA
@@ -60,14 +372,15 @@ TERCA = {
             "2 min de mobilidade de ombros, quadril e tornozelos",
             "3 min de boxe-sombra leve",
             "2 min so postura e guarda",
-        ]),
+        ], tecnicas=("mobilidade", "sombra", "base")),
         _bloco("Tecnica sem potencia", "15 min", [
             "1) Base, guarda e passos para frente e para tras",
             "2) Jab parado",
             "3) Direto parado",
             "4) Jab + direto",
             "5) Jab + direto saindo lateralmente",
-        ], nota=f"5 blocos de 2 min, 1 min de descanso entre eles.\n{NUMERACAO}"),
+        ], nota=f"5 blocos de 2 min, 1 min de descanso entre eles.\n{NUMERACAO}",
+           tecnicas=("base", "passos", "jab", "direto", "saidalateral")),
         _bloco("Saco", None, [
             "1) Apenas jab",
             "2) Jab + direto",
@@ -78,17 +391,18 @@ TERCA = {
             "7) Combinacoes livres de 2 ou 3 socos",
             "8) Condicionamento: 20 s trabalhando / 20 s controlando",
         ], nota="1 min de descanso entre rounds. Priorize acertar com os nos dos "
-                "dedos alinhados, pulso reto e mao voltando imediatamente para a guarda."),
+                "dedos alinhados, pulso reto e mao voltando imediatamente para a guarda.",
+           tecnicas=("jab", "direto", "gancho", "jabcorpo", "saidalateral")),
         _bloco("Condicionamento", "5 min", [
             "5 ciclos de:",
             "  30 s de socos retos rapidos e leves",
             "  30 s andando e respirando",
-        ]),
+        ], tecnicas=("jab", "direto")),
         _bloco("Volta a calma", "6 min", [
             "Caminhada leve",
             "Respiracao",
             "Mobilidade suave dos ombros",
-        ]),
+        ], tecnicas=("mobilidade",)),
     ],
 }
 
@@ -104,14 +418,15 @@ QUINTA = {
             "3 min de boxe-sombra leve",
             "2 min so postura e guarda",
             "Elevacao alternada dos joelhos",
-        ]),
+        ], tecnicas=("mobilidade", "sombra", "base")),
         _bloco("Tecnica", "15 min", [
             "1) Guarda e deslocamento",
             "2) Bloqueio imaginario e resposta com jab",
             "3) Teep sem forca, primeiro no ar",
             "4) Joelho frontal alternado no ar",
             "5) Jab + direto + joelho",
-        ], nota="5 blocos de 2 min, 1 min de descanso."),
+        ], nota="5 blocos de 2 min, 1 min de descanso.",
+           tecnicas=("base", "passos", "bloqueio", "teep", "joelho")),
         _bloco("Saco", None, [
             "1) Jab + saida",
             "2) Jab + direto + saida",
@@ -123,17 +438,19 @@ QUINTA = {
             "8) Tecnica livre leve",
         ], nota="No joelho, NAO bata com a patela. O contato e na parte frontal/superior "
                 "da canela, proxima ao joelho, com o quadril avancando. Nao segure com "
-                "violencia as correntes nem a parte superior do saco."),
+                "violencia as correntes nem a parte superior do saco.",
+           tecnicas=("jab", "direto", "teep", "joelho", "saidalateral")),
         _bloco("Estabilidade", "5 min", [
             "Prancha: 3 x 30 s (30 s de descanso entre elas)",
             "Tempo restante: respiracao e caminhada",
-        ]),
+        ], tecnicas=("prancha",)),
         _bloco("Volta a calma", "6 min", [
             "Caminhada leve",
             "Respiracao",
             "Mobilidade suave dos ombros",
         ], nota="A sessao inteira deve ficar em RPE 5-6/10 — ela existe leve de "
-                "proposito, para nao prejudicar a musculacao de sexta."),
+                "proposito, para nao prejudicar a musculacao de sexta.",
+           tecnicas=("mobilidade",)),
     ],
 }
 
@@ -148,13 +465,14 @@ SABADO = {
             "3 min de mobilidade de tornozelo e quadril",
             "3 min de boxe-sombra",
             "2 min simulando chutes lentamente, sem saco",
-        ]),
+        ], tecnicas=("mobilidade", "sombra", "girodope")),
         _bloco("Tecnica", "12 min", [
             "1) Giro do pe de apoio, sem chutar",
             "2) Chute baixo com a perna de tras, no ar",
             "3) Chute baixo com a perna da frente, no ar",
             "4) Jab + direto + chute baixo",
-        ], nota="4 blocos de 2 min, 1 min de descanso."),
+        ], nota="4 blocos de 2 min, 1 min de descanso.",
+           tecnicas=("girodope", "chutebaixo", "jab", "direto")),
         _bloco("Saco", None, [
             "1) Jab + direto",
             "2) Chute baixo da perna de tras",
@@ -166,17 +484,18 @@ SABADO = {
             "8) Condicionamento: 20 s de golpes / 20 s movimentando",
         ], nota="Nas primeiras semanas, apenas 5 a 8 chutes por perna em cada round "
                 "especifico, com forca baixa. Acerte com a CANELA, nao com o pe. "
-                "Nunca chute a parte metalica, a corrente ou a extremidade inferior."),
+                "Nunca chute a parte metalica, a corrente ou a extremidade inferior.",
+           tecnicas=("jab", "direto", "chutebaixo", "joelho")),
         _bloco("Finalizacao", "6 min", [
             "6 ciclos de:",
             "  30 s trabalhando no saco",
             "  30 s caminhando",
-        ]),
+        ], tecnicas=("jab", "direto", "chutebaixo")),
         _bloco("Volta a calma", "6 min", [
             "Caminhada leve",
             "Respiracao",
             "Mobilidade suave dos ombros",
-        ]),
+        ], tecnicas=("mobilidade",)),
     ],
 }
 
@@ -187,7 +506,7 @@ ROTEIROS = {"terca": TERCA, "quinta": QUINTA, "sabado": SABADO}
 POR_DIA_DA_SEMANA = {1: "terca", 3: "quinta", 5: "sabado"}
 
 REGRAS = [
-    "Bandagem de 5 m e luvas de 16 oz, sempre.",
+    "Bandagem de 5 m e luvas de 16 oz, sempre. Passo a passo em /como bandagem.",
     "Inspecione suporte, parabolts, corrente e mosquetao antes de cada sessao.",
     "Nao bata enquanto o saco estiver voltando com forca contra voce.",
     "Sem cotoveladas neste primeiro ciclo.",
@@ -274,6 +593,10 @@ def formatar_bloco(estado):
     if bloco["nota"]:
         linhas += ["", f"<i>{bloco['nota']}</i>"]
 
+    if bloco["tecnicas"]:
+        atalhos = " · ".join(f"/como {t}" for t in bloco["tecnicas"])
+        linhas += ["", f"<b>Como executar:</b> {atalhos}"]
+
     if idx + 1 < total:
         proximo = roteiro["blocos"][idx + 1]["titulo"]
         linhas += ["", f"Proximo: {proximo} — envie /proximo"]
@@ -303,3 +626,29 @@ def formatar_resumo(chave, semana=1):
 
 def formatar_regras():
     return "<b>Regras do ciclo</b>\n\n" + "\n".join(f"• {r}" for r in REGRAS)
+
+
+def formatar_tecnica(chave):
+    """Passo a passo de uma tecnica. `chave` ja resolvida por buscar_tecnica."""
+    tec = TECNICAS[chave]
+    linhas = [f"<b>{tec['nome']}</b>", ""]
+    linhas += [f"{i}. {passo}" for i, passo in enumerate(tec["passos"], 1)]
+    linhas += ["", "<b>Erros comuns</b>"]
+    linhas += [f"• {erro}" for erro in tec["erros"]]
+    linhas += ["", f"<i>{LATERALIDADE}</i>"]
+    return "\n".join(linhas)
+
+
+def formatar_tecnica_nao_encontrada(termo):
+    disponiveis = " · ".join(sorted(TECNICAS))
+    return (f"Nao conheco '{termo}'.\n\n"
+            f"<b>Tecnicas disponiveis</b>\n{disponiveis}\n\n"
+            "<i>Use /como &lt;nome&gt;, por exemplo /como chute baixo</i>")
+
+
+def formatar_indice_tecnicas():
+    linhas = ["<b>Biblioteca de execucao</b>", ""]
+    for chave in sorted(TECNICAS):
+        linhas.append(f"• /como {chave} — {TECNICAS[chave]['nome']}")
+    linhas += ["", f"<i>{LATERALIDADE}</i>"]
+    return "\n".join(linhas)
