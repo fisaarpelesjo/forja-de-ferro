@@ -57,6 +57,8 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /status         mostra progresso
 /desfazer       apaga o ultimo registro
 /ajuda          mostra ajuda
+/fundamentos    fase sem saco: um movimento por vez
+/fundamentos a  sessao de fundamentos (a, b ou c)
 /mt             roteiro de Muay Thai de hoje (ter/qui/sab)
 /mtterca        forca um dia; idem /mtquinta e /mtsabado
 /proximo        avanca um bloco do roteiro

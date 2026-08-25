@@ -30,6 +30,25 @@ Todos os comandos textuais devem ser enviados com `/`.
 Entradas numericas como `80` e `80 8` nao usam `/`, pois registram carga e RPE
 em vez de acionar um comando textual.
 
+## Muay Thai — Fundamentos (Sem Saco)
+
+Fase anterior ao ciclo com saco: aprender cada movimento isolado, sem impacto e
+sem combinacao. Conta repeticao em vez de round, porque sem impacto nao existe
+intensidade para dosar por tempo.
+
+| Comando | Acao |
+| --- | --- |
+| `/fundamentos` | Explica a fase, marca a sessao de hoje e lista os criterios de passagem. |
+| `/fundamentos a` | Postura, guarda, deslocamento, jab e direto. |
+| `/fundamentos b` | Gancho, jab no corpo, bloqueio, saida lateral e prancha. |
+| `/fundamentos c` | Giro do pe de apoio, teep, joelhada e chute baixo. |
+
+`/proximo` e `/mtparar` funcionam igual aqui: e a mesma maquina de blocos. As
+sessoes seguem terca, quinta e sabado, repetidas por 2 a 3 semanas.
+
+Os roteiros de fundamentos carregam `usa_progressao: False`, e por isso nao
+mostram semana nem potencia maxima — nao ha impacto para dosar.
+
 ## Muay Thai (Saco)
 
 Ciclo de 8 semanas em terca, quinta e sabado, complementando a musculacao de

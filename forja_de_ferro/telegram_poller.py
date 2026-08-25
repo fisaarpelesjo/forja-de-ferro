@@ -375,6 +375,28 @@ def handle_mt_parar():
     send("Roteiro encerrado.")
 
 
+def handle_fundamentos(text):
+    """/fundamentos [a|b|c]. Sem argumento mostra o indice da fase, com a sessao
+    de hoje marcada -- e a primeira coisa que alguem digita, entao nao pode ser
+    erro."""
+    termo = text.strip()[len("/fundamentos"):].strip()
+    if not termo:
+        send(muaythai.formatar_indice_fundamentos())
+        return
+    chave = muaythai.resolver_fundamentos(termo)
+    if chave is None:
+        send("Sessao nao reconhecida. Use /fundamentos a, b ou c.\n\n"
+             "Sem argumento, /fundamentos mostra a fase inteira.")
+        return
+    try:
+        muaythai.iniciar(chave)
+    except Exception as exc:
+        LOGGER.error("Falha ao iniciar fundamentos chave=%s tipo=%s", chave, type(exc).__name__)
+        send("Erro ao iniciar a sessao. Consulte o terminal.")
+        return
+    send(muaythai.formatar_resumo(chave))
+
+
 def handle_como(text):
     """/como <tecnica>. Sem argumento, mostra o indice em vez de erro -- o
     operador que digita so /como esta pedindo para ver o que existe."""
@@ -718,7 +740,9 @@ def main():
                         "/status — exercicio atual e progresso\n"
                         "/desfazer — apaga o ultimo registro\n"
                         "/ajuda — esta mensagem\n\n"
-                        "<b>Muay Thai (saco)</b>\n"
+                        "<b>Muay Thai</b>\n"
+                        "/fundamentos — fase sem saco, um movimento por vez\n"
+                        "/fundamentos a|b|c — sessao de fundamentos\n"
                         "/mt — treino de hoje (ter/qui/sab)\n"
                         "/mtterca, /mtquinta, /mtsabado — treino especifico\n"
                         "/proximo — proximo bloco do roteiro\n"
@@ -802,6 +826,10 @@ def main():
 
                 if lower == "/mtregras":
                     send(muaythai.formatar_regras())
+                    continue
+
+                if lower == "/fundamentos" or lower.startswith("/fundamentos "):
+                    handle_fundamentos(text)
                     continue
 
                 if lower == "/tecnicas":

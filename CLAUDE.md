@@ -112,6 +112,10 @@ Comandos principais em PT-BR:
 - `/desfazer` limpa o ultimo exercicio registrado.
 - `/ajuda` lista comandos.
 - `80` ou `80 8` registra carga e RPE opcional.
+- `/fundamentos` mostra a fase preparatoria sem saco, com a sessao de hoje
+  marcada; `/fundamentos a|b|c` inicia uma das tres sessoes. Roteiros com
+  `usa_progressao: False` nao exibem semana nem potencia, porque sem impacto
+  nao ha o que dosar.
 - `/mt` entrega o roteiro de Muay Thai de hoje (terca/quinta/sabado);
   `/mtterca`, `/mtquinta` e `/mtsabado` forcam um dia especifico e aceitam a
   semana como argumento (`/mtterca 3`).

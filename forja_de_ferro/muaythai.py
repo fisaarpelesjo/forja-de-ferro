@@ -564,7 +564,170 @@ SABADO = {
     ],
 }
 
-ROTEIROS = {"terca": TERCA, "quinta": QUINTA, "sabado": SABADO}
+# ----------------------------------------------------- FUNDAMENTOS (sem saco)
+#
+# Fase anterior ao ciclo de 8 semanas: aprender cada movimento isolado, sem saco
+# e sem combinacao. O motivo e motor, nao de conforto -- bater no saco antes de
+# o padrao estar formado grava o padrao errado com impacto junto, e chute baixo
+# sem giro do pe de apoio lesiona o joelho na primeira sessao.
+#
+# Por isso conta REPETICAO, nao round: sem impacto nao existe intensidade para
+# dosar por tempo, e o que importa e o numero de execucoes limpas.
+#
+# Reusa as mesmas TECNICAS do ciclo com saco. Se uma instrucao mudar, muda nos
+# dois lugares de uma vez.
+
+SEM_COMBO = ("Um movimento por vez. Nao emende com nenhum outro golpe nesta "
+             "fase — combinacao so depois que cada movimento sair sozinho.")
+
+FUNDAMENTOS_A = {
+    "nome": "Fundamentos A — postura, guarda e socos retos",
+    "intensidade": "leve (aprendizado, sem impacto)",
+    "usa_progressao": False,
+    "blocos": [
+        _bloco("Preparacao", "6 min", [
+            "Pratique enfaixar as duas maos uma vez, depois retire",
+            "3 min de mobilidade de ombros, quadril e tornozelos",
+        ], nota="Treine sem luva nesta fase: voce precisa enxergar a propria mao "
+                "para corrigir punho e trajetoria.",
+           tecnicas=("bandagem", "mobilidade")),
+        _bloco("Base e guarda", "10 min", [
+            "Monte a base do zero 20 vezes: pes juntos, recue o direito, ajuste os angulos",
+            "Segure a guarda por 3 x 30 s de frente para o espelho",
+            "1 min andando pela sala sem desmanchar a guarda",
+        ], nota="Confira a cada repeticao: queixo baixo, cotovelos para dentro, "
+                "joelhos moles, calcanhar de tras levantado.",
+           tecnicas=("base", "sombra")),
+        _bloco("Deslocamento", "7 min", [
+            "Frente e tras: 20 idas e voltas",
+            "Direita e esquerda: 20 para cada lado",
+            "Quadrado: 10 voltas em cada sentido",
+        ], nota="Regra unica desta fase: os pes nunca se cruzam.",
+           tecnicas=("passos",)),
+        _bloco("Jab isolado", "8 min", [
+            "30 jabs LENTOS de frente para o espelho, um a cada 3 s",
+            "30 jabs em ritmo medio, ainda sem forca",
+            "20 jabs dando um passo a frente junto",
+        ], nota=f"Pare a cada 10 e confira: punho reto, mao voltou ao rosto. {SEM_COMBO}",
+           tecnicas=("jab",)),
+        _bloco("Direto isolado", "8 min", [
+            "20 giros de pe direito e quadril, SEM o braco",
+            "30 diretos lentos, sentindo a ordem pe > quadril > tronco > braco",
+            "30 diretos em ritmo medio",
+            "10 diretos filmados de lado",
+        ], nota=f"O giro vem primeiro; o braco e o ultimo elo. {SEM_COMBO}",
+           tecnicas=("direto",)),
+        _bloco("Volta a calma", "4 min", [
+            "Caminhada leve",
+            "Respiracao 4-2-6, 8 ciclos",
+            "Anote qual movimento pareceu mais estranho hoje",
+        ], tecnicas=("respiracao",)),
+    ],
+}
+
+FUNDAMENTOS_B = {
+    "nome": "Fundamentos B — socos circulares e defesa",
+    "intensidade": "leve (aprendizado, sem impacto)",
+    "usa_progressao": False,
+    "blocos": [
+        _bloco("Preparacao", "6 min", [
+            "3 min de mobilidade de ombros, quadril e tornozelos",
+            "Remonte a base 10 vezes",
+            "20 jabs e depois 20 diretos lentos, so para reaquecer o padrao",
+        ], nota="Jab e direto aqui sao revisao, ainda um de cada vez.",
+           tecnicas=("mobilidade", "base", "jab", "direto")),
+        _bloco("Gancho isolado", "9 min", [
+            "20 rotacoes de tronco com os bracos soltos, sem golpe",
+            "30 ganchos lentos, cotovelo travado a 90 graus",
+            "30 ganchos em ritmo medio",
+        ], nota=f"No espelho: punho, cotovelo e ombro na mesma linha horizontal. {SEM_COMBO}",
+           tecnicas=("gancho",)),
+        _bloco("Jab no corpo", "8 min", [
+            "20 descidas sem golpe: flexione os JOELHOS, coluna reta",
+            "30 jabs no corpo lentos, descendo e subindo",
+            "20 em ritmo medio",
+        ], nota=f"A cabeca sai da linha central ao descer. {SEM_COMBO}",
+           tecnicas=("jabcorpo",)),
+        _bloco("Bloqueio e saida lateral", "9 min", [
+            "Bloqueio alto: 30 repeticoes de cada lado",
+            "Bloqueio de perna: 20 elevacoes de canela de cada lado",
+            "Saida lateral: 20 para cada lado, depois de um unico jab",
+        ], nota="Nunca recue em linha reta. O jab antes da saida existe so para "
+                "dar o timing — continua sendo um golpe so.",
+           tecnicas=("bloqueio", "saidalateral")),
+        _bloco("Estabilidade", "5 min", [
+            "Prancha: 3 x 30 s (30 s de descanso entre elas)",
+        ], tecnicas=("prancha",)),
+        _bloco("Volta a calma", "4 min", [
+            "Caminhada leve",
+            "Respiracao 4-2-6, 8 ciclos",
+        ], tecnicas=("respiracao",)),
+    ],
+}
+
+FUNDAMENTOS_C = {
+    "nome": "Fundamentos C — pernas",
+    "intensidade": "leve (aprendizado, sem impacto)",
+    "usa_progressao": False,
+    "blocos": [
+        _bloco("Preparacao", "8 min", [
+            "3 min de mobilidade de tornozelo e quadril",
+            "2 min de elevacao alternada dos joelhos",
+            "20 agachamentos livres lentos",
+            "2 min de corda, saltos baixos (opcional, para aprender o ritmo)",
+        ], nota="A corda entra aqui so para voce chegar em sabado ja sabendo "
+                "saltar baixo. Se cansar as panturrilhas, pule esta linha.",
+           tecnicas=("mobilidade", "elevacaojoelhos", "corda")),
+        _bloco("Giro do pe de apoio", "8 min", [
+            "30 giros lentos por lado, SEM chutar",
+            "20 giros por lado em ritmo medio",
+        ], nota="Quem gira e o PE, nao o joelho. So passe para o chute quando o "
+                "giro sair sem voce pensar — e a diferenca entre chutar e lesionar.",
+           tecnicas=("girodope",)),
+        _bloco("Teep isolado", "9 min", [
+            "20 elevacoes de joelho na altura do quadril, sem estender",
+            "30 teeps lentos por perna, ponta do pe puxada para cima",
+            "20 por perna em ritmo medio",
+        ], nota=f"Recolha o pe de volta a base; nunca deixe cair a frente. {SEM_COMBO}",
+           tecnicas=("teep",)),
+        _bloco("Joelhada isolada", "8 min", [
+            "20 elevacoes diagonais de joelho, sem estender o quadril",
+            "30 joelhadas lentas por perna, avancando o quadril",
+            "20 por perna em ritmo medio",
+        ], nota=f"O contato seria ACIMA da rotula, nunca nela. {SEM_COMBO}",
+           tecnicas=("joelho",)),
+        _bloco("Chute baixo isolado", "9 min", [
+            "20 chutes baixos LENTOS por perna, no ar, atencao so no giro do pe de apoio",
+            "20 por perna em ritmo medio",
+            "10 por perna filmados de lado",
+        ], nota=f"Sem forca e sem alvo: o objetivo e a trajetoria, nao o impacto. {SEM_COMBO}",
+           tecnicas=("chutebaixo", "girodope")),
+        _bloco("Volta a calma", "4 min", [
+            "Caminhada leve",
+            "Respiracao 4-2-6, 8 ciclos",
+        ], tecnicas=("respiracao",)),
+    ],
+}
+
+ROTEIROS = {"terca": TERCA, "quinta": QUINTA, "sabado": SABADO,
+            "fundamentos_a": FUNDAMENTOS_A,
+            "fundamentos_b": FUNDAMENTOS_B,
+            "fundamentos_c": FUNDAMENTOS_C}
+
+# Sessao de fundamentos sugerida por dia, espelhando ter/qui/sab do ciclo com
+# saco -- assim a rotina semanal ja fica montada antes de o saco entrar.
+FUNDAMENTOS_POR_DIA = {1: "fundamentos_a", 3: "fundamentos_b", 5: "fundamentos_c"}
+
+FUNDAMENTOS_LETRAS = {"a": "fundamentos_a", "b": "fundamentos_b", "c": "fundamentos_c"}
+
+# Quando parar de fazer fundamentos e comecar o ciclo com saco.
+CRITERIO_DE_PASSAGEM = [
+    "Voce monta a base e a guarda sem pensar em cada detalhe.",
+    "Jab e direto voltam sozinhos para o rosto, sem voce lembrar.",
+    "O pe de apoio gira sozinho no chute baixo.",
+    "Voce consegue se ver filmado sem enxergar punho dobrado ou guarda caida.",
+    "Nenhum movimento causa dor em punho, ombro, joelho ou tornozelo.",
+]
 
 # Dia da semana (segunda=0) -> roteiro. Segunda/quarta/sexta sao musculacao,
 # domingo e descanso completo.
@@ -638,14 +801,20 @@ def formatar_bloco(estado):
     idx = estado["bloco"]
     bloco = roteiro["blocos"][idx]
     total = len(roteiro["blocos"])
+    # Fundamentos nao tem progressao semanal: sem impacto nao ha potencia nem
+    # round para dosar, entao mostrar "semana N" ali so confundiria.
+    progride = roteiro.get("usa_progressao", True)
     rounds, duracao_round, potencia, _ = parametros_da_semana(estado["semana"])
 
     # O bloco do saco e o unico cuja duracao vem da progressao, nao do roteiro.
     duracao = bloco["duracao"] or f"{rounds} de {duracao_round}"
 
+    subtitulo = (f"semana {estado['semana']} · bloco {idx + 1} de {total}"
+                 if progride else f"bloco {idx + 1} de {total} · sem saco, sem combo")
+
     linhas = [
         f"<b>{roteiro['nome']}</b>",
-        f"<i>semana {estado['semana']} · bloco {idx + 1} de {total}</i>",
+        f"<i>{subtitulo}</i>",
         "",
         f"<b>{bloco['titulo']}</b> — {duracao}",
         "",
@@ -653,7 +822,7 @@ def formatar_bloco(estado):
     linhas += [f"• {item}" if not item.startswith("  ") else f"   {item.strip()}"
                for item in bloco["itens"]]
 
-    if bloco["titulo"] == "Saco":
+    if progride and bloco["titulo"] == "Saco":
         linhas += ["", f"<i>Potencia maxima desta semana: {potencia}</i>"]
     if bloco["nota"]:
         linhas += ["", f"<i>{bloco['nota']}</i>"]
@@ -674,14 +843,20 @@ def formatar_bloco(estado):
 def formatar_resumo(chave, semana=1):
     """Visao geral do treino, sem iniciar roteiro -- para consultar antes de ir."""
     roteiro = ROTEIROS[chave]
+    progride = roteiro.get("usa_progressao", True)
     rounds, duracao_round, potencia, objetivo = parametros_da_semana(semana)
 
     linhas = [
         f"<b>{roteiro['nome']}</b>",
         f"<i>intensidade: {roteiro['intensidade']}</i>",
-        f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>",
-        "",
     ]
+    if progride:
+        linhas.append(
+            f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>")
+    else:
+        linhas.append("<i>sem saco, sem combinacao — um movimento por vez</i>")
+    linhas.append("")
+
     for i, bloco in enumerate(roteiro["blocos"], 1):
         duracao = bloco["duracao"] or f"{rounds} de {duracao_round}"
         linhas.append(f"{i}. <b>{bloco['titulo']}</b> — {duracao}")
@@ -709,6 +884,51 @@ def formatar_tecnica_nao_encontrada(termo):
     return (f"Nao conheco '{termo}'.\n\n"
             f"<b>Tecnicas disponiveis</b>\n{disponiveis}\n\n"
             "<i>Use /como &lt;nome&gt;, por exemplo /como chute baixo</i>")
+
+
+def fundamentos_do_dia(hoje=None):
+    """Sessao de fundamentos sugerida para hoje, ou None em dia de musculacao."""
+    hoje = hoje or date.today()
+    return FUNDAMENTOS_POR_DIA.get(hoje.weekday())
+
+
+def resolver_fundamentos(termo):
+    """Aceita 'a'/'b'/'c', o nome completo e a chave. None se nao reconhecer."""
+    chave = _normalizar(termo)
+    if chave in FUNDAMENTOS_LETRAS:
+        return FUNDAMENTOS_LETRAS[chave]
+    if chave in ROTEIROS and not ROTEIROS[chave].get("usa_progressao", True):
+        return chave
+    if chave.startswith("fundamentos") and chave[-1:] in FUNDAMENTOS_LETRAS:
+        return FUNDAMENTOS_LETRAS[chave[-1]]
+    return None
+
+
+def formatar_indice_fundamentos(hoje=None):
+    sugerida = fundamentos_do_dia(hoje)
+    linhas = [
+        "<b>Fase de fundamentos — sem saco</b>",
+        "",
+        "Aprender cada movimento isolado antes de bater. Bater no saco antes de "
+        "o padrao estar formado grava o padrao errado com impacto junto, e chute "
+        "baixo sem giro do pe de apoio machuca o joelho logo na primeira sessao.",
+        "",
+        "<b>Sessoes</b>",
+    ]
+    for letra, chave in FUNDAMENTOS_LETRAS.items():
+        marca = "  ← hoje" if chave == sugerida else ""
+        linhas.append(f"/fundamentos {letra} — {ROTEIROS[chave]['nome']}{marca}")
+    linhas += [
+        "",
+        "Mesma rotina do ciclo: terca, quinta e sabado. Repita as tres sessoes "
+        "por 2 a 3 semanas, ou ate os criterios abaixo baterem.",
+        "",
+        "<b>Quando passar para o saco</b>",
+    ]
+    linhas += [f"• {c}" for c in CRITERIO_DE_PASSAGEM]
+    linhas += ["", "<i>Nao ha pressa aqui. Uma semana a mais de fundamento custa "
+                   "uma semana; um padrao errado gravado custa meses para desfazer.</i>"]
+    return "\n".join(linhas)
 
 
 def formatar_indice_tecnicas():
