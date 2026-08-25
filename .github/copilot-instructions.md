@@ -136,8 +136,8 @@ Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
 Os comandos de Muay Thai (`forja_de_ferro/muaythai.py`) entregam o roteiro do
 dia bloco a bloco e nao gravam nada no banco; o estado fica em
-`mt_session.json`, separado de `session.json`. `/como` devolve passo a passo e
-erros comuns de cada movimento, com a busca normalizando acento, espaco e alias
+`mt_session.json`, separado de `session.json`. `/como` devolve posicao inicial, execucao numerada, o que gira/quanto/quando,
+retorno, checagem e erros comuns de cada movimento, com a busca normalizando acento, espaco e alias
 em `muaythai.buscar_tecnica`.
 `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca de
 5 minutos, sem prescrever um segundo treino.

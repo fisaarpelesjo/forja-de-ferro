@@ -135,8 +135,8 @@ Comandos principais:
 Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
 Os comandos de Muay Thai entregam o roteiro do dia bloco a bloco e nao gravam
-nada no banco; `/como` devolve passo a passo e erros comuns de cada golpe, com
-a busca normalizando acento, espaco e alias em `muaythai.buscar_tecnica`.
+nada no banco; `/como` devolve posicao inicial, execucao numerada, o que gira/quanto/quando,
+retorno, checagem e erros de cada golpe, com a busca normalizando acento, espaco e alias em `muaythai.buscar_tecnica`.
 `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca de
 5 minutos, sem prescrever um segundo treino.
 

@@ -47,265 +47,703 @@ LATERALIDADE = ("Instrucoes escritas para destro (pe e mao esquerdos a frente). 
 TECNICAS = {
     "base": {
         "nome": "Base e guarda",
-        "passos": [
-            "Pes na largura dos ombros; recue o pe direito cerca de um passo e meio.",
-            "Pe da frente apontando ~45 graus para dentro; pe de tras ~45 a 70 graus para fora.",
-            "Calcanhar de tras levemente levantado. Peso 50/50 entre as pernas.",
-            "Joelhos levemente flexionados — nunca travados.",
-            "Queixo para baixo, olhando por cima das sobrancelhas.",
-            "Mao esquerda na altura da bochecha, um palmo a frente do rosto.",
-            "Mao direita colada na bochecha direita, nao encostada no queixo.",
-            "Cotovelos fechados para dentro, cobrindo costelas e figado.",
-            "Ombros levemente elevados, protegendo a lateral do queixo.",
+        "resumo": "A posicao de onde todo golpe sai e para onde todo golpe volta.",
+        "inicio": [
+            "De pe, pes na largura dos ombros, de frente para o alvo.",
+            "Recue o pe direito um passo e meio (60 a 70 cm) para tras.",
+            "Os pes ficam em DUAS linhas paralelas, separadas pela largura dos "
+            "ombros. Nunca na mesma linha, como se estivesse em cima de um trilho.",
+        ],
+        "execucao": [
+            "Pe esquerdo (frente): ponta apontando para o alvo, girada 20 a 30 graus para dentro.",
+            "Pe direito (tras): ponta girada 45 a 70 graus para fora.",
+            "Calcanhar direito levantado 2 a 3 cm do chao, o tempo todo.",
+            "Peso 50/50. Voce tem de conseguir levantar qualquer um dos pes sem cambalear.",
+            "Joelhos flexionados 10 a 15 graus. Nunca travados.",
+            "Quadril neutro: nao empine nem enfie o bumbum.",
+            "Queixo para baixo, quase encostando no peito. Olhe por cima das sobrancelhas.",
+            "Mao esquerda na altura da bochecha, 15 cm a frente do rosto.",
+            "Mao direita colada na bochecha direita, palma virada para dentro.",
+            "Cotovelos apontando para o chao, colados as costelas.",
+            "Ombros levemente elevados em direcao as orelhas.",
+        ],
+        "giro": [
+            "O unico giro da base e o do TRONCO, e ele e estatico: voce fica cerca "
+            "de 30 graus de perfil, nao de frente.",
+            "O ombro esquerdo aponta mais para o alvo que o direito. Isso reduz a "
+            "area do seu corpo exposta.",
+            "Os pes NAO giram na base parada. Eles so giram quando um golpe pede.",
+        ],
+        "checagem": [
+            "De frente para o espelho voce deve ver mais o seu lado esquerdo que o peito.",
+            "Um empurrao leve no ombro nao deve te desequilibrar.",
+            "Voce consegue dar um passo em qualquer direcao sem antes reajustar os pes.",
         ],
         "erros": [
             "Pes na mesma linha: perde equilibrio lateral e cai com qualquer empurrao.",
             "Base larga demais: fica estavel mas nao consegue se mover.",
             "Queixo levantado.",
-            "Cotovelos abertos, deixando o tronco descoberto.",
+            "Cotovelos abertos, deixando costelas e figado descobertos.",
+            "Calcanhar de tras plantado no chao: mata o giro do direto antes de ele comecar.",
         ],
     },
     "passos": {
         "nome": "Deslocamento",
-        "passos": [
-            "Para frente: pe da frente sai primeiro, pe de tras acompanha na mesma medida.",
-            "Para tras: pe de tras sai primeiro, pe da frente acompanha.",
-            "Para a direita: pe direito primeiro. Para a esquerda: pe esquerdo primeiro.",
-            "Passos curtos, de 10 a 20 cm, deslizando pelo chao.",
-            "A base recompoe imediatamente depois de cada passo.",
-            "A guarda nao se mexe enquanto os pes trabalham.",
+        "resumo": "Mover o corpo inteiro sem nunca desmontar a base.",
+        "inicio": [
+            "Monte a base e a guarda. Elas nao mudam durante o deslocamento.",
+        ],
+        "execucao": [
+            "Para FRENTE: o pe esquerdo (da frente) sai primeiro; o direito "
+            "acompanha na mesma medida, restaurando a distancia entre os pes.",
+            "Para TRAS: o pe direito sai primeiro; o esquerdo acompanha.",
+            "Para a DIREITA: o pe direito sai primeiro; o esquerdo acompanha.",
+            "Para a ESQUERDA: o pe esquerdo sai primeiro; o direito acompanha.",
+            "Regra unica: sai primeiro o pe do lado para onde voce vai.",
+            "Passos curtos, de 10 a 20 cm, deslizando com a planta rente ao chao.",
+            "Os dois pes nunca estao no ar ao mesmo tempo.",
+            "A base se recompoe imediatamente ao fim de cada passo — voce nunca "
+            "fica com os pes juntos nem esparramados.",
+        ],
+        "giro": [
+            "Nao ha giro no deslocamento reto. Os pes mantem os mesmos angulos "
+            "que tinham na base.",
+            "Se voce precisar mudar de angulo em relacao ao alvo, faca isso com "
+            "passos laterais, nao girando os pes no lugar.",
+        ],
+        "checagem": [
+            "Filme de cima ou olhe no chao: a distancia entre os pes deve ser a "
+            "mesma no inicio e no fim de cada passo.",
+            "A guarda nao pode subir e descer junto com os passos.",
         ],
         "erros": [
             "Cruzar os pes: e o momento em que voce esta mais vulneravel.",
             "Saltar em vez de deslizar.",
             "Passos largos que desmontam a base.",
+            "Mover o pe de tras primeiro para ir a frente (ou o inverso): voce "
+            "fecha a base e perde a estabilidade no meio do caminho.",
             "Deixar as maos cairem enquanto anda.",
         ],
     },
     "jab": {
         "nome": "Jab (1) — soco reto da mao da frente",
-        "passos": [
-            "Sai direto da guarda, sem puxar a mao para tras antes.",
-            "Empurre o punho esquerdo em linha reta a partir da altura do queixo.",
-            "Gire o punho no trajeto: a palma termina virada para baixo.",
-            "O ombro esquerdo sobe e cobre o queixo no momento do impacto.",
-            "Pequeno giro de tronco e quadril; o pe da frente pivota de leve.",
-            "Contato com os dois primeiros nos (indicador e medio), punho reto.",
-            "Recolha pelo mesmo caminho, mais rapido do que foi.",
+        "resumo": "O golpe mais rapido e mais curto. Serve para medir distancia, "
+                  "interromper e abrir caminho — nao para nocautear.",
+        "inicio": [
+            "Base e guarda montadas. Mao esquerda ja na altura da bochecha.",
+        ],
+        "execucao": [
+            "O punho esquerdo sai em linha reta a partir da altura do queixo, "
+            "sem recuar um centimetro antes.",
+            "O cotovelo acompanha por baixo, colado ao trajeto — nao abre para fora.",
+            "Na ultima terca parte do trajeto, gire o antebraco: a palma, que "
+            "estava virada para dentro, termina virada para baixo.",
+            "O ombro esquerdo sobe e encosta na lateral do queixo no instante do impacto.",
+            "Contato com os dois primeiros nos (indicador e medio), punho, "
+            "antebraco e cotovelo na mesma linha reta.",
+            "O braco estende quase por completo, mas o cotovelo NUNCA trava.",
+        ],
+        "giro": [
+            "O QUE GIRA: o tronco, poucos graus (10 a 15), e o pe da frente junto.",
+            "COMO: o pe esquerdo pivota sobre a planta, o calcanhar sai levemente "
+            "para fora. O quadril acompanha de leve.",
+            "QUANDO: o giro comeca junto com a saida do punho, nunca antes. "
+            "Se o corpo gira primeiro, voce avisou o golpe.",
+            "QUANTO: pouco, de proposito. O jab nao usa o quadril inteiro — se "
+            "usar, vira um direto lento e telegrafado.",
+        ],
+        "retorno": [
+            "A mao volta pelo MESMO caminho, mais rapido do que foi.",
+            "O tronco desfaz o giro junto com a volta da mao.",
+            "A mao so termina o movimento quando encosta de volta na bochecha.",
+        ],
+        "checagem": [
+            "Filme de frente: a mao direita nao pode se mexer enquanto o jab sai.",
+            "Filme de lado: o punho deve percorrer uma linha reta, nao um arco.",
+            "Pare no meio do movimento: o cotovelo tem de estar apontando para "
+            "baixo, nao para o lado.",
         ],
         "erros": [
             "Telegrafar: puxar a mao para tras antes de bater.",
             "Punho dobrado no impacto — e assim que se machuca o pulso.",
             "Deixar a mao direita cair enquanto o jab sai.",
             "Estender o cotovelo ate travar.",
+            "Girar o corpo demais e transformar o jab num soco lento.",
         ],
     },
     "direto": {
         "nome": "Direto (2) — soco reto da mao de tras",
-        "passos": [
-            "Comeca no chao: gire o pe direito para dentro como se esmagasse um cigarro.",
-            "A forca sobe em ordem: pe, quadril, tronco, ombro e so entao o braco.",
-            "O punho sai do queixo em linha reta; palma vira para baixo no impacto.",
-            "A mao esquerda fica colada no rosto o tempo todo.",
-            "O peso transfere para a perna da frente, sem passar a linha do pe da frente.",
-            "Recolha girando de volta para a base, nao apenas puxando o braco.",
+        "resumo": "O golpe de forca dos socos. Toda a potencia vem da rotacao do "
+                  "corpo; o braco so entrega o que as pernas produziram.",
+        "inicio": [
+            "Base e guarda montadas, calcanhar direito ja levantado do chao.",
+        ],
+        "execucao": [
+            "Comeca no CHAO. Antes de o braco pensar em sair, o pe direito gira.",
+            "O quadril direito vai a frente e roda para dentro.",
+            "O tronco acompanha a rotacao do quadril.",
+            "O ombro direito e levado a frente pela rotacao do tronco.",
+            "So agora o punho sai, em linha reta, a partir do queixo.",
+            "A palma gira e termina virada para baixo no impacto.",
+            "O ombro direito sobe e cobre o queixo no instante do contato.",
+            "A mao esquerda permanece colada no rosto do inicio ao fim.",
+        ],
+        "giro": [
+            "O QUE GIRA, na ordem: pe direito > quadril > tronco > ombro > braco. "
+            "Cada elo empurra o proximo. Essa ordem e o golpe inteiro.",
+            "COMO GIRA O PE: sobre a PLANTA, nao sobre o calcanhar. O calcanhar "
+            "sobe e vai para fora, a ponta do pe roda para dentro, como quem "
+            "esmaga um cigarro no chao.",
+            "QUANTO GIRA O PE: cerca de 90 graus. Ao final, o calcanhar direito "
+            "aponta para tras/fora e o joelho direito aponta para dentro.",
+            "QUANTO GIRA O QUADRIL: cerca de 45 graus. O umbigo, que apontava "
+            "para o lado, termina apontando para o alvo. Se o umbigo ainda "
+            "aponta para o lado, voce nao girou.",
+            "QUANTO GIRA O TRONCO: acompanha o quadril. O ombro direito, que "
+            "estava atras, chega a linha do ombro esquerdo.",
+            "QUANDO: o pe inicia o movimento. Se o braco sai primeiro, voce bate "
+            "so com o braco e a forca cai para um terco.",
+            "O joelho direito acompanha o giro do pe. Pe e joelho apontam sempre "
+            "para a mesma direcao — e a regra que protege a articulacao.",
+        ],
+        "retorno": [
+            "Volte DESFAZENDO o giro, nao apenas puxando o braco.",
+            "O quadril roda de volta e traz o ombro e a mao junto.",
+            "Termine outra vez na base, com o peso 50/50 e o calcanhar levantado.",
+        ],
+        "checagem": [
+            "Filme de lado: o calcanhar direito tem de estar apontando para fora "
+            "no momento do impacto.",
+            "Pare no fim do golpe e olhe o umbigo: ele aponta para o alvo?",
+            "Se voce consegue dar o direto com os pes imoveis, nao e um direto.",
         ],
         "erros": [
-            "Bater so com o braco, sem girar quadril: e o erro que tira toda a potencia.",
+            "Bater so com o braco, sem girar o quadril: tira toda a potencia.",
             "Manter o calcanhar de tras plantado no chao.",
-            "Inclinar o tronco a frente e expor o queixo.",
+            "Inclinar o tronco a frente e passar o peso da linha do pe da frente.",
+            "Girar o JOELHO em vez do pe — torce a articulacao.",
             "Esquecer a guarda esquerda no caminho de volta.",
         ],
     },
     "gancho": {
         "nome": "Gancho (3) — soco circular da mao da frente",
-        "passos": [
-            "Cotovelo travado em ~90 graus, na mesma altura do alvo.",
-            "O golpe vem da rotacao do corpo: pe da frente, quadril e tronco giram juntos.",
-            "Punho, cotovelo e ombro permanecem na mesma linha horizontal.",
-            "Palma pode ficar virada para dentro ou para baixo — escolha uma e mantenha.",
+        "resumo": "Golpe curto e lateral. O braco nao bate: ele e carregado pela "
+                  "rotacao do corpo, com a forma travada.",
+        "inicio": [
+            "Base e guarda montadas.",
+            "Antes de girar, TRAVE a forma: cotovelo a 90 graus, na mesma altura "
+            "do alvo, punho firme.",
+        ],
+        "execucao": [
+            "Trave o angulo do cotovelo em 90 graus e mantenha assim o golpe inteiro.",
+            "Levante o cotovelo ate a altura do alvo — cabeca ou costelas.",
+            "Gire o corpo. O braco vai junto, sem se mover em relacao ao tronco.",
+            "Punho, cotovelo e ombro permanecem na MESMA linha horizontal.",
+            "A palma pode ficar virada para dentro ou para baixo. Escolha uma e "
+            "mantenha — trocar no meio do aprendizado confunde o punho.",
             "Contato com os nos, punho reto e firme.",
-            "Volte a guarda desfazendo a rotacao.",
+            "A mao direita fica colada no rosto o tempo inteiro.",
+        ],
+        "giro": [
+            "O QUE GIRA: pe da frente, quadril e tronco, todos juntos, como um "
+            "bloco unico. O braco NAO participa da rotacao — ele e carga.",
+            "COMO GIRA O PE: o pe esquerdo pivota sobre a planta, o calcanhar sai "
+            "para fora e o joelho esquerdo aponta para dentro.",
+            "QUANTO: cerca de 90 graus de rotacao no pe da frente. E mais giro do "
+            "que o direto usa, porque aqui o giro E o golpe.",
+            "QUANDO: nao ha 'quando'. O giro nao acompanha o golpe, o giro produz "
+            "o golpe. Se voce consegue dar o gancho sem girar, virou tapa.",
+            "O peso transfere do pe da frente para o de tras durante a rotacao.",
+        ],
+        "retorno": [
+            "Desfaca a rotacao e o braco volta sozinho para a guarda.",
+            "Nao 'puxe' a mao de volta — deixe o giro reverso traze-la.",
+        ],
+        "checagem": [
+            "Filme de cima ou de frente: o angulo do cotovelo tem de ser o mesmo "
+            "no inicio, no impacto e no fim.",
+            "Se o cotovelo abriu durante o movimento, foi tapa, nao gancho.",
         ],
         "erros": [
             "Abrir o braco: vira tapa e machuca o ombro.",
             "Baixar o ombro do lado que bate.",
+            "Bater com o punho mais alto ou mais baixo que o cotovelo.",
             "Perder completamente a guarda do outro lado.",
         ],
     },
     "jabcorpo": {
         "nome": "Jab no corpo",
-        "passos": [
-            "Mesma mecanica do jab, mas voce desce flexionando os JOELHOS.",
-            "A coluna permanece reta; quem desce sao as pernas.",
-            "A cabeca sai da linha central ao descer.",
-            "Alvo na altura do plexo solar / figado.",
-            "Suba imediatamente de volta a guarda alta.",
+        "resumo": "O mesmo jab, entregue mais embaixo. O que muda e como voce "
+                  "desce, nao como voce soca.",
+        "inicio": [
+            "Base e guarda montadas.",
+        ],
+        "execucao": [
+            "Desca flexionando os JOELHOS, como um agachamento curto.",
+            "A coluna permanece reta e o peito continua erguido.",
+            "A cabeca sai da linha central ao descer — desloque-a alguns "
+            "centimetros para fora, na direcao do seu lado esquerdo.",
+            "So depois de descer, dispare o jab, com a mesma mecanica de sempre.",
+            "Alvo na altura do plexo solar ou do figado.",
+            "A mao direita continua colada no rosto, protegendo o queixo — que "
+            "agora esta mais baixo e mais perto.",
+            "Suba imediatamente, estendendo os joelhos, de volta a guarda alta.",
+        ],
+        "giro": [
+            "O QUE GIRA: o mesmo pouco giro do jab normal — tronco e pe da frente, "
+            "10 a 15 graus.",
+            "QUANDO: o giro acontece durante o soco, ja embaixo. Primeiro voce "
+            "desce, depois voce gira e soca. Nao faca as duas coisas ao mesmo tempo "
+            "enquanto estiver aprendendo.",
+        ],
+        "retorno": [
+            "Suba pelas pernas antes de recolher totalmente a mao.",
+            "Nao fique embaixo: quem fica embaixo leva joelhada.",
+        ],
+        "checagem": [
+            "Filme de lado: as costas devem estar retas na parte mais baixa do movimento.",
+            "Se voce viu o chao em algum momento, a cabeca caiu.",
         ],
         "erros": [
             "Curvar as costas em vez de dobrar os joelhos.",
             "Olhar para o chao ao descer.",
+            "Descer com a cabeca na mesma linha de antes.",
             "Ficar embaixo depois do golpe.",
         ],
     },
     "saidalateral": {
         "nome": "Saida lateral",
-        "passos": [
-            "Termine a combinacao e imediatamente de 1 ou 2 passos para o lado.",
-            "Nunca recue em linha reta — e a trajetoria que o adversario ja esta seguindo.",
-            "Guarda alta durante todo o deslocamento.",
+        "resumo": "Sair do lugar onde voce acabou de bater, porque e exatamente "
+                  "para la que a resposta vem.",
+        "inicio": [
+            "Logo apos terminar um golpe, com a guarda ainda alta.",
+        ],
+        "execucao": [
+            "Assim que a mao voltar a guarda, de 1 ou 2 passos laterais.",
+            "Use a mecanica normal de deslocamento: sai primeiro o pe do lado "
+            "para onde voce vai.",
+            "Guarda alta durante todo o deslocamento — ela nao desce nem por um instante.",
+            "Os olhos continuam no alvo enquanto os pes se movem.",
             "Recomponha a base antes de pensar no proximo golpe.",
         ],
+        "giro": [
+            "O QUE GIRA: nada, de proposito. A saida lateral e deslocamento puro.",
+            "Se voce precisar reencarar o alvo depois de sair, faca isso com um "
+            "passo de ajuste, nao girando os pes no lugar.",
+        ],
+        "checagem": [
+            "Filme de frente: a guarda nao pode oscilar durante os passos.",
+            "Voce deve terminar em base montada, pronto para bater de novo.",
+        ],
         "erros": [
-            "Parar para admirar o saco depois de bater.",
+            "Parar para admirar o proprio golpe.",
+            "Recuar em linha reta — e a trajetoria que o adversario ja esta seguindo.",
             "Sair de guarda baixa.",
+            "Cruzar os pes na pressa de sair.",
         ],
     },
     "teep": {
         "nome": "Teep — chute frontal de empurrao",
-        "passos": [
-            "Levante o joelho ate a altura do quadril, bem a frente do corpo.",
-            "Puxe a ponta do pe para cima: o contato e com a SOLA do pe.",
-            "Estenda o quadril a frente — e um empurrao, nao um chute de impacto.",
-            "Recolha o pe pela mesma trajetoria, de volta a base.",
-            "As maos ficam em guarda do inicio ao fim.",
+        "resumo": "Nao e um chute de impacto: e um empurrao com o pe, para criar "
+                  "distancia e interromper o avanco.",
+        "inicio": [
+            "Base e guarda montadas. As maos ficam na guarda o movimento inteiro.",
+        ],
+        "execucao": [
+            "Levante o JOELHO primeiro, ate a altura do quadril, bem a frente do corpo.",
+            "Puxe a ponta do pe para cima (dorsiflexao). O contato e com a "
+            "SOLA/planta do pe, nunca com os dedos.",
+            "Do joelho levantado, estenda a perna a frente enquanto empurra o "
+            "quadril na mesma direcao.",
+            "A forca vem da EXTENSAO DO QUADRIL, nao do chute da perna.",
+            "O tronco inclina levemente para tras como contrapeso — pouco, "
+            "sem perder a guarda de vista.",
+            "Recolha a perna pelo mesmo caminho: primeiro dobra o joelho de "
+            "volta, depois desce o pe.",
+        ],
+        "giro": [
+            "O QUE GIRA: quase nada. O teep e o golpe com menos rotacao do repertorio.",
+            "COMO: o pe de apoio pivota de 30 a 45 graus para fora, apenas o "
+            "suficiente para o quadril conseguir projetar a frente.",
+            "QUANDO: o pivo acontece junto com a extensao do quadril, no fim do "
+            "movimento, nao no inicio.",
+            "Se voce sentir necessidade de girar muito, provavelmente esta "
+            "tentando chutar com forca em vez de empurrar.",
+        ],
+        "retorno": [
+            "O pe volta para a base, no lugar de onde saiu.",
+            "Nunca deixe o pe cair a frente — isso vira um passo e te deixa "
+            "de base trocada, sem saber onde esta.",
+        ],
+        "checagem": [
+            "Filme de lado: o joelho tem de subir ANTES de a perna estender.",
+            "Se a perna sobe reta, e chute de futebol, nao teep.",
+            "O pe volta ao mesmo ponto do chao de onde saiu.",
         ],
         "erros": [
             "Bater com os dedos do pe.",
             "Jogar a perna sem levantar o joelho primeiro.",
-            "Deixar o pe cair no chao a frente, virando um passo.",
+            "Deixar o pe cair no chao a frente.",
+            "Baixar as maos para 'ajudar' no equilibrio.",
         ],
     },
     "joelho": {
         "nome": "Joelhada frontal",
-        "passos": [
+        "resumo": "Golpe de curta distancia. A forca vem do quadril avancando, "
+                  "nao da perna subindo.",
+        "inicio": [
+            "Base e guarda montadas.",
+        ],
+        "execucao": [
             "Levante o joelho na diagonal, de baixo para cima e a frente.",
-            "Estenda o quadril a frente; a ponta do pe aponta para baixo.",
-            "Contato com a parte de cima da canela, logo abaixo do joelho.",
-            "Os bracos descem em oposicao, como se puxassem o alvo para baixo.",
-            "O pe de apoio pivota de leve, acompanhando o quadril.",
-            "Recolha e recomponha a base.",
+            "Ao mesmo tempo, AVANCE o quadril na direcao do alvo. Este e o golpe.",
+            "A ponta do pe aponta para baixo, perna relaxada abaixo do joelho.",
+            "O contato e com a parte de cima da CANELA, logo abaixo do joelho — "
+            "nunca com a rotula.",
+            "Os bracos descem em oposicao, como se puxassem o alvo para baixo "
+            "enquanto o joelho sobe.",
+            "O tronco inclina levemente para tras, equilibrando o avanco do quadril.",
+        ],
+        "giro": [
+            "O QUE GIRA: o pe de apoio e o quadril do lado que bate.",
+            "COMO GIRA O PE: pivota de 30 a 45 graus para fora, sobre a planta.",
+            "COMO GIRA O QUADRIL: o quadril do lado que bate roda para DENTRO e "
+            "para CIMA, ao mesmo tempo em que avanca.",
+            "QUANDO: o pivo do pe acontece junto com a subida do joelho, nao depois.",
+            "QUANTO: menos que no chute baixo. Se voce girar demais, o joelho passa "
+            "de lado pelo alvo em vez de entrar de frente.",
+        ],
+        "retorno": [
+            "Recolha o joelho pelo mesmo caminho e recomponha a base.",
+            "Nunca desca o pe a frente da posicao original.",
+        ],
+        "checagem": [
+            "Filme de lado: o quadril tem de avancar visivelmente. Se so a perna "
+            "subiu, e elevacao de joelho, nao joelhada.",
+            "Passe a mao na regiao do contato: tem de ser canela dura, nao a rotula.",
         ],
         "erros": [
             "Bater com a rotula (patela) — dano articular direto.",
             "Nao avancar o quadril: vira levantamento de perna sem forca.",
-            "Segurar as correntes ou o topo do saco com violencia.",
+            "Deixar a guarda cair ao descer os bracos em oposicao.",
+            "Segurar as correntes ou o topo do saco com violencia (na fase com saco).",
         ],
     },
     "chutebaixo": {
         "nome": "Chute baixo (low kick)",
-        "passos": [
-            "Passo curto de abertura com o pe da frente, ligeiramente para fora da linha.",
-            "GIRE o pe de apoio ate o calcanhar apontar para o alvo — sem isso nao ha potencia e o joelho sofre.",
-            "A perna vem como um taco de beisebol, joelho levemente flexionado.",
-            "Contato com o terco inferior da CANELA, na coxa do alvo.",
-            "O braco do mesmo lado desce e vai para tras, como contrapeso.",
-            "Recolha pelo mesmo caminho ou complete o giro — nunca deixe a perna morta.",
+        "resumo": "O golpe que mais depende de rotacao e o que mais machuca quem "
+                  "gira errado. O giro do pe de apoio nao e detalhe: e o golpe.",
+        "inicio": [
+            "Base e guarda montadas.",
+            "Antes de qualquer coisa: se o giro do pe de apoio ainda nao sai "
+            "automatico, volte para /como girodope e nao chute ainda.",
+        ],
+        "execucao": [
+            "Passo curto de abertura com o pe da frente, um pouco para fora da "
+            "linha do alvo. Isso abre espaco para o quadril passar.",
+            "O pe de apoio comeca a girar (ver a secao de giro abaixo).",
+            "O quadril direito roda e avanca — e ele que carrega a perna.",
+            "A perna vem como um TACO DE BEISEBOL: joelho levemente flexionado, "
+            "perna relaxada, chegando de lado. Nao e chute de futebol, com a perna "
+            "estendida vindo de frente.",
+            "O contato e com o terco inferior da CANELA, na coxa do alvo.",
+            "O braco direito desce e vai para tras, como contrapeso que ajuda "
+            "a rotacao.",
+            "O tronco inclina para o lado oposto ao chute, equilibrando.",
+        ],
+        "giro": [
+            "O QUE GIRA: o pe de APOIO (o esquerdo, que fica no chao). Este e o "
+            "ponto mais importante de toda a tecnica.",
+            "COMO: sobre a PLANTA do pe, com o calcanhar subindo e rodando. Nunca "
+            "sobre o calcanhar apoiado.",
+            "QUANTO: ate o CALCANHAR APONTAR PARA O ALVO — de 90 a 120 graus. Giro "
+            "incompleto significa potencia quase zero e torcao direta no joelho.",
+            "QUANDO: o giro do pe de apoio COMECA ANTES de a perna que chuta "
+            "chegar ao alvo, e continua durante todo o impacto. Nao e um ajuste "
+            "no fim: e o que inicia o movimento.",
+            "O JOELHO DO PE DE APOIO segue o pe. Pe e joelho apontam sempre para a "
+            "mesma direcao. Se o joelho girar e o pe ficar preso no chao, a torcao "
+            "vai inteira para o ligamento — e assim que se rompe joelho chutando.",
+            "O QUADRIL gira junto e avanca. A coxa nao levanta sozinha; ela e "
+            "levada pelo quadril.",
+        ],
+        "retorno": [
+            "Duas saidas validas: recolher pelo mesmo caminho, ou completar o giro "
+            "e voltar a base do outro lado.",
+            "O que nao pode e deixar a perna morta no ar ou ficar de costas para o alvo.",
+        ],
+        "checagem": [
+            "Filme de tras: o calcanhar do pe de apoio esta apontando para o alvo "
+            "no momento do impacto? Se nao, o giro foi incompleto.",
+            "Filme de lado: a perna chegou de lado (taco) ou de frente (futebol)?",
+            "Passe a mao na canela: o contato tem de ser osso, nao o peito do pe.",
         ],
         "erros": [
             "Nao girar o pe de apoio: principal causa de lesao de joelho em iniciante.",
+            "Girar o joelho com o pe preso no chao.",
             "Bater com o peito do pe em vez da canela.",
-            "Chutar como chute de futebol, com a perna estendida.",
-            "Ficar de costas para o saco depois do chute.",
+            "Chutar com a perna estendida, como chute de futebol.",
+            "Olhar para baixo durante o chute.",
+            "Ficar de costas para o alvo depois do movimento.",
         ],
     },
     "girodope": {
         "nome": "Giro do pe de apoio (drill isolado)",
-        "passos": [
-            "Sem chutar: apenas levante o calcanhar do pe de apoio e gire ate ele apontar para o alvo.",
-            "Os bracos acompanham a rotacao naturalmente.",
-            "20 a 30 repeticoes lentas por lado.",
-            "So depois que o giro sair automatico voce adiciona a perna que chuta.",
+        "resumo": "O exercicio mais importante da fase de fundamentos. Sem este "
+                  "giro automatico, nenhum chute e seguro.",
+        "inicio": [
+            "Base e guarda montadas, de frente para o espelho ou para um ponto "
+            "escolhido como alvo imaginario.",
+        ],
+        "execucao": [
+            "Sem chutar, sem mover a outra perna: levante o calcanhar esquerdo "
+            "do chao, apoiando so a planta.",
+            "Gire o pe sobre a planta, levando o calcanhar em direcao ao alvo.",
+            "Continue ate o calcanhar apontar para o alvo — 90 a 120 graus.",
+            "Deixe o joelho esquerdo acompanhar o giro, sempre apontando para a "
+            "mesma direcao que o pe.",
+            "O quadril acompanha naturalmente; nao segure o tronco de frente.",
+            "Volte devagar a posicao inicial e repita.",
+            "Depois de dominar parado, repita levantando o joelho direito junto, "
+            "mas ainda sem chutar.",
+        ],
+        "giro": [
+            "O QUE GIRA: o pe de apoio, sobre a planta.",
+            "O QUE NAO GIRA: o joelho por conta propria. Ele apenas segue o pe.",
+            "COMO SABER QUE ESTA CERTO: coloque a mao no joelho enquanto gira. Ele "
+            "deve girar junto com o pe, sem torcao entre os dois.",
+            "QUANTO: ate o calcanhar apontar para o alvo. Se o calcanhar continua "
+            "apontando para o lado, faltou giro.",
+        ],
+        "checagem": [
+            "Filme de tras: onde o calcanhar termina apontando?",
+            "Faca 10 giros com os olhos fechados. Se o equilibrio se perde, ainda "
+            "nao esta pronto para chutar.",
+            "So passe ao chute baixo quando o giro sair sem voce pensar nele.",
         ],
         "erros": [
             "Girar o joelho em vez do pe — e exatamente o movimento que lesiona.",
+            "Girar com o calcanhar apoiado no chao.",
+            "Parar o giro no meio, com o calcanhar apontando de lado.",
+            "Apressar a progressao e comecar a chutar antes de o giro estar automatico.",
         ],
     },
     "bloqueio": {
         "nome": "Bloqueio e resposta",
-        "passos": [
-            "Contra soco alto: o cotovelo sobe, a luva encosta na tempora, voce olha por cima.",
-            "Contra chute baixo: levante a canela, joelho apontando um pouco para fora, pe flexionado.",
-            "Estrutura firme — nunca receba com o braco solto.",
-            "Imediatamente apos bloquear, responda com um jab. Bloqueio sem resposta e so apanhar organizado.",
+        "resumo": "Absorver o golpe com estrutura, sem afastar a guarda do rosto, "
+                  "e devolver imediatamente.",
+        "inicio": [
+            "Base e guarda montadas.",
+        ],
+        "execucao": [
+            "CONTRA SOCO ALTO:",
+            "O cotovelo sobe e a mao encosta na tempora, do lado que vem o golpe.",
+            "O antebraco fica vertical, colado a lateral da cabeca.",
+            "Voce continua olhando por cima ou por dentro da guarda — nunca fecha os olhos.",
+            "O ombro do mesmo lado sobe para fechar o vao ate o queixo.",
+            "CONTRA CHUTE BAIXO:",
+            "Levante a canela do lado atacado, joelho apontando ligeiramente para fora.",
+            "O pe fica flexionado e a perna firme, nao relaxada.",
+            "Voce recebe o chute na canela, nunca na coxa nem no lado de dentro da perna.",
+            "RESPOSTA:",
+            "Assim que o golpe passar, devolva um jab. Bloqueio sem resposta e "
+            "so apanhar de forma organizada.",
+        ],
+        "giro": [
+            "O QUE GIRA: quase nada no bloqueio alto — apenas alguns graus de "
+            "tronco, na direcao do golpe, para dissipar a forca.",
+            "NO BLOQUEIO DE PERNA: o pe de apoio pivota de leve para fora, para "
+            "voce nao ser desequilibrado pelo impacto.",
+            "QUANDO: o giro acontece no momento do contato, absorvendo. Girar "
+            "antes abre a guarda.",
+        ],
+        "retorno": [
+            "A estrutura volta a guarda normal imediatamente apos o contato.",
+            "A perna que bloqueou desce para a base, nunca a frente dela.",
+        ],
+        "checagem": [
+            "Filme de frente: a mao nao pode se afastar do rosto para 'ir buscar' o golpe.",
+            "No bloqueio de perna, o joelho tem de estar apontando para fora, "
+            "protegendo o lado de dentro da coxa.",
         ],
         "erros": [
             "Fechar os olhos.",
-            "Afastar a mao do rosto para 'ir buscar' o golpe.",
-            "Ficar so bloqueando, sem devolver.",
+            "Afastar a mao do rosto.",
+            "Receber com o antebraco mole, sem estrutura.",
+            "Bloquear e ficar parado, sem devolver.",
         ],
     },
     "sombra": {
         "nome": "Boxe-sombra",
-        "passos": [
-            "Sem saco, de frente para um espelho ou gravando com o celular.",
-            "Comece so com base e passos; depois adicione jab; depois combinacoes.",
-            "Prioridade e forma perfeita, nao velocidade.",
-            "Toda mao que sai volta para a guarda antes da proxima.",
+        "resumo": "Treinar o movimento no ar, com atencao total a forma. E a base "
+                  "de toda a fase de fundamentos.",
+        "inicio": [
+            "Espaco livre, de frente para um espelho ou com o celular filmando.",
+            "Sem luva e sem bandagem: voce precisa ver as maos.",
+        ],
+        "execucao": [
+            "Comece so com base e deslocamento, sem golpe nenhum.",
+            "Adicione um unico golpe e repita ate ele sair limpo.",
+            "Escolha UM ponto de atencao por rodada: hoje o punho, amanha o "
+            "queixo, depois o pe de apoio. Corrigir tudo ao mesmo tempo nao funciona.",
+            "Trabalhe em tres velocidades, nesta ordem: muito lento, medio, "
+            "e so entao normal. Nunca comece rapido.",
+            "Toda mao que sai volta a guarda antes de a proxima sair.",
+        ],
+        "giro": [
+            "Os giros sao os mesmos de cada golpe. A vantagem da sombra e que, sem "
+            "impacto, voce consegue PARAR no meio do giro e conferir a posicao.",
+            "Use isso: dispare o direto, congele no meio e olhe onde esta o calcanhar.",
+        ],
+        "checagem": [
+            "Filme de frente e de lado. As duas vistas revelam coisas diferentes: "
+            "de frente aparece guarda caida, de lado aparece punho dobrado e "
+            "desequilibrio.",
+            "Assista em camera lenta. Erros de forma somem em velocidade normal.",
         ],
         "erros": [
             "Acelerar antes de a forma estar limpa.",
             "Bater no ar travando o cotovelo.",
+            "Tentar corrigir cinco coisas na mesma rodada.",
+            "Fazer sombra sem se ver: sem espelho nem camera, voce so repete o "
+            "que ja faz errado.",
         ],
     },
     "prancha": {
         "nome": "Prancha",
-        "passos": [
-            "Antebracos no chao, cotovelos exatamente sob os ombros.",
-            "Corpo em linha reta: calcanhar, quadril, ombro e cabeca alinhados.",
-            "Contraia gluteo e abdomen como se fosse levar um soco na barriga.",
-            "Respire normalmente durante os 30 s.",
+        "resumo": "Sustentacao do tronco. Serve para o quadril conseguir "
+                  "transferir forca sem a coluna ceder no meio do caminho.",
+        "inicio": [
+            "De bruços, antebracos no chao, cotovelos exatamente sob os ombros.",
+            "Pes na largura do quadril, apoiados nas pontas.",
+        ],
+        "execucao": [
+            "Suba o corpo apoiado em antebracos e pontas dos pes.",
+            "Alinhe calcanhar, quadril, ombro e cabeca numa unica linha reta.",
+            "Contraia o gluteo com forca — e ele que impede o quadril de cair.",
+            "Contraia o abdomen como se fosse levar um soco na barriga.",
+            "Olhe para o chao, um palmo a frente das maos, mantendo o pescoco neutro.",
+            "Respire normalmente durante todo o tempo.",
+        ],
+        "checagem": [
+            "Filme de lado: uma linha reta deve passar por calcanhar, quadril e ombro.",
+            "Se voce consegue conversar, a respiracao esta certa.",
+            "Se a lombar comeca a doer, o quadril caiu — encerre a serie.",
         ],
         "erros": [
-            "Quadril subindo (virou triangulo) ou afundando (lombar sofre).",
+            "Quadril subindo, virando um triangulo.",
+            "Lombar afundando.",
             "Prender a respiracao.",
-            "Olhar para frente em vez de para o chao.",
+            "Levantar a cabeca e olhar para frente.",
         ],
     },
     "bandagem": {
         "nome": "Bandagem de 5 m",
-        "passos": [
-            "Polegar na alca, bandagem passando pelo DORSO da mao.",
+        "resumo": "Protecao do punho e dos nos. So necessaria quando existe "
+                  "impacto — nao se usa na fase de fundamentos.",
+        "inicio": [
+            "Mao aberta, dedos separados, polegar afastado.",
+            "Bandagem enrolada, com a alca livre.",
+        ],
+        "execucao": [
+            "Polegar na alca, com a bandagem passando pelo DORSO da mao.",
             "3 voltas no punho.",
             "3 voltas na palma, subindo em direcao aos dedos.",
-            "Entre os dedos: mindinho/anelar, anelar/medio, medio/indicador — subindo pelo dorso, voltando pela palma.",
+            "Entre os dedos, nesta ordem: mindinho/anelar, anelar/medio, "
+            "medio/indicador. Cada passagem sobe pelo dorso e volta pela palma.",
             "Volte ao punho e cruze pelo dorso em X, 2 ou 3 vezes.",
             "3 voltas cobrindo os nos dos dedos.",
             "Termine no punho e feche o velcro.",
-            "Teste: feche o punho. Firme, sem formigar.",
+        ],
+        "checagem": [
+            "Feche o punho: deve ficar firme, sem formigar.",
+            "Abra e feche a mao 10 vezes. Se a mao esfriar, perder cor ou "
+            "formigar, esta apertada demais — refaca.",
+            "O punho nao pode dobrar para tras com facilidade.",
         ],
         "erros": [
-            "Apertada demais: mao esfria, formiga ou perde cor — refaca mais folgada.",
+            "Apertada demais: corta a circulacao.",
             "Frouxa no punho: nao protege exatamente onde a lesao acontece.",
             "Pular a passagem entre os dedos, deixando os nos sem colchao.",
         ],
     },
+    "mobilidade": {
+        "nome": "Mobilidade de aquecimento",
+        "resumo": "Preparar as articulacoes que vao girar. Movimento, nao "
+                  "alongamento parado.",
+        "inicio": [
+            "Em pe, espaco livre ao redor.",
+        ],
+        "execucao": [
+            "Ombros: 10 circulos grandes para tras, 10 para frente.",
+            "Quadril: joelho elevado a frente, 10 circulos por lado, abrindo "
+            "para fora e fechando para dentro.",
+            "Tornozelo: 10 circulos em cada lado, depois um agachamento "
+            "profundo mantido por 20 s.",
+            "Coluna toracica: maos na nuca, 10 rotacoes de tronco para cada lado.",
+            "Punhos: 10 circulos em cada sentido, com a mao fechada.",
+        ],
+        "giro": [
+            "Esta e a preparacao especifica dos giros que voce vai usar depois: "
+            "quadril e tornozelo sao as duas articulacoes que giram no chute baixo.",
+            "Se o tornozelo estiver rigido, o pe de apoio nao gira o suficiente.",
+        ],
+        "erros": [
+            "Alongamento estatico longo antes do treino: reduz forca e nao previne lesao.",
+            "Fazer rapido demais, sem chegar ao fim da amplitude.",
+            "Pular a mobilidade de tornozelo — e a que mais afeta o chute.",
+        ],
+    },
     "elevacaojoelhos": {
         "nome": "Elevacao alternada dos joelhos",
-        "passos": [
+        "resumo": "O padrao motor da joelhada, sem impacto e sem alvo.",
+        "inicio": [
             "Em pe, guarda alta, como se fosse bater.",
-            "Levante alternadamente o joelho ate a altura do quadril.",
-            "Estenda o quadril no topo: e o mesmo padrao da joelhada, sem o impacto.",
-            "Ritmo controlado — nao e corrida no lugar.",
+        ],
+        "execucao": [
+            "Levante o joelho direito ate a altura do quadril.",
+            "No topo, ESTENDA o quadril a frente, como faria na joelhada.",
+            "Desca controlado e repita do outro lado.",
+            "Ritmo controlado: nao e corrida no lugar.",
             "Abdomen contraido, tronco vertical.",
+        ],
+        "giro": [
+            "Sem giro nesta versao. O objetivo aqui e isolar a EXTENSAO do quadril, "
+            "que e a parte que a maioria esquece na joelhada.",
+            "O pivo do pe so entra depois, em /como joelho.",
+        ],
+        "checagem": [
+            "Filme de lado: o quadril avanca no topo do movimento?",
+            "O joelho passa da linha do quadril?",
         ],
         "erros": [
             "Correr no lugar sem realmente levantar o joelho.",
             "Inclinar o tronco para tras para 'ajudar' a perna a subir.",
             "Joelho parando abaixo da linha do quadril.",
+            "Deixar a guarda cair.",
         ],
     },
     "corda": {
         "nome": "Pular corda",
-        "passos": [
+        "resumo": "Condicionamento e ritmo. Nao faz parte da fase de fundamentos "
+                  "(e equipamento); entra junto com o saco.",
+        "inicio": [
             "Altura certa: pisando no meio da corda, as alcas chegam a axila.",
-            "Saltos baixos, 2 a 3 cm do chao — o objetivo e ritmo, nao altura.",
-            "Aterrisse na ponta dos pes, joelho levemente flexionado para absorver.",
-            "O giro vem do PUNHO; os cotovelos ficam proximos ao corpo.",
+            "Cotovelos proximos ao corpo, maos na altura do quadril.",
+        ],
+        "execucao": [
+            "Saltos baixos, de 2 a 3 cm do chao. O objetivo e ritmo, nao altura.",
+            "Aterrisse na ponta dos pes, com o joelho levemente flexionado para absorver.",
+            "O giro da corda vem do PUNHO, nao do ombro nem do cotovelo.",
+            "Mantenha o tronco ereto e o olhar a frente.",
             "Se errar, recomece sem parar o ritmo do corpo.",
         ],
+        "giro": [
+            "O QUE GIRA: apenas os punhos, em circulos pequenos.",
+            "Se o braco inteiro esta girando, voce vai cansar o ombro antes das pernas.",
+        ],
         "erros": [
-            "Saltos altos: sobrecarrega panturrilha e tendao de aquiles, e a lesao "
+            "Saltos altos: sobrecarrega panturrilha e tendao de aquiles, a lesao "
             "mais comum de quem volta a pular corda.",
             "Aterrissar de calcanhar.",
             "Girar com o ombro e o braco inteiro.",
@@ -313,12 +751,22 @@ TECNICAS = {
     },
     "controlarsaco": {
         "nome": "Controlar o saco",
-        "passos": [
-            "Controlar = manter distancia e ritmo enquanto o saco balanca, sem bater forte.",
-            "Acompanhe o saco com passos curtos, guarda sempre alta.",
+        "resumo": "Manter distancia e ritmo enquanto o saco balanca. Nao existe "
+                  "na fase de fundamentos, so no ciclo com saco.",
+        "inicio": [
+            "Base montada, a uma distancia em que o jab estendido alcance o saco.",
+        ],
+        "execucao": [
+            "Acompanhe o saco com passos curtos, sem sair da base.",
             "Espere o saco passar o ponto mais proximo antes de voltar a bater.",
             "Use jabs leves para amortecer e reposicionar o saco.",
             "Se precisar para-lo, use a palma aberta na LATERAL do saco.",
+            "Mantenha a guarda alta enquanto controla — e o momento em que "
+            "todo mundo relaxa a mao.",
+        ],
+        "giro": [
+            "Sem giro proprio. Voce usa o deslocamento normal, mantendo os angulos "
+            "dos pes da base.",
         ],
         "erros": [
             "Agarrar o topo do saco ou a corrente com violencia — quem paga e o ombro.",
@@ -328,28 +776,30 @@ TECNICAS = {
     },
     "respiracao": {
         "nome": "Respiracao",
-        "passos": [
-            "Durante os rounds: expire curto e forte a cada golpe. Nunca prenda o ar.",
-            "Na volta a calma: inspire pelo nariz 4 s, segure 2 s, expire pela boca 6 s.",
-            "8 a 10 ciclos, em pe com as maos no quadril ou sentado.",
-            "Se estiver ofegante demais para falar uma frase, reduza a intensidade.",
+        "resumo": "Controlar o folego durante o esforco e baixar a frequencia no fim.",
+        "inicio": [
+            "Em pe com as maos no quadril, ou sentado.",
+        ],
+        "execucao": [
+            "DURANTE O TREINO:",
+            "Expire curto e forte a cada golpe, pela boca, contraindo o abdomen.",
+            "Inspire pelo nariz entre os golpes.",
+            "Nunca prenda o ar.",
+            "NA VOLTA A CALMA:",
+            "Inspire pelo nariz contando 4 segundos.",
+            "Segure 2 segundos.",
+            "Expire pela boca contando 6 segundos.",
+            "Repita de 8 a 10 ciclos.",
+        ],
+        "checagem": [
+            "Se voce nao consegue falar uma frase inteira entre os rounds, "
+            "a intensidade esta acima do planejado.",
+            "Ao fim da volta a calma, a respiracao deve estar quase normal.",
         ],
         "erros": [
-            "Prender a respiracao durante o round: principal causa de cansaco precoce.",
+            "Prender a respiracao durante o esforco: principal causa de cansaco precoce.",
             "Respirar so pela boca, ofegando, entre os rounds.",
-        ],
-    },
-    "mobilidade": {
-        "nome": "Mobilidade de aquecimento",
-        "passos": [
-            "Ombros: 10 circulos grandes para tras e 10 para frente.",
-            "Quadril: joelho elevado, 10 circulos por lado.",
-            "Tornozelo: circulos em cada lado e um agachamento profundo mantido por 20 s.",
-            "Coluna toracica: maos na nuca, 10 rotacoes para cada lado.",
-            "Tudo em movimento — sem alongamento estatico longo antes de bater.",
-        ],
-        "erros": [
-            "Alongar parado por muito tempo antes do treino: reduz forca e nao previne lesao.",
+            "Pular a volta a calma.",
         ],
     },
 }
@@ -437,22 +887,22 @@ TERCA = {
             "2 min so postura e guarda",
         ], tecnicas=("mobilidade", "sombra", "base")),
         _bloco("Tecnica sem potencia", "15 min", [
-            "1) Base, guarda e passos para frente e para tras",
-            "2) Jab parado",
-            "3) Direto parado",
-            "4) Jab + direto",
-            "5) Jab + direto saindo lateralmente",
+            "Base, guarda e passos para frente e para tras",
+            "Jab parado",
+            "Direto parado",
+            "Jab + direto",
+            "Jab + direto saindo lateralmente",
         ], nota=f"5 blocos de 2 min, 1 min de descanso entre eles.\n{NUMERACAO}",
            tecnicas=("base", "passos", "jab", "direto", "saidalateral")),
         _bloco("Saco", None, [
-            "1) Apenas jab",
-            "2) Jab + direto",
-            "3) Jab + direto + saida lateral",
-            "4) Jab no corpo + direto na cabeca",
-            "5) Jab + direto + gancho",
-            "6) Golpes leves circulando o saco",
-            "7) Combinacoes livres de 2 ou 3 socos",
-            "8) Condicionamento: 20 s trabalhando / 20 s controlando",
+            "Apenas jab",
+            "Jab + direto",
+            "Jab + direto + saida lateral",
+            "Jab no corpo + direto na cabeca",
+            "Jab + direto + gancho",
+            "Golpes leves circulando o saco",
+            "Combinacoes livres de 2 ou 3 socos",
+            "Condicionamento: 20 s trabalhando / 20 s controlando",
         ], nota="1 min de descanso entre rounds. Priorize acertar com os nos dos "
                 "dedos alinhados, pulso reto e mao voltando imediatamente para a guarda.",
            tecnicas=("jab", "direto", "gancho", "jabcorpo", "saidalateral",
@@ -484,22 +934,22 @@ QUINTA = {
             "Elevacao alternada dos joelhos",
         ], tecnicas=("mobilidade", "sombra", "base", "elevacaojoelhos")),
         _bloco("Tecnica", "15 min", [
-            "1) Guarda e deslocamento",
-            "2) Bloqueio imaginario e resposta com jab",
-            "3) Teep sem forca, primeiro no ar",
-            "4) Joelho frontal alternado no ar",
-            "5) Jab + direto + joelho",
+            "Guarda e deslocamento",
+            "Bloqueio imaginario e resposta com jab",
+            "Teep sem forca, primeiro no ar",
+            "Joelho frontal alternado no ar",
+            "Jab + direto + joelho",
         ], nota="5 blocos de 2 min, 1 min de descanso.",
            tecnicas=("base", "passos", "bloqueio", "teep", "joelho")),
         _bloco("Saco", None, [
-            "1) Jab + saida",
-            "2) Jab + direto + saida",
-            "3) Teep alternado, devagar",
-            "4) Jab + teep",
-            "5) Direto + joelho de tras",
-            "6) Jab + direto + joelho de tras",
-            "7) Joelho alternado, controlando o saco",
-            "8) Tecnica livre leve",
+            "Jab + saida",
+            "Jab + direto + saida",
+            "Teep alternado, devagar",
+            "Jab + teep",
+            "Direto + joelho de tras",
+            "Jab + direto + joelho de tras",
+            "Joelho alternado, controlando o saco",
+            "Tecnica livre leve",
         ], nota="No joelho, NAO bata com a patela. O contato e na parte frontal/superior "
                 "da canela, proxima ao joelho, com o quadril avancando. Nao segure com "
                 "violencia as correntes nem a parte superior do saco.",
@@ -532,21 +982,21 @@ SABADO = {
             "2 min simulando chutes lentamente, sem saco",
         ], tecnicas=("mobilidade", "sombra", "girodope", "corda", "chutebaixo")),
         _bloco("Tecnica", "12 min", [
-            "1) Giro do pe de apoio, sem chutar",
-            "2) Chute baixo com a perna de tras, no ar",
-            "3) Chute baixo com a perna da frente, no ar",
-            "4) Jab + direto + chute baixo",
+            "Giro do pe de apoio, sem chutar",
+            "Chute baixo com a perna de tras, no ar",
+            "Chute baixo com a perna da frente, no ar",
+            "Jab + direto + chute baixo",
         ], nota="4 blocos de 2 min, 1 min de descanso.",
            tecnicas=("girodope", "chutebaixo", "jab", "direto")),
         _bloco("Saco", None, [
-            "1) Jab + direto",
-            "2) Chute baixo da perna de tras",
-            "3) Jab + chute baixo",
-            "4) Jab + direto + chute baixo",
-            "5) Direto + chute baixo",
-            "6) Jab + direto + joelho",
-            "7) Combinacoes livres",
-            "8) Condicionamento: 20 s de golpes / 20 s movimentando",
+            "Jab + direto",
+            "Chute baixo da perna de tras",
+            "Jab + chute baixo",
+            "Jab + direto + chute baixo",
+            "Direto + chute baixo",
+            "Jab + direto + joelho",
+            "Combinacoes livres",
+            "Condicionamento: 20 s de golpes / 20 s movimentando",
         ], nota="Nas primeiras semanas, apenas 5 a 8 chutes por perna em cada round "
                 "especifico, com forca baixa. Acerte com a CANELA, nao com o pe. "
                 "Nunca chute a parte metalica, a corrente ou a extremidade inferior.",
@@ -598,29 +1048,41 @@ FUNDAMENTOS_A = {
                 "corrigir punho e trajetoria.",
            tecnicas=("mobilidade", "respiracao")),
         _bloco("Base e guarda", "10 min", [
-            "Monte a base do zero 20 vezes: pes juntos, recue o direito, ajuste os angulos",
-            "Segure a guarda por 3 x 30 s de frente para o espelho",
+            "Monte a base do zero 20 vezes: comece com os pes juntos, recue o "
+            "pe direito, ajuste os angulos dos dois pes e levante a guarda",
+            "Desmanche completamente entre uma repeticao e outra — o objetivo e "
+            "treinar a montagem, nao ficar parado na posicao",
+            "Segure a guarda por 3 x 30 s de frente para o espelho, 30 s de descanso",
             "1 min andando pela sala sem desmanchar a guarda",
         ], nota="Confira a cada repeticao: queixo baixo, cotovelos para dentro, "
                 "joelhos moles, calcanhar de tras levantado.",
            tecnicas=("base", "sombra")),
         _bloco("Deslocamento", "7 min", [
-            "Frente e tras: 20 idas e voltas",
+            "Frente e tras: 20 idas e voltas (1 ida + 1 volta = 1 repeticao)",
             "Direita e esquerda: 20 para cada lado",
-            "Quadrado: 10 voltas em cada sentido",
-        ], nota="Regra unica desta fase: os pes nunca se cruzam.",
+            "Quadrado: imagine um quadrado de 1 m no chao e percorra os quatro "
+            "lados sem nunca virar o corpo — 10 voltas em cada sentido",
+            "Descanse 30 s entre os tres exercicios",
+        ], nota="Regra unica desta fase: os pes nunca se cruzam. Se cruzarem, "
+                "pare, remonte a base e recomece a serie.",
            tecnicas=("passos",)),
         _bloco("Jab isolado", "8 min", [
-            "30 jabs LENTOS de frente para o espelho, um a cada 3 s",
+            "30 jabs LENTOS de frente para o espelho, um a cada 3 s, contando "
+            "o trajeto de ida e de volta",
+            "Descanse 1 min",
             "30 jabs em ritmo medio, ainda sem forca",
-            "20 jabs dando um passo a frente junto",
+            "Descanse 1 min",
+            "20 jabs dando um passo a frente junto: o pe esquerdo sai primeiro e "
+            "o punho parte no mesmo instante",
         ], nota=f"Pare a cada 10 e confira: punho reto, mao voltou ao rosto. {SEM_COMBO}",
            tecnicas=("jab",)),
         _bloco("Direto isolado", "8 min", [
-            "20 giros de pe direito e quadril, SEM o braco",
-            "30 diretos lentos, sentindo a ordem pe > quadril > tronco > braco",
+            "20 giros de pe direito e quadril com as MAOS NA GUARDA, sem soltar "
+            "o braco — so o giro, para sentir de onde vem a forca",
+            "30 diretos lentos, respeitando a ordem pe > quadril > tronco > braco",
+            "Descanse 1 min",
             "30 diretos em ritmo medio",
-            "10 diretos filmados de lado",
+            "10 diretos filmados de lado, para conferir o calcanhar direito",
         ], nota=f"O giro vem primeiro; o braco e o ultimo elo. {SEM_COMBO}",
            tecnicas=("direto",)),
         _bloco("Volta a calma", "4 min", [
@@ -643,21 +1105,28 @@ FUNDAMENTOS_B = {
         ], nota=f"Jab e direto aqui sao revisao, ainda um de cada vez. {SEM_ACESSORIO}",
            tecnicas=("mobilidade", "base", "jab", "direto")),
         _bloco("Gancho isolado", "9 min", [
-            "20 rotacoes de tronco com os bracos soltos, sem golpe",
-            "30 ganchos lentos, cotovelo travado a 90 graus",
+            "20 rotacoes de tronco com os bracos soltos e pendurados, sem golpe, "
+            "so para sentir o pe da frente girando",
+            "30 ganchos lentos com o cotovelo travado a 90 graus: 15 na altura da "
+            "cabeca e 15 na altura das costelas",
+            "Descanse 1 min",
             "30 ganchos em ritmo medio",
         ], nota=f"No espelho: punho, cotovelo e ombro na mesma linha horizontal. {SEM_COMBO}",
            tecnicas=("gancho",)),
         _bloco("Jab no corpo", "8 min", [
-            "20 descidas sem golpe: flexione os JOELHOS, coluna reta",
-            "30 jabs no corpo lentos, descendo e subindo",
-            "20 em ritmo medio",
+            "20 descidas sem golpe: flexione os JOELHOS, coluna reta, e volte",
+            "30 jabs no corpo lentos: desce, soca, sobe — tres tempos separados",
+            "Descanse 1 min",
+            "20 em ritmo medio, agora com os tres tempos emendados",
         ], nota=f"A cabeca sai da linha central ao descer. {SEM_COMBO}",
            tecnicas=("jabcorpo",)),
         _bloco("Bloqueio e saida lateral", "9 min", [
-            "Bloqueio alto: 30 repeticoes de cada lado",
-            "Bloqueio de perna: 20 elevacoes de canela de cada lado",
-            "Saida lateral: 20 para cada lado, depois de um unico jab",
+            "Bloqueio alto: 30 repeticoes de cada lado, subindo o cotovelo sem "
+            "afastar a mao do rosto",
+            "Bloqueio de perna: 20 elevacoes de canela de cada lado, joelho "
+            "apontando um pouco para fora",
+            "Saida lateral: 20 para cada lado — um unico jab, e imediatamente "
+            "dois passos para o lado",
         ], nota="Nunca recue em linha reta. O jab antes da saida existe so para "
                 "dar o timing — continua sendo um golpe so.",
            tecnicas=("bloqueio", "saidalateral")),
@@ -683,27 +1152,38 @@ FUNDAMENTOS_C = {
         ], nota=SEM_ACESSORIO,
            tecnicas=("mobilidade", "elevacaojoelhos")),
         _bloco("Giro do pe de apoio", "8 min", [
-            "30 giros lentos por lado, SEM chutar",
+            "30 giros lentos com a perna esquerda de apoio, SEM chutar, ate o "
+            "calcanhar apontar para o alvo imaginario",
+            "30 giros lentos com a perna direita de apoio",
+            "Descanse 1 min",
             "20 giros por lado em ritmo medio",
+            "10 giros por lado com o joelho da outra perna levantado, ainda sem chutar",
         ], nota="Quem gira e o PE, nao o joelho. So passe para o chute quando o "
                 "giro sair sem voce pensar — e a diferenca entre chutar e lesionar.",
            tecnicas=("girodope",)),
         _bloco("Teep isolado", "9 min", [
-            "20 elevacoes de joelho na altura do quadril, sem estender",
-            "30 teeps lentos por perna, ponta do pe puxada para cima",
-            "20 por perna em ritmo medio",
+            "20 elevacoes de joelho ate a altura do quadril, sem estender a perna",
+            "30 teeps lentos por perna: sobe o joelho, estende empurrando, "
+            "recolhe o joelho, desce o pe — quatro tempos",
+            "Descanse 1 min",
+            "20 por perna em ritmo medio, com os quatro tempos emendados",
         ], nota=f"Recolha o pe de volta a base; nunca deixe cair a frente. {SEM_COMBO}",
            tecnicas=("teep",)),
         _bloco("Joelhada isolada", "8 min", [
-            "20 elevacoes diagonais de joelho, sem estender o quadril",
-            "30 joelhadas lentas por perna, avancando o quadril",
+            "20 elevacoes diagonais de joelho, ainda SEM avancar o quadril",
+            "30 joelhadas lentas por perna, agora avancando o quadril no topo — "
+            "a diferenca entre as duas coisas e o golpe inteiro",
+            "Descanse 1 min",
             "20 por perna em ritmo medio",
         ], nota=f"O contato seria ACIMA da rotula, nunca nela. {SEM_COMBO}",
            tecnicas=("joelho",)),
         _bloco("Chute baixo isolado", "9 min", [
-            "20 chutes baixos LENTOS por perna, no ar, atencao so no giro do pe de apoio",
+            "20 chutes baixos LENTOS por perna, no ar, com atencao unica no giro "
+            "do pe de apoio — ignore a perna que chuta por enquanto",
+            "Descanse 1 min",
             "20 por perna em ritmo medio",
-            "10 por perna filmados de lado",
+            "10 por perna filmados de TRAS, que e a unica vista onde da para ver "
+            "se o calcanhar de apoio girou o suficiente",
         ], nota=f"Sem forca e sem alvo: o objetivo e a trajetoria, nao o impacto. {SEM_COMBO}",
            tecnicas=("chutebaixo", "girodope")),
         _bloco("Volta a calma", "4 min", [
@@ -881,13 +1361,76 @@ def formatar_regras():
     return "<b>Regras do ciclo</b>\n\n" + "\n".join(f"• {r}" for r in REGRAS)
 
 
+# Ordem de exibicao das secoes de uma tecnica. `giro`, `retorno` e `checagem`
+# sao opcionais -- nem todo movimento gira (prancha, respiracao) e nem todo um
+# tem retorno proprio.
+SECOES_TECNICA = [
+    ("inicio", "Posicao inicial"),
+    ("execucao", "Execucao"),
+    ("giro", "O que gira, quanto e quando"),
+    ("retorno", "Retorno"),
+    ("checagem", "Como saber que esta certo"),
+    ("erros", "Erros comuns"),
+]
+
+# Limite de uma mensagem do Telegram. As tecnicas detalhadas passam disso, entao
+# a mensagem e dividida em partes em vez de a instrucao ser encurtada.
+LIMITE_TELEGRAM = 4096
+
+
+def dividir_mensagem(texto, limite=LIMITE_TELEGRAM):
+    """Divide em partes que cabem no Telegram, quebrando em linha em branco e,
+    se um bloco unico ainda nao couber, em quebra de linha."""
+    if len(texto) <= limite:
+        return [texto]
+    partes, atual = [], ""
+    for bloco in texto.split("\n\n"):
+        candidato = f"{atual}\n\n{bloco}" if atual else bloco
+        if len(candidato) <= limite:
+            atual = candidato
+            continue
+        if atual:
+            partes.append(atual)
+            atual = ""
+        while len(bloco) > limite:
+            corte = bloco.rfind("\n", 0, limite)
+            if corte <= 0:
+                corte = limite
+            partes.append(bloco[:corte])
+            bloco = bloco[corte:].lstrip("\n")
+        atual = bloco
+    if atual:
+        partes.append(atual)
+    return partes
+
+
 def formatar_tecnica(chave):
-    """Passo a passo de uma tecnica. `chave` ja resolvida por buscar_tecnica."""
+    """Passo a passo detalhado. `chave` ja resolvida por buscar_tecnica."""
     tec = TECNICAS[chave]
-    linhas = [f"<b>{tec['nome']}</b>", ""]
-    linhas += [f"{i}. {passo}" for i, passo in enumerate(tec["passos"], 1)]
-    linhas += ["", "<b>Erros comuns</b>"]
-    linhas += [f"• {erro}" for erro in tec["erros"]]
+    linhas = [f"<b>{tec['nome']}</b>"]
+    if tec.get("resumo"):
+        linhas.append(f"<i>{tec['resumo']}</i>")
+
+    for campo, titulo in SECOES_TECNICA:
+        itens = tec.get(campo)
+        if not itens:
+            continue
+        linhas += ["", f"<b>{titulo}</b>"]
+        if campo == "execucao":
+            # A ordem importa na execucao, entao ela vai numerada. Item terminado
+            # em ':' e sub-cabecalho (ex.: "CONTRA SOCO ALTO:") e nao consome
+            # numero -- numerar cabecalho embaralharia a contagem dos passos.
+            numero = 0
+            for item in itens:
+                if item.endswith(":"):
+                    linhas.append(f"<b>{item}</b>")
+                    numero = 0
+                    continue
+                numero += 1
+                linhas.append(f"{numero}. {item}")
+        else:
+            linhas += [f"\u2022 {item}" for item in itens]
+
     linhas += ["", f"<i>{LATERALIDADE}</i>"]
     return "\n".join(linhas)
 

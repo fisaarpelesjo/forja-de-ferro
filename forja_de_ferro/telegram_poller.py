@@ -408,7 +408,10 @@ def handle_como(text):
     if chave is None:
         send(muaythai.formatar_tecnica_nao_encontrada(termo))
         return
-    send(muaythai.formatar_tecnica(chave))
+    # As tecnicas detalhadas passam do limite de 4096 do Telegram;
+    # enviar em partes em vez de encurtar a instrucao.
+    for parte in muaythai.dividir_mensagem(muaythai.formatar_tecnica(chave)):
+        send(parte)
 
 
 def handle_training_b():

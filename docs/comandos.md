@@ -73,6 +73,15 @@ roteiro fica em `mt_session.json`, separado de `session.json`.
 | `/tecnicas` | Indice das 20 tecnicas da biblioteca de execucao. |
 | `/como NOME` | Passo a passo e erros comuns de um movimento. |
 
+Cada resposta de `/como` traz seis secoes: posicao inicial, execucao numerada,
+**o que gira / quanto / quando**, retorno, como conferir que esta certo, e erros
+comuns. As tecnicas estaticas (`prancha`, `respiracao`, `bandagem`) nao tem a
+secao de giro. Instrucoes escritas para destro, declarado em toda resposta.
+
+As respostas detalhadas podem passar do limite de 4096 caracteres do Telegram;
+`muaythai.dividir_mensagem()` quebra em partes na linha em branco em vez de a
+instrucao ser encurtada.
+
 `/como` aceita acento, espaco, hifen e alias: `/como chute baixo`,
 `/como low kick`, `/como guarda`, `/como 2` e `/como enfaixar` resolvem. Um
 prefixo so resolve se for inequivoco, entao `/como j` devolve o indice em vez
