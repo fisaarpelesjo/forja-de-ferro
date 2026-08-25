@@ -30,3 +30,9 @@ videos/
 
 # Estado do roteiro de Muay Thai (spec local) -- estado de maquina, como session.json
 mt_session.json
+
+# Ambiente e logs de execucao -- estado de maquina. Sem estes,
+# `git stash -u` os leva junto e derruba o servico (aconteceu 2026-08-25:
+# o venv foi esvaziado e o systemd falhou com 203/EXEC).
+.venv/
+logs/
