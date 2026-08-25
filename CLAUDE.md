@@ -117,7 +117,7 @@ Comandos principais em PT-BR:
   semana como argumento (`/mtterca 3`).
 - `/proximo` avanca o roteiro bloco a bloco, `/mtparar` encerra e `/mtregras`
   mostra as regras de seguranca do ciclo.
-- `/tecnicas` lista a biblioteca de execucao; `/como NOME` devolve o passo a
+- `/tecnicas` lista a biblioteca de execucao (20 tecnicas); `/como NOME` devolve o passo a
   passo e os erros comuns de um golpe (`/como chute baixo`, `/como bandagem`).
   A busca normaliza acento, espaco e alias em `muaythai.buscar_tecnica`.
 - `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca

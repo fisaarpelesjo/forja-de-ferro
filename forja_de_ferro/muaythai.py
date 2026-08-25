@@ -280,6 +280,65 @@ TECNICAS = {
             "Pular a passagem entre os dedos, deixando os nos sem colchao.",
         ],
     },
+    "elevacaojoelhos": {
+        "nome": "Elevacao alternada dos joelhos",
+        "passos": [
+            "Em pe, guarda alta, como se fosse bater.",
+            "Levante alternadamente o joelho ate a altura do quadril.",
+            "Estenda o quadril no topo: e o mesmo padrao da joelhada, sem o impacto.",
+            "Ritmo controlado — nao e corrida no lugar.",
+            "Abdomen contraido, tronco vertical.",
+        ],
+        "erros": [
+            "Correr no lugar sem realmente levantar o joelho.",
+            "Inclinar o tronco para tras para 'ajudar' a perna a subir.",
+            "Joelho parando abaixo da linha do quadril.",
+        ],
+    },
+    "corda": {
+        "nome": "Pular corda",
+        "passos": [
+            "Altura certa: pisando no meio da corda, as alcas chegam a axila.",
+            "Saltos baixos, 2 a 3 cm do chao — o objetivo e ritmo, nao altura.",
+            "Aterrisse na ponta dos pes, joelho levemente flexionado para absorver.",
+            "O giro vem do PUNHO; os cotovelos ficam proximos ao corpo.",
+            "Se errar, recomece sem parar o ritmo do corpo.",
+        ],
+        "erros": [
+            "Saltos altos: sobrecarrega panturrilha e tendao de aquiles, e a lesao "
+            "mais comum de quem volta a pular corda.",
+            "Aterrissar de calcanhar.",
+            "Girar com o ombro e o braco inteiro.",
+        ],
+    },
+    "controlarsaco": {
+        "nome": "Controlar o saco",
+        "passos": [
+            "Controlar = manter distancia e ritmo enquanto o saco balanca, sem bater forte.",
+            "Acompanhe o saco com passos curtos, guarda sempre alta.",
+            "Espere o saco passar o ponto mais proximo antes de voltar a bater.",
+            "Use jabs leves para amortecer e reposicionar o saco.",
+            "Se precisar para-lo, use a palma aberta na LATERAL do saco.",
+        ],
+        "erros": [
+            "Agarrar o topo do saco ou a corrente com violencia — quem paga e o ombro.",
+            "Bater de frente no saco enquanto ele volta em sua direcao.",
+            "Parar de se mover e ficar so esperando o saco.",
+        ],
+    },
+    "respiracao": {
+        "nome": "Respiracao",
+        "passos": [
+            "Durante os rounds: expire curto e forte a cada golpe. Nunca prenda o ar.",
+            "Na volta a calma: inspire pelo nariz 4 s, segure 2 s, expire pela boca 6 s.",
+            "8 a 10 ciclos, em pe com as maos no quadril ou sentado.",
+            "Se estiver ofegante demais para falar uma frase, reduza a intensidade.",
+        ],
+        "erros": [
+            "Prender a respiracao durante o round: principal causa de cansaco precoce.",
+            "Respirar so pela boca, ofegando, entre os rounds.",
+        ],
+    },
     "mobilidade": {
         "nome": "Mobilidade de aquecimento",
         "passos": [
@@ -313,6 +372,10 @@ ALIASES = {
     "core": "prancha", "abdomen": "prancha",
     "bandagens": "bandagem", "enfaixar": "bandagem", "atadura": "bandagem",
     "aquecimento": "mobilidade", "alongamento": "mobilidade",
+    "joelhos": "elevacaojoelhos", "elevacaodejoelhos": "elevacaojoelhos",
+    "pularcorda": "corda",
+    "controlar": "controlarsaco", "saco": "controlarsaco",
+    "respirar": "respiracao", "folego": "respiracao",
 }
 
 
@@ -392,7 +455,8 @@ TERCA = {
             "8) Condicionamento: 20 s trabalhando / 20 s controlando",
         ], nota="1 min de descanso entre rounds. Priorize acertar com os nos dos "
                 "dedos alinhados, pulso reto e mao voltando imediatamente para a guarda.",
-           tecnicas=("jab", "direto", "gancho", "jabcorpo", "saidalateral")),
+           tecnicas=("jab", "direto", "gancho", "jabcorpo", "saidalateral",
+                     "passos", "controlarsaco")),
         _bloco("Condicionamento", "5 min", [
             "5 ciclos de:",
             "  30 s de socos retos rapidos e leves",
@@ -402,7 +466,7 @@ TERCA = {
             "Caminhada leve",
             "Respiracao",
             "Mobilidade suave dos ombros",
-        ], tecnicas=("mobilidade",)),
+        ], tecnicas=("mobilidade", "respiracao")),
     ],
 }
 
@@ -418,7 +482,7 @@ QUINTA = {
             "3 min de boxe-sombra leve",
             "2 min so postura e guarda",
             "Elevacao alternada dos joelhos",
-        ], tecnicas=("mobilidade", "sombra", "base")),
+        ], tecnicas=("mobilidade", "sombra", "base", "elevacaojoelhos")),
         _bloco("Tecnica", "15 min", [
             "1) Guarda e deslocamento",
             "2) Bloqueio imaginario e resposta com jab",
@@ -439,7 +503,8 @@ QUINTA = {
         ], nota="No joelho, NAO bata com a patela. O contato e na parte frontal/superior "
                 "da canela, proxima ao joelho, com o quadril avancando. Nao segure com "
                 "violencia as correntes nem a parte superior do saco.",
-           tecnicas=("jab", "direto", "teep", "joelho", "saidalateral")),
+           tecnicas=("jab", "direto", "teep", "joelho", "saidalateral",
+                     "controlarsaco")),
         _bloco("Estabilidade", "5 min", [
             "Prancha: 3 x 30 s (30 s de descanso entre elas)",
             "Tempo restante: respiracao e caminhada",
@@ -450,7 +515,7 @@ QUINTA = {
             "Mobilidade suave dos ombros",
         ], nota="A sessao inteira deve ficar em RPE 5-6/10 — ela existe leve de "
                 "proposito, para nao prejudicar a musculacao de sexta.",
-           tecnicas=("mobilidade",)),
+           tecnicas=("mobilidade", "respiracao")),
     ],
 }
 
@@ -465,7 +530,7 @@ SABADO = {
             "3 min de mobilidade de tornozelo e quadril",
             "3 min de boxe-sombra",
             "2 min simulando chutes lentamente, sem saco",
-        ], tecnicas=("mobilidade", "sombra", "girodope")),
+        ], tecnicas=("mobilidade", "sombra", "girodope", "corda", "chutebaixo")),
         _bloco("Tecnica", "12 min", [
             "1) Giro do pe de apoio, sem chutar",
             "2) Chute baixo com a perna de tras, no ar",
@@ -485,7 +550,7 @@ SABADO = {
         ], nota="Nas primeiras semanas, apenas 5 a 8 chutes por perna em cada round "
                 "especifico, com forca baixa. Acerte com a CANELA, nao com o pe. "
                 "Nunca chute a parte metalica, a corrente ou a extremidade inferior.",
-           tecnicas=("jab", "direto", "chutebaixo", "joelho")),
+           tecnicas=("jab", "direto", "chutebaixo", "joelho", "controlarsaco")),
         _bloco("Finalizacao", "6 min", [
             "6 ciclos de:",
             "  30 s trabalhando no saco",
@@ -495,7 +560,7 @@ SABADO = {
             "Caminhada leve",
             "Respiracao",
             "Mobilidade suave dos ombros",
-        ], tecnicas=("mobilidade",)),
+        ], tecnicas=("mobilidade", "respiracao")),
     ],
 }
 
