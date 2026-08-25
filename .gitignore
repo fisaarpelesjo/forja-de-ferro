@@ -27,3 +27,6 @@ data/*.db-shm
 data/*.db-wal
 temp
 videos/
+
+# Estado do roteiro de Muay Thai (spec local) -- estado de maquina, como session.json
+mt_session.json

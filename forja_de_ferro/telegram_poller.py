@@ -7,6 +7,7 @@ from pathlib import Path
 
 from . import dashboard
 from . import db_ops
+from . import muaythai
 from . import ods_ops
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -313,6 +314,65 @@ def handle_preview():
     msg = _format_training_msg(exercises)
     send(msg)
     send("Previa do treino. Nada foi salvo. Use /gerar para iniciar uma sessao real.")
+
+
+def _mt_semana_do_texto(text, padrao=1):
+    """Semana opcional no comando: /mtterca 3. Fora de 1-8, o modulo ajusta."""
+    partes = text.strip().split()
+    if len(partes) > 1:
+        try:
+            return int(partes[1])
+        except ValueError:
+            pass
+    return padrao
+
+
+def handle_mt_iniciar(chave, text):
+    semana = _mt_semana_do_texto(text)
+    try:
+        muaythai.iniciar(chave, semana)
+    except Exception as exc:
+        LOGGER.error("Falha ao iniciar roteiro MT chave=%s tipo=%s", chave, type(exc).__name__)
+        send("Erro ao iniciar o roteiro. Consulte o terminal.")
+        return
+    send(muaythai.formatar_resumo(chave, semana))
+
+
+def handle_mt_hoje(text):
+    chave = muaythai.roteiro_do_dia()
+    if chave is None:
+        send(
+            "Hoje nao e dia de saco.\n\n"
+            "Segunda, quarta e sexta sao musculacao. Domingo e descanso completo.\n"
+            "Use /mtterca, /mtquinta ou /mtsabado para ver outro treino."
+        )
+        return
+    handle_mt_iniciar(chave, text)
+
+
+def handle_mt_proximo():
+    estado = muaythai.carregar_estado()
+    if estado is None:
+        send("Nenhum roteiro de Muay Thai ativo. Use /mt, /mtterca, /mtquinta ou /mtsabado.")
+        return
+    # O primeiro /proximo apos iniciar mostra o bloco 0; os seguintes avancam.
+    if estado.get("mostrou_primeiro"):
+        estado = muaythai.avancar()
+        if estado is None:
+            send("Roteiro concluido. Bom treino.\n\nUse /mtregras para revisar as regras do ciclo.")
+            return
+    else:
+        estado["mostrou_primeiro"] = True
+        muaythai.salvar_estado(estado)
+    send(muaythai.formatar_bloco(estado))
+
+
+def handle_mt_parar():
+    if muaythai.carregar_estado() is None:
+        send("Nenhum roteiro ativo.")
+        return
+    muaythai.limpar_estado()
+    send("Roteiro encerrado.")
 
 
 def handle_training_b():
@@ -644,6 +704,13 @@ def main():
                         "/status — exercicio atual e progresso\n"
                         "/desfazer — apaga o ultimo registro\n"
                         "/ajuda — esta mensagem\n\n"
+                        "<b>Muay Thai (saco)</b>\n"
+                        "/mt — treino de hoje (ter/qui/sab)\n"
+                        "/mtterca, /mtquinta, /mtsabado — treino especifico\n"
+                        "/proximo — proximo bloco do roteiro\n"
+                        "/mtparar — encerra o roteiro\n"
+                        "/mtregras — regras do ciclo\n"
+                        "<i>semana opcional: /mtterca 3</i>\n\n"
                         "<b>Registrar carga:</b>\n"
                         "<code>80</code> — somente carga\n"
                         "<code>80 8</code> — carga + RPE"
@@ -691,6 +758,34 @@ def main():
                         "7. Flexao facil — 1x5-8\n"
                         "8. Prancha com toque no ombro — 10 toques"
                     )
+                    continue
+
+                if lower == "/mt" or lower.startswith("/mt "):
+                    handle_mt_hoje(text)
+                    continue
+
+                if lower.startswith("/mtterca"):
+                    handle_mt_iniciar("terca", text)
+                    continue
+
+                if lower.startswith("/mtquinta"):
+                    handle_mt_iniciar("quinta", text)
+                    continue
+
+                if lower.startswith("/mtsabado"):
+                    handle_mt_iniciar("sabado", text)
+                    continue
+
+                if lower == "/proximo":
+                    handle_mt_proximo()
+                    continue
+
+                if lower == "/mtparar":
+                    handle_mt_parar()
+                    continue
+
+                if lower == "/mtregras":
+                    send(muaythai.formatar_regras())
                     continue
 
                 if lower == "/gerar":
