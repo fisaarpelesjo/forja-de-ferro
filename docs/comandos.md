@@ -30,6 +30,32 @@ Todos os comandos textuais devem ser enviados com `/`.
 Entradas numericas como `80` e `80 8` nao usam `/`, pois registram carga e RPE
 em vez de acionar um comando textual.
 
+## Muay Thai (Saco)
+
+Ciclo de 8 semanas em terca, quinta e sabado, complementando a musculacao de
+segunda, quarta e sexta. Nenhum comando desta secao grava no banco: o estado do
+roteiro fica em `mt_session.json`, separado de `session.json`.
+
+| Comando | Acao |
+| --- | --- |
+| `/mt` | Roteiro de hoje. Em dia de musculacao, avisa e nao inicia. |
+| `/mtterca` | Forca o roteiro de terca. Idem `/mtquinta` e `/mtsabado`. |
+| `/mtterca 3` | Mesmo roteiro, na semana 3 da progressao (1 a 8). |
+| `/proximo` | Avanca um bloco. No ultimo bloco, encerra o roteiro. |
+| `/mtparar` | Encerra o roteiro em andamento. |
+| `/mtregras` | Regras de seguranca do ciclo. |
+| `/tecnicas` | Indice das 20 tecnicas da biblioteca de execucao. |
+| `/como NOME` | Passo a passo e erros comuns de um movimento. |
+
+`/como` aceita acento, espaco, hifen e alias: `/como chute baixo`,
+`/como low kick`, `/como guarda`, `/como 2` e `/como enfaixar` resolvem. Um
+prefixo so resolve se for inequivoco, entao `/como j` devolve o indice em vez
+de escolher `jab` por conta propria.
+
+Cada bloco do roteiro termina com os atalhos `/como` dos movimentos que ele
+usa, em vez de embutir o passo a passo inteiro, porque o Telegram corta
+mensagem em 4096 caracteres.
+
 ## Iniciar O Bot
 
 Multiplataforma:

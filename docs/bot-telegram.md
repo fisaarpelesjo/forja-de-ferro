@@ -57,10 +57,21 @@ O bot so responde ao `CHAT_ID` configurado no codigo.
 /status         mostra progresso
 /desfazer       apaga o ultimo registro
 /ajuda          mostra ajuda
+/mt             roteiro de Muay Thai de hoje (ter/qui/sab)
+/mtterca        forca um dia; idem /mtquinta e /mtsabado
+/proximo        avanca um bloco do roteiro
+/mtparar        encerra o roteiro
+/mtregras       regras de seguranca do ciclo
+/tecnicas       indice da biblioteca de execucao
+/como NOME      passo a passo e erros comuns de um movimento
 ```
 
 Todos os comandos textuais exigem `/` e usam somente os nomes oficiais em
 PT-BR. Entradas numericas continuam reservadas para carga e RPE.
+
+Os comandos de Muay Thai vivem em `forja_de_ferro/muaythai.py` e nao tocam o
+SQLite. Detalhes de uso e da biblioteca de execucao em
+[Catalogo de comandos](comandos.md).
 
 ## `/peso`
 
