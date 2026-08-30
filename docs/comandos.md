@@ -30,18 +30,24 @@ Todos os comandos textuais devem ser enviados com `/`.
 Entradas numericas como `80` e `80 8` nao usam `/`, pois registram carga e RPE
 em vez de acionar um comando textual.
 
-## Muay Thai — Fundamentos (Sem Equipamento)
+## Muay Thai — Fundamentos (Com Saco Leve)
 
-Fase anterior ao ciclo com saco: aprender cada movimento isolado, sem impacto e
-sem combinacao. Conta repeticao em vez de round, porque sem impacto nao existe
-intensidade para dosar por tempo.
+Fase anterior ao ciclo de 8 semanas: aprender cada movimento isolado, sem
+combinacao. Conta repeticao em vez de round, porque a dosagem aqui e numero de
+execucoes limpas, nao tempo sob esforco.
 
-**Equipamento: nenhum.** Sem saco, sem luva, sem bandagem e sem corda — so o
-corpo e um espelho ou o celular filmando. Nao ha impacto, entao nao ha o que
-proteger, e a mao nua deixa o punho visivel para correcao. Por isso as tecnicas
-`bandagem`, `corda` e `controlarsaco` nao aparecem em nenhum bloco desta fase:
-todas dependem de equipamento. Elas continuam no ciclo com saco e acessiveis
-por `/como`.
+Cada sessao tem **duas partes**. Os blocos de aprendizado sao de mao nua, de
+frente para o espelho — sem impacto voce enxerga o punho e corrige. O bloco
+final e no saco, com bandagem e luva, limitado a 20-30% de potencia: ali o saco
+responde o que o espelho nao responde (distancia, alinhamento, ponto de
+contato), sem que um erro vire lesao.
+
+O bloco de saco da sessao C tem um **portao**: so acontece se o giro do pe de
+apoio ja sair automatico. Chutar sem esse giro e o mecanismo de lesao de joelho
+que a fase inteira existe para evitar.
+
+A unica tecnica que continua fora dos fundamentos e `corda`, que e
+condicionamento do aquecimento de sabado no ciclo de 8 semanas.
 
 | Comando | Acao |
 | --- | --- |

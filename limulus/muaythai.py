@@ -1095,10 +1095,20 @@ SABADO = {
 SEM_COMBO = ("Um movimento por vez. Nao emende com nenhum outro golpe nesta "
              "fase — combinacao so depois que cada movimento sair sozinho.")
 
-# Sem impacto nao ha o que proteger, e mao nua deixa o punho visivel para
-# correcao. Bandagem, luva e corda so entram junto com o saco.
-SEM_ACESSORIO = ("Nada nas maos e nada no chao: sem bandagem, sem luva, sem "
-                 "corda, sem saco. So o corpo e um espelho ou o celular filmando.")
+# Os blocos de aprendizado continuam de mao nua: sem impacto nao ha o que
+# proteger, e a mao livre deixa o punho visivel para correcao. A protecao entra
+# so no bloco final, onde existe contato.
+SEM_LUVA = ("Este bloco e de mao nua, sem bandagem nem luva — voce precisa "
+            "enxergar o punho para corrigir. O saco so entra no bloco final.")
+
+# Teto de potencia da fase. O saco aqui e instrumento de conferencia, nao alvo:
+# a 20-30% voce sente onde o golpe encosta sem que um erro de alinhamento vire
+# lesao de punho.
+POTENCIA_FUNDAMENTOS = "20-30%"
+
+NO_SACO = ("Bandagem e luva obrigatorias neste bloco. Potencia maxima "
+           f"{POTENCIA_FUNDAMENTOS} — o saco aqui serve para conferir distancia, "
+           "alinhamento e ponto de contato, nao para treinar forca.")
 
 FUNDAMENTOS_A = {
     "nome": "Fundamentos A — postura, guarda e socos retos",
@@ -1109,8 +1119,7 @@ FUNDAMENTOS_A = {
             "3 min de mobilidade de ombros, quadril e tornozelos",
             "2 min de caminhada leve pela sala",
             "1 min so respirando, decidindo em que voce vai prestar atencao hoje",
-        ], nota=f"{SEM_ACESSORIO} Voce precisa enxergar a propria mao para "
-                "corrigir punho e trajetoria.",
+        ], nota=SEM_LUVA,
            tecnicas=("mobilidade", "respiracao")),
         _bloco("Base e guarda", "10 min", [
             "Monte a base do zero 20 vezes: comece com os pes juntos, recue o "
@@ -1150,6 +1159,18 @@ FUNDAMENTOS_A = {
             "10 diretos filmados de lado, para conferir o calcanhar direito",
         ], nota=f"O giro vem primeiro; o braco e o ultimo elo. {SEM_COMBO}",
            tecnicas=("direto",)),
+        _bloco("Saco leve", "8 min", [
+            "Enfaixe as maos e coloque as luvas antes de encostar no saco",
+            "DISTANCIA: estenda o jab ate os nos tocarem o saco de leve. Ajuste "
+            "os pes ate essa distancia sair certa. Entre e saia 10 vezes",
+            "20 jabs a 20%, so para sentir onde o punho encosta",
+            "Pare e confira o punho: doeu, dobrou, ou entrou reto?",
+            "20 diretos a 20%, conferindo se o calcanhar de tras girou",
+            "10 jabs e 10 diretos alternados, ainda um de cada vez",
+            "Espere o saco parar entre as series. Nunca bata nele voltando",
+        ], nota=f"{NO_SACO} Dor no punho ou nos nos = pare o bloco. "
+                f"{SEM_COMBO}",
+           tecnicas=("bandagem", "jab", "direto", "controlarsaco")),
         _bloco("Volta a calma", "4 min", [
             "Caminhada leve",
             "Respiracao 4-2-6, 8 ciclos",
@@ -1167,7 +1188,7 @@ FUNDAMENTOS_B = {
             "3 min de mobilidade de ombros, quadril e tornozelos",
             "Remonte a base 10 vezes",
             "20 jabs e depois 20 diretos lentos, so para reaquecer o padrao",
-        ], nota=f"Jab e direto aqui sao revisao, ainda um de cada vez. {SEM_ACESSORIO}",
+        ], nota=f"Jab e direto aqui sao revisao, ainda um de cada vez. {SEM_LUVA}",
            tecnicas=("mobilidade", "base", "jab", "direto")),
         _bloco("Gancho isolado", "9 min", [
             "20 rotacoes de tronco com os bracos soltos e pendurados, sem golpe, "
@@ -1195,6 +1216,18 @@ FUNDAMENTOS_B = {
         ], nota="Nunca recue em linha reta. O jab antes da saida existe so para "
                 "dar o timing — continua sendo um golpe so.",
            tecnicas=("bloqueio", "saidalateral")),
+        _bloco("Saco leve", "8 min", [
+            "Enfaixe as maos e coloque as luvas",
+            "DISTANCIA DO GANCHO: e mais curta que a do jab. Encoste o cotovelo "
+            "dobrado no saco para achar o ponto certo, depois recue meio passo",
+            "20 ganchos a 20%, 10 de cada lado, conferindo se o cotovelo manteve "
+            "os 90 graus no impacto",
+            "20 jabs no corpo a 20%, descendo pelos joelhos",
+            "10 saidas laterais: um unico jab e dois passos para o lado",
+            "Espere o saco parar entre as series",
+        ], nota=f"{NO_SACO} No gancho, o saco denuncia na hora se o braco abriu: "
+                f"o golpe escorrega em vez de entrar. {SEM_COMBO}",
+           tecnicas=("bandagem", "gancho", "jabcorpo", "saidalateral", "controlarsaco")),
         _bloco("Estabilidade", "5 min", [
             "Prancha: 3 x 30 s (30 s de descanso entre elas)",
         ], tecnicas=("prancha",)),
@@ -1214,7 +1247,7 @@ FUNDAMENTOS_C = {
             "3 min de mobilidade de tornozelo e quadril",
             "2 min de elevacao alternada dos joelhos",
             "20 agachamentos livres lentos",
-        ], nota=SEM_ACESSORIO,
+        ], nota=SEM_LUVA,
            tecnicas=("mobilidade", "elevacaojoelhos")),
         _bloco("Giro do pe de apoio", "8 min", [
             "30 giros lentos com a perna esquerda de apoio, SEM chutar, ate o "
@@ -1251,6 +1284,20 @@ FUNDAMENTOS_C = {
             "se o calcanhar de apoio girou o suficiente",
         ], nota=f"Sem forca e sem alvo: o objetivo e a trajetoria, nao o impacto. {SEM_COMBO}",
            tecnicas=("chutebaixo", "girodope")),
+        _bloco("Saco leve", "8 min", [
+            "PORTAO: so faca este bloco se o giro do pe de apoio ja sair sem "
+            "voce pensar. Se ainda nao sai, repita o bloco 2 e encerre a sessao",
+            "Enfaixe as maos e coloque as luvas",
+            "10 teeps por perna a 20%: empurrar o saco, nao bater nele",
+            "10 joelhadas por perna a 20%, avancando o quadril",
+            "5 chutes baixos por perna a 20%, contato com a CANELA",
+            "Espere o saco parar entre as series",
+        ], nota="Cinco chutes por perna e pouco de proposito: a canela precisa de "
+                "meses de exposicao gradual. Dor na canela ou no peito do pe "
+                "encerra o bloco na hora — insistir vira periostite, que tira "
+                "voce de treino por semanas. "
+                f"{NO_SACO}",
+           tecnicas=("girodope", "teep", "joelho", "chutebaixo", "bandagem", "controlarsaco")),
         _bloco("Volta a calma", "4 min", [
             "Caminhada leve",
             "Respiracao 4-2-6, 8 ciclos",
@@ -1275,16 +1322,21 @@ CRITERIO_DE_PASSAGEM = [
     "Jab e direto voltam sozinhos para o rosto, sem voce lembrar.",
     "O pe de apoio gira sozinho no chute baixo.",
     "Voce consegue se ver filmado sem enxergar punho dobrado ou guarda caida.",
+    "No saco leve, o punho entra reto e nao doi no dia seguinte.",
+    "Voce acerta a distancia de primeira, sem precisar ajustar depois do golpe.",
     "Nenhum movimento causa dor em punho, ombro, joelho ou tornozelo.",
 ]
 
-# O que so aparece quando o saco entra. Fica explicito para a fase de
-# fundamentos poder ser feita em qualquer lugar, sem comprar nada.
-ENTRA_COM_O_SACO = [
-    "Bandagem de 5 m — pratique com /como bandagem no dia anterior.",
-    "Luvas de 16 oz.",
-    "Corda, se quiser usar no aquecimento de sabado — veja /como corda.",
-    "O saco propriamente dito, inspecionado antes da primeira sessao.",
+# Conferencia antes de encostar no saco. Vira parte do indice da fase, porque
+# e o unico ponto onde equipamento mal montado ainda da para pegar sem custo.
+ANTES_DE_BATER = [
+    "Inspecione suporte, parabolts, corrente e mosquetao. Balance o saco com "
+    "forca e observe: nada pode ceder, ranger ou folgar.",
+    "Bandagem de 5 m nas duas maos — passo a passo em /como bandagem.",
+    "Luvas de 16 oz por cima da bandagem.",
+    "Espaco livre em volta para voce circular sem esbarrar em nada.",
+    "Celular posicionado para filmar: o saco esconde o erro que o espelho "
+    "mostrava, porque agora voce olha para o alvo, nao para si.",
 ]
 
 # Dia da semana (segunda=0) -> roteiro. Segunda/quarta/sexta sao musculacao,
@@ -1368,7 +1420,7 @@ def formatar_bloco(estado):
     duracao = bloco["duracao"] or f"{rounds} de {duracao_round}"
 
     subtitulo = (f"semana {estado['semana']} · bloco {idx + 1} de {total}"
-                 if progride else f"bloco {idx + 1} de {total} · sem equipamento, sem combo")
+                 if progride else f"bloco {idx + 1} de {total} · um movimento por vez")
 
     linhas = [
         f"<b>{roteiro['nome']}</b>",
@@ -1412,7 +1464,7 @@ def formatar_resumo(chave, semana=1):
         linhas.append(
             f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>")
     else:
-        linhas.append("<i>sem equipamento, sem combinacao — um movimento por vez</i>")
+        linhas.append("<i>aprendizado no espelho + saco leve — um movimento por vez</i>")
     linhas.append("")
 
     for i, bloco in enumerate(roteiro["blocos"], 1):
@@ -1528,13 +1580,17 @@ def resolver_fundamentos(termo):
 def formatar_indice_fundamentos(hoje=None):
     sugerida = fundamentos_do_dia(hoje)
     linhas = [
-        "<b>Fase de fundamentos — sem equipamento</b>",
+        "<b>Fase de fundamentos — com saco leve</b>",
         "",
         "Aprender cada movimento isolado antes de bater. Bater no saco antes de "
         "o padrao estar formado grava o padrao errado com impacto junto, e chute "
         "baixo sem giro do pe de apoio machuca o joelho logo na primeira sessao.",
         "",
-        f"<b>Equipamento: nenhum.</b> {SEM_ACESSORIO}",
+        "Cada sessao tem duas partes. Os blocos de aprendizado sao de mao nua, "
+        "de frente para o espelho: sem impacto voce enxerga o punho e corrige. "
+        f"O bloco final e no saco, com bandagem e luva, a no maximo "
+        f"{POTENCIA_FUNDAMENTOS} — ali o saco responde o que o espelho nao "
+        "responde: distancia, alinhamento e ponto de contato.",
         "",
         "<b>Sessoes</b>",
     ]
@@ -1546,11 +1602,11 @@ def formatar_indice_fundamentos(hoje=None):
         "Mesma rotina do ciclo: terca, quinta e sabado. Repita as tres sessoes "
         "por 2 a 3 semanas, ou ate os criterios abaixo baterem.",
         "",
-        "<b>Quando passar para o saco</b>",
+        "<b>Quando passar para o ciclo de 8 semanas (/mt)</b>",
     ]
     linhas += [f"• {c}" for c in CRITERIO_DE_PASSAGEM]
-    linhas += ["", "<b>So entao entra o equipamento</b>"]
-    linhas += [f"• {e}" for e in ENTRA_COM_O_SACO]
+    linhas += ["", "<b>Antes de encostar no saco</b>"]
+    linhas += [f"• {e}" for e in ANTES_DE_BATER]
     linhas += ["", "<i>Nao ha pressa aqui. Uma semana a mais de fundamento custa "
                    "uma semana; um padrao errado gravado custa meses para desfazer.</i>"]
     return "\n".join(linhas)
