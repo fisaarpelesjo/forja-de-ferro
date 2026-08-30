@@ -358,8 +358,11 @@ TECNICAS = {
         ],
         "execucao": [
             "Levante o JOELHO primeiro, ate a altura do quadril, bem a frente do corpo.",
-            "Puxe a ponta do pe para cima (dorsiflexao). O contato e com a "
-            "SOLA/planta do pe, nunca com os dedos.",
+            "Puxe a ponta do pe para cima (dorsiflexao) — e isso que tira os "
+            "dedos da linha de impacto.",
+            "O contato padrao e a BASE DOS DEDOS (o coxim, logo abaixo deles). "
+            "A sola inteira tambem serve e perdoa mais erro de distancia, que e "
+            "o que voce quer enquanto aprende. Nunca a ponta dos dedos.",
             "Do joelho levantado, estenda a perna a frente enquanto empurra o "
             "quadril na mesma direcao.",
             "A forca vem da EXTENSAO DO QUADRIL, nao do chute da perna.",
@@ -404,6 +407,8 @@ TECNICAS = {
         "execucao": [
             "Levante o joelho na diagonal, de baixo para cima e a frente.",
             "Ao mesmo tempo, AVANCE o quadril na direcao do alvo. Este e o golpe.",
+            "PUXE O CALCANHAR em direcao ao gluteo. E isso que 'afia' o joelho e "
+            "leva o contato para a canela, longe da rotula.",
             "A ponta do pe aponta para baixo, perna relaxada abaixo do joelho.",
             "O contato e com a parte de cima da CANELA, logo abaixo do joelho — "
             "nunca com a rotula.",
@@ -462,7 +467,10 @@ TECNICAS = {
             "O QUE GIRA: o pe de APOIO (o esquerdo, que fica no chao). Este e o "
             "ponto mais importante de toda a tecnica.",
             "COMO: sobre a PLANTA do pe, com o calcanhar subindo e rodando. Nunca "
-            "sobre o calcanhar apoiado.",
+            "sobre o calcanhar apoiado — calcanhar no chao trava o quadril, mata "
+            "a potencia e joga a torcao no joelho.",
+            "DESTRAVE: se o pe nao gira, quase sempre e joelho de apoio travado. "
+            "Flexione um pouco e o pivo costuma soltar.",
             "QUANTO: ate o CALCANHAR APONTAR PARA O ALVO — de 90 a 120 graus. Giro "
             "incompleto significa potencia quase zero e torcao direta no joelho.",
             "QUANDO: o giro do pe de apoio COMECA ANTES de a perna que chuta "
@@ -509,6 +517,9 @@ TECNICAS = {
             "Continue ate o calcanhar apontar para o alvo — 90 a 120 graus.",
             "Deixe o joelho esquerdo acompanhar o giro, sempre apontando para a "
             "mesma direcao que o pe.",
+            "Mantenha o joelho de apoio LEVEMENTE FLEXIONADO. Joelho travado e a "
+            "causa mais comum de o pe nao girar; dobrar um pouco costuma "
+            "destravar o pivo sozinho.",
             "O quadril acompanha naturalmente; nao segure o tronco de frente.",
             "Volte devagar a posicao inicial e repita.",
             "Depois de dominar parado, repita levantando o joelho direito junto, "
@@ -649,24 +660,28 @@ TECNICAS = {
     },
     "bandagem": {
         "nome": "Bandagem de 5 m",
-        "resumo": "Protecao do punho e dos nos. So necessaria quando existe "
-                  "impacto — nao se usa na fase de fundamentos.",
+        "resumo": "Protecao do punho e dos nos. Obrigatoria em qualquer bloco "
+                  "com contato, inclusive o saco leve dos fundamentos.",
         "inicio": [
             "Mao aberta, dedos separados, polegar afastado.",
             "Bandagem enrolada, com a alca livre.",
         ],
         "execucao": [
             "Polegar na alca, com a bandagem passando pelo DORSO da mao.",
-            "3 voltas no punho.",
-            "3 voltas na palma, subindo em direcao aos dedos.",
+            "3 a 4 voltas no PUNHO. Comece sempre por aqui, nunca pela palma — "
+            "e o punho que precisa de mais estrutura.",
+            "Suba e de 2 a 3 voltas cobrindo os NOS dos dedos.",
+            "Traga a bandagem na diagonal pelo dorso ate a base do polegar e de "
+            "UMA VOLTA NO POLEGAR. Volte na diagonal para o punho, formando um X "
+            "no dorso. Repita o X 2 ou 3 vezes.",
             "Entre os dedos, nesta ordem: mindinho/anelar, anelar/medio, "
             "medio/indicador. Cada passagem sobe pelo dorso e volta pela palma.",
-            "Volte ao punho e cruze pelo dorso em X, 2 ou 3 vezes.",
-            "3 voltas cobrindo os nos dos dedos.",
-            "Termine no punho e feche o velcro.",
+            "Mais 1 ou 2 voltas nos nos, para firmar a superficie de impacto.",
+            "Use o que sobrou reforcando o punho e feche o velcro.",
         ],
         "checagem": [
-            "Feche o punho: deve ficar firme, sem formigar.",
+            "Feche o punho: a mao inteira deve responder como um bloco unico.",
+            "Mexa punho e dedos: nada pode deslizar nem embolar.",
             "Abra e feche a mao 10 vezes. Se a mao esfriar, perder cor ou "
             "formigar, esta apertada demais — refaca.",
             "O punho nao pode dobrar para tras com facilidade.",
@@ -674,6 +689,8 @@ TECNICAS = {
         "erros": [
             "Apertada demais: corta a circulacao.",
             "Frouxa no punho: nao protege exatamente onde a lesao acontece.",
+            "Pular a volta no polegar: o polegar solto e uma das lesoes mais "
+            "comuns de quem bate em saco.",
             "Pular a passagem entre os dedos, deixando os nos sem colchao.",
         ],
     },
@@ -720,7 +737,10 @@ TECNICAS = {
             "Ao terminar, voce deve estar levemente aquecido e sem falta de ar.",
         ],
         "erros": [
-            "Alongamento estatico longo antes do treino: reduz forca e nao previne lesao.",
+            "Alongamento estatico longo antes do treino. O que pesa e a DURACAO: "
+            "acima de ~60 s por musculo cai a forca maxima (algo entre 2% e 5%). "
+            "Alongamento curto nao e problema, e mobilidade dinamica depois "
+            "compensa o que houver.",
             "Fazer rapido demais, sem chegar ao fim da amplitude.",
             "Pular a mobilidade de tornozelo — e a que mais afeta o chute.",
         ],
@@ -802,8 +822,8 @@ TECNICAS = {
     },
     "controlarsaco": {
         "nome": "Controlar o saco",
-        "resumo": "Manter distancia e ritmo enquanto o saco balanca. Nao existe "
-                  "na fase de fundamentos, so no ciclo com saco.",
+        "resumo": "Manter distancia e ritmo enquanto o saco balanca, sem bater "
+                  "nele voltando.",
         "inicio": [
             "Base montada, a uma distancia em que o jab estendido alcance o saco.",
         ],
