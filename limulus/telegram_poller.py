@@ -397,19 +397,34 @@ def handle_fundamentos(text):
     send(muaythai.formatar_resumo(chave))
 
 
+# Sufixos que pedem a versao longa de /como.
+COMO_COMPLETO = {"tudo", "completo", "detalhe", "detalhado", "full"}
+
+
 def handle_como(text):
-    """/como <tecnica>. Sem argumento, mostra o indice em vez de erro -- o
-    operador que digita so /como esta pedindo para ver o que existe."""
+    """/como <tecnica> devolve o essencial; /como <tecnica> tudo devolve o passo
+    a passo completo. O curto e o padrao porque a consulta acontece durante o
+    treino, entre uma serie e outra, nao sentado estudando."""
     termo = text.strip()[len("/como"):].strip()
     if not termo:
         send(muaythai.formatar_indice_tecnicas())
         return
+
+    partes = termo.split()
+    completo = len(partes) > 1 and partes[-1].lower() in COMO_COMPLETO
+    if completo:
+        termo = " ".join(partes[:-1])
+
     chave = muaythai.buscar_tecnica(termo)
     if chave is None:
         send(muaythai.formatar_tecnica_nao_encontrada(termo))
         return
-    # As tecnicas detalhadas passam do limite de 4096 do Telegram;
-    # enviar em partes em vez de encurtar a instrucao.
+
+    if not completo:
+        send(muaythai.formatar_tecnica_curta(chave))
+        return
+    # A versao longa pode passar do limite de 4096 do Telegram; enviar em partes
+    # em vez de encurtar a instrucao.
     for parte in muaythai.dividir_mensagem(muaythai.formatar_tecnica(chave)):
         send(parte)
 
@@ -752,7 +767,8 @@ def main():
                         "/mtparar — encerra o roteiro\n"
                         "/mtregras — regras do ciclo\n"
                         "/tecnicas — todas as tecnicas\n"
-                        "/como &lt;tecnica&gt; — passo a passo (ex: /como chute baixo)\n"
+                        "/como &lt;tecnica&gt; — o essencial (ex: /como chute baixo)\n"
+                        "/como &lt;tecnica&gt; tudo — passo a passo completo\n"
                         "<i>semana opcional: /mtterca 3</i>\n\n"
                         "<b>Registrar carga:</b>\n"
                         "<code>80</code> — somente carga\n"

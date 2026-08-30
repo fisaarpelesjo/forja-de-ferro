@@ -77,11 +77,17 @@ roteiro fica em `mt_session.json`, separado de `session.json`.
 | `/mtparar` | Encerra o roteiro em andamento. |
 | `/mtregras` | Regras de seguranca do ciclo. |
 | `/tecnicas` | Indice das 20 tecnicas da biblioteca de execucao. |
-| `/como NOME` | Passo a passo e erros comuns de um movimento. |
+| `/como NOME` | O essencial do movimento: 2-3 pistas e os 2 piores erros. |
+| `/como NOME tudo` | Passo a passo completo, com posicao inicial, rotacao e checagem. |
 
-Cada resposta de `/como` traz seis secoes: posicao inicial, execucao numerada,
-**o que gira / quanto / quando**, retorno, como conferir que esta certo, e erros
-comuns. As tecnicas estaticas (`prancha`, `respiracao`, `bandagem`) nao tem a
+`/como NOME` responde curto (~340 caracteres): as 2-3 pistas que mantem o
+movimento seguro e os dois piores erros. E a versao para consultar entre uma
+serie e outra, que e quando a instrucao e realmente lida.
+
+`/como NOME tudo` traz as seis secoes completas: posicao inicial, execucao
+numerada, **o que gira / quanto / quando**, retorno, como conferir que esta
+certo, e erros comuns. Aceita tambem `completo`, `detalhe` e `full` como
+sufixo. As tecnicas estaticas (`prancha`, `respiracao`, `bandagem`) nao tem a
 secao de giro. Instrucoes escritas para destro, declarado em toda resposta.
 
 As respostas detalhadas podem passar do limite de 4096 caracteres do Telegram;

@@ -239,7 +239,8 @@ mentir.
 /mtparar        Encerra o roteiro em andamento
 /mtregras       Regras de seguranca do ciclo
 /tecnicas       Indice da biblioteca de execucao
-/como jab       Passo a passo e erros comuns de um golpe
+/como jab       O essencial: 2-3 pistas e os 2 piores erros
+/como jab tudo  Passo a passo completo, com rotacao e checagem
 /como chute baixo   A busca aceita acento, espaco, alias e numeracao (1, 2, 3)
 ```
 

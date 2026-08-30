@@ -48,6 +48,11 @@ TECNICAS = {
     "base": {
         "nome": "Base e guarda",
         "resumo": "A posicao de onde todo golpe sai e para onde todo golpe volta.",
+        "chave": [
+            "Pes em duas linhas paralelas, nunca no mesmo trilho.",
+            "Calcanhar de tras levantado, joelhos moles.",
+            "Queixo baixo, cotovelos colados nas costelas.",
+        ],
         "inicio": [
             "De pe, pes na largura dos ombros, de frente para o alvo.",
             "Recue o pe direito um passo e meio (60 a 70 cm) para tras.",
@@ -90,6 +95,11 @@ TECNICAS = {
     "passos": {
         "nome": "Deslocamento",
         "resumo": "Mover o corpo inteiro sem nunca desmontar a base.",
+        "chave": [
+            "Sai primeiro o pe do lado para onde voce vai.",
+            "Passos curtos, deslizando. Os pes nunca se cruzam.",
+            "A guarda nao se mexe enquanto os pes trabalham.",
+        ],
         "inicio": [
             "Monte a base e a guarda. Elas nao mudam durante o deslocamento.",
         ],
@@ -129,6 +139,11 @@ TECNICAS = {
         "nome": "Jab (1) — soco reto da mao da frente",
         "resumo": "O golpe mais rapido e mais curto. Serve para medir distancia, "
                   "interromper e abrir caminho — nao para nocautear.",
+        "chave": [
+            "Sai da guarda sem recuar a mao antes.",
+            "Palma vira para baixo, punho reto, ombro cobre o queixo.",
+            "Volta mais rapido do que foi.",
+        ],
         "inicio": [
             "Base e guarda montadas. Mao esquerda ja na altura da bochecha.",
         ],
@@ -175,6 +190,11 @@ TECNICAS = {
         "nome": "Direto (2) — soco reto da mao de tras",
         "resumo": "O golpe de forca dos socos. Toda a potencia vem da rotacao do "
                   "corpo; o braco so entrega o que as pernas produziram.",
+        "chave": [
+            "A ordem e pe > quadril > tronco > ombro > braco.",
+            "Gire o pe de tras como quem esmaga um cigarro.",
+            "Se o umbigo nao terminar apontando para o alvo, voce nao girou.",
+        ],
         "inicio": [
             "Base e guarda montadas, calcanhar direito ja levantado do chao.",
         ],
@@ -229,6 +249,11 @@ TECNICAS = {
         "nome": "Gancho (3) — soco circular da mao da frente",
         "resumo": "Golpe curto e lateral. O braco nao bate: ele e carregado pela "
                   "rotacao do corpo, com a forma travada.",
+        "chave": [
+            "Cotovelo travado em 90 graus do inicio ao fim.",
+            "Quem bate e a rotacao do corpo; o braco so vai junto.",
+            "Punho, cotovelo e ombro na mesma linha.",
+        ],
         "inicio": [
             "Base e guarda montadas.",
             "Antes de girar, TRAVE a forma: cotovelo a 90 graus, na mesma altura "
@@ -275,6 +300,11 @@ TECNICAS = {
         "nome": "Jab no corpo",
         "resumo": "O mesmo jab, entregue mais embaixo. O que muda e como voce "
                   "desce, nao como voce soca.",
+        "chave": [
+            "Desce pelos JOELHOS, coluna reta.",
+            "A cabeca sai da linha central ao descer.",
+            "Sobe imediatamente — quem fica embaixo leva joelhada.",
+        ],
         "inicio": [
             "Base e guarda montadas.",
         ],
@@ -315,6 +345,11 @@ TECNICAS = {
         "nome": "Saida lateral",
         "resumo": "Sair do lugar onde voce acabou de bater, porque e exatamente "
                   "para la que a resposta vem.",
+        "chave": [
+            "Bateu, saiu — no mesmo folego.",
+            "Para o lado, nunca para tras em linha reta.",
+            "Guarda alta durante os passos.",
+        ],
         "inicio": [
             "Logo apos terminar um golpe, com a guarda ainda alta.",
         ],
@@ -353,6 +388,11 @@ TECNICAS = {
         "nome": "Teep — chute frontal de empurrao",
         "resumo": "Nao e um chute de impacto: e um empurrao com o pe, para criar "
                   "distancia e interromper o avanco.",
+        "chave": [
+            "Joelho sobe primeiro; so depois a perna estende.",
+            "Ponta do pe puxada para cima, contato na base dos dedos.",
+            "E empurrao de quadril, nao chute.",
+        ],
         "inicio": [
             "Base e guarda montadas. As maos ficam na guarda o movimento inteiro.",
         ],
@@ -401,6 +441,11 @@ TECNICAS = {
         "nome": "Joelhada frontal",
         "resumo": "Golpe de curta distancia. A forca vem do quadril avancando, "
                   "nao da perna subindo.",
+        "chave": [
+            "Puxe o calcanhar ao gluteo para afiar o joelho.",
+            "AVANCE o quadril — sem isso e so levantar a perna.",
+            "Contato na canela, nunca na rotula.",
+        ],
         "inicio": [
             "Base e guarda montadas.",
         ],
@@ -445,6 +490,11 @@ TECNICAS = {
         "nome": "Chute baixo (low kick)",
         "resumo": "O golpe que mais depende de rotacao e o que mais machuca quem "
                   "gira errado. O giro do pe de apoio nao e detalhe: e o golpe.",
+        "chave": [
+            "GIRE o pe de apoio ate o calcanhar apontar para o alvo.",
+            "Joelho de apoio levemente flexionado, senao o pe nao gira.",
+            "A perna vem de lado, como taco. Contato com a CANELA.",
+        ],
         "inicio": [
             "Base e guarda montadas.",
             "Antes de qualquer coisa: se o giro do pe de apoio ainda nao sai "
@@ -506,6 +556,11 @@ TECNICAS = {
         "nome": "Giro do pe de apoio (drill isolado)",
         "resumo": "O exercicio mais importante da fase de fundamentos. Sem este "
                   "giro automatico, nenhum chute e seguro.",
+        "chave": [
+            "Gira o PE sobre a planta, nunca o joelho.",
+            "Joelho de apoio levemente flexionado.",
+            "Ate o calcanhar apontar para o alvo.",
+        ],
         "inicio": [
             "Base e guarda montadas, de frente para o espelho ou para um ponto "
             "escolhido como alvo imaginario.",
@@ -550,6 +605,11 @@ TECNICAS = {
         "nome": "Bloqueio e resposta",
         "resumo": "Absorver o golpe com estrutura, sem afastar a guarda do rosto, "
                   "e devolver imediatamente.",
+        "chave": [
+            "Cotovelo sobe, mao encosta na tempora. Nao va buscar o golpe.",
+            "Contra chute baixo: levante a canela, joelho para fora.",
+            "Bloqueou, devolveu.",
+        ],
         "inicio": [
             "Base e guarda montadas.",
         ],
@@ -595,6 +655,11 @@ TECNICAS = {
         "nome": "Boxe-sombra",
         "resumo": "Treinar o movimento no ar, com atencao total a forma. E a base "
                   "de toda a fase de fundamentos.",
+        "chave": [
+            "Um unico ponto de atencao por rodada.",
+            "Lento, medio, e so entao normal.",
+            "Filme de frente E de lado — mostram erros diferentes.",
+        ],
         "inicio": [
             "Espaco livre, de frente para um espelho ou com o celular filmando.",
             "Sem luva e sem bandagem: voce precisa ver as maos.",
@@ -631,6 +696,11 @@ TECNICAS = {
         "nome": "Prancha",
         "resumo": "Sustentacao do tronco. Serve para o quadril conseguir "
                   "transferir forca sem a coluna ceder no meio do caminho.",
+        "chave": [
+            "Calcanhar, quadril e ombro numa linha so.",
+            "Gluteo e abdomen contraidos.",
+            "Respirando normal o tempo todo.",
+        ],
         "inicio": [
             "De bruços, antebracos no chao, cotovelos exatamente sob os ombros.",
             "Pes na largura do quadril, apoiados nas pontas.",
@@ -662,6 +732,11 @@ TECNICAS = {
         "nome": "Bandagem de 5 m",
         "resumo": "Protecao do punho e dos nos. Obrigatoria em qualquer bloco "
                   "com contato, inclusive o saco leve dos fundamentos.",
+        "chave": [
+            "Punho primeiro, 3 a 4 voltas.",
+            "Nao pule a volta no POLEGAR.",
+            "Punho fechado deve ficar firme, sem formigar.",
+        ],
         "inicio": [
             "Mao aberta, dedos separados, polegar afastado.",
             "Bandagem enrolada, com a alca livre.",
@@ -698,6 +773,10 @@ TECNICAS = {
         "nome": "Mobilidade de aquecimento",
         "resumo": "Preparar as articulacoes que vao girar. Movimento, nao "
                   "alongamento parado.",
+        "chave": [
+            "Em movimento, sem alongamento parado longo.",
+            "Nao pule o tornozelo: e ele que limita o giro do chute.",
+        ],
         "inicio": [
             "Em pe, espaco livre ao redor, pes na largura do quadril.",
             "Sem pressa: mobilidade feita rapido nao chega ao fim da amplitude "
@@ -748,6 +827,10 @@ TECNICAS = {
     "elevacaojoelhos": {
         "nome": "Elevacao alternada dos joelhos",
         "resumo": "O padrao motor da joelhada, sem impacto e sem alvo.",
+        "chave": [
+            "Joelho ate a altura do quadril.",
+            "AVANCE o quadril no topo — e o que treina a joelhada.",
+        ],
         "inicio": [
             "Em pe, guarda alta, como se fosse bater.",
         ],
@@ -786,6 +869,11 @@ TECNICAS = {
         "nome": "Pular corda",
         "resumo": "Condicionamento e ritmo. Nao faz parte da fase de fundamentos "
                   "(e equipamento); entra junto com o saco.",
+        "chave": [
+            "Saltos de 2 a 3 cm, na ponta dos pes.",
+            "O giro vem do punho, nao do ombro.",
+            "UM som por salto.",
+        ],
         "inicio": [
             "Altura certa: pisando no meio da corda, as alcas chegam a axila.",
             "Cotovelos proximos ao corpo, maos na altura do quadril.",
@@ -824,6 +912,11 @@ TECNICAS = {
         "nome": "Controlar o saco",
         "resumo": "Manter distancia e ritmo enquanto o saco balanca, sem bater "
                   "nele voltando.",
+        "chave": [
+            "Bata quando o saco esta indo, nunca quando volta.",
+            "Guarda alta enquanto controla.",
+            "Nunca agarre a corrente.",
+        ],
         "inicio": [
             "Base montada, a uma distancia em que o jab estendido alcance o saco.",
         ],
@@ -862,6 +955,10 @@ TECNICAS = {
     "respiracao": {
         "nome": "Respiracao",
         "resumo": "Controlar o folego durante o esforco e baixar a frequencia no fim.",
+        "chave": [
+            "Expire a cada golpe. Nunca prenda o ar.",
+            "Volta a calma: 4 inspira, 2 segura, 6 solta.",
+        ],
         "inicio": [
             "Em pe com as maos no quadril, ou sentado.",
         ],
@@ -1112,8 +1209,10 @@ SABADO = {
 # Reusa as mesmas TECNICAS do ciclo com saco. Se uma instrucao mudar, muda nos
 # dois lugares de uma vez.
 
-SEM_COMBO = ("Um movimento por vez. Nao emende com nenhum outro golpe nesta "
-             "fase — combinacao so depois que cada movimento sair sozinho.")
+# Fica no resumo da sessao em vez de repetido bloco a bloco: dito uma vez, na
+# abertura, vale para a sessao inteira.
+SEM_COMBO = ("Um movimento por vez. Combinacao so depois que cada um sair "
+             "sozinho.")
 
 # Os blocos de aprendizado continuam de mao nua: sem impacto nao ha o que
 # proteger, e a mao livre deixa o punho visivel para correcao. A protecao entra
@@ -1126,9 +1225,8 @@ SEM_LUVA = ("Este bloco e de mao nua, sem bandagem nem luva — voce precisa "
 # lesao de punho.
 POTENCIA_FUNDAMENTOS = "20-30%"
 
-NO_SACO = ("Bandagem e luva obrigatorias neste bloco. Potencia maxima "
-           f"{POTENCIA_FUNDAMENTOS} — o saco aqui serve para conferir distancia, "
-           "alinhamento e ponto de contato, nao para treinar forca.")
+NO_SACO = (f"Maximo {POTENCIA_FUNDAMENTOS}. O saco aqui confere distancia e "
+           "contato, nao treina forca.")
 
 FUNDAMENTOS_A = {
     "nome": "Fundamentos A — postura, guarda e socos retos",
@@ -1168,7 +1266,8 @@ FUNDAMENTOS_A = {
             "Descanse 1 min",
             "20 jabs dando um passo a frente junto: o pe esquerdo sai primeiro e "
             "o punho parte no mesmo instante",
-        ], nota=f"Pare a cada 10 e confira: punho reto, mao voltou ao rosto. {SEM_COMBO}",
+        ], nota="Pare a cada 10: punho reto, mao voltou ao rosto. Um movimento "
+                "por vez — nao emende com nenhum outro golpe.",
            tecnicas=("jab",)),
         _bloco("Direto isolado", "8 min", [
             "20 giros de pe direito e quadril com as MAOS NA GUARDA, sem soltar "
@@ -1177,7 +1276,7 @@ FUNDAMENTOS_A = {
             "Descanse 1 min",
             "30 diretos em ritmo medio",
             "10 diretos filmados de lado, para conferir o calcanhar direito",
-        ], nota=f"O giro vem primeiro; o braco e o ultimo elo. {SEM_COMBO}",
+        ], nota="O giro vem primeiro; o braco e o ultimo elo.",
            tecnicas=("direto",)),
         _bloco("Saco leve", "8 min", [
             "Enfaixe as maos e coloque as luvas antes de encostar no saco",
@@ -1188,8 +1287,7 @@ FUNDAMENTOS_A = {
             "20 diretos a 20%, conferindo se o calcanhar de tras girou",
             "10 jabs e 10 diretos alternados, ainda um de cada vez",
             "Espere o saco parar entre as series. Nunca bata nele voltando",
-        ], nota=f"{NO_SACO} Dor no punho ou nos nos = pare o bloco. "
-                f"{SEM_COMBO}",
+        ], nota=f"{NO_SACO} Dor no punho ou nos nos encerra o bloco.",
            tecnicas=("bandagem", "jab", "direto", "controlarsaco")),
         _bloco("Volta a calma", "4 min", [
             "Caminhada leve",
@@ -1217,14 +1315,14 @@ FUNDAMENTOS_B = {
             "cabeca e 15 na altura das costelas",
             "Descanse 1 min",
             "30 ganchos em ritmo medio",
-        ], nota=f"No espelho: punho, cotovelo e ombro na mesma linha horizontal. {SEM_COMBO}",
+        ], nota="No espelho: punho, cotovelo e ombro na mesma linha horizontal.",
            tecnicas=("gancho",)),
         _bloco("Jab no corpo", "8 min", [
             "20 descidas sem golpe: flexione os JOELHOS, coluna reta, e volte",
             "30 jabs no corpo lentos: desce, soca, sobe — tres tempos separados",
             "Descanse 1 min",
             "20 em ritmo medio, agora com os tres tempos emendados",
-        ], nota=f"A cabeca sai da linha central ao descer. {SEM_COMBO}",
+        ], nota="A cabeca sai da linha central ao descer.",
            tecnicas=("jabcorpo",)),
         _bloco("Bloqueio e saida lateral", "9 min", [
             "Bloqueio alto: 30 repeticoes de cada lado, subindo o cotovelo sem "
@@ -1245,8 +1343,8 @@ FUNDAMENTOS_B = {
             "20 jabs no corpo a 20%, descendo pelos joelhos",
             "10 saidas laterais: um unico jab e dois passos para o lado",
             "Espere o saco parar entre as series",
-        ], nota=f"{NO_SACO} No gancho, o saco denuncia na hora se o braco abriu: "
-                f"o golpe escorrega em vez de entrar. {SEM_COMBO}",
+        ], nota=f"{NO_SACO} No gancho o saco denuncia braco aberto na hora: "
+                "o golpe escorrega em vez de entrar.",
            tecnicas=("bandagem", "gancho", "jabcorpo", "saidalateral", "controlarsaco")),
         _bloco("Estabilidade", "5 min", [
             "Prancha: 3 x 30 s (30 s de descanso entre elas)",
@@ -1285,7 +1383,7 @@ FUNDAMENTOS_C = {
             "recolhe o joelho, desce o pe — quatro tempos",
             "Descanse 1 min",
             "20 por perna em ritmo medio, com os quatro tempos emendados",
-        ], nota=f"Recolha o pe de volta a base; nunca deixe cair a frente. {SEM_COMBO}",
+        ], nota="Recolha o pe a base; nunca deixe cair a frente.",
            tecnicas=("teep",)),
         _bloco("Joelhada isolada", "8 min", [
             "20 elevacoes diagonais de joelho, ainda SEM avancar o quadril",
@@ -1293,7 +1391,7 @@ FUNDAMENTOS_C = {
             "a diferenca entre as duas coisas e o golpe inteiro",
             "Descanse 1 min",
             "20 por perna em ritmo medio",
-        ], nota=f"O contato seria ACIMA da rotula, nunca nela. {SEM_COMBO}",
+        ], nota="O contato seria ACIMA da rotula, nunca nela.",
            tecnicas=("joelho",)),
         _bloco("Chute baixo isolado", "9 min", [
             "20 chutes baixos LENTOS por perna, no ar, com atencao unica no giro "
@@ -1302,7 +1400,7 @@ FUNDAMENTOS_C = {
             "20 por perna em ritmo medio",
             "10 por perna filmados de TRAS, que e a unica vista onde da para ver "
             "se o calcanhar de apoio girou o suficiente",
-        ], nota=f"Sem forca e sem alvo: o objetivo e a trajetoria, nao o impacto. {SEM_COMBO}",
+        ], nota="Sem forca: o objetivo e a trajetoria, nao o impacto.",
            tecnicas=("chutebaixo", "girodope")),
         _bloco("Saco leve", "8 min", [
             "PORTAO: so faca este bloco se o giro do pe de apoio ja sair sem "
@@ -1312,11 +1410,9 @@ FUNDAMENTOS_C = {
             "10 joelhadas por perna a 20%, avancando o quadril",
             "5 chutes baixos por perna a 20%, contato com a CANELA",
             "Espere o saco parar entre as series",
-        ], nota="Cinco chutes por perna e pouco de proposito: a canela precisa de "
-                "meses de exposicao gradual. Dor na canela ou no peito do pe "
-                "encerra o bloco na hora — insistir vira periostite, que tira "
-                "voce de treino por semanas. "
-                f"{NO_SACO}",
+        ], nota="Cinco chutes por perna e pouco de proposito: canela leva MESES "
+                "para condicionar. Dor na canela encerra o bloco — insistir vira "
+                f"periostite. {NO_SACO}",
            tecnicas=("girodope", "teep", "joelho", "chutebaixo", "bandagem", "controlarsaco")),
         _bloco("Volta a calma", "4 min", [
             "Caminhada leve",
@@ -1338,25 +1434,22 @@ FUNDAMENTOS_LETRAS = {"a": "fundamentos_a", "b": "fundamentos_b", "c": "fundamen
 
 # Quando parar de fazer fundamentos e comecar o ciclo com saco.
 CRITERIO_DE_PASSAGEM = [
-    "Voce monta a base e a guarda sem pensar em cada detalhe.",
-    "Jab e direto voltam sozinhos para o rosto, sem voce lembrar.",
+    "Base e guarda saem sem voce pensar.",
+    "As maos voltam sozinhas ao rosto.",
     "O pe de apoio gira sozinho no chute baixo.",
-    "Voce consegue se ver filmado sem enxergar punho dobrado ou guarda caida.",
-    "No saco leve, o punho entra reto e nao doi no dia seguinte.",
-    "Voce acerta a distancia de primeira, sem precisar ajustar depois do golpe.",
-    "Nenhum movimento causa dor em punho, ombro, joelho ou tornozelo.",
+    "Filmado, voce nao ve punho dobrado nem guarda caida.",
+    "A distancia sai certa de primeira.",
+    "Nada doi no dia seguinte.",
 ]
 
 # Conferencia antes de encostar no saco. Vira parte do indice da fase, porque
 # e o unico ponto onde equipamento mal montado ainda da para pegar sem custo.
 ANTES_DE_BATER = [
-    "Inspecione suporte, parabolts, corrente e mosquetao. Balance o saco com "
-    "forca e observe: nada pode ceder, ranger ou folgar.",
-    "Bandagem de 5 m nas duas maos — passo a passo em /como bandagem.",
-    "Luvas de 16 oz por cima da bandagem.",
-    "Espaco livre em volta para voce circular sem esbarrar em nada.",
-    "Celular posicionado para filmar: o saco esconde o erro que o espelho "
-    "mostrava, porque agora voce olha para o alvo, nao para si.",
+    "Balance o saco com forca: suporte, parabolts, corrente e mosquetao nao "
+    "podem ceder, ranger nem folgar.",
+    "Bandagem nas duas maos (/como bandagem) e luvas por cima.",
+    "Espaco livre para circular em volta.",
+    "Celular filmando: no saco voce olha para o alvo, nao para si.",
 ]
 
 # Dia da semana (segunda=0) -> roteiro. Segunda/quarta/sexta sao musculacao,
@@ -1484,7 +1577,8 @@ def formatar_resumo(chave, semana=1):
         linhas.append(
             f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>")
     else:
-        linhas.append("<i>aprendizado no espelho + saco leve — um movimento por vez</i>")
+        linhas.append("<i>aprendizado no espelho + saco leve</i>")
+        linhas.append(f"<i>{SEM_COMBO}</i>")
     linhas.append("")
 
     for i, bloco in enumerate(roteiro["blocos"], 1):
@@ -1539,6 +1633,23 @@ def dividir_mensagem(texto, limite=LIMITE_TELEGRAM):
     if atual:
         partes.append(atual)
     return partes
+
+
+def formatar_tecnica_curta(chave):
+    """O essencial para consultar durante o treino. A versao completa continua
+    em /como <nome> tudo -- aqui o objetivo e caber numa olhada entre series."""
+    tec = TECNICAS[chave]
+    linhas = [f"<b>{tec['nome']}</b>"]
+    linhas += ["", *[f"\u2022 {item}" for item in tec["chave"]]]
+
+    # Os dois primeiros erros sao os de maior consequencia em cada tecnica.
+    piores = tec["erros"][:2]
+    if piores:
+        linhas += ["", "<b>Nao faca</b>"]
+        linhas += [f"\u2022 {erro}" for erro in piores]
+
+    linhas += ["", f"<i>Passo a passo completo: /como {chave} tudo</i>"]
+    return "\n".join(linhas)
 
 
 def formatar_tecnica(chave):
@@ -1602,15 +1713,12 @@ def formatar_indice_fundamentos(hoje=None):
     linhas = [
         "<b>Fase de fundamentos — com saco leve</b>",
         "",
-        "Aprender cada movimento isolado antes de bater. Bater no saco antes de "
-        "o padrao estar formado grava o padrao errado com impacto junto, e chute "
-        "baixo sem giro do pe de apoio machuca o joelho logo na primeira sessao.",
+        "Aprender cada movimento isolado antes de bater com forca. Padrao errado "
+        "gravado com impacto junto custa meses para desfazer.",
         "",
-        "Cada sessao tem duas partes. Os blocos de aprendizado sao de mao nua, "
-        "de frente para o espelho: sem impacto voce enxerga o punho e corrige. "
-        f"O bloco final e no saco, com bandagem e luva, a no maximo "
-        f"{POTENCIA_FUNDAMENTOS} — ali o saco responde o que o espelho nao "
-        "responde: distancia, alinhamento e ponto de contato.",
+        "Duas partes por sessao: blocos de mao nua no espelho (voce enxerga o "
+        f"punho e corrige) e um bloco final no saco a {POTENCIA_FUNDAMENTOS}, "
+        "que confere o que o espelho nao mostra — distancia e ponto de contato.",
         "",
         "<b>Sessoes</b>",
     ]
@@ -1619,16 +1727,16 @@ def formatar_indice_fundamentos(hoje=None):
         linhas.append(f"/fundamentos {letra} — {ROTEIROS[chave]['nome']}{marca}")
     linhas += [
         "",
-        "Mesma rotina do ciclo: terca, quinta e sabado. Repita as tres sessoes "
-        "por 2 a 3 semanas, ou ate os criterios abaixo baterem.",
+        "Terca, quinta e sabado. Repita por 2 a 3 semanas, ou ate os criterios "
+        "baterem.",
         "",
         "<b>Quando passar para o ciclo de 8 semanas (/mt)</b>",
     ]
     linhas += [f"• {c}" for c in CRITERIO_DE_PASSAGEM]
     linhas += ["", "<b>Antes de encostar no saco</b>"]
     linhas += [f"• {e}" for e in ANTES_DE_BATER]
-    linhas += ["", "<i>Nao ha pressa aqui. Uma semana a mais de fundamento custa "
-                   "uma semana; um padrao errado gravado custa meses para desfazer.</i>"]
+    linhas += ["", "<i>Uma semana a mais de fundamento custa uma semana. "
+                   "Um padrao errado custa meses.</i>"]
     return "\n".join(linhas)
 
 
@@ -1636,5 +1744,6 @@ def formatar_indice_tecnicas():
     linhas = ["<b>Biblioteca de execucao</b>", ""]
     for chave in sorted(TECNICAS):
         linhas.append(f"• /como {chave} — {TECNICAS[chave]['nome']}")
-    linhas += ["", f"<i>{LATERALIDADE}</i>"]
+    linhas += ["", "<i>/como &lt;nome&gt; da o essencial. /como &lt;nome&gt; tudo da o passo a passo completo.</i>"]
+    linhas += [f"<i>{LATERALIDADE}</i>"]
     return "\n".join(linhas)

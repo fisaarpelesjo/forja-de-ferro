@@ -130,13 +130,13 @@ Comandos principais:
 - `/fundamentos`, `/fundamentos a|b|c` (espelho + saco leve, um movimento por vez)
 - `/mt`, `/mtterca`, `/mtquinta`, `/mtsabado` (semana opcional: `/mtterca 3`)
 - `/proximo`, `/mtparar`, `/mtregras`
-- `/tecnicas`, `/como NOME` (ex.: `/como chute baixo`, `/como bandagem`)
+- `/tecnicas`, `/como NOME` (curto), `/como NOME tudo` (completo)
 
 Todos os comandos textuais exigem `/`. Entradas numericas de carga e RPE nao
 usam barra.
 Os comandos de Muay Thai entregam o roteiro do dia bloco a bloco e nao gravam
-nada no banco; `/como` devolve posicao inicial, execucao numerada, o que gira/quanto/quando,
-retorno, checagem e erros de cada golpe, com a busca normalizando acento, espaco e alias em `muaythai.buscar_tecnica`.
+nada no banco; `/como` devolve o essencial de cada golpe e `/como NOME tudo` o passo a passo
+completo, com a busca normalizando acento, espaco e alias em `muaythai.buscar_tecnica`.
 `/aquecimento` mostra uma sequencia dinamica curta de corpo todo, com cerca de
 5 minutos, sem prescrever um segundo treino.
 
