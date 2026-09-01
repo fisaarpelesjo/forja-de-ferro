@@ -80,7 +80,7 @@ TECNICAS = {
             "Os pes NAO giram na base parada. Eles so giram quando um golpe pede.",
         ],
         "checagem": [
-            "De frente para o espelho voce deve ver mais o seu lado esquerdo que o peito.",
+            "Encoste o ombro da frente no saco. Se o peito encostar junto, voce esta de frente demais — gire mais o tronco.",
             "Um empurrao leve no ombro nao deve te desequilibrar.",
             "Voce consegue dar um passo em qualquer direcao sem antes reajustar os pes.",
         ],
@@ -122,8 +122,11 @@ TECNICAS = {
             "passos laterais, nao girando os pes no lugar.",
         ],
         "checagem": [
-            "Filme de cima ou olhe no chao: a distancia entre os pes deve ser a "
-            "mesma no inicio e no fim de cada passo.",
+            "Ao fim de cada passo, estenda o jab: os nos ainda tocam o saco sem "
+            "voce se inclinar? Se precisou esticar ou recuar, o passo mudou a "
+            "distancia.",
+            "Olhe para os proprios pes: a distancia entre eles deve ser a mesma "
+            "do inicio.",
             "A guarda nao pode subir e descer junto com os passos.",
         ],
         "erros": [
@@ -173,8 +176,11 @@ TECNICAS = {
             "A mao so termina o movimento quando encosta de volta na bochecha.",
         ],
         "checagem": [
-            "Filme de frente: a mao direita nao pode se mexer enquanto o jab sai.",
-            "Filme de lado: o punho deve percorrer uma linha reta, nao um arco.",
+            "SOM: jab alinhado estala curto e seco. Som abafado ou de raspao "
+            "significa que entrou torto.",
+            "Encoste a mao direita na bochecha e sinta: ela se afasta quando o "
+            "jab sai? Nao pode.",
+            "Se o punho doer, ele dobrou. Punho reto nao doi a 20%.",
             "Pare no meio do movimento: o cotovelo tem de estar apontando para "
             "baixo, nao para o lado.",
         ],
@@ -232,9 +238,11 @@ TECNICAS = {
             "Termine outra vez na base, com o peso 50/50 e o calcanhar levantado.",
         ],
         "checagem": [
-            "Filme de lado: o calcanhar direito tem de estar apontando para fora "
-            "no momento do impacto.",
-            "Pare no fim do golpe e olhe o umbigo: ele aponta para o alvo?",
+            "PARE no fim do golpe, sem desfazer nada, e olhe o proprio pe de "
+            "tras: o calcanhar esta apontando para fora?",
+            "Ainda parado, olhe o umbigo: ele aponta para o saco?",
+            "REACAO DO SACO: direto com quadril EMPURRA o saco para longe. Sem "
+            "quadril, ele so estala e o saco quase nao anda.",
             "Se voce consegue dar o direto com os pes imoveis, nao e um direto.",
         ],
         "erros": [
@@ -285,9 +293,9 @@ TECNICAS = {
             "Nao 'puxe' a mao de volta — deixe o giro reverso traze-la.",
         ],
         "checagem": [
-            "Filme de cima ou de frente: o angulo do cotovelo tem de ser o mesmo "
-            "no inicio, no impacto e no fim.",
-            "Se o cotovelo abriu durante o movimento, foi tapa, nao gancho.",
+            "No saco, gancho com o braco aberto ESCORREGA. Se o golpe deslizar "
+            "pela superficie em vez de afundar, o cotovelo abriu.",
+            "Congele no impacto e sinta o angulo do cotovelo: continua em 90?",
         ],
         "erros": [
             "Abrir o braco: vira tapa e machuca o ombro.",
@@ -331,8 +339,11 @@ TECNICAS = {
             "Nao fique embaixo: quem fica embaixo leva joelhada.",
         ],
         "checagem": [
-            "Filme de lado: as costas devem estar retas na parte mais baixa do movimento.",
+            "Se voce sentir a lombar na parte mais baixa, curvou as costas em vez "
+            "de dobrar os joelhos.",
             "Se voce viu o chao em algum momento, a cabeca caiu.",
+            "As coxas devem queimar depois da serie. Se nao queimaram, quem "
+            "desceu foi a coluna.",
         ],
         "erros": [
             "Curvar as costas em vez de dobrar os joelhos.",
@@ -371,11 +382,12 @@ TECNICAS = {
             "passo de ajuste, nao girando os pes no lugar.",
         ],
         "checagem": [
-            "Filme de frente: a guarda nao pode oscilar durante os passos.",
             "Voce deve terminar em base montada, pronto para bater de novo.",
-            "Marque uma linha no chao: voce saiu dela, ou so recuou em cima dela?",
-            "Assista em camera lenta: existe uma pausa entre o golpe e a saida? "
-            "Se existe, os dois ainda sao dois movimentos, nao um.",
+            "Marque uma linha no chao com fita: voce saiu dela, ou so recuou em "
+            "cima dela?",
+            "Conte em voz alta: 'um' no golpe, 'dois' no passo. Se der tempo de "
+            "respirar entre os dois, ainda sao dois movimentos separados.",
+            "O saco nao pode voltar e te encontrar parado no mesmo lugar.",
         ],
         "erros": [
             "Parar para admirar o proprio golpe.",
@@ -426,7 +438,8 @@ TECNICAS = {
             "de base trocada, sem saber onde esta.",
         ],
         "checagem": [
-            "Filme de lado: o joelho tem de subir ANTES de a perna estender.",
+            "REACAO DO SACO: o teep AFASTA o saco em linha reta. Se ele girou ou "
+            "balancou de lado, voce chutou em vez de empurrar.",
             "Se a perna sobe reta, e chute de futebol, nao teep.",
             "O pe volta ao mesmo ponto do chao de onde saiu.",
         ],
@@ -475,9 +488,10 @@ TECNICAS = {
             "Nunca desca o pe a frente da posicao original.",
         ],
         "checagem": [
-            "Filme de lado: o quadril tem de avancar visivelmente. Se so a perna "
-            "subiu, e elevacao de joelho, nao joelhada.",
+            "REACAO DO SACO: a joelhada dobra o saco para tras. Se ele so subiu "
+            "um pouco, faltou avanco de quadril.",
             "Passe a mao na regiao do contato: tem de ser canela dura, nao a rotula.",
+            "Se doeu no joelho, voce bateu com a rotula. Pare a serie.",
         ],
         "erros": [
             "Bater com a rotula (patela) — dano articular direto.",
@@ -538,10 +552,13 @@ TECNICAS = {
             "O que nao pode e deixar a perna morta no ar ou ficar de costas para o alvo.",
         ],
         "checagem": [
-            "Filme de tras: o calcanhar do pe de apoio esta apontando para o alvo "
-            "no momento do impacto? Se nao, o giro foi incompleto.",
-            "Filme de lado: a perna chegou de lado (taco) ou de frente (futebol)?",
-            "Passe a mao na canela: o contato tem de ser osso, nao o peito do pe.",
+            "CONGELE no fim do chute, sem recolher a perna, e olhe o proprio pe "
+            "de apoio: o calcanhar aponta para o saco? Se nao, o giro foi "
+            "incompleto — e voce acabou de sentir isso no joelho.",
+            "SOM: chute de canela faz um baque grave e cheio. Som agudo e "
+            "estalado e peito do pe, e vai doer.",
+            "Passe a mao na canela depois: a marca tem de estar no osso, no "
+            "terco inferior, nao no pe.",
         ],
         "erros": [
             "Nao girar o pe de apoio: principal causa de lesao de joelho em iniciante.",
@@ -562,7 +579,7 @@ TECNICAS = {
             "Ate o calcanhar apontar para o alvo.",
         ],
         "inicio": [
-            "Base e guarda montadas, de frente para o espelho ou para um ponto "
+            "Base e guarda montadas, de frente para o saco ou para um ponto "
             "escolhido como alvo imaginario.",
         ],
         "execucao": [
@@ -589,7 +606,8 @@ TECNICAS = {
             "apontando para o lado, faltou giro.",
         ],
         "checagem": [
-            "Filme de tras: onde o calcanhar termina apontando?",
+            "Olhe para baixo no fim do giro: o seu calcanhar esta apontando para "
+            "o saco? Voce enxerga isso sem espelho nenhum.",
             "Faca 10 giros com os olhos fechados. Se o equilibrio se perde, ainda "
             "nao esta pronto para chutar.",
             "So passe ao chute baixo quando o giro sair sem voce pensar nele.",
@@ -640,7 +658,8 @@ TECNICAS = {
             "A perna que bloqueou desce para a base, nunca a frente dela.",
         ],
         "checagem": [
-            "Filme de frente: a mao nao pode se afastar do rosto para 'ir buscar' o golpe.",
+            "A mao nao pode se afastar do rosto para 'ir buscar' o golpe — "
+            "encoste-a na tempora e sinta se ela sai.",
             "No bloqueio de perna, o joelho tem de estar apontando para fora, "
             "protegendo o lado de dentro da coxa.",
         ],
@@ -658,11 +677,12 @@ TECNICAS = {
         "chave": [
             "Um unico ponto de atencao por rodada.",
             "Lento, medio, e so entao normal.",
-            "Filme de frente E de lado — mostram erros diferentes.",
+            "Depois de cada serie, encoste o jab no saco: a distancia ainda "
+            "esta certa, ou voce foi andando para tras sem perceber?",
         ],
         "inicio": [
-            "Espaco livre, de frente para um espelho ou com o celular filmando.",
-            "Sem luva e sem bandagem: voce precisa ver as maos.",
+            "Espaco livre, de frente para o saco, na distancia de jab.",
+            "Sem luva e sem bandagem: as maos precisam ficar livres.",
         ],
         "execucao": [
             "Comece so com base e deslocamento, sem golpe nenhum.",
@@ -676,20 +696,21 @@ TECNICAS = {
         "giro": [
             "Os giros sao os mesmos de cada golpe. A vantagem da sombra e que, sem "
             "impacto, voce consegue PARAR no meio do giro e conferir a posicao.",
-            "Use isso: dispare o direto, congele no meio e olhe onde esta o calcanhar.",
+            "Use isso: dispare o direto, congele antes de o braco chegar e olhe "
+            "o proprio calcanhar. Ele ja girou, ou ainda esta plantado?",
         ],
         "checagem": [
-            "Filme de frente e de lado. As duas vistas revelam coisas diferentes: "
-            "de frente aparece guarda caida, de lado aparece punho dobrado e "
-            "desequilibrio.",
-            "Assista em camera lenta. Erros de forma somem em velocidade normal.",
+            "A cada 10 repeticoes, encoste o golpe no saco de leve. Se a "
+            "distancia mudou ou o punho reclamou, a forma escorregou no ar.",
+            "Faca a serie inteira e depois repita bem devagar. O que muda entre "
+            "as duas versoes e o que voce esta fazendo errado no ritmo normal.",
         ],
         "erros": [
             "Acelerar antes de a forma estar limpa.",
             "Bater no ar travando o cotovelo.",
             "Tentar corrigir cinco coisas na mesma rodada.",
-            "Fazer sombra sem se ver: sem espelho nem camera, voce so repete o "
-            "que ja faz errado.",
+            "Fazer sombra solta demais: sem encostar no saco de tempos em tempos, "
+            "voce so repete no ar o que ja faz errado.",
         ],
     },
     "prancha": {
@@ -717,7 +738,9 @@ TECNICAS = {
             "Para descer, apoie os joelhos primeiro; nao desabe de uma vez.",
         ],
         "checagem": [
-            "Filme de lado: uma linha reta deve passar por calcanhar, quadril e ombro.",
+            "Apoie um cabo de vassoura nas costas: ele deve tocar cabeca, "
+            "costas e quadril ao mesmo tempo. Se folgar em algum ponto, "
+            "o quadril subiu ou afundou.",
             "Se voce consegue conversar, a respiracao esta certa.",
             "Se a lombar comeca a doer, o quadril caiu — encerre a serie.",
         ],
@@ -851,9 +874,10 @@ TECNICAS = {
             "O pivo do pe so entra depois, em /como joelho.",
         ],
         "checagem": [
-            "Filme de lado: o quadril avanca no topo do movimento? Se o tronco "
-            "so balanca e o quadril fica parado, voce nao esta treinando a joelhada.",
-            "O joelho chega a altura do quadril ou para antes?",
+            "Ponha a mao no proprio quadril: ele avanca no topo do movimento? "
+            "Se so o tronco balanca, voce nao esta treinando a joelhada.",
+            "O joelho chega a altura do quadril ou para antes? Estenda o braco "
+            "na horizontal e use como referencia.",
             "O tronco continuou vertical, ou voce se inclinou para tras para "
             "'ajudar' a perna a subir?",
             "Voce consegue manter a guarda alta durante as 20 repeticoes?",
@@ -899,7 +923,8 @@ TECNICAS = {
             "voce esta dando um salto extra entre as passagens da corda.",
             "Os calcanhares nao devem encostar no chao em nenhum salto.",
             "Se a panturrilha queimar antes de 1 min, os saltos estao altos demais.",
-            "Filme de frente: os cotovelos devem ficar praticamente parados.",
+            "Ponha os cotovelos encostados nas costelas: eles devem continuar "
+            "encostados o tempo todo. Se descolarem, o giro veio do ombro.",
         ],
         "erros": [
             "Saltos altos: sobrecarrega panturrilha e tendao de aquiles, a lesao "
@@ -939,8 +964,9 @@ TECNICAS = {
             "laterais, circulando, nao girando os pes no lugar.",
         ],
         "checagem": [
-            "Filme de lado: voce esta batendo no saco quando ele volta? Isso e o "
-            "erro que mais machuca punho de iniciante.",
+            "Se o impacto vier com um tranco no punho em vez de um empurrao no "
+            "saco, voce bateu com ele voltando. E o erro que mais machuca punho "
+            "de iniciante.",
             "Ao fim do round de controle, seus pes devem estar em base montada, "
             "nao esparramados.",
             "Se voce precisou agarrar a corrente alguma vez, o balanco esta maior "
@@ -1230,69 +1256,71 @@ NO_SACO = (f"Maximo {POTENCIA_FUNDAMENTOS}. O saco aqui confere distancia e "
 
 FUNDAMENTOS_A = {
     "nome": "Fundamentos A — postura, guarda e socos retos",
-    "intensidade": "leve (aprendizado, sem impacto)",
+    "intensidade": "leve (aprendizado, contato so de toque)",
     "usa_progressao": False,
     "blocos": [
         _bloco("Preparacao", "6 min", [
+            "Balance o saco com forca: suporte, corrente e mosquetao nao podem "
+            "ceder, ranger nem folgar",
             "3 min de mobilidade de ombros, quadril e tornozelos",
-            "2 min de caminhada leve pela sala",
-            "1 min so respirando, decidindo em que voce vai prestar atencao hoje",
+            "2 min caminhando ao redor do saco, mudando de direcao",
         ], nota=SEM_LUVA,
-           tecnicas=("mobilidade", "respiracao")),
+           tecnicas=("mobilidade", "respiracao", "controlarsaco")),
         _bloco("Base e guarda", "10 min", [
-            "Monte a base do zero 20 vezes: comece com os pes juntos, recue o "
-            "pe direito, ajuste os angulos dos dois pes e levante a guarda",
+            "De frente para o saco, monte a base do zero 20 vezes: pes juntos, "
+            "recue o pe direito, ajuste os angulos, levante a guarda",
             "Desmanche completamente entre uma repeticao e outra — o objetivo e "
             "treinar a montagem, nao ficar parado na posicao",
-            "Segure a guarda por 3 x 30 s de frente para o espelho, 30 s de descanso",
-            "1 min andando pela sala sem desmanchar a guarda",
-        ], nota="Confira a cada repeticao: queixo baixo, cotovelos para dentro, "
-                "joelhos moles, calcanhar de tras levantado.",
-           tecnicas=("base", "sombra")),
+            "DISTANCIA: estenda o braco da frente. Os nos devem tocar o saco de "
+            "leve, sem voce se inclinar. Essa e a sua distancia de jab",
+            "Monte a base 10 vezes ja nessa distancia, sem corrigir depois",
+            "Segure a guarda 3 x 30 s, 30 s de descanso",
+        ], nota="O saco resolve o que espelho nenhum resolve: distancia. Ele diz "
+                "na primeira tentativa se voce esta no alcance.",
+           tecnicas=("base",)),
         _bloco("Deslocamento", "7 min", [
-            "Frente e tras: 20 idas e voltas (1 ida + 1 volta = 1 repeticao)",
-            "Direita e esquerda: 20 para cada lado",
-            "Quadrado: imagine um quadrado de 1 m no chao e percorra os quatro "
-            "lados sem nunca virar o corpo — 10 voltas em cada sentido",
+            "Entrar e sair: da distancia de jab, um passo para tras e um para "
+            "frente. 20 vezes, tocando o saco a cada volta para conferir",
+            "Circular o saco: 10 voltas para cada lado, mantendo o saco sempre "
+            "a sua frente e a mesma distancia",
+            "Frente e tras livre: 20 idas e voltas",
             "Descanse 30 s entre os tres exercicios",
         ], nota="Regra unica desta fase: os pes nunca se cruzam. Se cruzarem, "
                 "pare, remonte a base e recomece a serie.",
-           tecnicas=("passos",)),
-        _bloco("Jab isolado", "8 min", [
-            "30 jabs LENTOS de frente para o espelho, um a cada 3 s, contando "
-            "o trajeto de ida e de volta",
+           tecnicas=("passos", "controlarsaco")),
+        _bloco("Jab no saco", "9 min", [
+            "Enfaixe as maos e coloque as luvas",
+            "20 jabs de TOQUE, sem forca nenhuma: so encostar e voltar. O punho "
+            "te diz na hora se entrou reto",
+            "Pare e confira: doeu em algum ponto do punho ou dos nos?",
             "Descanse 1 min",
-            "30 jabs em ritmo medio, ainda sem forca",
+            "30 jabs a 20%, um a cada 3 s. Escute: estalo curto e seco esta "
+            "certo; som abafado e golpe torto",
             "Descanse 1 min",
-            "20 jabs dando um passo a frente junto: o pe esquerdo sai primeiro e "
-            "o punho parte no mesmo instante",
-        ], nota="Pare a cada 10: punho reto, mao voltou ao rosto. Um movimento "
-                "por vez — nao emende com nenhum outro golpe.",
-           tecnicas=("jab",)),
-        _bloco("Direto isolado", "8 min", [
+            "20 jabs entrando com um passo: o pe esquerdo sai primeiro e o punho "
+            "parte no mesmo instante",
+            "Espere o saco parar entre as series. Nunca bata nele voltando",
+        ], nota=f"{NO_SACO} Dor no punho ou nos nos encerra o bloco. Um "
+                "movimento por vez — nao emende com nenhum outro golpe.",
+           tecnicas=("bandagem", "jab", "controlarsaco")),
+        _bloco("Direto no saco", "9 min", [
             "20 giros de pe direito e quadril com as MAOS NA GUARDA, sem soltar "
             "o braco — so o giro, para sentir de onde vem a forca",
-            "30 diretos lentos, respeitando a ordem pe > quadril > tronco > braco",
+            "20 diretos de TOQUE, sem forca: sentir a ordem pe > quadril > "
+            "tronco > braco chegando ate o saco",
             "Descanse 1 min",
-            "30 diretos em ritmo medio",
-            "10 diretos filmados de lado, para conferir o calcanhar direito",
-        ], nota="O giro vem primeiro; o braco e o ultimo elo.",
-           tecnicas=("direto",)),
-        _bloco("Saco leve", "8 min", [
-            "Enfaixe as maos e coloque as luvas antes de encostar no saco",
-            "DISTANCIA: estenda o jab ate os nos tocarem o saco de leve. Ajuste "
-            "os pes ate essa distancia sair certa. Entre e saia 10 vezes",
-            "20 jabs a 20%, so para sentir onde o punho encosta",
-            "Pare e confira o punho: doeu, dobrou, ou entrou reto?",
-            "20 diretos a 20%, conferindo se o calcanhar de tras girou",
-            "10 jabs e 10 diretos alternados, ainda um de cada vez",
-            "Espere o saco parar entre as series. Nunca bata nele voltando",
-        ], nota=f"{NO_SACO} Dor no punho ou nos nos encerra o bloco.",
-           tecnicas=("bandagem", "jab", "direto", "controlarsaco")),
+            "30 diretos a 20%. A cada 10, PARE no fim do golpe e olhe o proprio "
+            "pe de tras: o calcanhar girou para fora?",
+            "10 diretos alternando com jabs, ainda um golpe de cada vez",
+            "Espere o saco parar entre as series",
+        ], nota=f"{NO_SACO} Direto sem quadril bate 'morto': o som e seco e o "
+                "saco quase nao anda. Com quadril, ele EMPURRA. E o teste mais "
+                "honesto que existe, e nao precisa de nada alem do saco.",
+           tecnicas=("direto", "controlarsaco")),
         _bloco("Volta a calma", "4 min", [
-            "Caminhada leve",
+            "Caminhada leve ao redor do saco",
             "Respiracao 4-2-6, 8 ciclos",
-            "Anote qual movimento pareceu mais estranho hoje",
+            "Escolha UM ponto para corrigir no proximo treino",
         ], tecnicas=("respiracao",)),
     ],
 }
@@ -1315,7 +1343,7 @@ FUNDAMENTOS_B = {
             "cabeca e 15 na altura das costelas",
             "Descanse 1 min",
             "30 ganchos em ritmo medio",
-        ], nota="No espelho: punho, cotovelo e ombro na mesma linha horizontal.",
+        ], nota="No saco, gancho de braco aberto escorrega em vez de afundar. Se deslizar, o cotovelo abriu.",
            tecnicas=("gancho",)),
         _bloco("Jab no corpo", "8 min", [
             "20 descidas sem golpe: flexione os JOELHOS, coluna reta, e volte",
@@ -1398,8 +1426,8 @@ FUNDAMENTOS_C = {
             "do pe de apoio — ignore a perna que chuta por enquanto",
             "Descanse 1 min",
             "20 por perna em ritmo medio",
-            "10 por perna filmados de TRAS, que e a unica vista onde da para ver "
-            "se o calcanhar de apoio girou o suficiente",
+            "10 por perna congelando no fim do chute: sem recolher a perna, "
+            "olhe o proprio pe de apoio e veja se o calcanhar girou",
         ], nota="Sem forca: o objetivo e a trajetoria, nao o impacto.",
            tecnicas=("chutebaixo", "girodope")),
         _bloco("Saco leve", "8 min", [
@@ -1449,7 +1477,6 @@ ANTES_DE_BATER = [
     "podem ceder, ranger nem folgar.",
     "Bandagem nas duas maos (/como bandagem) e luvas por cima.",
     "Espaco livre para circular em volta.",
-    "Celular filmando: no saco voce olha para o alvo, nao para si.",
 ]
 
 # Dia da semana (segunda=0) -> roteiro. Segunda/quarta/sexta sao musculacao,
@@ -1462,7 +1489,7 @@ REGRAS = [
     "Nao bata enquanto o saco estiver voltando com forca contra voce.",
     "Sem cotoveladas neste primeiro ciclo.",
     "Dor aguda em punho, polegar, cotovelo, joelho ou tornozelo = parar o golpe.",
-    "Grave alguns rounds de frente e de lado: revela guarda baixa, desequilibrio e punho dobrado.",
+    "Escute o saco: golpe alinhado estala curto, golpe torto sai abafado. O som e o seu treinador.",
     "Emagrecimento depende principalmente de deficit calorico — o treino ajuda, mas nao substitui.",
 ]
 
@@ -1577,7 +1604,7 @@ def formatar_resumo(chave, semana=1):
         linhas.append(
             f"<i>semana {semana}: {rounds} de {duracao_round}, ate {potencia} — {objetivo}</i>")
     else:
-        linhas.append("<i>aprendizado no espelho + saco leve</i>")
+        linhas.append("<i>aprendizado + saco leve</i>")
         linhas.append(f"<i>{SEM_COMBO}</i>")
     linhas.append("")
 
@@ -1716,9 +1743,13 @@ def formatar_indice_fundamentos(hoje=None):
         "Aprender cada movimento isolado antes de bater com forca. Padrao errado "
         "gravado com impacto junto custa meses para desfazer.",
         "",
-        "Duas partes por sessao: blocos de mao nua no espelho (voce enxerga o "
-        f"punho e corrige) e um bloco final no saco a {POTENCIA_FUNDAMENTOS}, "
-        "que confere o que o espelho nao mostra — distancia e ponto de contato.",
+        f"Contato sempre leve, no maximo {POTENCIA_FUNDAMENTOS}: o saco aqui "
+        "confere distancia, alinhamento e ponto de contato, nao treina forca.",
+        "",
+        "Nao precisa de espelho nem camera. O saco devolve tres sinais: o SOM "
+        "(estalo curto = alinhado, abafado = torto), a REACAO (golpe com "
+        "quadril empurra; so de braco, nao) e a DOR (punho dobrado avisa na "
+        "hora). Onde nada disso serve, congele o movimento e olhe o proprio pe.",
         "",
         "<b>Sessoes</b>",
     ]

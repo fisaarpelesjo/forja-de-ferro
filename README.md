@@ -215,10 +215,10 @@ barra.
 ### Muay Thai (saco)
 
 Antes do ciclo de 8 semanas existe uma fase de fundamentos (`/fundamentos`):
-tres sessoes que ensinam cada movimento isolado, sem combinacao. Os blocos de
-aprendizado sao de mao nua diante do espelho; cada sessao termina num bloco de
-saco leve, com bandagem e luva, limitado a 20-30% — o saco valida distancia e
-alinhamento, que o espelho nao mostra. Bater no saco
+tres sessoes que ensinam cada movimento isolado, sem combinacao, sempre a no
+maximo 20-30% de potencia. Nao pressupoe espelho nem camera: o feedback vem do
+som do golpe, de como o saco reage e da dor no punho quando o alinhamento sai
+errado. Bater no saco
 antes de o padrao estar formado grava o padrao errado com impacto junto, e
 chute baixo sem giro do pe de apoio machuca o joelho na primeira sessao.
 

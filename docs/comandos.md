@@ -36,11 +36,15 @@ Fase anterior ao ciclo de 8 semanas: aprender cada movimento isolado, sem
 combinacao. Conta repeticao em vez de round, porque a dosagem aqui e numero de
 execucoes limpas, nao tempo sob esforco.
 
-Cada sessao tem **duas partes**. Os blocos de aprendizado sao de mao nua, de
-frente para o espelho — sem impacto voce enxerga o punho e corrige. O bloco
-final e no saco, com bandagem e luva, limitado a 20-30% de potencia: ali o saco
-responde o que o espelho nao responde (distancia, alinhamento, ponto de
-contato), sem que um erro vire lesao.
+Contato sempre leve, no maximo 20-30%: o saco confere distancia, alinhamento e
+ponto de contato, sem que um erro vire lesao.
+
+**Nao pressupoe espelho nem camera.** O feedback vem do proprio saco, em tres
+sinais: o **som** (estalo curto = alinhado, abafado = torto), a **reacao** do
+saco (golpe com quadril empurra; so de braco, nao sai do lugar) e a **dor**
+(punho dobrado avisa na hora, no proprio punho). Onde nada disso serve, a
+instrucao manda congelar o movimento e olhar o proprio pe — o que dispensa
+qualquer equipamento.
 
 O bloco de saco da sessao C tem um **portao**: so acontece se o giro do pe de
 apoio ja sair automatico. Chutar sem esse giro e o mecanismo de lesao de joelho
