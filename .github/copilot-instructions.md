@@ -19,6 +19,14 @@ backups validados.
 Teste direto das regras: `python tests/regras_treino_test.py`.
 Catalogo unico de comandos: `docs/comandos.md`.
 
+Acesso e operacao na VPS: ler primeiro `docs/vps.md`. Os dados concretos de
+conexao ficam somente em `.vps.yml`, arquivo local ignorado pelo Git, criado a
+partir de `config/vps.exemplo.yml`. Nunca publicar host, credenciais, chave
+privada, token ou `.env`. O Limulus divide a VPS com o Nautilus, cujo diretorio
+e `/root/nautilus` e servico e `nautilus-bot`; confirmar no `.vps.yml` o
+diretorio e o servico proprios do Limulus antes de qualquer operacao remota.
+Preferir o alias local `ssh vps-limulus`, definido em `~/.ssh/config`.
+
 SQLite e a fonte da verdade para exercicios, sessoes, logs de treino e dados de
 dieta. Nao mover a gestao de exercicios de volta para ODS.
 Ao consultar o banco em tarefas de manutencao, preferir scripts Python com o

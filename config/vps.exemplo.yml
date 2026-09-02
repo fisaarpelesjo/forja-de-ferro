@@ -1,0 +1,15 @@
+# Copie este arquivo para `.vps.yml` na raiz e preencha os valores reais.
+# `.vps.yml` e local e ignorado pelo Git porque pode identificar a VPS.
+versao: 1
+conexao:
+  alias_ssh: "vps-limulus"
+  host: "PREENCHER_IP_OU_DOMINIO"
+  porta: 22
+  usuario: "PREENCHER_USUARIO"
+  identidade_ssh: "PREENCHER_CAMINHO_DA_CHAVE_PRIVADA"
+limulus:
+  diretorio: "/root/limulus"
+  servico_systemd: "PREENCHER_SERVICO"
+nautilus:
+  diretorio: "/root/nautilus"
+  servico_systemd: "nautilus-bot"
