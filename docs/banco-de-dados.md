@@ -13,7 +13,7 @@ dados de dieta.
 
 ## Versao E Migracoes
 
-O esquema atual usa `SCHEMA_VERSION = 10`. A tabela `schema_migrations` registra
+O esquema atual usa `SCHEMA_VERSION = 11`. A tabela `schema_migrations` registra
 uma linha por versao aplicada, com data e hora.
 
 `db_ops.init_db()`:
@@ -257,8 +257,8 @@ O segundo exercicio ativo e `Agachamento sumô com barra à frente` (`3x10`),
 com foco principal nos adutores. O quinto e `Supino inclinado (barra)` (`3x8`),
 logo depois de `Supino reto back-off`, substituindo `Pullover (barra)` para
 sessoes futuras. O setimo e `Remada curvada alta no peito (barra)` (`3x10`),
-logo depois de `Remada curvada (barra)`. O decimo e `Rosca martelo
-(barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras. `Supino
+logo depois de `Remada curvada (barra)`. O decimo e `Rosca inversa
+(barra)` (`3x8`), substituindo `Rosca martelo (barra H)` para sessoes futuras. `Supino
 fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 Historico antigo de
 `Agachamento Zercher`, `Rosca direta`, `Pullover (barra)`, `Tríceps testa` e
@@ -320,7 +320,7 @@ amplitude, o valor isolado nao comprova falta de evolucao.
 Se nao houver historico de carga para o exercicio, `target_weight` fica `None` e
 a tabela do bot mostra `-`.
 
-Excecoes atuais: `Rosca martelo (barra H)` recebe alvo inicial de 16 kg e
+Excecoes atuais: `Rosca inversa (barra)` recebe alvo inicial de 11 kg e
 `Supino inclinado (barra)` recebe alvo inicial de 41 kg quando ainda nao houver
 historico proprio. Depois do primeiro registro real, a funcao usa o historico e
 a progressao por RPE.
@@ -351,16 +351,16 @@ pé)`, `Levantamento Terra Romeno` e `Remada curvada alta no peito (barra)`, a
 funcao usa a barra reta de 2,20 m e 11 kg. Exemplo: `target_weight = 40` gera
 `barra reta 2,20 m 11kg + 29kg de anilhas`.
 
-Para `Rosca martelo (barra H)`, a funcao usa barra H de 9 kg e calcula as
-anilhas como `target_weight - 9`. Exemplo: `target_weight = 18` gera
-`barra H 9kg + 9kg de anilhas`.
+Para `Rosca inversa (barra)`, a funcao usa barra reta de 2,20 m e 11 kg e calcula as
+anilhas como `target_weight - 11`. Exemplo: `target_weight = 18` gera
+`barra reta 2,20 m 11kg + 7kg de anilhas`.
 
 ## Descanso Entre Series
 
 O descanso sugerido fica em `session.json`, nao em uma tabela SQLite. Ele e
 derivado do nome do exercicio por `ods_ops.get_rest_interval()` durante a geracao
 da sessao. `Supino reto back-off` e `Supino inclinado (barra)` usam 4 min;
-`Remada curvada (barra)` e `Rosca martelo (barra H)` usam 3 min.
+`Remada curvada (barra)` e `Rosca inversa (barra)` usam 3 min.
 
 ## Progresso
 

@@ -172,7 +172,7 @@ de melhora na execucao.
 Exemplo: se o treino anterior registrou `40 8`, o proximo `/gerar` mostra
 `alvo: 42kg`. Se registrou `40 10`, o proximo `/gerar` mostra `alvo: 38kg`.
 
-`Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado (barra)`
+`Rosca inversa (barra)` tem alvo inicial de 11 kg e `Supino inclinado (barra)`
 tem alvo inicial de 41 kg quando ainda nao houver historico proprio. Depois do
 primeiro registro, seguem a progressao normal por RPE.
 
@@ -203,11 +203,11 @@ Os nomes exibidos podem omitir qualificadores de equipamento, como `(barra)`,
 `(barra H)` e `(barra em pé)`. Essa limpeza e apenas visual; o SQLite conserva
 os nomes completos para historico e progressao.
 
-Para `Rosca martelo (barra H)`, a barra H pesa 9 kg. Um alvo de 18 kg aparece
+Para `Rosca inversa (barra)`, a barra reta pesa 11 kg. Um alvo de 18 kg aparece
 como:
 
 ```text
-barra H 9kg + 9kg de anilhas
+barra reta 2,20 m 11kg + 7kg de anilhas
 ```
 
 ## `/prever`
@@ -260,7 +260,7 @@ Intervalos atuais:
 
 ```text
 Agachamento com barra nas costas, Supino reto principal, Supino reto back-off, Supino inclinado (barra), Desenvolvimento, Levantamento Terra Romeno: 4 min
-Remada curvada, Rosca martelo (barra H): 3 min
+Remada curvada, Rosca inversa (barra): 3 min
 Acessorios restantes: 2 min
 ```
 

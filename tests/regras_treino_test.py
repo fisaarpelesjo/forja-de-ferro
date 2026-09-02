@@ -27,18 +27,18 @@ def _assert_progressao():
 
 
 def _assert_equipamento_e_descanso():
-    assert ods_ops.get_initial_target_weight("Rosca martelo (barra H)") == 16
+    assert ods_ops.get_initial_target_weight("Rosca inversa (barra)") == 11
     assert ods_ops.get_initial_target_weight("Supino inclinado (barra)") == 41
     assert ods_ops.get_initial_target_weight("Supino fechado (barra)") is None
     assert ods_ops.get_display_name("Supino fechado (barra)") == "Supino fechado"
-    assert ods_ops.get_display_name("Rosca martelo (barra H)") == "Rosca martelo"
+    assert ods_ops.get_display_name("Rosca inversa (barra)") == "Rosca inversa"
     assert ods_ops.get_initial_target_weight("Supino reto (barra)") is None
     assert ods_ops.get_rest_interval("Agachamento com barra nas costas") == "4 min"
     assert ods_ops.get_rest_interval("Remada curvada (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Desenvolvimento (barra em pé)") == "4 min"
     assert ods_ops.get_rest_interval("Supino reto back-off") == "4 min"
     assert ods_ops.get_rest_interval("Supino inclinado (barra)") == "4 min"
-    assert ods_ops.get_rest_interval("Rosca martelo (barra H)") == "3 min"
+    assert ods_ops.get_rest_interval("Rosca inversa (barra)") == "3 min"
     assert ods_ops.get_rest_interval("Tríceps testa") == "2 min"
     assert ods_ops.get_rest_interval("Exercicio desconhecido") == "2 min"
     assert (
@@ -50,8 +50,8 @@ def _assert_equipamento_e_descanso():
         == "barra W 6kg + 10kg de anilhas"
     )
     assert (
-        ods_ops.format_loading_note("Rosca martelo (barra H)", 18)
-        == "barra H 9kg + 9kg de anilhas"
+        ods_ops.format_loading_note("Rosca inversa (barra)", 19)
+        == "barra reta 2,20 m 11kg + 8kg de anilhas"
     )
     assert (
         ods_ops.format_loading_note("Agachamento sumô com barra à frente", 40)
@@ -120,6 +120,28 @@ def main():
             assert versions == list(range(1, db_ops.SCHEMA_VERSION + 1))
             assert "idx_training_logs_session_pending" in indexes
             assert "idx_training_logs_exercise_history" in indexes
+            conn = sqlite3.connect(test_db)
+            try:
+                conn.execute(
+                    "UPDATE exercises SET name = 'Rosca martelo (barra H)', reps = 8 "
+                    "WHERE name = 'Rosca inversa (barra)'"
+                )
+                conn.execute(
+                    "UPDATE training_plan_exercises "
+                    "SET exercise_name = 'Rosca martelo (barra H)', reps = 8 "
+                    "WHERE exercise_name = 'Rosca inversa (barra)'"
+                )
+                conn.execute("DELETE FROM schema_migrations WHERE version = 11")
+                conn.commit()
+            finally:
+                conn.close()
+            db_ops.init_db()
+            migrated_plan = db_ops.get_active_training_plan()
+            assert migrated_plan["exercises"][-1] == {
+                "name": "Rosca inversa (barra)",
+                "sets": 3,
+                "reps": 8,
+            }
             assert db_ops.get_body_profile() is None
             perfil = db_ops.set_body_profile(183, 30)
             assert perfil["height_cm"] == 183.0
@@ -207,6 +229,11 @@ def main():
                 "name": "Agachamento sumô com barra à frente",
                 "sets": 3,
                 "reps": 10,
+            }
+            assert plan_a["exercises"][-1] == {
+                "name": "Rosca inversa (barra)",
+                "sets": 3,
+                "reps": 8,
             }
 
             db_ops.replace_training_plan(

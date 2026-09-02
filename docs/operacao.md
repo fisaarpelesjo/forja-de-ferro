@@ -170,7 +170,7 @@ base para preservar a qualidade tecnica:
 
 ```text
 Compostos pesados, Supino reto back-off e Supino inclinado (barra): 4 min
-Compostos medios e Rosca martelo (barra H): 3 min
+Compostos medios e Rosca inversa (barra): 3 min
 Acessorios: 2 min
 ```
 
@@ -266,8 +266,8 @@ Catalogo atual:
 - Ele usa a barra apoiada no trapezio/ombro.
 - `Agachamento sumô com barra à frente` e o segundo exercicio e esta como `3x10`.
 - `Remada curvada alta no peito (barra)` e o setimo exercicio e esta como `3x10`.
-- `Rosca martelo (barra H)` e o decimo exercicio e esta como `3x8`.
-- Ela substitui `Rosca direta` em sessoes futuras para usar a barra H de 9 kg.
+- `Rosca inversa (barra)` e o decimo exercicio e esta como `3x8`.
+- Ela substitui `Rosca martelo (barra H)` em sessoes futuras para trabalhar os extensores do antebraco com a barra reta.
 - `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - Historico antigo pode continuar com nomes antigos ou inativos.
 - Se o catalogo mudar de novo, atualizar `data/limulus.db` e `limulus/db_ops.py`.

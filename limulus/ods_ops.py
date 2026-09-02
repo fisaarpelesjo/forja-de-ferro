@@ -20,6 +20,7 @@ RPE_PROGRESSION_KG = {
 
 INITIAL_TARGET_WEIGHTS = {
     "Rosca martelo (barra H)": 16.0,
+    "Rosca inversa (barra)": 11.0,
     "Supino inclinado (barra)": 41.0,
 }
 
@@ -85,6 +86,7 @@ DISPLAY_NAMES = {
     "Desenvolvimento (barra em pe)": "Desenvolvimento",
     "Pullover (barra)": "Pullover",
     "Rosca martelo (barra H)": "Rosca martelo",
+    "Rosca inversa (barra)": "Rosca inversa",
     "Tríceps testa": "Tríceps testa",
     "Triceps testa": "Tríceps testa",
 }
@@ -103,6 +105,7 @@ REST_INTERVALS = {
     "Remada curvada alta no peito (barra)": "2 min",
     "Rosca direta": "2 min",
     "Rosca martelo (barra H)": "3 min",
+    "Rosca inversa (barra)": "3 min",
     "Tríceps testa": "2 min",
     "Triceps testa": "2 min",
 }
@@ -139,6 +142,10 @@ LOAD_EQUIPMENT = {
         "weight": 11.0,
     },
     "Rosca martelo (barra H)": {"name": "barra H", "weight": 9.0},
+    "Rosca inversa (barra)": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
     "Tríceps testa": {"name": "barra W", "weight": 6.0},
     "Triceps testa": {"name": "barra W", "weight": 6.0},
 }

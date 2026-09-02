@@ -284,8 +284,8 @@ def main():
             assert "Dashboard de treino" in html
             assert "Volume por sessao" in html
             assert "Treino ativo" in html
-            assert "Rosca martelo (barra H)" in html
-            assert "barra H 9kg + 7kg de anilhas" in html
+            assert "Rosca inversa (barra)" in html
+            assert "barra reta 2,20 m 11kg + 0kg de anilhas" in html
             assert "Carga, RPE e 1RM" in html
             assert "Ultima vs anterior" in html
             assert "Recordes pessoais" in html

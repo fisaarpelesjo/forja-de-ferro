@@ -7,7 +7,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "limulus.db"
-SCHEMA_VERSION = 10
+SCHEMA_VERSION = 11
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento com barra nas costas", "sets": 3, "reps": 5},
@@ -19,7 +19,7 @@ DEFAULT_EXERCISES = [
     {"name": "Remada curvada alta no peito (barra)", "sets": 3, "reps": 10},
     {"name": "Desenvolvimento (barra em pé)", "sets": 3, "reps": 5},
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
-    {"name": "Rosca martelo (barra H)", "sets": 3, "reps": 8},
+    {"name": "Rosca inversa (barra)", "sets": 3, "reps": 8},
 ]
 
 DEFAULT_MUSCLE_GROUPS = {
@@ -83,6 +83,10 @@ DEFAULT_MUSCLE_GROUPS = {
     "Rosca martelo (barra H)": [
         ("Biceps", "principal"),
         ("Antebraco", "secundario"),
+    ],
+    "Rosca inversa (barra)": [
+        ("Antebraco", "principal"),
+        ("Biceps", "secundario"),
     ],
     "Rosca de punho (barra)": [("Antebraco", "principal")],
     "Rosca de punho reversa (barra)": [("Antebraco", "principal")],
@@ -347,6 +351,19 @@ SCHEMA_V10_STATEMENTS = (
     """,
 )
 
+SCHEMA_V11_STATEMENTS = (
+    """
+    UPDATE exercises
+    SET name = 'Rosca inversa (barra)', sets = 3, reps = 8
+    WHERE name = 'Rosca martelo (barra H)'
+    """,
+    """
+    UPDATE training_plan_exercises
+    SET exercise_name = 'Rosca inversa (barra)', sets = 3, reps = 8
+    WHERE exercise_name = 'Rosca martelo (barra H)'
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -358,6 +375,7 @@ MIGRATIONS = {
     8: SCHEMA_V8_STATEMENTS,
     9: SCHEMA_V9_STATEMENTS,
     10: SCHEMA_V10_STATEMENTS,
+    11: SCHEMA_V11_STATEMENTS,
 }
 
 

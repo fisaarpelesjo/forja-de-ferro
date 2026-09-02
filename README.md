@@ -25,7 +25,7 @@ comandos fica em [`docs/comandos.md`](docs/comandos.md).
   `temp/dashboard-treino.html`.
 - Backup/exportacao/restauracao: [`gerenciar_dados.py`](gerenciar_dados.py).
 - Extracao de frames: [`gerar_frames.py`](gerar_frames.py).
-- Schema SQLite atual: `SCHEMA_VERSION = 10`, em
+- Schema SQLite atual: `SCHEMA_VERSION = 11`, em
   [`limulus/db_ops.py`](limulus/db_ops.py).
 - Fonte da verdade do treino: SQLite, especialmente `training_plans` e
   `training_plan_exercises`.
@@ -332,7 +332,7 @@ Se nao houver historico, o alvo aparece como `-`, exceto nos exercicios com alvo
 inicial configurado:
 
 ```text
-Rosca martelo (barra H)  -> 16 kg
+Rosca inversa (barra)    -> 11 kg
 Supino inclinado (barra) -> 41 kg
 ```
 
@@ -364,7 +364,7 @@ Catalogo ativo atual:
 7.  Remada curvada alta no peito (barra)       3x10
 8.  Desenvolvimento (barra em pé)              3x5
 9.  Levantamento Terra Romeno                  3x8
-10. Rosca martelo (barra H)                    3x8
+10. Rosca inversa (barra)                    3x8
 ```
 
 Nomes canonicos devem permanecer no SQLite porque sao usados no historico,
@@ -393,7 +393,7 @@ Levantamento Terra Romeno              4 min
 Pullover (barra)                       2 min
 Remada curvada alta no peito (barra)   2 min
 Rosca direta                           2 min
-Rosca martelo (barra H)                3 min
+Rosca inversa (barra)                3 min
 Tríceps testa                          2 min
 Padrao para demais exercicios          2 min
 ```
@@ -404,7 +404,7 @@ equipamento fixo:
 ```text
 barra reta 2,20 m 11kg + Xkg de anilhas
 barra W 6kg + Xkg de anilhas
-barra H 9kg + Xkg de anilhas
+barra reta 2,20 m 11kg + Xkg de anilhas
 ```
 
 Mapeamento atual:
@@ -413,7 +413,7 @@ Mapeamento atual:
   barra, agachamento sumô com barra à frente, remada curvada, desenvolvimento,
   levantamento terra romeno e remada curvada alta no peito;
 - barra W de 6 kg: tríceps testa e pullover;
-- barra H de 9 kg: rosca martelo.
+- barra reta de 2,20 m e 11 kg: rosca inversa.
 
 A observacao aparece no exercicio atual/proximo e no `/status`; nao aparece na
 lista simples de `/exercicios`.
@@ -431,7 +431,7 @@ O banco fica em `data/limulus.db`. O schema e migrado por
 6. semeia grupos musculares padrao;
 7. semeia o plano de treino padrao quando necessario.
 
-Versao atual: `SCHEMA_VERSION = 10`.
+Versao atual: `SCHEMA_VERSION = 11`.
 
 Tabelas principais:
 

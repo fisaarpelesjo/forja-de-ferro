@@ -185,13 +185,13 @@ Catalogo atual:
   sequencia de RPE 9 um problema isolado. Ela so exige atencao quando houver
   perda tecnica, repeticoes incompletas, piora de amplitude ou ausencia
   prolongada de melhora na execucao.
-- `Rosca martelo (barra H)` tem alvo inicial de 16 kg e `Supino inclinado
+- `Rosca inversa (barra)` tem alvo inicial de 11 kg e `Supino inclinado
   (barra)` tem alvo inicial de 41 kg quando ainda nao houver historico proprio;
   depois disso usam a progressao por RPE.
 - `target_weight` fica em `session.json`.
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
-- `Rosca martelo (barra H)` usa descanso de 3 min.
+- `Rosca inversa (barra)` usa descanso de 3 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
@@ -203,7 +203,7 @@ Catalogo atual:
   barra reta de 2,20 m e 11 kg; a observacao mostra a carga total como
   `barra reta 2,20 m 11kg + Xkg de anilhas`.
 - `Tríceps testa` e `Pullover (barra)` usam barra W de 6 kg; a observacao mostra a carga total como `barra W 6kg + Xkg de anilhas`.
-- `Rosca martelo (barra H)` usa barra H de 9 kg; a observacao mostra a carga total como `barra H 9kg + Xkg de anilhas`.
+- `Rosca inversa (barra)` usa barra reta de 2,20 m e 11 kg; a observacao mostra a carga total como `barra reta 2,20 m 11kg + Xkg de anilhas`.
 - Primeiro exercicio ativo: `Agachamento com barra nas costas` (`3x5`).
 - Segundo exercicio ativo: `Agachamento sumô com barra à frente` (`3x10`),
   com foco principal nos adutores.
@@ -211,10 +211,10 @@ Catalogo atual:
   `Supino reto back-off`, substituindo `Pullover (barra)` para sessoes futuras.
 - Setimo exercicio ativo: `Remada curvada alta no peito (barra)` (`3x10`),
   logo depois de `Remada curvada (barra)`.
-- Decimo exercicio ativo: `Rosca martelo (barra H)` (`3x8`), substituindo `Rosca direta` para sessoes futuras.
+- Decimo exercicio ativo: `Rosca inversa (barra)` (`3x8`), substituindo `Rosca martelo (barra H)` para sessoes futuras.
 - `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - O agachamento com barra nas costas usa a barra apoiada no trapezio/ombro.
-- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)` e `Remada alta (barra)`.
+- Logs historicos podem permanecer com nomes antigos ou inativos, incluindo `Agachamento (barra)`, `Agachamento Zercher`, `Zercher squat`, `Pullover (barra)`, `Tríceps testa`, `Supino fechado (barra)`, `Remada alta (barra)` e `Rosca martelo (barra H)`.
 
 ### `limulus/db_ops.py`
 
@@ -312,7 +312,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/limulus.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 10`.
+- Versao atual do esquema: `SCHEMA_VERSION = 11`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume
