@@ -9,7 +9,7 @@ from . import db_ops
 
 SESSION_FILE = Path(__file__).resolve().parents[1] / "session.json"
 
-TRAINING_EXERCISES = range(0, 10)
+TRAINING_EXERCISES = range(0, 11)
 TREINO_EXERCISES = TRAINING_EXERCISES
 RPE_PROGRESSION_KG = {
     7: 4.0,
@@ -21,6 +21,7 @@ RPE_PROGRESSION_KG = {
 INITIAL_TARGET_WEIGHTS = {
     "Rosca martelo (barra H)": 16.0,
     "Rosca inversa (barra)": 11.0,
+    "Rosca de punho atrás das costas (barra)": 11.0,
     "Supino inclinado (barra)": 41.0,
 }
 
@@ -87,6 +88,7 @@ DISPLAY_NAMES = {
     "Pullover (barra)": "Pullover",
     "Rosca martelo (barra H)": "Rosca martelo",
     "Rosca inversa (barra)": "Rosca inversa",
+    "Rosca de punho atrás das costas (barra)": "Rosca de punho atrás das costas",
     "Tríceps testa": "Tríceps testa",
     "Triceps testa": "Tríceps testa",
 }
@@ -106,6 +108,7 @@ REST_INTERVALS = {
     "Rosca direta": "2 min",
     "Rosca martelo (barra H)": "3 min",
     "Rosca inversa (barra)": "3 min",
+    "Rosca de punho atrás das costas (barra)": "2 min",
     "Tríceps testa": "2 min",
     "Triceps testa": "2 min",
 }
@@ -143,6 +146,10 @@ LOAD_EQUIPMENT = {
     },
     "Rosca martelo (barra H)": {"name": "barra H", "weight": 9.0},
     "Rosca inversa (barra)": {
+        "name": "barra reta 2,20 m",
+        "weight": 11.0,
+    },
+    "Rosca de punho atrás das costas (barra)": {
         "name": "barra reta 2,20 m",
         "weight": 11.0,
     },

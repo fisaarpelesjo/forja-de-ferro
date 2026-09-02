@@ -224,6 +224,7 @@ Regras importantes:
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
 - `Rosca inversa (barra)` usa descanso de 3 min.
+- `Rosca de punho atrás das costas (barra)` usa 3x12, alvo inicial de 11 kg e descanso de 2 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
@@ -247,7 +248,7 @@ Regras importantes:
 Modulo SQLite para exercicios, logs de treino e dados de dieta.
 
 - Banco versionado: `data/limulus.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 11`.
+- Versao atual do esquema: `SCHEMA_VERSION = 12`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e usa a sessao
@@ -374,6 +375,7 @@ Ordem ativa atual:
 8. Desenvolvimento (barra em pe) - 3x5
 9. Levantamento Terra Romeno - 3x8
 10. Rosca inversa (barra) - 3x8
+11. Rosca de punho atrás das costas (barra) - 3x12
 
 `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 

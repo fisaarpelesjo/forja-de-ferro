@@ -102,6 +102,7 @@ Agachamento sumô com barra à frente - 3x10
 Supino inclinado (barra) - 3x8
 Remada curvada alta no peito (barra) - 3x10
 Rosca inversa (barra) - 3x8
+Rosca de punho atrás das costas (barra) - 3x12
 ```
 
 O agachamento com barra nas costas voltou a ser o primeiro exercicio para

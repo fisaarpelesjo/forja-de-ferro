@@ -262,6 +262,9 @@ SEGMENTOS_POR_EXERCICIO = {
             "Biceps distal": 0.60,
         },
     },
+    "Rosca de punho atrás das costas (barra)": {
+        "Antebraco": {"Antebraco anterior": 0.90, "Antebraco posterior": 0.10},
+    },
     "Rosca de punho (barra)": {
         "Antebraco": {"Antebraco anterior": 0.85, "Antebraco posterior": 0.15},
     },
@@ -463,6 +466,10 @@ SEGMENTOS_DIRETOS_POR_EXERCICIO = {
         "Biceps distal": 0.20,
         "Antebraco anterior": 0.25,
         "Antebraco posterior": 0.35,
+    },
+    "Rosca de punho atrás das costas (barra)": {
+        "Antebraco anterior": 0.90,
+        "Antebraco posterior": 0.10,
     },
     "Rosca de punho (barra)": {
         "Antebraco anterior": 0.85,

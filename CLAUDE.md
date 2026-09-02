@@ -192,6 +192,7 @@ Catalogo atual:
 - `rest_interval` fica em `session.json` e aparece em `/gerar`, `/status` e proximo exercicio.
 - `Supino reto back-off` e `Supino inclinado (barra)` usam descanso de 4 min.
 - `Rosca inversa (barra)` usa descanso de 3 min.
+- `Rosca de punho atrás das costas (barra)` usa 3x12, alvo inicial de 11 kg e descanso de 2 min.
 - `loading_note` fica em `session.json` quando houver equipamento fixo e aparece apenas no exercicio atual/proximo, nao na lista `/exercicios`.
 - Nomes visiveis no bot e dashboard podem usar `ods_ops.get_display_name()` para
   ocultar qualificadores como `(barra)`, `(barra H)` e `(barra em pé)`. Nao
@@ -312,7 +313,7 @@ Dashboard local de volume:
 ## Dados E Estado
 
 - Banco versionado: `data/limulus.db`.
-- Versao atual do esquema: `SCHEMA_VERSION = 11`.
+- Versao atual do esquema: `SCHEMA_VERSION = 12`.
 - `schema_migrations` registra migracoes aplicadas; `init_db()` executa
   pendencias em ordem e rejeita bancos com versao futura.
 - `get_session_summary(session_id)` calcula o resumo pos-treino e compara volume

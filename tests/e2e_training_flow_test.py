@@ -86,6 +86,13 @@ def main():
             assert rosca_inversa["target_weight"] == 11.0
             assert rosca_inversa["rest_interval"] == "3 min"
             assert rosca_inversa["loading_note"] == "barra reta 2,20 m 11kg + 0kg de anilhas"
+            rosca_punho = next(
+                exercise for exercise in exercises
+                if exercise["name"] == "Rosca de punho atrás das costas (barra)"
+            )
+            assert rosca_punho["reps"] == 12
+            assert rosca_punho["target_weight"] == 11.0
+            assert rosca_punho["rest_interval"] == "2 min"
             assert "descanso: 4 min" in sent_messages[-3]
             assert "<b>Supino fechado</b>" not in sent_messages[-3]
             assert "<pre>" not in sent_messages[-3]

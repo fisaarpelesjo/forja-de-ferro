@@ -267,6 +267,7 @@ Catalogo atual:
 - `Agachamento sumô com barra à frente` e o segundo exercicio e esta como `3x10`.
 - `Remada curvada alta no peito (barra)` e o setimo exercicio e esta como `3x10`.
 - `Rosca inversa (barra)` e o decimo exercicio e esta como `3x8`.
+- `Rosca de punho atrás das costas (barra)` e o ultimo exercicio e esta como `3x12`.
 - Ela substitui `Rosca martelo (barra H)` em sessoes futuras para trabalhar os extensores do antebraco com a barra reta.
 - `Supino fechado (barra)` e `Remada alta (barra)` estao inativos para sessoes futuras.
 - Historico antigo pode continuar com nomes antigos ou inativos.

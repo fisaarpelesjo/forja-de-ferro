@@ -7,7 +7,7 @@ from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 DB_PATH = DATA_DIR / "limulus.db"
-SCHEMA_VERSION = 11
+SCHEMA_VERSION = 12
 
 DEFAULT_EXERCISES = [
     {"name": "Agachamento com barra nas costas", "sets": 3, "reps": 5},
@@ -20,6 +20,7 @@ DEFAULT_EXERCISES = [
     {"name": "Desenvolvimento (barra em pé)", "sets": 3, "reps": 5},
     {"name": "Levantamento Terra Romeno", "sets": 3, "reps": 8},
     {"name": "Rosca inversa (barra)", "sets": 3, "reps": 8},
+    {"name": "Rosca de punho atrás das costas (barra)", "sets": 3, "reps": 12},
 ]
 
 DEFAULT_MUSCLE_GROUPS = {
@@ -88,6 +89,7 @@ DEFAULT_MUSCLE_GROUPS = {
         ("Antebraco", "principal"),
         ("Biceps", "secundario"),
     ],
+    "Rosca de punho atrás das costas (barra)": [("Antebraco", "principal")],
     "Rosca de punho (barra)": [("Antebraco", "principal")],
     "Rosca de punho reversa (barra)": [("Antebraco", "principal")],
     "Wrist curl (barra)": [("Antebraco", "principal")],
@@ -364,6 +366,32 @@ SCHEMA_V11_STATEMENTS = (
     """,
 )
 
+SCHEMA_V12_STATEMENTS = (
+    """
+    INSERT OR IGNORE INTO exercises (name, sets, reps, sort_order, active)
+    SELECT 'Rosca de punho atrás das costas (barra)', 3, 12,
+           COALESCE(MAX(sort_order), 0) + 1, 1
+    FROM exercises
+    WHERE EXISTS (SELECT 1 FROM training_plans WHERE active = 1)
+    HAVING COUNT(*) > 0
+    """,
+    """
+    INSERT INTO training_plan_exercises
+        (plan_id, exercise_name, sets, reps, sort_order)
+    SELECT tp.id, 'Rosca de punho atrás das costas (barra)', 3, 12,
+           COALESCE(MAX(tpe.sort_order), 0) + 1
+    FROM training_plans AS tp
+    LEFT JOIN training_plan_exercises AS tpe ON tpe.plan_id = tp.id
+    WHERE tp.active = 1
+      AND NOT EXISTS (
+          SELECT 1 FROM training_plan_exercises AS existente
+          WHERE existente.plan_id = tp.id
+            AND existente.exercise_name = 'Rosca de punho atrás das costas (barra)'
+      )
+    GROUP BY tp.id
+    """,
+)
+
 MIGRATIONS = {
     1: SCHEMA_V1_STATEMENTS,
     2: SCHEMA_V2_STATEMENTS,
@@ -376,6 +404,7 @@ MIGRATIONS = {
     9: SCHEMA_V9_STATEMENTS,
     10: SCHEMA_V10_STATEMENTS,
     11: SCHEMA_V11_STATEMENTS,
+    12: SCHEMA_V12_STATEMENTS,
 }
 
 

@@ -25,7 +25,7 @@ comandos fica em [`docs/comandos.md`](docs/comandos.md).
   `temp/dashboard-treino.html`.
 - Backup/exportacao/restauracao: [`gerenciar_dados.py`](gerenciar_dados.py).
 - Extracao de frames: [`gerar_frames.py`](gerar_frames.py).
-- Schema SQLite atual: `SCHEMA_VERSION = 11`, em
+- Schema SQLite atual: `SCHEMA_VERSION = 12`, em
   [`limulus/db_ops.py`](limulus/db_ops.py).
 - Fonte da verdade do treino: SQLite, especialmente `training_plans` e
   `training_plan_exercises`.
@@ -365,6 +365,7 @@ Catalogo ativo atual:
 8.  Desenvolvimento (barra em pé)              3x5
 9.  Levantamento Terra Romeno                  3x8
 10. Rosca inversa (barra)                    3x8
+11. Rosca de punho atrás das costas (barra)     3x12
 ```
 
 Nomes canonicos devem permanecer no SQLite porque sao usados no historico,
@@ -431,7 +432,7 @@ O banco fica em `data/limulus.db`. O schema e migrado por
 6. semeia grupos musculares padrao;
 7. semeia o plano de treino padrao quando necessario.
 
-Versao atual: `SCHEMA_VERSION = 11`.
+Versao atual: `SCHEMA_VERSION = 12`.
 
 Tabelas principais:
 
