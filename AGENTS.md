@@ -135,7 +135,7 @@ Comandos principais:
 - `/desfazer`
 - `/ajuda`
 - `80` ou `80 8` para registrar carga e RPE opcional
-- `/fundamentos`, `/fundamentos a|b|c` (espelho + saco leve, um movimento por vez)
+- `/fundamentos`, `/fundamentos a|b|c` (bandagem + luva, direto pro saco em rounds)
 - `/mt`, `/mtterca`, `/mtquinta`, `/mtsabado` (semana opcional: `/mtterca 3`)
 - `/proximo`, `/mtparar`, `/mtregras`
 - `/tecnicas`, `/como NOME` (curto), `/como NOME tudo` (completo)

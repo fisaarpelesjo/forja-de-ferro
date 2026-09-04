@@ -1224,27 +1224,24 @@ SABADO = {
 
 # ----------------------------------------------------- FUNDAMENTOS (sem saco)
 #
-# Fase anterior ao ciclo de 8 semanas: aprender cada movimento isolado, sem saco
-# e sem combinacao. O motivo e motor, nao de conforto -- bater no saco antes de
-# o padrao estar formado grava o padrao errado com impacto junto, e chute baixo
-# sem giro do pe de apoio lesiona o joelho na primeira sessao.
+# Fase anterior ao ciclo de 8 semanas: aprender o mecanismo de cada golpe antes
+# de bater com forca. O motivo e motor, nao de conforto -- forma errada gravada
+# com impacto junto custa meses para desfazer, e chute baixo sem giro do pe de
+# apoio lesiona o joelho na primeira sessao. Por isso o giro do pe de apoio (em
+# fundamentos_c) e o unico bloco que continua isolado e sem saco, como portao.
 #
-# Por isso conta REPETICAO, nao round: sem impacto nao existe intensidade para
-# dosar por tempo, e o que importa e o numero de execucoes limpas.
+# Fora essa excecao a fase e curta e vai direto ao saco: um primer rapido de
+# mecanica, e o resto da sessao e round no saco, primeiro um golpe por vez e
+# depois em combinacao livre, sempre a potencia baixa (20-30%). Repeticao
+# isolada no ar so entra quando a seguranca da articulacao exige.
 #
 # Reusa as mesmas TECNICAS do ciclo com saco. Se uma instrucao mudar, muda nos
 # dois lugares de uma vez.
 
 # Fica no resumo da sessao em vez de repetido bloco a bloco: dito uma vez, na
 # abertura, vale para a sessao inteira.
-SEM_COMBO = ("Um movimento por vez. Combinacao so depois que cada um sair "
-             "sozinho.")
-
-# Os blocos de aprendizado continuam de mao nua: sem impacto nao ha o que
-# proteger, e a mao livre deixa o punho visivel para correcao. A protecao entra
-# so no bloco final, onde existe contato.
-SEM_LUVA = ("Este bloco e de mao nua, sem bandagem nem luva — voce precisa "
-            "enxergar o punho para corrigir. O saco so entra no bloco final.")
+SEM_COMBO = ("Primer rapido de mecanica e direto pro saco: um golpe por vez "
+             "nos primeiros rounds, combinacao livre nos ultimos.")
 
 # Teto de potencia da fase. O saco aqui e instrumento de conferencia, nao alvo:
 # a 20-30% voce sente onde o golpe encosta sem que um erro de alinhamento vire
@@ -1259,69 +1256,37 @@ FUNDAMENTOS_A = {
     "intensidade": "leve (aprendizado, contato so de toque)",
     "usa_progressao": False,
     "blocos": [
-        _bloco("Preparacao", "6 min", [
+        _bloco("Preparacao", "5 min", [
+            "Enfaixe as maos e coloque as luvas",
             "Balance o saco com forca: suporte, corrente e mosquetao nao podem "
             "ceder, ranger nem folgar",
-            "3 min de mobilidade de ombros, quadril e tornozelos",
-            "2 min caminhando ao redor do saco, mudando de direcao",
-        ], nota=SEM_LUVA,
-           tecnicas=("mobilidade", "respiracao", "controlarsaco")),
-        _bloco("Base e guarda", "10 min", [
-            "De frente para o saco, monte a base do zero 20 vezes: pes juntos, "
-            "recue o pe direito, ajuste os angulos, levante a guarda",
-            "Desmanche completamente entre uma repeticao e outra — o objetivo e "
-            "treinar a montagem, nao ficar parado na posicao",
+            "3 min de mobilidade dinamica de ombros, quadril e tornozelos, sem parar",
+            "2 min andando ao redor do saco, guarda alta, mudando de direcao",
+        ], tecnicas=("bandagem", "mobilidade", "controlarsaco")),
+        _bloco("Base em movimento", "6 min", [
+            "Monte a base uma vez, sinta os angulos dos pes, e ja comece a "
+            "andar — frente, tras, lateral, sempre voltando pra base",
             "DISTANCIA: estenda o braco da frente. Os nos devem tocar o saco de "
             "leve, sem voce se inclinar. Essa e a sua distancia de jab",
-            "Monte a base 10 vezes ja nessa distancia, sem corrigir depois",
-            "Segure a guarda 3 x 30 s, 30 s de descanso",
-        ], nota="O saco resolve o que espelho nenhum resolve: distancia. Ele diz "
-                "na primeira tentativa se voce esta no alcance.",
-           tecnicas=("base",)),
-        _bloco("Deslocamento", "7 min", [
-            "Entrar e sair: da distancia de jab, um passo para tras e um para "
-            "frente. 20 vezes, tocando o saco a cada volta para conferir",
-            "Circular o saco: 10 voltas para cada lado, mantendo o saco sempre "
-            "a sua frente e a mesma distancia",
-            "Frente e tras livre: 20 idas e voltas",
-            "Descanse 30 s entre os tres exercicios",
-        ], nota="Regra unica desta fase: os pes nunca se cruzam. Se cruzarem, "
-                "pare, remonte a base e recomece a serie.",
-           tecnicas=("passos", "controlarsaco")),
-        _bloco("Jab no saco", "9 min", [
-            "Enfaixe as maos e coloque as luvas",
-            "20 jabs de TOQUE, sem forca nenhuma: so encostar e voltar. O punho "
-            "te diz na hora se entrou reto",
-            "Pare e confira: doeu em algum ponto do punho ou dos nos?",
-            "Descanse 1 min",
-            "30 jabs a 20%, um a cada 3 s. Escute: estalo curto e seco esta "
-            "certo; som abafado e golpe torto",
-            "Descanse 1 min",
-            "20 jabs entrando com um passo: o pe esquerdo sai primeiro e o punho "
-            "parte no mesmo instante",
-            "Espere o saco parar entre as series. Nunca bata nele voltando",
-        ], nota=f"{NO_SACO} Dor no punho ou nos nos encerra o bloco. Um "
-                "movimento por vez — nao emende com nenhum outro golpe.",
-           tecnicas=("bandagem", "jab", "controlarsaco")),
-        _bloco("Direto no saco", "9 min", [
-            "20 giros de pe direito e quadril com as MAOS NA GUARDA, sem soltar "
-            "o braco — so o giro, para sentir de onde vem a forca",
-            "20 diretos de TOQUE, sem forca: sentir a ordem pe > quadril > "
-            "tronco > braco chegando ate o saco",
-            "Descanse 1 min",
-            "30 diretos a 20%. A cada 10, PARE no fim do golpe e olhe o proprio "
-            "pe de tras: o calcanhar girou para fora?",
-            "10 diretos alternando com jabs, ainda um golpe de cada vez",
-            "Espere o saco parar entre as series",
-        ], nota=f"{NO_SACO} Direto sem quadril bate 'morto': o som e seco e o "
-                "saco quase nao anda. Com quadril, ele EMPURRA. E o teste mais "
-                "honesto que existe, e nao precisa de nada alem do saco.",
-           tecnicas=("direto", "controlarsaco")),
-        _bloco("Volta a calma", "4 min", [
-            "Caminhada leve ao redor do saco",
-            "Respiracao 4-2-6, 8 ciclos",
-            "Escolha UM ponto para corrigir no proximo treino",
-        ], tecnicas=("respiracao",)),
+            "Entrar e sair da distancia 12 vezes: um passo para tras, um para "
+            "frente, tocando o saco a cada volta",
+            "Circular o saco 5 voltas por lado, guarda alta, sem parar de andar",
+        ], nota="Sem pose parada: a base se prova andando, nao ficando quieta. "
+                "Se os pes cruzarem, remonte e continue sem interromper o ritmo.",
+           tecnicas=("base", "passos", "controlarsaco")),
+        _bloco("Saco — jab e direto", "22 min", [
+            "Round 1 (3 min): so jab — toque, depois 20%, entrando com um passo",
+            "Round 2 (3 min): giro de pe e quadril nas maos na guarda, depois "
+            "direto de toque, depois direto a 20%",
+            "Round 3 (3 min): jab + direto alternando",
+            "Round 4 (3 min): jab + direto + saida lateral",
+            "Round 5 (3 min): combinacoes livres de jab e direto, circulando o "
+            "saco o tempo todo, sem ficar parado entre golpes",
+            "1 min de descanso entre rounds — aproveite para escutar o som do "
+            "ultimo golpe antes de comecar o proximo",
+        ], nota=f"{NO_SACO} O som e o juiz: estalo curto e seco esta alinhado, "
+                "som abafado saiu torto. Dor no punho ou nos nos encerra o bloco.",
+           tecnicas=("bandagem", "jab", "direto", "saidalateral", "controlarsaco")),
     ],
 }
 
@@ -1330,57 +1295,41 @@ FUNDAMENTOS_B = {
     "intensidade": "leve (aprendizado, sem impacto)",
     "usa_progressao": False,
     "blocos": [
-        _bloco("Preparacao", "6 min", [
-            "3 min de mobilidade de ombros, quadril e tornozelos",
-            "Remonte a base 10 vezes",
-            "20 jabs e depois 20 diretos lentos, so para reaquecer o padrao",
-        ], nota=f"Jab e direto aqui sao revisao, ainda um de cada vez. {SEM_LUVA}",
-           tecnicas=("mobilidade", "base", "jab", "direto")),
-        _bloco("Gancho isolado", "9 min", [
-            "20 rotacoes de tronco com os bracos soltos e pendurados, sem golpe, "
-            "so para sentir o pe da frente girando",
-            "30 ganchos lentos com o cotovelo travado a 90 graus: 15 na altura da "
-            "cabeca e 15 na altura das costelas",
-            "Descanse 1 min",
-            "30 ganchos em ritmo medio",
-        ], nota="No saco, gancho de braco aberto escorrega em vez de afundar. Se deslizar, o cotovelo abriu.",
-           tecnicas=("gancho",)),
-        _bloco("Jab no corpo", "8 min", [
-            "20 descidas sem golpe: flexione os JOELHOS, coluna reta, e volte",
-            "30 jabs no corpo lentos: desce, soca, sobe — tres tempos separados",
-            "Descanse 1 min",
-            "20 em ritmo medio, agora com os tres tempos emendados",
-        ], nota="A cabeca sai da linha central ao descer.",
-           tecnicas=("jabcorpo",)),
-        _bloco("Bloqueio e saida lateral", "9 min", [
-            "Bloqueio alto: 30 repeticoes de cada lado, subindo o cotovelo sem "
+        _bloco("Preparacao", "5 min", [
+            "Enfaixe as maos e coloque as luvas",
+            "3 min de mobilidade dinamica de ombros, quadril e tornozelos",
+            "2 min de jab e direto se movendo ao redor do saco, so para "
+            "reaquecer o padrao",
+        ], tecnicas=("bandagem", "mobilidade", "jab", "direto")),
+        _bloco("Saco — gancho e corpo", "18 min", [
+            "Round 1 (3 min): 10 rotacoes de tronco sem golpe, sentindo o pe da "
+            "frente girar, depois ganchos de toque",
+            "Round 2 (3 min): ganchos a 20%, metade na altura da cabeca e "
+            "metade nas costelas — cotovelo travado em 90 graus",
+            "Round 3 (3 min): jab no corpo — desce, soca, sobe, ainda em tres "
+            "tempos separados",
+            "Round 4 (3 min): jab no corpo a 20%, agora com os tres tempos "
+            "emendados",
+            "Round 5 (3 min): jab + direto + gancho alternando",
+            "Round 6 (3 min): combinacoes livres com gancho e jab no corpo, "
+            "circulando o saco o tempo todo",
+            "1 min de descanso entre rounds",
+        ], nota=f"{NO_SACO} No gancho, braco aberto escorrega em vez de "
+                "afundar — se deslizar, o cotovelo abriu.",
+           tecnicas=("bandagem", "gancho", "jabcorpo", "controlarsaco")),
+        _bloco("Defesa em movimento", "8 min", [
+            "Bloqueio alto: 15 repeticoes de cada lado, subindo o cotovelo sem "
             "afastar a mao do rosto",
-            "Bloqueio de perna: 20 elevacoes de canela de cada lado, joelho "
+            "Bloqueio de perna: 10 elevacoes de canela de cada lado, joelho "
             "apontando um pouco para fora",
-            "Saida lateral: 20 para cada lado — um unico jab, e imediatamente "
-            "dois passos para o lado",
+            "No saco: um jab, e assim que a mao volta, dois passos para o lado "
+            "— 10 vezes de cada lado",
         ], nota="Nunca recue em linha reta. O jab antes da saida existe so para "
                 "dar o timing — continua sendo um golpe so.",
-           tecnicas=("bloqueio", "saidalateral")),
-        _bloco("Saco leve", "8 min", [
-            "Enfaixe as maos e coloque as luvas",
-            "DISTANCIA DO GANCHO: e mais curta que a do jab. Encoste o cotovelo "
-            "dobrado no saco para achar o ponto certo, depois recue meio passo",
-            "20 ganchos a 20%, 10 de cada lado, conferindo se o cotovelo manteve "
-            "os 90 graus no impacto",
-            "20 jabs no corpo a 20%, descendo pelos joelhos",
-            "10 saidas laterais: um unico jab e dois passos para o lado",
-            "Espere o saco parar entre as series",
-        ], nota=f"{NO_SACO} No gancho o saco denuncia braco aberto na hora: "
-                "o golpe escorrega em vez de entrar.",
-           tecnicas=("bandagem", "gancho", "jabcorpo", "saidalateral", "controlarsaco")),
-        _bloco("Estabilidade", "5 min", [
-            "Prancha: 3 x 30 s (30 s de descanso entre elas)",
+           tecnicas=("bloqueio", "saidalateral", "controlarsaco")),
+        _bloco("Estabilidade", "4 min", [
+            "Prancha: 2 x 30 s (30 s de descanso entre elas)",
         ], tecnicas=("prancha",)),
-        _bloco("Volta a calma", "4 min", [
-            "Caminhada leve",
-            "Respiracao 4-2-6, 8 ciclos",
-        ], tecnicas=("respiracao",)),
     ],
 }
 
@@ -1389,63 +1338,38 @@ FUNDAMENTOS_C = {
     "intensidade": "leve (aprendizado, sem impacto)",
     "usa_progressao": False,
     "blocos": [
-        _bloco("Preparacao", "8 min", [
-            "3 min de mobilidade de tornozelo e quadril",
-            "2 min de elevacao alternada dos joelhos",
-            "20 agachamentos livres lentos",
-        ], nota=SEM_LUVA,
-           tecnicas=("mobilidade", "elevacaojoelhos")),
-        _bloco("Giro do pe de apoio", "8 min", [
-            "30 giros lentos com a perna esquerda de apoio, SEM chutar, ate o "
-            "calcanhar apontar para o alvo imaginario",
-            "30 giros lentos com a perna direita de apoio",
-            "Descanse 1 min",
-            "20 giros por lado em ritmo medio",
-            "10 giros por lado com o joelho da outra perna levantado, ainda sem chutar",
-        ], nota="Quem gira e o PE, nao o joelho. So passe para o chute quando o "
-                "giro sair sem voce pensar — e a diferenca entre chutar e lesionar.",
-           tecnicas=("girodope",)),
-        _bloco("Teep isolado", "9 min", [
-            "20 elevacoes de joelho ate a altura do quadril, sem estender a perna",
-            "30 teeps lentos por perna: sobe o joelho, estende empurrando, "
-            "recolhe o joelho, desce o pe — quatro tempos",
-            "Descanse 1 min",
-            "20 por perna em ritmo medio, com os quatro tempos emendados",
-        ], nota="Recolha o pe a base; nunca deixe cair a frente.",
-           tecnicas=("teep",)),
-        _bloco("Joelhada isolada", "8 min", [
-            "20 elevacoes diagonais de joelho, ainda SEM avancar o quadril",
-            "30 joelhadas lentas por perna, agora avancando o quadril no topo — "
-            "a diferenca entre as duas coisas e o golpe inteiro",
-            "Descanse 1 min",
-            "20 por perna em ritmo medio",
-        ], nota="O contato seria ACIMA da rotula, nunca nela.",
-           tecnicas=("joelho",)),
-        _bloco("Chute baixo isolado", "9 min", [
-            "20 chutes baixos LENTOS por perna, no ar, com atencao unica no giro "
-            "do pe de apoio — ignore a perna que chuta por enquanto",
-            "Descanse 1 min",
-            "20 por perna em ritmo medio",
-            "10 por perna congelando no fim do chute: sem recolher a perna, "
-            "olhe o proprio pe de apoio e veja se o calcanhar girou",
-        ], nota="Sem forca: o objetivo e a trajetoria, nao o impacto.",
-           tecnicas=("chutebaixo", "girodope")),
-        _bloco("Saco leve", "8 min", [
-            "PORTAO: so faca este bloco se o giro do pe de apoio ja sair sem "
-            "voce pensar. Se ainda nao sai, repita o bloco 2 e encerre a sessao",
+        _bloco("Preparacao", "5 min", [
             "Enfaixe as maos e coloque as luvas",
-            "10 teeps por perna a 20%: empurrar o saco, nao bater nele",
-            "10 joelhadas por perna a 20%, avancando o quadril",
-            "5 chutes baixos por perna a 20%, contato com a CANELA",
-            "Espere o saco parar entre as series",
-        ], nota="Cinco chutes por perna e pouco de proposito: canela leva MESES "
-                "para condicionar. Dor na canela encerra o bloco — insistir vira "
-                f"periostite. {NO_SACO}",
-           tecnicas=("girodope", "teep", "joelho", "chutebaixo", "bandagem", "controlarsaco")),
-        _bloco("Volta a calma", "4 min", [
-            "Caminhada leve",
-            "Respiracao 4-2-6, 8 ciclos",
-        ], tecnicas=("respiracao",)),
+            "3 min de mobilidade dinamica de tornozelo e quadril",
+            "2 min de elevacao alternada dos joelhos",
+        ], tecnicas=("bandagem", "mobilidade", "elevacaojoelhos")),
+        _bloco("Giro do pe de apoio", "6 min", [
+            "20 giros lentos com a perna esquerda de apoio, SEM chutar, ate o "
+            "calcanhar apontar para o alvo imaginario",
+            "20 giros lentos com a perna direita de apoio",
+            "10 giros por lado em ritmo medio",
+        ], nota="PORTAO: quem gira e o PE, nao o joelho. So avance para o saco "
+                "quando o giro sair sem voce pensar — e a diferenca entre "
+                "chutar e lesionar. Se ainda nao sai, repita este bloco e "
+                "encerre a sessao.",
+           tecnicas=("girodope",)),
+        _bloco("Saco — teep, joelho e chute baixo", "22 min", [
+            "Round 1 (3 min): teep no ar devagar — sobe o joelho, estende "
+            "empurrando — depois teeps a 20% empurrando o saco",
+            "Round 2 (3 min): joelhada no ar avancando o quadril no topo, "
+            "depois joelhadas a 20%, contato acima da rotula",
+            "Round 3 (3 min): chute baixo no ar bem devagar, so olhando o "
+            "proprio pe de apoio girar, depois 5 chutes por perna a 20% no saco",
+            "Round 4 (3 min): teep + joelho alternando",
+            "Round 5 (3 min): jab + direto + chute baixo",
+            "Round 6 (3 min): combinacoes livres de teep, joelho e chute baixo, "
+            "circulando o saco",
+            "1 min de descanso entre rounds",
+        ], nota="Chute baixo continua limitado a poucos golpes por perna por "
+                "round: canela leva MESES para condicionar. Dor na canela "
+                f"encerra o chute do dia — insistir vira periostite. {NO_SACO}",
+           tecnicas=("girodope", "teep", "joelho", "chutebaixo", "jab", "direto",
+                     "bandagem", "controlarsaco")),
     ],
 }
 

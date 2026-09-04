@@ -32,9 +32,11 @@ em vez de acionar um comando textual.
 
 ## Muay Thai — Fundamentos (Com Saco Leve)
 
-Fase anterior ao ciclo de 8 semanas: aprender cada movimento isolado, sem
-combinacao. Conta repeticao em vez de round, porque a dosagem aqui e numero de
-execucoes limpas, nao tempo sob esforco.
+Fase anterior ao ciclo de 8 semanas: aprender o mecanismo de cada golpe antes
+de bater com forca. Bandagem e luva entram logo na preparacao, ja para o saco.
+Fora do giro do pe de apoio (bloco isolado por seguranca de joelho), a sessao e
+curta: um aquecimento rapido e o resto e round no saco, um golpe por vez nos
+primeiros rounds e combinacao livre nos ultimos.
 
 Contato sempre leve, no maximo 20-30%: o saco confere distancia, alinhamento e
 ponto de contato, sem que um erro vire lesao.

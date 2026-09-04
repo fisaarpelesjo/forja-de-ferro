@@ -215,12 +215,13 @@ barra.
 ### Muay Thai (saco)
 
 Antes do ciclo de 8 semanas existe uma fase de fundamentos (`/fundamentos`):
-tres sessoes que ensinam cada movimento isolado, sem combinacao, sempre a no
-maximo 20-30% de potencia. Nao pressupoe espelho nem camera: o feedback vem do
-som do golpe, de como o saco reage e da dor no punho quando o alinhamento sai
-errado. Bater no saco
-antes de o padrao estar formado grava o padrao errado com impacto junto, e
-chute baixo sem giro do pe de apoio machuca o joelho na primeira sessao.
+tres sessoes que ensinam o mecanismo de cada golpe, sempre a no maximo 20-30%
+de potencia. Bandagem e luva entram logo na preparacao, e a sessao vai direto
+ao saco em rounds — um golpe por vez nos primeiros, combinacao livre nos
+ultimos. Nao pressupoe espelho nem camera: o feedback vem do som do golpe, de
+como o saco reage e da dor no punho quando o alinhamento sai errado. O unico
+bloco isolado, sem saco, e o giro do pe de apoio em Fundamentos C: chute baixo
+sem esse giro machuca o joelho na primeira sessao.
 
 Ciclo de 8 semanas para iniciante, treinando saco em terca, quinta e sabado,
 complementando a musculacao de segunda, quarta e sexta. Quinta e leve de
@@ -230,7 +231,7 @@ percentual de potencia — encaixar um no outro faria o volume do dashboard
 mentir.
 
 ```
-/fundamentos    Fase sem equipamento: cada movimento isolado, sem combo
+/fundamentos    Fase pre-ciclo: bandagem, luva e direto pro saco em rounds
 /fundamentos a  Sessao de fundamentos (a, b ou c)
 /mt             Roteiro de hoje (ter/qui/sab); nos outros dias avisa e nao inicia
 /mtterca        Forca o roteiro de terca (idem /mtquinta e /mtsabado)
